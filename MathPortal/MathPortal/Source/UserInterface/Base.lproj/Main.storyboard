@@ -167,8 +167,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKd-Zk-b9a">
-                                <rect key="frame" x="175" y="438" width="64" height="30"/>
-                                <state key="normal" title="Logg Out"/>
+                                <rect key="frame" x="179.5" y="438" width="55" height="30"/>
+                                <state key="normal" title="Log Out"/>
                                 <connections>
                                     <action selector="logOut:" destination="1Zf-ge-2rN" eventType="touchUpInside" id="3qX-nd-eGI"/>
                                 </connections>

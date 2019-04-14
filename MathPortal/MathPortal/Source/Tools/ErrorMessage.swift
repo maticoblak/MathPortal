@@ -12,8 +12,7 @@ class ErrorMessage {
 
     static func displayErrorMessage(controller: UIViewController, message:String) {
         let alertView = UIAlertController(title: "Error!", message: message, preferredStyle: .alert)
-        let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction) in
-        }
+        let OKAction = UIAlertAction(title: "OK", style: .default)
         alertView.addAction(OKAction)
         if let presenter = alertView.popoverPresentationController {
             presenter.sourceView = controller.view

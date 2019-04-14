@@ -17,6 +17,7 @@
 		C0BD61CF2263800A00E48081 /* Loading.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0BD61CE2263800A00E48081 /* Loading.storyboard */; };
 		C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D02263849500E48081 /* LoggedInViewController.swift */; };
 		C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D22263895E00E48081 /* ErrorMessage.swift */; };
+		C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D52263BEA000E48081 /* R.generated.swift */; };
 		F93D774708A2C343CD454B9F /* Pods_MathPortal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA3067A6E73B798E2BC9266 /* Pods_MathPortal.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		C0BD61CE2263800A00E48081 /* Loading.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Loading.storyboard; sourceTree = "<group>"; };
 		C0BD61D02263849500E48081 /* LoggedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewController.swift; sourceTree = "<group>"; };
 		C0BD61D22263895E00E48081 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
+		C0BD61D52263BEA000E48081 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		D2D4A61069A935A2A9FAC989 /* Pods-MathPortal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MathPortal.debug.xcconfig"; path = "Target Support Files/Pods-MathPortal/Pods-MathPortal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +72,7 @@
 		C0BD61A5225F7D8100E48081 = {
 			isa = PBXGroup;
 			children = (
+				C0BD61D52263BEA000E48081 /* R.generated.swift */,
 				C0BD61B0225F7D8100E48081 /* MathPortal */,
 				C0BD61AF225F7D8100E48081 /* Products */,
 				21DEF43FD7C7A7C081AF5304 /* Pods */,
@@ -98,13 +101,9 @@
 		C0BD61C3225F7F1100E48081 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C0BD61D72263C55E00E48081 /* UserInterface */,
 				C0BD61CB22637FB600E48081 /* Tools */,
 				C0BD61C6225FD8B600E48081 /* Main */,
-				C0BD61B3225F7D8100E48081 /* ViewController.swift */,
-				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
-				C0BD61D02263849500E48081 /* LoggedInViewController.swift */,
-				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
-				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -135,6 +134,18 @@
 			path = Tools;
 			sourceTree = "<group>";
 		};
+		C0BD61D72263C55E00E48081 /* UserInterface */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61B3225F7D8100E48081 /* ViewController.swift */,
+				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
+				C0BD61D02263849500E48081 /* LoggedInViewController.swift */,
+				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
+				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
+			);
+			path = UserInterface;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +154,7 @@
 			buildConfigurationList = C0BD61C0225F7D8300E48081 /* Build configuration list for PBXNativeTarget "MathPortal" */;
 			buildPhases = (
 				342418385486B5E73574AE89 /* [CP] Check Pods Manifest.lock */,
+				C0BD61D42263BD1200E48081 /* ShellScript */,
 				C0BD61AA225F7D8100E48081 /* Sources */,
 				C0BD61AB225F7D8100E48081 /* Frameworks */,
 				C0BD61AC225F7D8100E48081 /* Resources */,
@@ -253,6 +265,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MathPortal/Pods-MathPortal-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C0BD61D42263BD1200E48081 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$TEMP_DIR/rswift-lastrun",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -261,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */,
+				C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */,
 				C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */,
 				C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */,
 				C0BD61CA226379B500E48081 /* LogInViewController.swift in Sources */,

@@ -11,12 +11,6 @@ import Parse
 
 class LoggedInViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
     @IBOutlet private var logOutButton: UIButton?
     
     @IBAction func logOut(_ sender: Any) {
@@ -29,7 +23,7 @@ class LoggedInViewController: UIViewController {
         
         PFUser.logOutInBackground { (error: Error?) in
             loadingSpinner.dismissLoadingScreen()
-            if (error == nil) {
+            if error == nil {
                 self.navigationController?.popViewController(animated: true)
             } else {
                 if let descrip = error?.localizedDescription{

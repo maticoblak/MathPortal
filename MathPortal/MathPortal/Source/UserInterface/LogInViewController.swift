@@ -60,7 +60,8 @@ class LogInViewController: UIViewController {
     func logInUser() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
-        guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else { loadingSpinner.dismissLoadingScreen()
+        guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else {
+            loadingSpinner.dismissLoadingScreen()
             return }
         PFUser.logInWithUsername(inBackground: username, password: password ) { (user, error) in
             loadingSpinner.dismissLoadingScreen()
@@ -75,7 +76,7 @@ class LogInViewController: UIViewController {
     }
    
     func goToLoggedInScreen() {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+        let controller = R.storyboard.main.loggedInViewController()!
         navigationController?.pushViewController(controller, animated: true)
     }
 

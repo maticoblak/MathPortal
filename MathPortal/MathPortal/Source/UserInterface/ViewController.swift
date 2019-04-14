@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Rswift
 
 
 class ViewController: UIViewController {
     
     
-    @IBOutlet weak var introText: UILabel!
+    @IBOutlet private var introText: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,8 @@ class ViewController: UIViewController {
     }
     
     func goToLogInViewController() {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LogInViewController") as! LogInViewController
+        
+        let controller = R.storyboard.main.logInViewController()!
         let navigationController = UINavigationController.init(rootViewController: controller)
         navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         self.present(navigationController, animated: true, completion: nil)
