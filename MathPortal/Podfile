@@ -4,6 +4,6 @@ platform :ios, '10.0'
 target 'MathPortal' do
   use_frameworks!
   pod 'R.swift', '~> 5.0'
-
+  pod 'Parse'
 
 end
