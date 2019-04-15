@@ -18,6 +18,7 @@
 		C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D02263849500E48081 /* LoggedInViewController.swift */; };
 		C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D22263895E00E48081 /* ErrorMessage.swift */; };
 		C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D52263BEA000E48081 /* R.generated.swift */; };
+		C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D922645A4300E48081 /* ParseManager.swift */; };
 		F93D774708A2C343CD454B9F /* Pods_MathPortal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA3067A6E73B798E2BC9266 /* Pods_MathPortal.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		C0BD61D02263849500E48081 /* LoggedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewController.swift; sourceTree = "<group>"; };
 		C0BD61D22263895E00E48081 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		C0BD61D52263BEA000E48081 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
+		C0BD61D922645A4300E48081 /* ParseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseManager.swift; sourceTree = "<group>"; };
 		D2D4A61069A935A2A9FAC989 /* Pods-MathPortal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MathPortal.debug.xcconfig"; path = "Target Support Files/Pods-MathPortal/Pods-MathPortal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +103,7 @@
 		C0BD61C3225F7F1100E48081 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C0BD61D822645A0800E48081 /* API  */,
 				C0BD61D72263C55E00E48081 /* UserInterface */,
 				C0BD61CB22637FB600E48081 /* Tools */,
 				C0BD61C6225FD8B600E48081 /* Main */,
@@ -144,6 +147,14 @@
 				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
 			);
 			path = UserInterface;
+			sourceTree = "<group>";
+		};
+		C0BD61D822645A0800E48081 /* API  */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61D922645A4300E48081 /* ParseManager.swift */,
+			);
+			path = "API ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,6 +305,7 @@
 				C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */,
 				C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */,
 				C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */,
+				C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */,
 				C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */,
 				C0BD61CA226379B500E48081 /* LogInViewController.swift in Sources */,
 				C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */,

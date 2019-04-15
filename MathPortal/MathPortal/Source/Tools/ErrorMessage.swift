@@ -10,7 +10,7 @@ import UIKit
 
 class ErrorMessage {
 
-    static func displayErrorMessage(controller: UIViewController, message:String) {
+    static func displayErrorMessage(controller: UIViewController, message: String) {
         let alertView = UIAlertController(title: "Error!", message: message, preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default)
         alertView.addAction(OKAction)

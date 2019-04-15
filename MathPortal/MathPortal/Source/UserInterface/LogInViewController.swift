@@ -22,24 +22,26 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Parse.initialize(with: ParseManager.configuration)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         let currentUser = PFUser.current()
         if currentUser != nil {
             goToLoggedInScreen()
         }
     }
     
-    @IBAction func logIn(_ sender: Any) {
+    @IBAction private func logIn(_ sender: Any) {
         logInUser()
     }
     
-    @IBAction func signUp(_ sender: Any) {
+    @IBAction private func signUp(_ sender: Any) {
         signUpNewUser()
     }
     
-    func signUpNewUser() {
+    private func signUpNewUser() {
         let user = PFUser()
         user.username = signUpUsernameTextField?.text
         user.password = signUpPasswordTextField?.text
@@ -50,14 +52,16 @@ class LogInViewController: UIViewController {
             if success {
                 self.goToLoggedInScreen()
             } else {
-                if let descrip = error?.localizedDescription {
-                    ErrorMessage.displayErrorMessage(controller: self, message: descrip)
+                if let description = error?.localizedDescription {
+                    ErrorMessage.displayErrorMessage(controller: self, message: description)
+                } else {
+                    ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                 }
             }
         }
     }
     
-    func logInUser() {
+    private func logInUser() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else {
@@ -68,8 +72,10 @@ class LogInViewController: UIViewController {
             if user != nil {
                 self.goToLoggedInScreen()
             } else {
-                if let descrip = error?.localizedDescription{
-                    ErrorMessage.displayErrorMessage(controller: self, message: (descrip))
+                if let description = error?.localizedDescription {
+                    ErrorMessage.displayErrorMessage(controller: self, message: (description))
+                } else {
+                    ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                 }
             }
         }

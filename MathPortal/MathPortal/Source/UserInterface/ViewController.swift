@@ -7,11 +7,9 @@
 //
 
 import UIKit
-import Rswift
-
+import Parse
 
 class ViewController: UIViewController {
-    
     
     @IBOutlet private var introText: UILabel?
     
@@ -41,7 +39,5 @@ class ViewController: UIViewController {
             self.goToLogInViewController()
         }
     }
-
-
 }
 
