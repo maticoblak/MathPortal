@@ -11,7 +11,11 @@ import Parse
 
 class ParseManager {
     
-    static let configuration = ParseClientConfiguration {
+    static func initialize() {
+        Parse.initialize(with: ParseManager.configuration)
+    }
+    
+    private static let configuration = ParseClientConfiguration {
         $0.applicationId = "Rq3siDnQ14EpAWKkRVTRvRTIvbtjq5jlgOf9SyK7"
         $0.clientKey = "s6z7lVKokNP1Eo3TbnWmFkcGpQOqf0bGCZqMMyeB"
         $0.server = "https://parseapi.back4app.com"

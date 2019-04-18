@@ -22,7 +22,6 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Parse.initialize(with: ParseManager.configuration)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,6 +44,7 @@ class LogInViewController: UIViewController {
         let user = PFUser()
         user.username = signUpUsernameTextField?.text
         user.password = signUpPasswordTextField?.text
+        
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         user.signUpInBackground { (success, error) in
@@ -87,3 +87,4 @@ class LogInViewController: UIViewController {
     }
 
 }
+

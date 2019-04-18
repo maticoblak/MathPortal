@@ -19,6 +19,12 @@
 		C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D22263895E00E48081 /* ErrorMessage.swift */; };
 		C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D52263BEA000E48081 /* R.generated.swift */; };
 		C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D922645A4300E48081 /* ParseManager.swift */; };
+		C0BD61DD226475DC00E48081 /* Appearence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61DC226475DC00E48081 /* Appearence.swift */; };
+		C0BD61DF2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */; };
+		C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61E0226485E100E48081 /* TaskViewController.swift */; };
+		C0BD61EB226720ED00E48081 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EA226720ED00E48081 /* Task.swift */; };
+		C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EC2267213800E48081 /* ParseObject.swift */; };
+		C0BD61EF226735ED00E48081 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EE226735ED00E48081 /* User.swift */; };
 		F93D774708A2C343CD454B9F /* Pods_MathPortal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA3067A6E73B798E2BC9266 /* Pods_MathPortal.framework */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +45,12 @@
 		C0BD61D22263895E00E48081 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		C0BD61D52263BEA000E48081 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		C0BD61D922645A4300E48081 /* ParseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseManager.swift; sourceTree = "<group>"; };
+		C0BD61DC226475DC00E48081 /* Appearence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearence.swift; sourceTree = "<group>"; };
+		C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewControllerTableViewCell.swift; sourceTree = "<group>"; };
+		C0BD61E0226485E100E48081 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
+		C0BD61EA226720ED00E48081 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		C0BD61EC2267213800E48081 /* ParseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseObject.swift; sourceTree = "<group>"; };
+		C0BD61EE226735ED00E48081 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D2D4A61069A935A2A9FAC989 /* Pods-MathPortal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MathPortal.debug.xcconfig"; path = "Target Support Files/Pods-MathPortal/Pods-MathPortal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +115,8 @@
 		C0BD61C3225F7F1100E48081 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C0BD61E52267061100E48081 /* Dialog */,
+				C0BD61E22265F64600E48081 /* Data */,
 				C0BD61D822645A0800E48081 /* API  */,
 				C0BD61D72263C55E00E48081 /* UserInterface */,
 				C0BD61CB22637FB600E48081 /* Tools */,
@@ -130,8 +144,7 @@
 		C0BD61CB22637FB600E48081 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				C0BD61CE2263800A00E48081 /* Loading.storyboard */,
-				C0BD61CC22637FCA00E48081 /* LoadingViewController.swift */,
+				C0BD61DC226475DC00E48081 /* Appearence.swift */,
 				C0BD61D22263895E00E48081 /* ErrorMessage.swift */,
 			);
 			path = Tools;
@@ -143,6 +156,8 @@
 				C0BD61B3225F7D8100E48081 /* ViewController.swift */,
 				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
 				C0BD61D02263849500E48081 /* LoggedInViewController.swift */,
+				C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */,
+				C0BD61E0226485E100E48081 /* TaskViewController.swift */,
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
 				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
 			);
@@ -153,8 +168,27 @@
 			isa = PBXGroup;
 			children = (
 				C0BD61D922645A4300E48081 /* ParseManager.swift */,
+				C0BD61EC2267213800E48081 /* ParseObject.swift */,
 			);
 			path = "API ";
+			sourceTree = "<group>";
+		};
+		C0BD61E22265F64600E48081 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61EA226720ED00E48081 /* Task.swift */,
+				C0BD61EE226735ED00E48081 /* User.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		C0BD61E52267061100E48081 /* Dialog */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61CC22637FCA00E48081 /* LoadingViewController.swift */,
+				C0BD61CE2263800A00E48081 /* Loading.storyboard */,
+			);
+			path = Dialog;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,12 +337,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */,
+				C0BD61DF2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift in Sources */,
 				C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */,
 				C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */,
+				C0BD61EB226720ED00E48081 /* Task.swift in Sources */,
+				C0BD61DD226475DC00E48081 /* Appearence.swift in Sources */,
+				C0BD61EF226735ED00E48081 /* User.swift in Sources */,
 				C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */,
 				C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */,
 				C0BD61CA226379B500E48081 /* LogInViewController.swift in Sources */,
 				C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */,
+				C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */,
+				C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */,
 				C0BD61CD22637FCA00E48081 /* LoadingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

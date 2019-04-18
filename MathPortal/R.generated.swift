@@ -16,6 +16,14 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
   
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 1 reuse identifiers.
+  struct reuseIdentifier {
+    /// Reuse identifier `UserCell`.
+    static let userCell: Rswift.ReuseIdentifier<LoggedInViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "UserCell")
+    
+    fileprivate init() {}
+  }
+  
   /// This `R.storyboard` struct is generated, and contains static references to 3 storyboards.
   struct storyboard {
     /// Storyboard `LaunchScreen`.
@@ -107,6 +115,7 @@ struct _R: Rswift.Validatable {
       let logInViewController = StoryboardViewControllerResource<LogInViewController>(identifier: "LogInViewController")
       let loggedInViewController = StoryboardViewControllerResource<LoggedInViewController>(identifier: "LoggedInViewController")
       let name = "Main"
+      let taskViewController = StoryboardViewControllerResource<TaskViewController>(identifier: "TaskViewController")
       
       func logInViewController(_: Void = ()) -> LogInViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: logInViewController)
@@ -116,11 +125,16 @@ struct _R: Rswift.Validatable {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: loggedInViewController)
       }
       
+      func taskViewController(_: Void = ()) -> TaskViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskViewController)
+      }
+      
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.main().logInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'logInViewController' could not be loaded from storyboard 'Main' as 'LogInViewController'.") }
         if _R.storyboard.main().loggedInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loggedInViewController' could not be loaded from storyboard 'Main' as 'LoggedInViewController'.") }
+        if _R.storyboard.main().taskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskViewController' could not be loaded from storyboard 'Main' as 'TaskViewController'.") }
       }
       
       fileprivate init() {}
