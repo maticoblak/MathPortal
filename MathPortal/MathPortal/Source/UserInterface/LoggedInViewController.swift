@@ -35,17 +35,19 @@ class LoggedInViewController: UIViewController {
     }
     
     func fechTasks() {
-        Task.findObjectsByKey { (objects, error) in
+        guard let userId = user?.objectId else { return  }
+        Task.fechUserTasks(userId: userId, completion: { (tasks, error) in
             if let error = error {
                 print(error.localizedDescription)
-            } else if let objects = objects {
-                self.tasks = objects.compactMap { Task(pfObject: $0) }
+            } else if let tasks = tasks {
+                self.tasks = tasks
                 self.tasksTableView?.reloadData()
             }
-        }
+        })
     }
     @objc func addTask() {
         let controller = R.storyboard.main.taskViewController()!
+        controller.task = Task()
         navigationController?.pushViewController(controller, animated: true)
     }
     func logoutOfApp() {
@@ -88,9 +90,9 @@ extension LoggedInViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tasks[indexPath.row].delete {
+            tasks[indexPath.row].delete(completion: { (success, error) in
                 self.fechTasks()
-            }
+            }) 
         }
     }
 }

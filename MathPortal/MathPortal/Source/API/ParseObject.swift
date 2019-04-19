@@ -11,8 +11,11 @@ import Parse
 
 class ParseObject {
     
+    // EntityName needs to be overridden
     class var entityName: String { return "" }
     var entityName: String { return type(of: self).entityName }
+    
+    private var pfObject: PFObject?
     
     init() {}
     init?(pfObject: PFObject?) {
@@ -30,19 +33,26 @@ class ParseObject {
     }
 
     func generetePFObject() -> PFObject {
-        return PFObject(className: entityName)
+        let object = pfObject ?? PFObject(className: entityName)
+        return object
     }
     
     func updateWithPFObject(_ object: PFObject) throws {
-        
+        pfObject = object
     }
-    // have just one querry the others should be in Task
+
     static func generatePFQuery() -> PFQuery<PFObject> {
         return PFQuery(className: entityName)
     }
     
     func save(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
         generetePFObject().saveInBackground { (success: Bool, error: Error?) in
+            completion?(success, error)
+        }
+    }
+    
+    func delete(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
+        generetePFObject().deleteInBackground { (success, error) in
             completion?(success, error)
         }
     }

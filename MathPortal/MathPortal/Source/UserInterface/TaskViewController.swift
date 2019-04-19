@@ -20,13 +20,12 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
-        taskTitle = task?.name
+        taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
         
     }
     
-    
-    var task: Task?
+    var task: Task!
     
     let user = PFUser.current()
     var taskTitle: String?
@@ -42,23 +41,12 @@ class TaskViewController: UIViewController {
     func saveTask() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
         self.present(loadingSpinner, animated: false, completion: nil)
-        if task != nil {
-            task?.edit(name: titleTextField?.text, completion: {
-                loadingSpinner.dismissLoadingScreen()
-                self.goToLoggedInViewController()
-            })
-        } else {
-            let newTask = Task()
-            newTask.name = titleTextField?.text
-            newTask.save(completion: { (success, error) in
-                if (success) {
-                    print(success)
-                } else {
-                    print(error)
-                }
-                loadingSpinner.dismissLoadingScreen()
-                self.goToLoggedInViewController()
-            })
-        }
+        
+        task.name = titleTextField?.text
+        task.userId = PFUser.current()?.objectId
+        task.save(completion: { (success, error) in
+            loadingSpinner.dismissLoadingScreen()
+            self.goToLoggedInViewController()
+        })
     }
 }
