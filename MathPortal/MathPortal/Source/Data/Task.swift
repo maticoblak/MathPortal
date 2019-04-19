@@ -12,10 +12,17 @@ import Parse
 class Task: ParseObject {
 
     var name: String?
-    var objectId: String?
     var userId: String?
     
     // MARK: Sync
+    
+    override init() {
+        super.init()
+        userId = PFUser.current()?.objectId
+    }
+    override init?(pfObject: PFObject?) {
+        super.init(pfObject: pfObject)
+    }
     
     override class var entityName: String { return "Task" }
     
@@ -28,11 +35,10 @@ class Task: ParseObject {
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let name = object["taskName"] as? String, let objectId = object.objectId, let userId = object["userId"] as? String else {
+        guard let name = object["taskName"] as? String, let userId = object["userId"] as? String else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse Task data from PFObject"])
         }
         self.name = name
-        self.objectId = objectId
         self.userId = userId
     }
     

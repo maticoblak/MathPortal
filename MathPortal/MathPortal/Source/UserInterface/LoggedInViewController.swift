@@ -34,7 +34,7 @@ class LoggedInViewController: UIViewController {
         fechTasks()
     }
     
-    func fechTasks() {
+    private func fechTasks() {
         guard let userId = user?.objectId else { return  }
         Task.fechUserTasks(userId: userId, completion: { (tasks, error) in
             if let error = error {

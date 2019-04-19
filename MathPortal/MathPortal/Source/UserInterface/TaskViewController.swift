@@ -43,7 +43,6 @@ class TaskViewController: UIViewController {
         self.present(loadingSpinner, animated: false, completion: nil)
         
         task.name = titleTextField?.text
-        task.userId = PFUser.current()?.objectId
         task.save(completion: { (success, error) in
             loadingSpinner.dismissLoadingScreen()
             self.goToLoggedInViewController()
