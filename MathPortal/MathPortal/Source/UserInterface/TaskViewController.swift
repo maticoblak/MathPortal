@@ -26,8 +26,6 @@ class TaskViewController: UIViewController {
     }
     
     var task: Task!
-    
-    let user = PFUser.current()
     var taskTitle: String?
     
     @IBAction func saveTask(_ sender: Any) {
