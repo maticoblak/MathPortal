@@ -243,10 +243,10 @@
             </objects>
             <point key="canvasLocation" x="1225" y="126"/>
         </scene>
-        <!--Task View Controller-->
+        <!--Parent View Controller-->
         <scene sceneID="MdK-KG-uyQ">
             <objects>
-                <viewController storyboardIdentifier="TaskViewController" id="6OY-hP-fad" customClass="TaskViewController" customModule="MathPortal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TaskViewController" id="6OY-hP-fad" customClass="TaskViewController" customModule="MathPortal" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7a6-k7-9pQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -286,20 +286,32 @@
                                     <action selector="saveTask:" destination="6OY-hP-fad" eventType="touchUpInside" id="DdT-On-nXX"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgk-bO-Pfu" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                <rect key="frame" x="20" y="432" width="374" height="400"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="parentViewController" destination="6OY-hP-fad" id="EHp-RY-Cg8"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="mcg-ET-79C" firstAttribute="top" secondItem="xgk-bO-Pfu" secondAttribute="bottom" id="3Zc-ms-RR9"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="qlQ-V5-SoT" secondAttribute="trailing" constant="20" id="EG1-uF-MVg"/>
+                            <constraint firstItem="xgk-bO-Pfu" firstAttribute="top" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="50" id="PGP-oa-hsh"/>
                             <constraint firstItem="mcg-ET-79C" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" id="Qnf-J3-mEn"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="bottom" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="480" id="Rr3-DW-slZ"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="mcg-ET-79C" secondAttribute="trailing" id="TDl-g6-btH"/>
                             <constraint firstItem="qlQ-V5-SoT" firstAttribute="top" secondItem="alB-6V-j1S" secondAttribute="top" constant="30" id="VtP-EG-WIx"/>
+                            <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="xgk-bO-Pfu" secondAttribute="trailing" constant="20" id="X8n-df-IXu"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="bottom" secondItem="mcg-ET-79C" secondAttribute="bottom" id="azW-L4-5zN"/>
+                            <constraint firstItem="xgk-bO-Pfu" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" constant="20" id="b7J-Wm-aZr"/>
                             <constraint firstItem="qlQ-V5-SoT" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" constant="20" id="p3A-zy-faJ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="alB-6V-j1S"/>
                     </view>
                     <connections>
+                        <outlet property="keyboardContentControllerView" destination="xgk-bO-Pfu" id="A9H-Uw-RR5"/>
                         <outlet property="saveButton" destination="mcg-ET-79C" id="oqX-10-xX7"/>
                         <outlet property="textView" destination="CP1-e5-RXZ" id="EXq-jp-qLo"/>
                         <outlet property="titleTextField" destination="0mR-W0-Mq1" id="Lvc-KE-pw3"/>
@@ -307,7 +319,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eti-d7-rEW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1913" y="128"/>
+            <point key="canvasLocation" x="1911.594202898551" y="127.90178571428571"/>
         </scene>
     </scenes>
 </document>

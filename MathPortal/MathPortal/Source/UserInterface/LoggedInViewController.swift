@@ -26,17 +26,17 @@ class LoggedInViewController: UIViewController {
         super.viewDidLoad()
         self.tasksTableView?.tableFooterView = UIView()
         Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Add Task", rightBarButtonAction: #selector(addTask))
-        fechTasks()
+        reloadTasks()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fechTasks()
+        reloadTasks()
     }
     
-    private func fechTasks() {
+    private func reloadTasks() {
         guard let userId = user?.objectId else { return  }
-        Task.fechUserTasks(userId: userId, completion: { (tasks, error) in
+        Task.fetchUserTasks(userId: userId, completion: { (tasks, error) in
             if let error = error {
                 print(error.localizedDescription)
             } else if let tasks = tasks {
@@ -91,7 +91,7 @@ extension LoggedInViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tasks[indexPath.row].delete(completion: { (success, error) in
-                self.fechTasks()
+                self.reloadTasks()
             }) 
         }
     }

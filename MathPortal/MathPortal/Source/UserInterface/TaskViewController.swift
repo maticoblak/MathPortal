@@ -15,16 +15,26 @@ class TaskViewController: UIViewController {
     @IBOutlet private var textView: UITextView?
     @IBOutlet private var saveButton: UIButton?
     
+    @IBOutlet private var editButton: UIButton?
     
+    @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        keyboardContentControllerView?.setViewController(controller: {
+            let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
+            return controller
+        }(), animationStyle: .fade)
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
         
     }
     
+    @IBAction func goToEditView(_ sender: Any) {
+        let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
+        navigationController?.pushViewController(controller, animated: true)
+    }
     var task: Task!
     var taskTitle: String?
     

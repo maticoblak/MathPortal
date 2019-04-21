@@ -47,7 +47,7 @@ class Task: ParseObject {
         query.whereKey("userId", equalTo: userId)
         return query
     }
-    static func fechUserTasks(userId: String, completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+    static func fetchUserTasks(userId: String, completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0) }, error)
         }
