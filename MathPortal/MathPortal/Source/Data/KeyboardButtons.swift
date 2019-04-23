@@ -8,8 +8,26 @@
 
 import UIKit
 
-
-    enum KeyboardButtons {
+class Keyboard {
+    class Button {
+        
+        let keyName: Buttons
+        let name: String
+        let id: UUID
+        
+        let key: [String:Any]
+        
+        init(key: Buttons, UUID: UUID = UUID()) {
+            self.keyName = key
+            self.name = key.string
+            self.id = UUID
+            self.key = ["button":key.string, "id":id]
+            
+        }
+    }
+}
+extension Keyboard {
+    enum Buttons {
         case one
         case two
         case three
@@ -23,6 +41,8 @@ import UIKit
         case delete
         case rightBracket
         case leftBracket
+        case brackets
+        case indicator
         
         var string: String {
             switch self {
@@ -39,7 +59,9 @@ import UIKit
             case .delete: return "Delete"
             case .rightBracket: return ")"
             case .leftBracket: return "("
+            case .brackets: return "()"
+            case .indicator: return "|"
             }
         }
     }
-
+}

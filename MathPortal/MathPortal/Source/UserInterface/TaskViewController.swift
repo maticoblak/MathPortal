@@ -30,9 +30,9 @@ class TaskViewController: UIViewController {
             keyboardOpenConstraint?.isActive = keyboardOpened
         }
     }
-    var equationArray: [String] = ["|"] {
+    var equationArray: [Keyboard.Button] = [Keyboard.Button(key: .indicator)] {
         didSet {
-            equationLabel?.text = equationArray.compactMap({$0}).joined(separator: " ")
+            equationLabel?.text = equationArray.map {$0.keyName.string}.joined(separator: " ")
         }
     }
     
@@ -82,13 +82,21 @@ class TaskViewController: UIViewController {
         })
     }
     
-    func handelKeyboardButtonsPressed(button: KeyboardButtons) {
-        guard let index = equationArray.firstIndex(of: "|") else { return }
+    func handelKeyboardButtonsPressed(button: Keyboard.Buttons) {
+        //guard let index = equationArray.firstIndex(where: {$0["id"] as? String == "id"}) else { return }
+        guard let index = equationArray.firstIndex(where: {$0.keyName == .indicator}) else { return }
         switch button {
-        case .one, .two, .three, .four, .plus, .minus:
-            equationArray.insert(button.string, at: index)
-        case .leftBracket, .rightBracket:
-            equationArray.insert(button.string, at: index)
+        case .one, .two, .three, .four, .plus, .minus, .leftBracket,.rightBracket:
+            let key: Keyboard.Button = Keyboard.Button(key: button)
+            equationArray.insert(key, at: index)
+        case .brackets:
+            let coursor = equationArray.remove(at: index)
+            let leftBracket: Keyboard.Button = Keyboard.Button(key: Keyboard.Buttons.leftBracket)
+            let rightBracket: Keyboard.Button = Keyboard.Button(key: Keyboard.Buttons.rightBracket, UUID: leftBracket.id)
+            equationArray.insert(rightBracket, at: index)
+            equationArray.insert(coursor, at: index)
+            equationArray.insert(leftBracket, at: index)
+            
         case .back:
             guard index > 0 else { return }
             let coursor = equationArray.remove(at: index)
@@ -104,13 +112,15 @@ class TaskViewController: UIViewController {
             guard index < equationArray.count - 1 else { return }
             let coursor = equationArray.remove(at: index)
             equationArray.insert(coursor, at: index + 1)
+        case .indicator:
+            return
         }
-        print(equationArray)
+        print(equationArray.map {[$0.id,$0.keyName.string]})
     }
 }
 
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
-    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: KeyboardButtons) {
+    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Keyboard.Buttons) {
         handelKeyboardButtonsPressed(button: key)
     }
 }

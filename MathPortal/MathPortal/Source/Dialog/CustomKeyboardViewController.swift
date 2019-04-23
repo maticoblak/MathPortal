@@ -8,7 +8,7 @@
 
 import UIKit
 protocol CustomKeyboardViewControllerDelegate: class {
-    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: KeyboardButtons)
+    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Keyboard.Buttons)
 }
 class CustomKeyboardViewController: UIViewController {
     
@@ -16,13 +16,7 @@ class CustomKeyboardViewController: UIViewController {
     
     weak var delegate: CustomKeyboardViewControllerDelegate?
     
-    let keyboardButtons: [KeyboardButtons] = [.one,.two,.three,.four,.plus,.minus,.levelDownArrow,.levelUpArrow, .back, .front, .delete, .leftBracket, .rightBracket]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+    let keyboardButtons: [Keyboard.Buttons] = [.one,.two,.three,.four,.plus,.minus,.levelDownArrow,.levelUpArrow, .back, .front, .delete, .brackets]
 }
 
 extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -37,7 +31,6 @@ extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(keyboardButtons[indexPath.row].string)
         delegate?.customKeyboardViewController(sender: self, didChoseKey: keyboardButtons[indexPath.row])
     }
     
