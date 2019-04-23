@@ -16,7 +16,7 @@ class CustomKeyboardViewController: UIViewController {
     
     weak var delegate: CustomKeyboardViewControllerDelegate?
     
-    let keyboardButtons: [Keyboard.Buttons] = [.one,.two,.three,.four,.plus,.minus,.levelDownArrow,.levelUpArrow, .back, .front, .delete, .brackets]
+    let keyboardButtons: [Keyboard.Buttons] = [.one,.two,.three,.four,.plus,.minus,.back, .front, .delete, .brackets]
 }
 
 extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -33,5 +33,4 @@ extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.customKeyboardViewController(sender: self, didChoseKey: keyboardButtons[indexPath.row])
     }
-    
 }

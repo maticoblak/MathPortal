@@ -15,14 +15,10 @@ class Keyboard {
         let name: String
         let id: UUID
         
-        let key: [String:Any]
-        
         init(key: Buttons, UUID: UUID = UUID()) {
             self.keyName = key
             self.name = key.string
             self.id = UUID
-            self.key = ["button":key.string, "id":id]
-            
         }
     }
 }
@@ -34,8 +30,6 @@ extension Keyboard {
         case four
         case plus
         case minus
-        case levelUpArrow
-        case levelDownArrow
         case back
         case front
         case delete
@@ -52,8 +46,6 @@ extension Keyboard {
             case .four: return "4"
             case .plus: return "+"
             case .minus: return "-"
-            case .levelUpArrow: return "▲"
-            case .levelDownArrow: return "▼"
             case .back: return "<"
             case .front: return ">"
             case .delete: return "Delete"

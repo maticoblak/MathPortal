@@ -104,10 +104,6 @@ class TaskViewController: UIViewController {
         case .delete:
             guard index > 0 else { return }
             equationArray.remove(at: index - 1)
-        case .levelUpArrow:
-            return
-        case .levelDownArrow:
-            return
         case .front:
             guard index < equationArray.count - 1 else { return }
             let coursor = equationArray.remove(at: index)
@@ -115,7 +111,6 @@ class TaskViewController: UIViewController {
         case .indicator:
             return
         }
-        print(equationArray.map {[$0.id,$0.keyName.string]})
     }
 }
 
