@@ -7,32 +7,16 @@
 //
 
 import UIKit
-
+protocol CustomKeyboardViewControllerDelegate: class {
+    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: KeyboardButtons)
+}
 class CustomKeyboardViewController: UIViewController {
     
     @IBOutlet private var collectionView: UICollectionView?
     
-    let keyboardButtons: [KeyboardButtons] = [.one,.two,.three,.four,.plus,.minus]
+    weak var delegate: CustomKeyboardViewControllerDelegate?
     
-    enum KeyboardButtons {
-        case one
-        case two
-        case three
-        case four
-        case plus
-        case minus
-        
-        var string: String {
-            switch self {
-            case .one: return "1"
-            case .two: return "2"
-            case .three: return "3"
-            case .four: return "4"
-            case .plus: return "+"
-            case .minus: return "-"
-            }
-        }
-    }
+    let keyboardButtons: [KeyboardButtons] = [.one,.two,.three,.four,.plus,.minus,.levelDownArrow,.levelUpArrow, .back, .front, .delete, .leftBracket, .rightBracket]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +34,11 @@ extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: R.reuseIdentifier.keyboardCell, for: indexPath) as! CustomKeyboardCollectionViewCell
         cell.setKey(name: keyboardButtons[indexPath.row].string)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(keyboardButtons[indexPath.row].string)
+        delegate?.customKeyboardViewController(sender: self, didChoseKey: keyboardButtons[indexPath.row])
     }
     
 }

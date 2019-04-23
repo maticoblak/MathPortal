@@ -9,10 +9,9 @@
 import UIKit
 
 class CustomKeyboardCollectionViewCell: UICollectionViewCell {
-    @IBOutlet private var keyboardKeyOutlet: UIButton?
+    @IBOutlet private var keyboardKeyLabel: UILabel?
     
     func setKey(name: String) {
-        keyboardKeyOutlet?.setTitle(name, for: .normal)
+        keyboardKeyLabel?.text = name
     }
-    
 }

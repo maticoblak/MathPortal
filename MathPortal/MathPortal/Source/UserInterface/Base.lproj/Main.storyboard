@@ -279,39 +279,78 @@
                                     <constraint firstItem="CP1-e5-RXZ" firstAttribute="leading" secondItem="qlQ-V5-SoT" secondAttribute="leading" id="vng-Gl-sFv"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mcg-ET-79C">
-                                <rect key="frame" x="0.0" y="832" width="414" height="30"/>
-                                <state key="normal" title="Save"/>
-                                <connections>
-                                    <action selector="saveTask:" destination="6OY-hP-fad" eventType="touchUpInside" id="DdT-On-nXX"/>
-                                </connections>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u7O-SN-gJq">
+                                <rect key="frame" x="0.0" y="384" width="414" height="128"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8M1-OI-L9F">
+                                        <rect key="frame" x="0.0" y="53" width="414" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZoM-IQ-ekg">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
+                                        <connections>
+                                            <action selector="openCloseKeyboard:" destination="6OY-hP-fad" eventType="touchUpInside" id="QNe-Bf-HZq"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="8M1-OI-L9F" secondAttribute="bottom" constant="54" id="1G0-0U-m3L"/>
+                                    <constraint firstItem="ZoM-IQ-ekg" firstAttribute="top" secondItem="u7O-SN-gJq" secondAttribute="top" id="1yo-LO-AtQ"/>
+                                    <constraint firstItem="8M1-OI-L9F" firstAttribute="top" secondItem="u7O-SN-gJq" secondAttribute="top" constant="53" id="F5u-9o-WiZ"/>
+                                    <constraint firstItem="ZoM-IQ-ekg" firstAttribute="leading" secondItem="u7O-SN-gJq" secondAttribute="leading" id="GfF-LH-mnh"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZoM-IQ-ekg" secondAttribute="bottom" id="KVj-1s-EBD"/>
+                                    <constraint firstAttribute="trailing" secondItem="8M1-OI-L9F" secondAttribute="trailing" id="Pjc-qg-WAY"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZoM-IQ-ekg" secondAttribute="trailing" id="tLY-Zk-Pcd"/>
+                                    <constraint firstItem="8M1-OI-L9F" firstAttribute="leading" secondItem="u7O-SN-gJq" secondAttribute="leading" id="u1D-2q-Q30"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgk-bO-Pfu" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="20" y="432" width="374" height="400"/>
+                                <rect key="frame" x="20" y="812" width="374" height="0.0"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="parentViewController" destination="6OY-hP-fad" id="EHp-RY-Cg8"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mcg-ET-79C">
+                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="1Hs-2o-v1f"/>
+                                </constraints>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveTask:" destination="6OY-hP-fad" eventType="touchUpInside" id="DdT-On-nXX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="mcg-ET-79C" firstAttribute="top" secondItem="xgk-bO-Pfu" secondAttribute="bottom" id="3Zc-ms-RR9"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="qlQ-V5-SoT" secondAttribute="trailing" constant="20" id="EG1-uF-MVg"/>
-                            <constraint firstItem="xgk-bO-Pfu" firstAttribute="top" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="50" id="PGP-oa-hsh"/>
+                            <constraint firstItem="xgk-bO-Pfu" firstAttribute="top" secondItem="u7O-SN-gJq" secondAttribute="bottom" priority="900" constant="10" id="LDU-OR-Ucw"/>
                             <constraint firstItem="mcg-ET-79C" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" id="Qnf-J3-mEn"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="bottom" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="480" id="Rr3-DW-slZ"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="mcg-ET-79C" secondAttribute="trailing" id="TDl-g6-btH"/>
+                            <constraint firstItem="u7O-SN-gJq" firstAttribute="top" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="2" id="TWk-LN-RI9"/>
                             <constraint firstItem="qlQ-V5-SoT" firstAttribute="top" secondItem="alB-6V-j1S" secondAttribute="top" constant="30" id="VtP-EG-WIx"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="xgk-bO-Pfu" secondAttribute="trailing" constant="20" id="X8n-df-IXu"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="bottom" secondItem="mcg-ET-79C" secondAttribute="bottom" id="azW-L4-5zN"/>
                             <constraint firstItem="xgk-bO-Pfu" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" constant="20" id="b7J-Wm-aZr"/>
+                            <constraint firstItem="u7O-SN-gJq" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" id="n38-8J-eay"/>
+                            <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="u7O-SN-gJq" secondAttribute="trailing" id="oYV-Re-Cvx"/>
                             <constraint firstItem="qlQ-V5-SoT" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" constant="20" id="p3A-zy-faJ"/>
+                            <constraint firstItem="mcg-ET-79C" firstAttribute="top" secondItem="u7O-SN-gJq" secondAttribute="bottom" constant="300" id="qvt-g3-iMU"/>
+                            <constraint firstItem="xgk-bO-Pfu" firstAttribute="top" secondItem="mcg-ET-79C" secondAttribute="top" priority="999" id="zXy-Ho-Ktb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="alB-6V-j1S"/>
                     </view>
                     <connections>
+                        <outlet property="equationLabel" destination="8M1-OI-L9F" id="f1S-MV-ZE5"/>
+                        <outlet property="keyboardClosedConstraint" destination="zXy-Ho-Ktb" id="srg-Q0-HYX"/>
                         <outlet property="keyboardContentControllerView" destination="xgk-bO-Pfu" id="A9H-Uw-RR5"/>
+                        <outlet property="keyboardOpenConstraint" destination="LDU-OR-Ucw" id="NLD-ZQ-ymc"/>
                         <outlet property="saveButton" destination="mcg-ET-79C" id="oqX-10-xX7"/>
                         <outlet property="textView" destination="CP1-e5-RXZ" id="EXq-jp-qLo"/>
                         <outlet property="titleTextField" destination="0mR-W0-Mq1" id="Lvc-KE-pw3"/>

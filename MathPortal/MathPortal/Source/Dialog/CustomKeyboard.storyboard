@@ -21,7 +21,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="diL-1k-8H7">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ARv-Jq-zuX">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="ARv-Jq-zuX">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -35,16 +35,24 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8x-PZ-wfd">
-                                                    <rect key="frame" x="2" y="10" width="46" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWb-pE-Pf5">
+                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <state key="normal" title="1"/>
-                                                </button>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="VWb-pE-Pf5" firstAttribute="top" secondItem="a9s-I1-AMl" secondAttribute="top" constant="5" id="A5X-UD-iET"/>
+                                            <constraint firstAttribute="trailing" secondItem="VWb-pE-Pf5" secondAttribute="trailing" constant="5" id="W6o-IO-SLL"/>
+                                            <constraint firstItem="VWb-pE-Pf5" firstAttribute="leading" secondItem="a9s-I1-AMl" secondAttribute="leading" constant="5" id="g0N-Ki-iaR"/>
+                                            <constraint firstAttribute="bottom" secondItem="VWb-pE-Pf5" secondAttribute="bottom" constant="5" id="ghT-MV-18B"/>
+                                        </constraints>
                                         <connections>
-                                            <outlet property="keyboardKeyOutlet" destination="h8x-PZ-wfd" id="jD6-gP-zPK"/>
+                                            <outlet property="keyboardKeyLabel" destination="VWb-pE-Pf5" id="CJ2-nR-E8r"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

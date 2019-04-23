@@ -15,22 +15,47 @@ class TaskViewController: UIViewController {
     @IBOutlet private var textView: UITextView?
     @IBOutlet private var saveButton: UIButton?
     
-    @IBOutlet private var editButton: UIButton?
+    @IBOutlet private var equationLabel: UILabel?
+    
+    @IBOutlet private var keyboardOpenConstraint: NSLayoutConstraint?
+    
+    @IBOutlet private var keyboardClosedConstraint: NSLayoutConstraint?
     
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     
+    
+    var keyboardOpened: Bool = false {
+        didSet {
+            keyboardClosedConstraint?.isActive = !keyboardOpened
+            keyboardOpenConstraint?.isActive = keyboardOpened
+        }
+    }
+    var equationArray: [String] = ["|"] {
+        didSet {
+            equationLabel?.text = equationArray.compactMap({$0}).joined(separator: " ")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Keyboard setup
         keyboardContentControllerView?.setViewController(controller: {
             let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
+            controller.delegate = self
             return controller
         }(), animationStyle: .fade)
+        
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
         
     }
-    
+    @IBAction func openCloseKeyboard(_ sender: Any) {
+        keyboardOpened = !keyboardOpened
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
     @IBAction func goToEditView(_ sender: Any) {
         let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
         navigationController?.pushViewController(controller, animated: true)
@@ -55,5 +80,37 @@ class TaskViewController: UIViewController {
             loadingSpinner.dismissLoadingScreen()
             self.goToLoggedInViewController()
         })
+    }
+    
+    func handelKeyboardButtonsPressed(button: KeyboardButtons) {
+        guard let index = equationArray.firstIndex(of: "|") else { return }
+        switch button {
+        case .one, .two, .three, .four, .plus, .minus:
+            equationArray.insert(button.string, at: index)
+        case .leftBracket, .rightBracket:
+            equationArray.insert(button.string, at: index)
+        case .back:
+            guard index > 0 else { return }
+            let coursor = equationArray.remove(at: index)
+            equationArray.insert(coursor, at: index - 1)
+        case .delete:
+            guard index > 0 else { return }
+            equationArray.remove(at: index - 1)
+        case .levelUpArrow:
+            return
+        case .levelDownArrow:
+            return
+        case .front:
+            guard index < equationArray.count - 1 else { return }
+            let coursor = equationArray.remove(at: index)
+            equationArray.insert(coursor, at: index + 1)
+        }
+        print(equationArray)
+    }
+}
+
+extension TaskViewController: CustomKeyboardViewControllerDelegate {
+    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: KeyboardButtons) {
+        handelKeyboardButtonsPressed(button: key)
     }
 }
