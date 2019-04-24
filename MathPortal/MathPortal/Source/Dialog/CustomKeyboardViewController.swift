@@ -8,7 +8,7 @@
 
 import UIKit
 protocol CustomKeyboardViewControllerDelegate: class {
-    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Keyboard.Buttons)
+    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType)
 }
 class CustomKeyboardViewController: UIViewController {
     
@@ -16,7 +16,7 @@ class CustomKeyboardViewController: UIViewController {
     
     weak var delegate: CustomKeyboardViewControllerDelegate?
     
-    let keyboardButtons: [Keyboard.Buttons] = [.one,.two,.three,.four,.plus,.minus,.back, .front, .delete, .brackets]
+    let keyboardButtons: [Button.ButtonType] = Button.ButtonType.integers + [.plus, .minus, .back, .front, .delete, .brackets]
 }
 
 extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {

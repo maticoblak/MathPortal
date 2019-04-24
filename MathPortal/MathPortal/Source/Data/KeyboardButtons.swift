@@ -8,26 +8,19 @@
 
 import UIKit
 
-class Keyboard {
-    class Button {
-        
-        let keyName: Buttons
-        let name: String
-        let id: UUID
-        
-        init(key: Buttons, UUID: UUID = UUID()) {
-            self.keyName = key
-            self.name = key.string
-            self.id = UUID
-        }
+class Button {
+    
+    let keyName: ButtonType
+    let name: String
+    
+    init(key: ButtonType) {
+        self.keyName = key
+        self.name = key.string
     }
 }
-extension Keyboard {
-    enum Buttons {
-        case one
-        case two
-        case three
-        case four
+extension Button {
+    enum ButtonType {
+        case integer(value: Int)
         case plus
         case minus
         case back
@@ -38,12 +31,11 @@ extension Keyboard {
         case brackets
         case indicator
         
+        static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
+        
         var string: String {
             switch self {
-            case .one: return "1"
-            case .two: return "2"
-            case .three: return "3"
-            case .four: return "4"
+            case .integer(let value): return String(value)
             case .plus: return "+"
             case .minus: return "-"
             case .back: return "<"

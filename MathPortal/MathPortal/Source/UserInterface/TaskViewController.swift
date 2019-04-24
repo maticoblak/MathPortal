@@ -30,7 +30,7 @@ class TaskViewController: UIViewController {
             keyboardOpenConstraint?.isActive = keyboardOpened
         }
     }
-    var equationArray: [Keyboard.Button] = [Keyboard.Button(key: .indicator)] {
+    var equationArray: [Button] = [Button(key: .indicator)] {
         didSet {
             equationLabel?.text = equationArray.map {$0.keyName.string}.joined(separator: " ")
         }
@@ -82,17 +82,16 @@ class TaskViewController: UIViewController {
         })
     }
     
-    func handelKeyboardButtonsPressed(button: Keyboard.Buttons) {
-        //guard let index = equationArray.firstIndex(where: {$0["id"] as? String == "id"}) else { return }
-        guard let index = equationArray.firstIndex(where: {$0.keyName == .indicator}) else { return }
+    func handelKeyboardButtonsPressed(button: Button.ButtonType) {
+        guard let index = equationArray.firstIndex(where: {$0.name == Button.ButtonType.indicator.string}) else { return }
         switch button {
-        case .one, .two, .three, .four, .plus, .minus, .leftBracket,.rightBracket:
-            let key: Keyboard.Button = Keyboard.Button(key: button)
+        case .integer, .plus, .minus, .leftBracket,.rightBracket:
+            let key: Button = Button(key: button)
             equationArray.insert(key, at: index)
         case .brackets:
             let coursor = equationArray.remove(at: index)
-            let leftBracket: Keyboard.Button = Keyboard.Button(key: Keyboard.Buttons.leftBracket)
-            let rightBracket: Keyboard.Button = Keyboard.Button(key: Keyboard.Buttons.rightBracket, UUID: leftBracket.id)
+            let leftBracket: Button = Button(key: Button.ButtonType.leftBracket)
+            let rightBracket: Button = Button(key: Button.ButtonType.rightBracket)
             equationArray.insert(rightBracket, at: index)
             equationArray.insert(coursor, at: index)
             equationArray.insert(leftBracket, at: index)
@@ -115,7 +114,7 @@ class TaskViewController: UIViewController {
 }
 
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
-    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Keyboard.Buttons) {
+    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
         handelKeyboardButtonsPressed(button: key)
     }
 }
