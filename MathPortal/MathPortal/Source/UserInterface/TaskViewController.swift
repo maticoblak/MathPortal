@@ -23,11 +23,13 @@ class TaskViewController: UIViewController {
     
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     
+    var task: Task!
+    var taskTitle: String?
     
-    var keyboardOpened: Bool = false {
+    var mathKeyboardOpened: Bool = false {
         didSet {
-            keyboardClosedConstraint?.isActive = !keyboardOpened
-            keyboardOpenConstraint?.isActive = keyboardOpened
+            keyboardClosedConstraint?.isActive = !mathKeyboardOpened
+            keyboardOpenConstraint?.isActive = mathKeyboardOpened
         }
     }
     var equationArray: [Button] = [Button(key: .indicator)] {
@@ -48,10 +50,14 @@ class TaskViewController: UIViewController {
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
-        
+        self.titleTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissKeyboard), target: self)
+        self.textView?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissKeyboard), target: self)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     @IBAction func openCloseKeyboard(_ sender: Any) {
-        keyboardOpened = !keyboardOpened
+        mathKeyboardOpened = !mathKeyboardOpened
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
@@ -60,8 +66,7 @@ class TaskViewController: UIViewController {
         let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
         navigationController?.pushViewController(controller, animated: true)
     }
-    var task: Task!
-    var taskTitle: String?
+
     
     @IBAction func saveTask(_ sender: Any) {
         saveTask()

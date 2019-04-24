@@ -48,14 +48,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MET-DB-eOT">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="MET-DB-eOT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TlW-Wl-dQa">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="448"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="426"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4yt-ng-xLQ">
-                                                <rect key="frame" x="20" y="57" width="374" height="30"/>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4yt-ng-xLQ">
+                                                <rect key="frame" x="20" y="10" width="374" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="OKN-rV-s6S"/>
                                                 </constraints>
@@ -63,14 +63,14 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UyL-hv-fnd">
-                                                <rect key="frame" x="20" y="107" width="374" height="30"/>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UyL-hv-fnd">
+                                                <rect key="frame" x="20" y="60" width="374" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W2L-68-aU9">
-                                                <rect key="frame" x="183.5" y="209" width="47" height="30"/>
+                                                <rect key="frame" x="183.5" y="120" width="47" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Log In"/>
                                                 <connections>
@@ -80,21 +80,21 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="W2L-68-aU9" firstAttribute="centerX" secondItem="UyL-hv-fnd" secondAttribute="centerX" id="5zk-rZ-E1x"/>
                                             <constraint firstItem="UyL-hv-fnd" firstAttribute="top" secondItem="4yt-ng-xLQ" secondAttribute="bottom" constant="20" id="8Yc-5A-7Mo"/>
-                                            <constraint firstAttribute="bottom" secondItem="W2L-68-aU9" secondAttribute="bottom" constant="209" id="Brw-xp-fuM"/>
+                                            <constraint firstItem="4yt-ng-xLQ" firstAttribute="top" secondItem="TlW-Wl-dQa" secondAttribute="top" constant="10" id="Gr8-mS-P6h"/>
                                             <constraint firstAttribute="trailing" secondItem="4yt-ng-xLQ" secondAttribute="trailing" constant="20" id="KJ9-QY-jfQ"/>
-                                            <constraint firstItem="W2L-68-aU9" firstAttribute="top" secondItem="UyL-hv-fnd" secondAttribute="bottom" constant="72" id="KZV-DR-Sl6"/>
+                                            <constraint firstItem="W2L-68-aU9" firstAttribute="top" secondItem="UyL-hv-fnd" secondAttribute="bottom" constant="30" id="KZV-DR-Sl6"/>
                                             <constraint firstItem="W2L-68-aU9" firstAttribute="centerX" secondItem="TlW-Wl-dQa" secondAttribute="centerX" id="Xdq-wi-Ggn"/>
                                             <constraint firstItem="UyL-hv-fnd" firstAttribute="height" secondItem="4yt-ng-xLQ" secondAttribute="height" id="ZtS-Dr-RKW"/>
                                             <constraint firstItem="4yt-ng-xLQ" firstAttribute="leading" secondItem="TlW-Wl-dQa" secondAttribute="leading" constant="20" id="dpW-Mb-Xsi"/>
                                             <constraint firstItem="W2L-68-aU9" firstAttribute="height" secondItem="UyL-hv-fnd" secondAttribute="height" id="h5p-gE-7Y0"/>
-                                            <constraint firstAttribute="height" constant="448" id="zcE-9y-qE3"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRc-o6-EiP">
-                                        <rect key="frame" x="0.0" y="448" width="414" height="448"/>
+                                        <rect key="frame" x="0.0" y="426" width="414" height="426"/>
                                         <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OIi-pc-g38">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OIi-pc-g38">
                                                 <rect key="frame" x="20" y="20" width="374" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="yR7-yP-LYj"/>
@@ -103,7 +103,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iX9-kM-WeF">
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iX9-kM-WeF">
                                                 <rect key="frame" x="20" y="70" width="374" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -142,7 +142,7 @@
                             <constraint firstAttribute="bottom" secondItem="MET-DB-eOT" secondAttribute="bottom" id="F5f-rJ-pn4"/>
                             <constraint firstItem="MET-DB-eOT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="IA5-N7-tfV"/>
                             <constraint firstAttribute="trailing" secondItem="MET-DB-eOT" secondAttribute="trailing" id="WqH-RP-ghD"/>
-                            <constraint firstItem="MET-DB-eOT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-44" id="foO-Se-lB4"/>
+                            <constraint firstItem="MET-DB-eOT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="foO-Se-lB4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -331,7 +331,6 @@
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="qlQ-V5-SoT" secondAttribute="trailing" constant="20" id="EG1-uF-MVg"/>
                             <constraint firstItem="xgk-bO-Pfu" firstAttribute="top" secondItem="u7O-SN-gJq" secondAttribute="bottom" priority="900" constant="10" id="LDU-OR-Ucw"/>
                             <constraint firstItem="mcg-ET-79C" firstAttribute="leading" secondItem="alB-6V-j1S" secondAttribute="leading" id="Qnf-J3-mEn"/>
-                            <constraint firstItem="alB-6V-j1S" firstAttribute="bottom" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="480" id="Rr3-DW-slZ"/>
                             <constraint firstItem="alB-6V-j1S" firstAttribute="trailing" secondItem="mcg-ET-79C" secondAttribute="trailing" id="TDl-g6-btH"/>
                             <constraint firstItem="u7O-SN-gJq" firstAttribute="top" secondItem="qlQ-V5-SoT" secondAttribute="bottom" constant="2" id="TWk-LN-RI9"/>
                             <constraint firstItem="qlQ-V5-SoT" firstAttribute="top" secondItem="alB-6V-j1S" secondAttribute="top" constant="30" id="VtP-EG-WIx"/>

@@ -22,6 +22,24 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        keyboardSetup()
+        
+    }
+    
+    private func keyboardSetup() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        logInUsernameTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
+        logInPasswordTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
+        signUpUsernameTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
+        signUpPasswordTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -38,6 +56,21 @@ class LogInViewController: UIViewController {
     
     @IBAction private func signUp(_ sender: Any) {
         signUpNewUser()
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            if (self.signUpUsernameTextField?.isFirstResponder == true || self.signUpPasswordTextField?.isFirstResponder == true) {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     private func signUpNewUser() {
