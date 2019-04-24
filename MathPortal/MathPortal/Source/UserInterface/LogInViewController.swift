@@ -20,6 +20,8 @@ class LogInViewController: UIViewController {
     @IBOutlet private var signUpPasswordTextField: UITextField?
     @IBOutlet private var signUpButton: UIButton?
     
+    var keyboardHidden: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardSetup()
@@ -57,17 +59,18 @@ class LogInViewController: UIViewController {
     @IBAction private func signUp(_ sender: Any) {
         signUpNewUser()
     }
-    
+// You have to check if the keyboard is hidden, if you dont the view moves when you don't close the keyboard and change texfields
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            
-            if (self.signUpUsernameTextField?.isFirstResponder == true || self.signUpPasswordTextField?.isFirstResponder == true) {
+            if (self.signUpUsernameTextField?.isFirstResponder == true || self.signUpPasswordTextField?.isFirstResponder == true) && keyboardHidden {
                 self.view.frame.origin.y -= keyboardSize.height
+                keyboardHidden = false
             }
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
+        keyboardHidden = true
         if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }
