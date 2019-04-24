@@ -30,6 +30,7 @@ extension Button {
         case leftBracket
         case brackets
         case indicator
+        case done
         
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
         
@@ -45,6 +46,7 @@ extension Button {
             case .leftBracket: return "("
             case .brackets: return "()"
             case .indicator: return "|"
+            case .done: return "Done"
             }
         }
     }

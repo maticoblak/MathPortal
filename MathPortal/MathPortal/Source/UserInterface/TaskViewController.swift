@@ -15,12 +15,9 @@ class TaskViewController: UIViewController {
     @IBOutlet private var textView: UITextView?
     @IBOutlet private var saveButton: UIButton?
     
+    @IBOutlet private var keyboardHeightConstraint: NSLayoutConstraint?
     @IBOutlet private var equationLabel: UILabel?
-    
-    @IBOutlet private var keyboardOpenConstraint: NSLayoutConstraint?
-    
-    @IBOutlet private var keyboardClosedConstraint: NSLayoutConstraint?
-    
+        
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     
     var task: Task!
@@ -28,8 +25,7 @@ class TaskViewController: UIViewController {
     
     var mathKeyboardOpened: Bool = false {
         didSet {
-            keyboardClosedConstraint?.isActive = !mathKeyboardOpened
-            keyboardOpenConstraint?.isActive = mathKeyboardOpened
+            keyboardHeightConstraint?.constant = mathKeyboardOpened ? 280 : 0
         }
     }
     var equationArray: [Button] = [Button(key: .indicator)] {
@@ -46,17 +42,30 @@ class TaskViewController: UIViewController {
             controller.delegate = self
             return controller
         }(), animationStyle: .fade)
-        
+        keyboardHeightConstraint?.constant = 0
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
-        self.titleTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissKeyboard), target: self)
-        self.textView?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissKeyboard), target: self)
+        setUpDefaultKeyboard()
     }
-    @objc func dismissKeyboard() {
+    private func setUpDefaultKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(defaultKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        self.titleTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissDefaultKeyboard), target: self)
+        self.textView?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissDefaultKeyboard), target: self)
+    }
+    
+    @objc func defaultKeyboardWillShow(notification: NSNotification) {
+        mathKeyboardOpened = false
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func dismissDefaultKeyboard() {
         view.endEditing(true)
     }
-    @IBAction func openCloseKeyboard(_ sender: Any) {
+    @IBAction func openCloseMathKeyboard(_ sender: Any) {
+        dismissDefaultKeyboard()
         mathKeyboardOpened = !mathKeyboardOpened
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
@@ -87,7 +96,7 @@ class TaskViewController: UIViewController {
         })
     }
     
-    func handelKeyboardButtonsPressed(button: Button.ButtonType) {
+    func handelMathKeyboardButtonsPressed(button: Button.ButtonType) {
         guard let index = equationArray.firstIndex(where: {$0.name == Button.ButtonType.indicator.string}) else { return }
         switch button {
         case .integer, .plus, .minus, .leftBracket,.rightBracket:
@@ -100,7 +109,6 @@ class TaskViewController: UIViewController {
             equationArray.insert(rightBracket, at: index)
             equationArray.insert(coursor, at: index)
             equationArray.insert(leftBracket, at: index)
-            
         case .back:
             guard index > 0 else { return }
             let coursor = equationArray.remove(at: index)
@@ -112,6 +120,11 @@ class TaskViewController: UIViewController {
             guard index < equationArray.count - 1 else { return }
             let coursor = equationArray.remove(at: index)
             equationArray.insert(coursor, at: index + 1)
+        case .done:
+            mathKeyboardOpened = false
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         case .indicator:
             return
         }
@@ -120,6 +133,6 @@ class TaskViewController: UIViewController {
 
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
     func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
-        handelKeyboardButtonsPressed(button: key)
+        handelMathKeyboardButtonsPressed(button: key)
     }
 }

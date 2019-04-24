@@ -22,21 +22,21 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="ARv-Jq-zuX">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="70" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="KeyboardCell" id="a9s-I1-AMl" customClass="CustomKeyboardCollectionViewCell" customModule="MathPortal" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="70" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="70" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWb-pE-Pf5">
-                                                    <rect key="frame" x="5" y="5" width="40" height="40"/>
+                                                    <rect key="frame" x="3" y="3" width="64" height="44"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -46,11 +46,12 @@
                                         </view>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="VWb-pE-Pf5" firstAttribute="top" secondItem="a9s-I1-AMl" secondAttribute="top" constant="5" id="A5X-UD-iET"/>
-                                            <constraint firstAttribute="trailing" secondItem="VWb-pE-Pf5" secondAttribute="trailing" constant="5" id="W6o-IO-SLL"/>
-                                            <constraint firstItem="VWb-pE-Pf5" firstAttribute="leading" secondItem="a9s-I1-AMl" secondAttribute="leading" constant="5" id="g0N-Ki-iaR"/>
-                                            <constraint firstAttribute="bottom" secondItem="VWb-pE-Pf5" secondAttribute="bottom" constant="5" id="ghT-MV-18B"/>
+                                            <constraint firstItem="VWb-pE-Pf5" firstAttribute="top" secondItem="a9s-I1-AMl" secondAttribute="top" constant="3" id="A5X-UD-iET"/>
+                                            <constraint firstAttribute="trailing" secondItem="VWb-pE-Pf5" secondAttribute="trailing" constant="3" id="W6o-IO-SLL"/>
+                                            <constraint firstItem="VWb-pE-Pf5" firstAttribute="leading" secondItem="a9s-I1-AMl" secondAttribute="leading" constant="3" id="g0N-Ki-iaR"/>
+                                            <constraint firstAttribute="bottom" secondItem="VWb-pE-Pf5" secondAttribute="bottom" constant="3" id="ghT-MV-18B"/>
                                         </constraints>
+                                        <size key="customSize" width="70" height="50"/>
                                         <connections>
                                             <outlet property="keyboardKeyLabel" destination="VWb-pE-Pf5" id="CJ2-nR-E8r"/>
                                         </connections>
