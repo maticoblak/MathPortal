@@ -80,7 +80,6 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="W2L-68-aU9" firstAttribute="centerX" secondItem="UyL-hv-fnd" secondAttribute="centerX" id="5zk-rZ-E1x"/>
                                             <constraint firstItem="UyL-hv-fnd" firstAttribute="top" secondItem="4yt-ng-xLQ" secondAttribute="bottom" constant="20" id="8Yc-5A-7Mo"/>
                                             <constraint firstItem="4yt-ng-xLQ" firstAttribute="top" secondItem="TlW-Wl-dQa" secondAttribute="top" constant="10" id="Gr8-mS-P6h"/>
                                             <constraint firstAttribute="trailing" secondItem="4yt-ng-xLQ" secondAttribute="trailing" constant="20" id="KJ9-QY-jfQ"/>
