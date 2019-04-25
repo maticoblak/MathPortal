@@ -11,6 +11,8 @@ import Parse
 
 class LogInViewController: UIViewController {
 
+    @IBOutlet private var scrollView: UIScrollView?
+    
     @IBOutlet private var logInUsernameTextField: UITextField?
     @IBOutlet private var logInPasswordTextField: UITextField?
     @IBOutlet private var logInButton: UIButton?
@@ -20,22 +22,23 @@ class LogInViewController: UIViewController {
     @IBOutlet private var signUpPasswordTextField: UITextField?
     @IBOutlet private var signUpButton: UIButton?
     
-    var keyboardHidden: Bool = true
+    @IBOutlet private var bottomLayoutConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardSetup()
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        KeyboardManager.sharedInstance.willChangeFrameDelegate = self
+    }
     
     private func keyboardSetup() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        logInUsernameTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
-        logInPasswordTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
-        signUpUsernameTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
-        signUpPasswordTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(dismissKeyboard), target: self)
+        logInUsernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
+        logInPasswordTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
+        signUpUsernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
+        signUpPasswordTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
@@ -59,23 +62,7 @@ class LogInViewController: UIViewController {
     @IBAction private func signUp(_ sender: Any) {
         signUpNewUser()
     }
-// You have to check if the keyboard is hidden, if you dont the view moves when you don't close the keyboard and change texfields
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if (self.signUpUsernameTextField?.isFirstResponder == true || self.signUpPasswordTextField?.isFirstResponder == true) && keyboardHidden {
-                self.view.frame.origin.y -= keyboardSize.height
-                keyboardHidden = false
-            }
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        keyboardHidden = true
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
-        }
-    }
-    
+
     private func signUpNewUser() {
         let user = PFUser()
         user.username = signUpUsernameTextField?.text
@@ -123,4 +110,18 @@ class LogInViewController: UIViewController {
     }
 
 }
+extension LogInViewController: KeyboardManagerWillChangeFrameDelegate {
+    func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
+        
+        bottomLayoutConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, from: nil).minY
+        self.view.layoutIfNeeded()
+        
+        if self.signUpUsernameTextField?.isFirstResponder == true || self.signUpPasswordTextField?.isFirstResponder == true {
+            scrollView?.extras.scrollToViews([signUpPasswordTextField, signUpUsernameTextField, signUpButton])
+        } else if self.logInPasswordTextField?.isFirstResponder == true || self.logInUsernameTextField?.isFirstResponder == true {
+            scrollView?.extras.scrollToViews([logInPasswordTextField, logInUsernameTextField, logInButton])
+        }
+    }
+}
+
 

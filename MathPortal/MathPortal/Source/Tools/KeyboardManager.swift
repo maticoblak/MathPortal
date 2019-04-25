@@ -1,19 +1,93 @@
-//
-//  KeyboardManager.swift
-//  MathPortal
-//
-//  Created by Petra Čačkov on 24/04/2019.
-//  Copyright © 2019 Petra Čačkov. All rights reserved.
-//
-
 import UIKit
+
+protocol KeyboardManagerDidChangeVisibleDelegate: class {
+    func keyboardManagerChangedKeyboardVisible(sender: KeyboardManager, visible: Bool)
+}
+protocol KeyboardManagerWillChangeFrameDelegate: class {
+    func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect)
+}
+protocol KeyboardManagerDidChangeFrameDelegate: class {
+    func keyboardManagerDidChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect)
+}
 
 class KeyboardManager {
     
-    static func addDoneButton(selector: Selector, target: UIViewController) -> UIToolbar  {
-        let accessoryToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
-        let accessoryDoneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: target, action: selector)
-        accessoryToolBar.items = [accessoryDoneButton]
-        return accessoryToolBar
+    var keyboardVisible: Bool = false
+    var keyboardFrame: CGRect = CGRect.zero
+    
+    var visibilityDelegate: KeyboardManagerDidChangeVisibleDelegate?
+    var willChangeFrameDelegate: KeyboardManagerWillChangeFrameDelegate?
+    var didChangeFrameDelegate: KeyboardManagerDidChangeFrameDelegate?
+    
+    static var sharedInstance: KeyboardManager = {
+        let manager = KeyboardManager(isShared: true)
+        return manager
+    }()
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    convenience init() {
+        self.init(isShared: false)
+        
+    }
+    
+    private init(isShared: Bool) {
+        attachNotifications()
+        
+        if isShared == false {
+            keyboardVisible = KeyboardManager.sharedInstance.keyboardVisible
+            keyboardFrame = KeyboardManager.sharedInstance.keyboardFrame
+        }
+    }
+    
+    private func attachNotifications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardChange), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    @objc private func onKeyboardChange(notification: NSNotification) {
+        guard let info = notification.userInfo else {
+            return
+        }
+        guard let value: NSValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+        guard let oldValue: NSValue = info[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue else {
+            return
+        }
+        
+        let newFrame = value.cgRectValue
+        self.keyboardFrame = newFrame
+        
+        let oldFrame = oldValue.cgRectValue
+        
+        if let durationNumber = info[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber, let keyboardCurveNumber = info[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber {
+            let duration = durationNumber.doubleValue
+            let keyboardCurve = keyboardCurveNumber.uintValue
+            UIView.animate(withDuration: duration, delay: 0, options: UIView.AnimationOptions(rawValue: keyboardCurve), animations: {
+                self.willChangeFrameDelegate?.keyboardManagerWillChangeKeyboardFrame(sender: self, from: oldFrame, to: newFrame)
+            }, completion: { _ in
+                self.didChangeFrameDelegate?.keyboardManagerDidChangeKeyboardFrame(sender: self, from: oldFrame, to: newFrame)
+            })
+        } else {
+            self.willChangeFrameDelegate?.keyboardManagerWillChangeKeyboardFrame(sender: self, from: oldFrame, to: newFrame)
+            self.didChangeFrameDelegate?.keyboardManagerDidChangeKeyboardFrame(sender: self, from: oldFrame, to: newFrame)
+        }
+    }
+    @objc private func onKeyboardWillShow(notification: NSNotification) {
+        self.keyboardVisible = true
+        self.visibilityDelegate?.keyboardManagerChangedKeyboardVisible(sender: self, visible: self.keyboardVisible)
+    }
+    @objc private func onKeyboardWillHide(notification: NSNotification) {
+        self.keyboardVisible = false
+        self.visibilityDelegate?.keyboardManagerChangedKeyboardVisible(sender: self, visible: self.keyboardVisible)
+    }
+    
 }

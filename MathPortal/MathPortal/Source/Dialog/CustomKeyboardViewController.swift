@@ -25,7 +25,7 @@ extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: R.reuseIdentifier.keyboardCell, for: indexPath) as! CustomKeyboardCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: R.reuseIdentifier.keyboardCell, for: indexPath)!
         cell.setKey(name: keyboardButtons[indexPath.row].string)
         return cell
     }

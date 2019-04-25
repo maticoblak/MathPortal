@@ -25,10 +25,10 @@ class ContentControllerOverlay: ContentControllerView {
         controller.view.addSubview(self)
         
         var addedConstraints: [NSLayoutConstraint] = [NSLayoutConstraint]()
-        addedConstraints.append(NSLayoutConstraint(item: controller.view, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0.0))
-        addedConstraints.append(NSLayoutConstraint(item: controller.view, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0.0))
-        addedConstraints.append(NSLayoutConstraint(item: controller.view, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0))
-        addedConstraints.append(NSLayoutConstraint(item: controller.view, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        addedConstraints.append(NSLayoutConstraint(item: controller.view!, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0.0))
+        addedConstraints.append(NSLayoutConstraint(item: controller.view!, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0.0))
+        addedConstraints.append(NSLayoutConstraint(item: controller.view!, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0))
+        addedConstraints.append(NSLayoutConstraint(item: controller.view!, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0))
         currentContainerControllerConstraints = addedConstraints
         controller.view.addConstraints(addedConstraints)
         

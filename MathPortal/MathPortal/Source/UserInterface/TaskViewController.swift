@@ -15,25 +15,48 @@ class TaskViewController: UIViewController {
     @IBOutlet private var textView: UITextView?
     @IBOutlet private var saveButton: UIButton?
     
+    @IBOutlet private var titleAndTextView: UIView?
+    @IBOutlet private var equationView: UIView?
+    
     @IBOutlet private var keyboardHeightConstraint: NSLayoutConstraint?
     @IBOutlet private var equationLabel: UILabel?
-        
+    
+    @IBOutlet private var scrollView: UIScrollView?
+    
+    @IBOutlet private var scrollViewBottomConstraint: NSLayoutConstraint?
+    
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
+    
     
     var task: Task!
     var taskTitle: String?
-    
-    var mathKeyboardOpened: Bool = false {
+    var saveButtonHidden: Bool = false {
         didSet {
-            keyboardHeightConstraint?.constant = mathKeyboardOpened ? 280 : 0
+            saveButton?.isHidden = saveButtonHidden
         }
     }
+    var mathKeyboardOpened: Bool = false {
+        didSet {
+            saveButtonHidden = !saveButtonHidden
+            let height: CGFloat = mathKeyboardOpened ? 280 : 0
+            keyboardHeightConstraint?.constant = height
+            scrollViewBottomConstraint?.constant = height
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+            scrollView?.extras.scrollToViews([equationLabel])
+        }
+    }
+    
     var equationArray: [Button] = [Button(key: .indicator)] {
         didSet {
             equationLabel?.text = equationArray.map {$0.keyName.string}.joined(separator: " ")
         }
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        KeyboardManager.sharedInstance.willChangeFrameDelegate = self
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Keyboard setup
@@ -49,27 +72,18 @@ class TaskViewController: UIViewController {
         setUpDefaultKeyboard()
     }
     private func setUpDefaultKeyboard() {
-        NotificationCenter.default.addObserver(self, selector: #selector(defaultKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        self.titleTextField?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissDefaultKeyboard), target: self)
-        self.textView?.inputAccessoryView = KeyboardManager.addDoneButton(selector: #selector(self.dismissDefaultKeyboard), target: self)
-    }
-    
-    @objc func defaultKeyboardWillShow(notification: NSNotification) {
-        mathKeyboardOpened = false
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
+        titleTextField?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
+        textView?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
     }
     
     @objc func dismissDefaultKeyboard() {
         view.endEditing(true)
     }
+    
     @IBAction func openCloseMathKeyboard(_ sender: Any) {
+        keyboardWillClose = true
         dismissDefaultKeyboard()
         mathKeyboardOpened = !mathKeyboardOpened
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
     }
     @IBAction func goToEditView(_ sender: Any) {
         let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
@@ -122,17 +136,31 @@ class TaskViewController: UIViewController {
             equationArray.insert(coursor, at: index + 1)
         case .done:
             mathKeyboardOpened = false
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
+            keyboardWillClose = false
         case .indicator:
             return
         }
     }
+    var keyboardWillClose: Bool = false
 }
 
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
     func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
         handelMathKeyboardButtonsPressed(button: key)
+    }
+}
+
+extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
+    func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
+        
+        mathKeyboardOpened = false
+        saveButtonHidden = false
+        scrollViewBottomConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, to: nil).minY
+        self.view.layoutIfNeeded()
+        if titleTextField?.isFirstResponder == true {
+            scrollView?.extras.scrollToViews([titleTextField])
+        } else if textView?.isFirstResponder == true {
+            scrollView?.extras.scrollToViews([textView])
+        }
     }
 }
