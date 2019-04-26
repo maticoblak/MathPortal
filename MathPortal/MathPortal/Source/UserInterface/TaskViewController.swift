@@ -81,7 +81,6 @@ class TaskViewController: UIViewController {
     }
     
     @IBAction func openCloseMathKeyboard(_ sender: Any) {
-        keyboardWillClose = true
         dismissDefaultKeyboard()
         mathKeyboardOpened = !mathKeyboardOpened
     }
@@ -136,12 +135,10 @@ class TaskViewController: UIViewController {
             equationArray.insert(coursor, at: index + 1)
         case .done:
             mathKeyboardOpened = false
-            keyboardWillClose = false
         case .indicator:
             return
         }
     }
-    var keyboardWillClose: Bool = false
 }
 
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
@@ -152,7 +149,6 @@ extension TaskViewController: CustomKeyboardViewControllerDelegate {
 
 extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
     func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
-        
         mathKeyboardOpened = false
         saveButtonHidden = false
         scrollViewBottomConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, to: nil).minY
@@ -162,5 +158,6 @@ extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
         } else if textView?.isFirstResponder == true {
             scrollView?.extras.scrollToViews([textView])
         }
+        
     }
 }
