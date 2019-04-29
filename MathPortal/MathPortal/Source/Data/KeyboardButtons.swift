@@ -24,13 +24,15 @@ extension Button {
         case plus
         case minus
         case back
-        case front
+        case forward
         case delete
         case rightBracket
         case leftBracket
         case brackets
         case indicator
         case done
+        case levelOut
+        case levelIn
         
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
         
@@ -40,13 +42,15 @@ extension Button {
             case .plus: return "+"
             case .minus: return "-"
             case .back: return "<"
-            case .front: return ">"
+            case .forward: return ">"
             case .delete: return "Delete"
             case .rightBracket: return ")"
             case .leftBracket: return "("
             case .brackets: return "()"
             case .indicator: return "|"
             case .done: return "Done"
+            case .levelIn: return "In"
+            case .levelOut: return "Out"
             }
         }
     }

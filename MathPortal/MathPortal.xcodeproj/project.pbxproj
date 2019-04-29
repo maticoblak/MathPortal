@@ -36,6 +36,8 @@
 		C08E63912271B27C00416D19 /* ExtrasUIView+HiddenAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E637E2271B27C00416D19 /* ExtrasUIView+HiddenAnimations.swift */; };
 		C08E63982271B38E00416D19 /* ExtrasUIView+ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E63972271B38E00416D19 /* ExtrasUIView+ScrollView.swift */; };
 		C08E639A2271B55A00416D19 /* ExtrasUIView+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E63992271B55A00416D19 /* ExtrasUIView+Keyboard.swift */; };
+		C08E639C2272E9F700416D19 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
+		C08E639E22732A9500416D19 /* MathEquationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639D22732A9500416D19 /* MathEquationViewController.swift */; };
 		C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61B1225F7D8100E48081 /* AppDelegate.swift */; };
 		C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61B3225F7D8100E48081 /* ViewController.swift */; };
 		C0BD61B7225F7D8100E48081 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0BD61B5225F7D8100E48081 /* Main.storyboard */; };
@@ -89,6 +91,8 @@
 		C08E637E2271B27C00416D19 /* ExtrasUIView+HiddenAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExtrasUIView+HiddenAnimations.swift"; sourceTree = "<group>"; };
 		C08E63972271B38E00416D19 /* ExtrasUIView+ScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExtrasUIView+ScrollView.swift"; sourceTree = "<group>"; };
 		C08E63992271B55A00416D19 /* ExtrasUIView+Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExtrasUIView+Keyboard.swift"; sourceTree = "<group>"; };
+		C08E639B2272E9F700416D19 /* Equation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
+		C08E639D22732A9500416D19 /* MathEquationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathEquationViewController.swift; sourceTree = "<group>"; };
 		C0BD61AE225F7D8100E48081 /* MathPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0BD61B1225F7D8100E48081 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0BD61B3225F7D8100E48081 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -307,6 +311,7 @@
 				C0BD61E0226485E100E48081 /* TaskViewController.swift */,
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
 				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
+				C08E639D22732A9500416D19 /* MathEquationViewController.swift */,
 			);
 			path = UserInterface;
 			sourceTree = "<group>";
@@ -326,6 +331,7 @@
 				C08E635A226CE5A800416D19 /* KeyboardButtons.swift */,
 				C0BD61EA226720ED00E48081 /* Task.swift */,
 				C0BD61EE226735ED00E48081 /* User.swift */,
+				C08E639B2272E9F700416D19 /* Equation.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -516,8 +522,10 @@
 				C08E63562269EA3400416D19 /* CustomView.swift in Sources */,
 				C08E63852271B27C00416D19 /* ExtrasCGPoint.swift in Sources */,
 				C08E638E2271B27C00416D19 /* ExtrasUIView+Snapshot.swift in Sources */,
+				C08E639E22732A9500416D19 /* MathEquationViewController.swift in Sources */,
 				C08E634F2269E53E00416D19 /* CustomKeyboardViewController.swift in Sources */,
 				C08E63552269EA3400416D19 /* ContentControllerOverlay.swift in Sources */,
+				C08E639C2272E9F700416D19 /* Equation.swift in Sources */,
 				C08E638B2271B27C00416D19 /* ExtrasCGRect.swift in Sources */,
 				C0BD61CA226379B500E48081 /* LogInViewController.swift in Sources */,
 				C08E635B226CE5A800416D19 /* KeyboardButtons.swift in Sources */,

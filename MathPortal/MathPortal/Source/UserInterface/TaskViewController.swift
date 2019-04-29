@@ -27,6 +27,8 @@ class TaskViewController: UIViewController {
     
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     
+    private let equation: Equation = Equation()
+    
     
     var task: Task!
     var taskTitle: String?
@@ -53,6 +55,7 @@ class TaskViewController: UIViewController {
             equationLabel?.text = equationArray.map {$0.keyName.string}.joined(separator: " ")
         }
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         KeyboardManager.sharedInstance.willChangeFrameDelegate = self
@@ -83,6 +86,9 @@ class TaskViewController: UIViewController {
     @IBAction func openCloseMathKeyboard(_ sender: Any) {
         dismissDefaultKeyboard()
         mathKeyboardOpened = !mathKeyboardOpened
+        let controller = R.storyboard.main.mathEquationViewController()!
+        navigationController?.pushViewController(controller, animated: true)
+        
     }
     @IBAction func goToEditView(_ sender: Any) {
         let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
@@ -129,21 +135,38 @@ class TaskViewController: UIViewController {
         case .delete:
             guard index > 0 else { return }
             equationArray.remove(at: index - 1)
-        case .front:
+        case .forward:
             guard index < equationArray.count - 1 else { return }
             let coursor = equationArray.remove(at: index)
             equationArray.insert(coursor, at: index + 1)
+        case .levelIn:
+            break
+        case .levelOut:
+            return
         case .done:
             mathKeyboardOpened = false
         case .indicator:
             return
         }
     }
+    
+    private var currentView: UIView?
+    func refreshEquation() {
+        currentView?.removeFromSuperview()
+        if let view = equation.expression.generateView() {
+            currentView = view
+            self.view.addSubview(view)
+            view.center = CGPoint(x: 100.0, y: 200.0)
+        }
+        
+    }
 }
 
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
     func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
-        handelMathKeyboardButtonsPressed(button: key)
+        //handelMathKeyboardButtonsPressed(button: key)
+        equation.handelMathKeyboardButtonsPressed(button: key)
+        refreshEquation()
     }
 }
 

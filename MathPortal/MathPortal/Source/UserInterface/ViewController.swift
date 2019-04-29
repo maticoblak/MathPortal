@@ -35,8 +35,13 @@ class ViewController: UIViewController {
                 self.introText?.alpha = 0
             }
         }) { _ in
-            self.goToLogInViewController()
+            self.goToTaskViewController()
         }
+    }
+    
+    func goToTaskViewController() {
+        let controller = R.storyboard.main.mathEquationViewController()!
+        self.present(controller, animated: true)
     }
 }
 

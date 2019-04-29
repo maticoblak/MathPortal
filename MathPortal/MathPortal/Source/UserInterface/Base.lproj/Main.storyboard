@@ -345,7 +345,7 @@
                                     <constraint firstAttribute="height" constant="290" id="CPq-gk-5oL"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="parentViewController" destination="6OY-hP-fad" id="EHp-RY-Cg8"/>
+                                    <outlet property="parentViewController" destination="6OY-hP-fad" id="FDv-qw-YSu"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mcg-ET-79C">
@@ -392,6 +392,51 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eti-d7-rEW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1911.594202898551" y="127.90178571428571"/>
+        </scene>
+        <!--Parent View Controller-->
+        <scene sceneID="Tci-ro-dO4">
+            <objects>
+                <viewController storyboardIdentifier="MathEquationViewController" id="hPr-dn-BD9" customClass="MathEquationViewController" customModule="MathPortal" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qR8-0I-a5c">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iz5-ji-sba">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="21s-9d-5Kz" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="734" width="414" height="128"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="2bw-QU-m4s"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="parentViewController" destination="hPr-dn-BD9" id="hRY-QW-3VV"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="1gF-55-cfz" firstAttribute="trailing" secondItem="21s-9d-5Kz" secondAttribute="trailing" id="25u-oL-jYO"/>
+                            <constraint firstItem="1gF-55-cfz" firstAttribute="trailing" secondItem="iz5-ji-sba" secondAttribute="trailing" id="A88-jq-kWR"/>
+                            <constraint firstItem="iz5-ji-sba" firstAttribute="leading" secondItem="1gF-55-cfz" secondAttribute="leading" id="PzF-R7-CTy"/>
+                            <constraint firstItem="1gF-55-cfz" firstAttribute="bottom" secondItem="21s-9d-5Kz" secondAttribute="bottom" id="UFO-OD-MJl"/>
+                            <constraint firstItem="1gF-55-cfz" firstAttribute="bottom" secondItem="iz5-ji-sba" secondAttribute="bottom" id="eL7-Ug-96r"/>
+                            <constraint firstItem="21s-9d-5Kz" firstAttribute="leading" secondItem="1gF-55-cfz" secondAttribute="leading" id="jnt-jA-nPD"/>
+                            <constraint firstItem="iz5-ji-sba" firstAttribute="top" secondItem="1gF-55-cfz" secondAttribute="top" id="wsO-Yz-HGT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="1gF-55-cfz"/>
+                    </view>
+                    <connections>
+                        <outlet property="equationView" destination="iz5-ji-sba" id="IuH-oh-CFA"/>
+                        <outlet property="keyboardContentControllerView" destination="21s-9d-5Kz" id="O01-ne-w9C"/>
+                        <outlet property="keyboardHightConstraint" destination="2bw-QU-m4s" id="J5s-Zh-ECQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rp1-y2-Ku8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2737" y="131"/>
         </scene>
     </scenes>
 </document>
