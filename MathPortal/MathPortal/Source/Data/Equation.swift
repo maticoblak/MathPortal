@@ -44,7 +44,6 @@ class Equation {
             if let component = expression as? Component {
                 if offset < component.items.count {
                     offset += 1
-                    
                     if offset - 1 >= 0 {
                         component.items[offset-1].color = UIColor.clear
                     }
@@ -93,9 +92,17 @@ class Equation {
                     if offset + 1 < component.items.count {
                         component.items[offset + 1].color = UIColor.clear
                     }
-                } // add if you are at the end of component items - go to the parent
-            }
-            if let text = expression as? Text {
+                } else if let parent = expression.parent {
+                    if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
+                        if currentIndex < parent.items.count - 1 {
+                            self.expression = parent
+                            self.offset = currentIndex - 1
+                            self.expression.color = UIColor.red
+                        }
+                    }
+                }
+
+            } else if let text = expression as? Text {
                 if offset > 0 {
                     offset -= 1
                     text.textRange = NSRange(location: offset, length: 1)
@@ -153,12 +160,6 @@ class Equation {
         switch button {
         case .integer(let value):
             currentIndicator.addInteger(value: String(value))
-//            if let last = expression.items.last as? Text { last.value = last.value + String(value) }
-//            else { expression.items.append({
-//                let newExpression = Text(String(value))
-//                newExpression.parent = self.expression
-//                return newExpression
-//            }()) }
         case .plus:
             if let last = expression.items.last as? Operator { last.type = .plus }
             else {
