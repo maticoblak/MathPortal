@@ -44,11 +44,12 @@ class Equation {
             if let component = expression as? Component {
                 if offset < component.items.count {
                     offset += 1
-                    if offset < component.items.count {
-                        component.items[offset].color = UIColor.red
-                    }
+                    
                     if offset - 1 >= 0 {
                         component.items[offset-1].color = UIColor.clear
+                    }
+                    if offset < component.items.count {
+                        component.items[offset].color = UIColor.red
                     }
                 } else if let parent = expression.parent {
                     if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
@@ -92,7 +93,7 @@ class Equation {
                     if offset + 1 < component.items.count {
                         component.items[offset + 1].color = UIColor.clear
                     }
-                }
+                } // add if you are at the end of component items - go to the parent
             }
             if let text = expression as? Text {
                 if offset > 0 {
@@ -118,6 +119,27 @@ class Equation {
                 }
             }
         }
+        
+        func addInteger(value: String?) {
+            guard let value = value else { return }
+            if let component = expression as? Component {
+                if offset == component.items.count {
+                    if let text = component.items.last as? Text {
+                        text.value += value
+                    } else {
+                        component.items.append({
+                            let newExpression = Text(value)
+                            newExpression.parent = component
+                            return newExpression
+                        }())
+                        offset += 1
+                    }
+                }
+            } else if let text = expression as? Text {
+                text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset))
+            }
+        }
+            
     }
     
     var expression: Component = Component()
@@ -126,22 +148,31 @@ class Equation {
         return Indicator(expression: expression)
     }()
     
+    
     func handelMathKeyboardButtonsPressed(button: Button.ButtonType) {
         switch button {
         case .integer(let value):
-            if let last = expression.items.last as? Text { last.value = last.value + String(value) }
-            else { expression.items.append({
-                let newExpression = Text(String(value))
-                newExpression.parent = self.expression
-                return newExpression
-            }()) }
+            currentIndicator.addInteger(value: String(value))
+//            if let last = expression.items.last as? Text { last.value = last.value + String(value) }
+//            else { expression.items.append({
+//                let newExpression = Text(String(value))
+//                newExpression.parent = self.expression
+//                return newExpression
+//            }()) }
         case .plus:
             if let last = expression.items.last as? Operator { last.type = .plus }
-            else { expression.items.append({
+            else {
+                expression.items.append({
                 let newExpression = Operator(.plus)
                 newExpression.parent = self.expression
                 return newExpression
-            }()) }
+            }())
+                
+                if let component = currentIndicator.expression as? Component {
+                    component.items[currentIndicator.offset].color = UIColor.clear
+                }
+                currentIndicator.offset += 1
+            }
         case .minus:
             if let last = expression.items.last as? Operator { last.type = .minus }
             else { expression.items.append({
