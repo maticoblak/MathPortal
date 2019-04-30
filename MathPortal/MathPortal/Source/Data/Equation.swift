@@ -144,9 +144,49 @@ class Equation {
                 }
             } else if let text = expression as? Text {
                 text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset))
+                forward()
             }
         }
-            
+        
+        func addOperator(_ operatorType: Operator.OperatorType ) {
+            if let component = expression as? Component {
+                if offset == component.items.count {
+                    if let last = component.items.last as? Operator {
+                        last.type = operatorType
+                    } else {
+                        component.items.append({
+                            let newExpression = Operator(operatorType)
+                            newExpression.parent = component
+                            return newExpression
+                            }())
+                        component.items[offset].color = UIColor.clear
+                        offset += 1
+                    }
+                } else if let operatorAtIndex = component.items[offset] as? Operator {
+                    operatorAtIndex.type = operatorType
+                }
+            } else if let text = expression as? Text {
+                guard offset != 0 else { return }
+                let firstValue = Text(String(text.value.prefix(offset)))
+                firstValue.parent = text.parent
+                let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
+                secondValue.parent = text.parent
+                let newOperator = Operator(operatorType)
+                newOperator.parent = text.parent
+                
+                if let parent = text.parent {
+                    if let parentIndex = parent.items.firstIndex(where: {$0 === expression}) {
+                        parent.items.remove(at: parentIndex)
+                        parent.items.insert(secondValue, at: parentIndex)
+                        parent.items.insert(newOperator, at: parentIndex)
+                        parent.items.insert(firstValue, at: parentIndex)
+                        expression = parent
+                        offset = parentIndex
+                        forward()
+                    }
+                }
+            }
+        }
     }
     
     var expression: Component = Component()
@@ -161,26 +201,9 @@ class Equation {
         case .integer(let value):
             currentIndicator.addInteger(value: String(value))
         case .plus:
-            if let last = expression.items.last as? Operator { last.type = .plus }
-            else {
-                expression.items.append({
-                let newExpression = Operator(.plus)
-                newExpression.parent = self.expression
-                return newExpression
-            }())
-                
-                if let component = currentIndicator.expression as? Component {
-                    component.items[currentIndicator.offset].color = UIColor.clear
-                }
-                currentIndicator.offset += 1
-            }
+            currentIndicator.addOperator(.plus)
         case .minus:
-            if let last = expression.items.last as? Operator { last.type = .minus }
-            else { expression.items.append({
-                let newExpression = Operator(.minus)
-                newExpression.parent = self.expression
-                return newExpression
-                }()) }
+            currentIndicator.addOperator(.minus)
         case .brackets, . leftBracket, .rightBracket:
             break
         case .back:
