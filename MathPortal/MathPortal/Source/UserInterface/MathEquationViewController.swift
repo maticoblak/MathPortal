@@ -15,7 +15,7 @@ class MathEquationViewController: UIViewController {
     @IBOutlet private var keyboardHightConstraint: NSLayoutConstraint?
     @IBOutlet private var equationView: UIView?
     
-    var keyboardOpened: Bool = false {
+    private var keyboardOpened: Bool = false {
         didSet {
             keyboardHightConstraint?.constant = keyboardOpened ? 280 : 0
             UIView.animate(withDuration: 0.5) {
@@ -35,12 +35,12 @@ class MathEquationViewController: UIViewController {
         }(), animationStyle: .fade)
     }
     
-    @objc func openCloseKeyboard() {
+    @objc private func openCloseKeyboard() {
         keyboardOpened = !keyboardOpened
     }
     
     private var currentView: UIView?
-    func refreshEquation() {
+    private func refreshEquation() {
         currentView?.removeFromSuperview()
         if let view = equation.expression.generateView() {
             currentView = view

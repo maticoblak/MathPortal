@@ -161,10 +161,9 @@ class TaskViewController: UIViewController {
         
     }
 }
-
+// TODO: Delete custom keyboard, go to MathEquationViewController to add an equation, transfer the equation to TaskViewController
 extension TaskViewController: CustomKeyboardViewControllerDelegate {
     func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
-        //handelMathKeyboardButtonsPressed(button: key)
         equation.handelMathKeyboardButtonsPressed(button: key)
         refreshEquation()
     }
