@@ -126,7 +126,10 @@ class Equation {
                 }
             }
         }
-        
+        /*
+         - if the expression is a Component and if the indicator is at the end of equation add Character to the existing Text component or append new Text expression
+         - if the expression is Text add a character to the value
+         */
         func addInteger(value: String?) {
             guard let value = value else { return }
             if let component = expression as? Component {
@@ -147,7 +150,13 @@ class Equation {
                 forward()
             }
         }
-        
+        /*
+         - if the expression is a Component
+            and the indicator is at the end of equation
+                change the operator type or append new operator
+            If the indicator is in the middle of equation change the operator type
+         - if the expression is a Text
+            create two Text expressions, remove the previous one and append them to the component with the operator inbetween*/
         func addOperator(_ operatorType: Operator.OperatorType ) {
             if let component = expression as? Component {
                 if offset == component.items.count {
@@ -187,6 +196,20 @@ class Equation {
                 }
             }
         }
+        
+        private func checkIfTwoExpresionsAreTheSameType(offset: Int) {
+            guard let component = expression as? Component else { return }
+            guard offset > 0 && offset < component.items.count else { return }
+    
+            if let firstExpression = component.items[offset - 1] as? Operator, let secondExpression = component.items[offset] as? Operator {
+                component.items.remove(at: offset)
+            } else if let firstExpression = component.items[offset - 1]  as? Text, let secondExpression = component.items[offset] as? Text {
+                let newValue = firstExpression.value + secondExpression.value
+                firstExpression.value = newValue
+                component.items.remove(at: offset)
+            }
+        }
+        
         /* - check what type the expression is
         - if it is a component check if the indicator is at the end or in the middle of equation and what type the last item is
         - if it is a text remove the character at offset, and if the value is empty delete the whole text expression ad if the value is not empty and the indicator is not at the beginning of the number move back one spot */
@@ -208,6 +231,7 @@ class Equation {
                     }
                 } else {
                     component.items.remove(at: offset)
+                    checkIfTwoExpresionsAreTheSameType(offset: offset)
                     back()
                 }
                 
@@ -219,9 +243,11 @@ class Equation {
                             parent.items.remove(at: currentIndex)
                             expression = parent
                             offset = currentIndex
+                            checkIfTwoExpresionsAreTheSameType(offset: offset)
                             back()
                         }
                     }
+                    
                 } else if offset != 0 {
                     back()
                 }
