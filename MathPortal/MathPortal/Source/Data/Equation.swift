@@ -187,6 +187,46 @@ class Equation {
                 }
             }
         }
+        /* - check what type the expression is
+        - if it is a component check if the indicator is at the end or in the middle of equation and what type the last item is
+        - if it is a text remove the character at offset, and if the value is empty delete the whole text expression ad if the value is not empty and the indicator is not at the beginning of the number move back one spot */
+        func delete() {
+            if let component = expression as? Component {
+                if offset == component.items.count {
+                    if let text = component.items.last as? Text {
+                        text.value.removeLast()
+                        if text.value.isEmpty {
+                            offset -= 1
+                            component.items.removeLast()
+                        }
+                    } else if let operatorLast = component.items.last as? Operator {
+                        component.items.removeLast()
+                        offset -= 1
+                    } else if let component = component.items.last as? Component {
+                        // TODO - figure out what happens if the last item of component is a component
+                        back()
+                    }
+                } else {
+                    component.items.remove(at: offset)
+                    back()
+                }
+                
+            } else if let text = expression as? Text {
+                text.value.remove(at: text.value.index(text.value.startIndex, offsetBy: offset))
+                if text.value.isEmpty {
+                    if let parent = text.parent {
+                        if let currentIndex = parent.items.firstIndex(where: { $0 === text }) {
+                            parent.items.remove(at: currentIndex)
+                            expression = parent
+                            offset = currentIndex
+                            back()
+                        }
+                    }
+                } else if offset != 0 {
+                    back()
+                }
+            }
+        }
     }
     
     var expression: Component = Component()
@@ -210,21 +250,7 @@ class Equation {
             currentIndicator.back()
            break
         case .delete:
-            if let text = expression.items.last as? Text {
-                if text.value.count > 0 {
-                    var newText = text.value
-                    newText.removeLast()
-                    if newText.isEmpty {
-                        expression.items.removeLast()
-                    } else {
-                        text.value = newText
-                    }
-                } else {
-                    expression.items.removeLast()
-                }
-            } else if let opr = expression.items.last as? Operator {
-                expression.items.removeLast()
-            }
+            currentIndicator.delete()
             break
         case .forward:
             currentIndicator.forward()
