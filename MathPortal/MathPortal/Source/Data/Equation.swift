@@ -19,7 +19,7 @@ class Equation {
         
         func levelIn() {
             guard let component = expression as? Component else { return }
-            guard component.items.count > offset else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet
+            guard component.items.count > offset && offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
             guard component.items[offset] as? Operator == nil else { return }
             self.expression = component.items[offset]
             self.expression.color = UIColor.clear
@@ -27,7 +27,9 @@ class Equation {
             if let text = self.expression as? Text {
                 text.textRange = NSRange(location: 0, length: 1)
             } else if let component = self.expression as? Component {
-                component.items[0].color = UIColor.red
+                if component.items.count > 0 {
+                    component.items[0].color = UIColor.red
+                }
             }
         }
         func levelOut() {
@@ -52,10 +54,10 @@ class Equation {
                     }
                 } else if let parent = expression.parent {
                     if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
-                        if currentIndex < parent.items.count - 1 {
+                        if currentIndex < parent.items.count {
+                            self.offset = currentIndex
+                            parent.items[offset].color = UIColor.red
                             self.expression = parent
-                            self.offset = currentIndex + 1
-                            self.expression.color = UIColor.red
                         }
                     }
                 }
@@ -84,7 +86,7 @@ class Equation {
         }
         func back() {
             if let component = expression as? Component {
-                if offset > 0 {
+                if offset  >= 0 {
                     offset -= 1
                     if offset >= 0 {
                         component.items[offset].color = UIColor.red
@@ -94,12 +96,17 @@ class Equation {
                     }
                 } else if let parent = expression.parent {
                     if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
-                        if currentIndex < parent.items.count - 1 {
+                        if currentIndex < parent.items.count {
+                            self.offset = currentIndex
+                            parent.items[offset].color = UIColor.red
                             self.expression = parent
-                            self.offset = currentIndex - 1
-                            self.expression.color = UIColor.red
+                            
                         }
                     }
+                }
+                
+                if component.items.isEmpty {
+                    offset = 0
                 }
 
             } else if let text = expression as? Text {
@@ -144,6 +151,16 @@ class Equation {
                         }())
                         offset += 1
                     }
+                } else if offset < 0 {
+                    if let text = component.items[0] as? Text {
+                        text.value.insert(Character(value), at: text.value.startIndex)
+                    } else {
+                        component.items.insert({
+                            let newExpression = Text(value)
+                            newExpression.parent = component
+                            return newExpression
+                        }(), at: 0)
+                    }
                 }
             } else if let text = expression as? Text {
                 text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset))
@@ -154,6 +171,7 @@ class Equation {
          - if the expression is a Component
             and the indicator is at the end of equation
                 change the operator type or append new operator
+            if the indicator is at the beginning of equation eather add new operator or change existion one
             If the indicator is in the middle of equation change the operator type
          - if the expression is a Text
             create two Text expressions, remove the previous one and append them to the component with the operator inbetween*/
@@ -171,11 +189,21 @@ class Equation {
                         component.items[offset].color = UIColor.clear
                         offset += 1
                     }
+                } else if offset < 0 {
+                    if let first = component.items[0] as? Operator {
+                        first.type = operatorType
+                    } else {
+                        component.items.insert({
+                            let newExpression = Operator(operatorType)
+                            newExpression.parent = component
+                            return newExpression
+                        }(), at: 0)
+                    }
                 } else if let operatorAtIndex = component.items[offset] as? Operator {
                     operatorAtIndex.type = operatorType
                 }
             } else if let text = expression as? Text {
-                guard offset != 0 else { return }
+                guard offset > 0 else { return }
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
@@ -209,9 +237,53 @@ class Equation {
                 component.items.remove(at: offset)
             }
         }
+        /*
+         Check if the expression is a component
+            create new component in brackets and check if the indicator is at the beginning, end or in the middle of equation, add new component and set it as the expression
+         Check if the expression is a text
+            split text value and create two new Text components coresponding to the offset, that cant be on the first character, and place bracket component between them
+         */
+        func addComponentInBrackets() {
+            if let component = expression as? Component {
+                let newComponent = Component()
+                newComponent.showBrackets = true
+                newComponent.parent = component
+                
+                if offset == component.items.count {
+                    component.items.append(newComponent)
+                } else if offset < 0 {
+                    component.items.insert(newComponent, at: 0)
+                } else {
+                    component.items[offset].color = UIColor.clear
+                    component.items.insert(newComponent, at: offset)
+                }
+                expression = newComponent
+                offset = 0
+            } else if let text = expression as? Text {
+                guard offset > 0 else { return }
+                let firstValue = Text(String(text.value.prefix(offset)))
+                firstValue.parent = text.parent
+                let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
+                secondValue.parent = text.parent
+                let newComponent = Component()
+                newComponent.showBrackets = true
+                newComponent.parent = text.parent
+                
+                if let parent = text.parent {
+                    if let parentIndex = parent.items.firstIndex(where: {$0 === expression}) {
+                        parent.items.remove(at: parentIndex)
+                        parent.items.insert(secondValue, at: parentIndex)
+                        parent.items.insert(newComponent, at: parentIndex)
+                        parent.items.insert(firstValue, at: parentIndex)
+                        expression = newComponent
+                        offset = 0
+                    }
+                }
+            }
+        }
         
         /* - check what type the expression is
-        - if it is a component check if the indicator is at the end or in the middle of equation and what type the last item is
+        - if it is a component check if the indicator is at the end, beginning or in the middle of equation and what type the last item is
         - if it is a text remove the character at offset, and if the value is empty delete the whole text expression ad if the value is not empty and the indicator is not at the beginning of the number move back one spot */
         func delete() {
             if let component = expression as? Component {
@@ -229,10 +301,13 @@ class Equation {
                         // TODO - figure out what happens if the last item of component is a component
                         back()
                     }
-                } else {
+                } else if offset >= 0 {
                     component.items.remove(at: offset)
                     checkIfTwoExpresionsAreTheSameType(offset: offset)
                     back()
+                }
+                if component.items.count == 0 {
+                    offset = 0
                 }
                 
             } else if let text = expression as? Text {
@@ -271,6 +346,7 @@ class Equation {
         case .minus:
             currentIndicator.addOperator(.minus)
         case .brackets, . leftBracket, .rightBracket:
+            currentIndicator.addComponentInBrackets()
             break
         case .back:
             currentIndicator.back()
@@ -356,13 +432,18 @@ extension Equation {
         var items: [Expression] = [Expression]()
         
         override func generateView() -> UIView? {
-            return linearlyLayoutViews(items.map { $0.generateView() }, color: color)
+            return linearlyLayoutViews(items.map { $0.generateView() }, color: color, brackets: showBrackets)
         }
     }
     
-    private static func linearlyLayoutViews(_ inputViews: [UIView?], color: UIColor) -> UIView? {
-        let views: [UIView] = inputViews.compactMap { $0 }
+    private static func linearlyLayoutViews(_ inputViews: [UIView?], color: UIColor, brackets: Bool) -> UIView? {
+        var views: [UIView] = inputViews.compactMap { $0 }
+        if brackets {
+            views = addBracketsToView(views: views)
+        }
         guard views.count > 0 else { return nil }
+        
+        
         
         var frame: CGRect = views[0].bounds
         for index in 1..<views.count {
@@ -371,6 +452,7 @@ extension Equation {
         
         let newView = UIView(frame: .zero)
         var x: CGFloat = 0.0
+        
         views.forEach { item in
             item.frame.origin.x = x
             item.frame.origin.y = frame.height/2.0 - item.bounds.height/2.0
@@ -379,9 +461,27 @@ extension Equation {
             
             x += item.bounds.width
         }
+        
         newView.frame = CGRect(x: 0.0, y: 0.0, width: x, height: frame.height)
         newView.backgroundColor = color
         return newView
     }
-    
+    static private func addBracketsToView(views: [UIView]) -> [UIView] {
+        var leftBracket: UILabel  {
+            let label = UILabel(frame: .zero)
+            label.text = "("
+            label.sizeToFit()
+            return label
+        }
+        var rightBracket: UILabel  {
+            let label = UILabel(frame: .zero)
+            label.text = ")"
+            label.sizeToFit()
+            return label
+        }
+        var newViews = views
+        newViews.append(rightBracket)
+        newViews.insert(leftBracket, at: 0)
+        return newViews
+    }
 }
