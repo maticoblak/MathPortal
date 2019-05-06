@@ -19,7 +19,7 @@ class Equation {
         
         func levelIn() {
             guard let component = expression as? Component else { return }
-            guard component.items.count > offset && offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
+            guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
             guard component.items[offset] as? Operator == nil else { return }
             self.expression = component.items[offset]
             self.expression.color = UIColor.clear
