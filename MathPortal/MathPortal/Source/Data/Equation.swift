@@ -10,6 +10,9 @@ import UIKit
 
 class Equation {
     
+    static let selectedColor = UIColor.lightGray
+    static let defaultColor = UIColor.clear
+
     private class Indicator {
         var expression: Expression
         var offset: Int = 0
@@ -22,13 +25,13 @@ class Equation {
             guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
             guard component.items[offset] as? Operator == nil else { return }
             self.expression = component.items[offset]
-            self.expression.color = UIColor.clear
+            self.expression.color = defaultColor
             offset = 0
             if let text = self.expression as? Text {
                 text.textRange = NSRange(location: 0, length: 1)
             } else if let component = self.expression as? Component {
                 if component.items.count > 0 {
-                    component.items[0].color = UIColor.red
+                    component.items[0].color = selectedColor
                 }
             }
         }
@@ -37,9 +40,11 @@ class Equation {
             guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
             if let text = expression as? Text {
                 text.textRange = nil
+            } else if let component = expression as? Component, offset < component.items.count, offset >= 0 {
+                component.items[offset].color = defaultColor
             }
             self.offset = index
-            parent.items[index].color = UIColor.red
+            parent.items[index].color = selectedColor
             self.expression = parent
         }
         func forward() {
@@ -47,16 +52,16 @@ class Equation {
                 if offset < component.items.count {
                     offset += 1
                     if offset - 1 >= 0 {
-                        component.items[offset-1].color = UIColor.clear
+                        component.items[offset-1].color = defaultColor
                     }
                     if offset < component.items.count {
-                        component.items[offset].color = UIColor.red
+                        component.items[offset].color = selectedColor
                     }
                 } else if let parent = expression.parent {
                     if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
                         if currentIndex < parent.items.count {
                             self.offset = currentIndex
-                            parent.items[offset].color = UIColor.red
+                            parent.items[offset].color = selectedColor
                             self.expression = parent
                         }
                     }
@@ -65,7 +70,7 @@ class Equation {
                 if offset < text.value.count - 1 {
                     offset += 1
                     text.textRange = NSRange(location: offset, length: 1)
-                    text.parent?.color = UIColor.clear
+                    text.parent?.color = defaultColor
                 } else {
                     text.textRange = nil
                     if let parent = expression.parent {
@@ -74,9 +79,9 @@ class Equation {
                             self.offset = currentIndex + 1
                             if currentIndex < parent.items.count-1 {
                                 if let component =  expression as? Component {
-                                    component.items[offset].color = UIColor.red
+                                    component.items[offset].color = selectedColor
                                 } else {
-                                    expression.color = UIColor.red
+                                    expression.color = selectedColor
                                 }
                             }
                         }
@@ -86,29 +91,23 @@ class Equation {
         }
         func back() {
             if let component = expression as? Component {
-                if offset  >= 0 {
+                if offset  >= 0, component.items.isEmpty == false {
                     offset -= 1
                     if offset >= 0 {
-                        component.items[offset].color = UIColor.red
+                        component.items[offset].color = selectedColor
                     }
                     if offset + 1 < component.items.count {
-                        component.items[offset + 1].color = UIColor.clear
+                        component.items[offset + 1].color = defaultColor
                     }
                 } else if let parent = expression.parent {
                     if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
                         if currentIndex < parent.items.count {
                             self.offset = currentIndex
-                            parent.items[offset].color = UIColor.red
+                            parent.items[offset].color = selectedColor
                             self.expression = parent
-                            
                         }
                     }
                 }
-                
-                if component.items.isEmpty {
-                    offset = 0
-                }
-
             } else if let text = expression as? Text {
                 if offset > 0 {
                     offset -= 1
@@ -124,9 +123,9 @@ class Equation {
                                 self.offset = 0
                             }
                             if let component = expression as? Component {
-                                component.items[offset].color = UIColor.red
+                                component.items[offset].color = selectedColor
                             } else {
-                                expression.color = UIColor.red
+                                expression.color = selectedColor
                             }
                         }
                     }
@@ -186,10 +185,10 @@ class Equation {
                             newExpression.parent = component
                             return newExpression
                             }())
-                        component.items[offset].color = UIColor.clear
+                        component.items[offset].color = defaultColor
                         offset += 1
                     }
-                } else if offset < 0 {
+                } else if offset <= 0 {
                     if let first = component.items[0] as? Operator {
                         first.type = operatorType
                     } else {
@@ -198,9 +197,19 @@ class Equation {
                             newExpression.parent = component
                             return newExpression
                         }(), at: 0)
+                        forward()
+                        back()
                     }
                 } else if let operatorAtIndex = component.items[offset] as? Operator {
                     operatorAtIndex.type = operatorType
+                } else if (component.items[offset - 1] is Operator) == false {
+                    component.items.insert({
+                        let newExpression = Operator(operatorType)
+                        newExpression.parent = component
+                        return newExpression
+                    }(), at: offset)
+                    forward()
+                    back()
                 }
             } else if let text = expression as? Text {
                 guard offset > 0 else { return }
@@ -254,7 +263,7 @@ class Equation {
                 } else if offset < 0 {
                     component.items.insert(newComponent, at: 0)
                 } else {
-                    component.items[offset].color = UIColor.clear
+                    component.items[offset].color = defaultColor
                     component.items.insert(newComponent, at: offset)
                 }
                 expression = newComponent
@@ -306,10 +315,6 @@ class Equation {
                     checkIfTwoExpresionsAreTheSameType(offset: offset)
                     back()
                 }
-                if component.items.count == 0 {
-                    offset = 0
-                }
-                
             } else if let text = expression as? Text {
                 text.value.remove(at: text.value.index(text.value.startIndex, offsetBy: offset))
                 if text.value.isEmpty {
@@ -345,7 +350,7 @@ class Equation {
             currentIndicator.addOperator(.plus)
         case .minus:
             currentIndicator.addOperator(.minus)
-        case .brackets, . leftBracket, .rightBracket:
+        case .brackets:
             currentIndicator.addComponentInBrackets()
             break
         case .back:
@@ -376,7 +381,7 @@ extension Equation {
     
     class Expression {
         weak var parent: Component?
-        var color: UIColor = UIColor.clear
+        var color: UIColor = defaultColor
         
         func generateView() -> UIView? { return nil }
     }
@@ -401,8 +406,10 @@ extension Equation {
                 case .minus: return "-"
                 }
             }()
-            label.sizeToFit()
             label.backgroundColor = color
+            label.sizeToFit()
+            label.layer.masksToBounds = true
+            label.layer.cornerRadius = 5
             return label
         }
     }
@@ -418,11 +425,14 @@ extension Equation {
             let label = UILabel(frame: .zero)
             let atributedString = NSMutableAttributedString(string: value)
             if let range = textRange  {
-                atributedString.addAttribute(NSAttributedString.Key.backgroundColor, value: UIColor.red, range: range)
+                atributedString.addAttribute(NSAttributedString.Key.backgroundColor, value: selectedColor, range: range)
+                
             }
             label.attributedText = atributedString
             label.backgroundColor = color
             label.sizeToFit()
+            label.layer.masksToBounds = true
+            label.layer.cornerRadius = 5
             return label
         }
     }
@@ -443,8 +453,6 @@ extension Equation {
         }
         guard views.count > 0 else { return nil }
         
-        
-        
         var frame: CGRect = views[0].bounds
         for index in 1..<views.count {
             frame = frame.union(views[index].bounds)
@@ -464,6 +472,7 @@ extension Equation {
         
         newView.frame = CGRect(x: 0.0, y: 0.0, width: x, height: frame.height)
         newView.backgroundColor = color
+        newView.layer.cornerRadius = 5
         return newView
     }
     static private func addBracketsToView(views: [UIView]) -> [UIView] {

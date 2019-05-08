@@ -35,7 +35,7 @@ class ViewController: UIViewController {
                 self.introText?.alpha = 0
             }
         }) { _ in
-            self.goToTaskViewController()
+            self.goToLogInViewController()
         }
     }
     

@@ -25,6 +25,7 @@ class MathEquationViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
         equationView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard)))
         keyboardHightConstraint?.constant = 0
 
@@ -34,7 +35,9 @@ class MathEquationViewController: UIViewController {
             return controller
         }(), animationStyle: .fade)
     }
-    
+    @objc func goToTaskViewController() {
+        navigationController?.popViewController(animated: true)
+    }
     @objc private func openCloseKeyboard() {
         keyboardOpened = !keyboardOpened
     }
@@ -45,7 +48,7 @@ class MathEquationViewController: UIViewController {
         if let view = equation.expression.generateView() {
             currentView = view
             self.view.addSubview(view)
-            view.center = CGPoint(x: 100.0, y: 200.0)
+            view.frame.origin = CGPoint(x: 10.0, y: (equationView?.frame.minY ?? 0) + 20.0)
         }
     }
 }
@@ -56,7 +59,7 @@ extension MathEquationViewController: CustomKeyboardViewControllerDelegate {
         switch key {
         case .done:
             keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .leftBracket, .plus, .minus, .rightBracket, .levelIn, .levelOut:
+        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut:
             equation.handelMathKeyboardButtonsPressed(button: key)
         }
         refreshEquation()

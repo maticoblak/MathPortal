@@ -26,8 +26,6 @@ extension Button {
         case back
         case forward
         case delete
-        case rightBracket
-        case leftBracket
         case brackets
         case indicator
         case done
@@ -44,8 +42,6 @@ extension Button {
             case .back: return "<"
             case .forward: return ">"
             case .delete: return "Delete"
-            case .rightBracket: return ")"
-            case .leftBracket: return "("
             case .brackets: return "()"
             case .indicator: return "|"
             case .done: return "Done"

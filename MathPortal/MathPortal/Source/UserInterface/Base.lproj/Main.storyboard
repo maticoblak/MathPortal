@@ -312,7 +312,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZoM-IQ-ekg">
                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="384"/>
                                                         <connections>
-                                                            <action selector="openCloseMathKeyboard:" destination="6OY-hP-fad" eventType="touchUpInside" id="eme-2e-ntn"/>
+                                                            <action selector="goToEquationViewController:" destination="6OY-hP-fad" eventType="touchUpInside" id="1Ya-HQ-hi3"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -420,11 +420,11 @@
                         <constraints>
                             <constraint firstItem="1gF-55-cfz" firstAttribute="trailing" secondItem="21s-9d-5Kz" secondAttribute="trailing" id="25u-oL-jYO"/>
                             <constraint firstItem="1gF-55-cfz" firstAttribute="trailing" secondItem="iz5-ji-sba" secondAttribute="trailing" id="A88-jq-kWR"/>
+                            <constraint firstItem="iz5-ji-sba" firstAttribute="top" secondItem="1gF-55-cfz" secondAttribute="top" id="LeM-hy-Rmv"/>
                             <constraint firstItem="iz5-ji-sba" firstAttribute="leading" secondItem="1gF-55-cfz" secondAttribute="leading" id="PzF-R7-CTy"/>
                             <constraint firstItem="1gF-55-cfz" firstAttribute="bottom" secondItem="21s-9d-5Kz" secondAttribute="bottom" id="UFO-OD-MJl"/>
                             <constraint firstItem="1gF-55-cfz" firstAttribute="bottom" secondItem="iz5-ji-sba" secondAttribute="bottom" id="eL7-Ug-96r"/>
                             <constraint firstItem="21s-9d-5Kz" firstAttribute="leading" secondItem="1gF-55-cfz" secondAttribute="leading" id="jnt-jA-nPD"/>
-                            <constraint firstItem="iz5-ji-sba" firstAttribute="top" secondItem="1gF-55-cfz" secondAttribute="top" id="wsO-Yz-HGT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1gF-55-cfz"/>
                     </view>

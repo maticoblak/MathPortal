@@ -49,25 +49,13 @@ class TaskViewController: UIViewController {
             scrollView?.extras.scrollToViews([equationLabel])
         }
     }
-    
-    var equationArray: [Button] = [Button(key: .indicator)] {
-        didSet {
-            equationLabel?.text = equationArray.map {$0.keyName.string}.joined(separator: " ")
-        }
-    }
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         KeyboardManager.sharedInstance.willChangeFrameDelegate = self
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Keyboard setup
-        keyboardContentControllerView?.setViewController(controller: {
-            let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
-            controller.delegate = self
-            return controller
-        }(), animationStyle: .fade)
         keyboardHeightConstraint?.constant = 0
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
         taskTitle = task.name
@@ -83,18 +71,10 @@ class TaskViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @IBAction func openCloseMathKeyboard(_ sender: Any) {
-        dismissDefaultKeyboard()
-        mathKeyboardOpened = !mathKeyboardOpened
+    @IBAction func goToEquationViewController(_ sender: Any) {
         let controller = R.storyboard.main.mathEquationViewController()!
         navigationController?.pushViewController(controller, animated: true)
-        
     }
-    @IBAction func goToEditView(_ sender: Any) {
-        let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
     
     @IBAction func saveTask(_ sender: Any) {
         saveTask()
@@ -115,41 +95,6 @@ class TaskViewController: UIViewController {
         })
     }
     
-    func handelMathKeyboardButtonsPressed(button: Button.ButtonType) {
-        guard let index = equationArray.firstIndex(where: {$0.name == Button.ButtonType.indicator.string}) else { return }
-        switch button {
-        case .integer, .plus, .minus, .leftBracket,.rightBracket:
-            let key: Button = Button(key: button)
-            equationArray.insert(key, at: index)
-        case .brackets:
-            let coursor = equationArray.remove(at: index)
-            let leftBracket: Button = Button(key: Button.ButtonType.leftBracket)
-            let rightBracket: Button = Button(key: Button.ButtonType.rightBracket)
-            equationArray.insert(rightBracket, at: index)
-            equationArray.insert(coursor, at: index)
-            equationArray.insert(leftBracket, at: index)
-        case .back:
-            guard index > 0 else { return }
-            let coursor = equationArray.remove(at: index)
-            equationArray.insert(coursor, at: index - 1)
-        case .delete:
-            guard index > 0 else { return }
-            equationArray.remove(at: index - 1)
-        case .forward:
-            guard index < equationArray.count - 1 else { return }
-            let coursor = equationArray.remove(at: index)
-            equationArray.insert(coursor, at: index + 1)
-        case .levelIn:
-            break
-        case .levelOut:
-            return
-        case .done:
-            mathKeyboardOpened = false
-        case .indicator:
-            return
-        }
-    }
-    
     private var currentView: UIView?
     func refreshEquation() {
         currentView?.removeFromSuperview()
@@ -159,13 +104,6 @@ class TaskViewController: UIViewController {
             view.center = CGPoint(x: 100.0, y: 200.0)
         }
         
-    }
-}
-// TODO: Delete custom keyboard, go to MathEquationViewController to add an equation, transfer the equation to TaskViewController
-extension TaskViewController: CustomKeyboardViewControllerDelegate {
-    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
-        equation.handelMathKeyboardButtonsPressed(button: key)
-        refreshEquation()
     }
 }
 

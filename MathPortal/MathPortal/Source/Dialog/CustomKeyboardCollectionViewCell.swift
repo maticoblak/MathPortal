@@ -9,6 +9,7 @@
 import UIKit
 
 class CustomKeyboardCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet private var keyboardKeyLabel: UILabel?
     
     func setKey(name: String) {
