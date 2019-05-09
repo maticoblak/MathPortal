@@ -371,6 +371,8 @@ class Equation {
             break
         case .indicator:
             break
+        case .fraction:
+            break 
         }
     }
 }
