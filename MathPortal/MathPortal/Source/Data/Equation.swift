@@ -30,8 +30,17 @@ class Equation {
             if let text = self.expression as? Text {
                 text.textRange = NSRange(location: 0, length: 1)
             } else if let component = self.expression as? Component {
-                if component.items.count > 0 {
+                if component.items.count > 0, component.fraction == false {
                     component.items[0].color = selectedColor
+                } else if component.fraction == true {
+                    guard let enumerator = component.items[0] as? Component else { return }
+                    if enumerator.items.count < 2  {
+                        
+                        levelIn()
+                    } else {
+                        component.items[0].color = selectedColor
+                    }
+                    
                 }
             }
         }
@@ -40,12 +49,25 @@ class Equation {
             guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
             if let text = expression as? Text {
                 text.textRange = nil
-            } else if let component = expression as? Component, offset < component.items.count, offset >= 0 {
-                component.items[offset].color = defaultColor
+                self.offset = index
+                parent.items[index].color = selectedColor
+                self.expression = parent
+            } else if let component = expression as? Component {
+                if offset < component.items.count, offset >= 0 {
+                    component.items[offset].color = defaultColor
+                    self.offset = index
+                    parent.items[index].color = selectedColor
+                    self.expression = parent
+                } else if parent.fraction, component.items.count < 2 {
+                    self.offset = index
+                    self.expression = parent
+                    levelOut()
+                } else {
+                    self.offset = index
+                    parent.items[index].color = selectedColor
+                    self.expression = parent
+                }
             }
-            self.offset = index
-            parent.items[index].color = selectedColor
-            self.expression = parent
         }
         func forward() {
             if let component = expression as? Component {
@@ -291,6 +313,27 @@ class Equation {
             }
         }
         
+        func addFraction() {
+            if let component = expression as? Component {
+                let fractionComponent = Component()
+                let numerator = Component()
+                numerator.parent = fractionComponent
+                //numerator.items.append(Text("124"))
+                let denominator = Component()
+                denominator.parent = fractionComponent
+                //denominator.items.append(Text("12"))
+                fractionComponent.fraction = true
+                fractionComponent.parent = component
+                fractionComponent.items.append(numerator)
+                fractionComponent.items.append(denominator)
+                
+                
+                if offset == component.items.count {
+                    component.items.append(fractionComponent)
+                }
+            }
+            levelIn()
+        }
         /* - check what type the expression is
         - if it is a component check if the indicator is at the end, beginning or in the middle of equation and what type the last item is
         - if it is a text remove the character at offset, and if the value is empty delete the whole text expression ad if the value is not empty and the indicator is not at the beginning of the number move back one spot */
@@ -372,6 +415,7 @@ class Equation {
         case .indicator:
             break
         case .fraction:
+            currentIndicator.addFraction()
             break 
         }
     }
@@ -441,10 +485,15 @@ extension Equation {
     
     class Component: Expression {
         var showBrackets: Bool = false
+        var fraction: Bool = false
         var items: [Expression] = [Expression]()
         
         override func generateView() -> UIView? {
-            return linearlyLayoutViews(items.map { $0.generateView() }, color: color, brackets: showBrackets)
+            if fraction {
+                return verticalyLayoutViews(items.map { $0.generateView() }, color: color)
+            } else {
+                return linearlyLayoutViews(items.map { $0.generateView() }, color: color, brackets: showBrackets)
+            }
         }
     }
     
@@ -494,5 +543,45 @@ extension Equation {
         newViews.append(rightBracket)
         newViews.insert(leftBracket, at: 0)
         return newViews
+    }
+    
+    private static func verticalyLayoutViews(_ inputViews: [UIView?], color: UIColor) -> UIView? {
+        //var views: [UIView] = inputViews.compactMap { $0 }
+        //guard views.count == 2 else { return nil }
+        var emptyfraction: UIView {
+            let square = UIView(frame: .zero)
+            square.frame.size = CGSize(width: 20, height: 20)
+            square.layer.borderWidth = 1
+            return square
+        }
+        var numerator = inputViews[0] ?? emptyfraction
+        var denominator = inputViews[1] ?? emptyfraction
+        
+        var fractionLine: UIView {
+            let line = UIView(frame: .zero)
+            line.frame.size = CGSize(width: max(numerator.bounds.width, denominator.bounds.width) + 3, height: 1.5  )
+            line.backgroundColor = UIColor.black
+            return line
+        }
+        let viewsWithLine = [numerator, fractionLine, denominator]
+        let width: CGFloat = fractionLine.frame.width + 4
+        
+        let fractionView: UIView = UIView(frame: .zero)
+        
+        var y: CGFloat = 0.0
+        viewsWithLine.forEach { item in
+            item.center.x = width / 2
+            item.frame.origin.y = y
+            
+            fractionView.addSubview(item)
+            
+            y += item.bounds.height
+        }
+        
+        fractionView.frame = CGRect(x: 0, y: 0, width: width , height: y)
+        fractionView.backgroundColor = color
+        fractionView.layer.cornerRadius = 5
+        return fractionView
+        
     }
 }
