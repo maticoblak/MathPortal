@@ -1,5 +1,5 @@
 //
-//  MathPortalTests.swift
+//  ExpressionTests.swift
 //  MathPortalTests
 //
 //  Created by Petra Čačkov on 10/05/2019.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-class MathPortalTests: XCTestCase {
+class ExpressionTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -18,8 +18,8 @@ class MathPortalTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    // XCTAssert
-    func basicEquation() {
+    func testBasicEquation() {
+        // This is an example of a performance test case.
         let equation = Equation()
         equation.expression.items.append(Equation.Text("1"))
         equation.expression.items.append(Equation.Operator(.plus))
