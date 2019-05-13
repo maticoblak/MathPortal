@@ -10,6 +10,9 @@
 		C07896582285803400C506B7 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
 		C07896592285811D00C506B7 /* KeyboardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E635A226CE5A800416D19 /* KeyboardButtons.swift */; };
 		C078965B2285819000C506B7 /* ExpressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078965A2285819000C506B7 /* ExpressionTests.swift */; };
+		C078965F2285880200C506B7 /* IndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078965E2285880200C506B7 /* IndicatorTests.swift */; };
+		C0789661228589A800C506B7 /* Equation+Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0789660228589A800C506B7 /* Equation+Indicator.swift */; };
+		C0789662228589AA00C506B7 /* Equation+Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0789660228589A800C506B7 /* Equation+Indicator.swift */; };
 		C08E634D2269E52100416D19 /* CustomKeyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C08E634C2269E52100416D19 /* CustomKeyboard.storyboard */; };
 		C08E634F2269E53E00416D19 /* CustomKeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E634E2269E53E00416D19 /* CustomKeyboardViewController.swift */; };
 		C08E63552269EA3400416D19 /* ContentControllerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E63522269EA3400416D19 /* ContentControllerOverlay.swift */; };
@@ -78,6 +81,8 @@
 		C078964E22857F9900C506B7 /* MathPortalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathPortalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C078965222857F9900C506B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C078965A2285819000C506B7 /* ExpressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionTests.swift; sourceTree = "<group>"; };
+		C078965E2285880200C506B7 /* IndicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTests.swift; sourceTree = "<group>"; };
+		C0789660228589A800C506B7 /* Equation+Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Equation+Indicator.swift"; sourceTree = "<group>"; };
 		C08E634C2269E52100416D19 /* CustomKeyboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomKeyboard.storyboard; sourceTree = "<group>"; };
 		C08E634E2269E53E00416D19 /* CustomKeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardViewController.swift; sourceTree = "<group>"; };
 		C08E63522269EA3400416D19 /* ContentControllerOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentControllerOverlay.swift; sourceTree = "<group>"; };
@@ -172,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				C078965A2285819000C506B7 /* ExpressionTests.swift */,
+				C078965E2285880200C506B7 /* IndicatorTests.swift */,
 				C078965222857F9900C506B7 /* Info.plist */,
 			);
 			path = MathPortalTests;
@@ -366,6 +372,7 @@
 				C0BD61EA226720ED00E48081 /* Task.swift */,
 				C0BD61EE226735ED00E48081 /* User.swift */,
 				C08E639B2272E9F700416D19 /* Equation.swift */,
+				C0789660228589A800C506B7 /* Equation+Indicator.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -561,6 +568,8 @@
 				C07896592285811D00C506B7 /* KeyboardButtons.swift in Sources */,
 				C07896582285803400C506B7 /* Equation.swift in Sources */,
 				C078965B2285819000C506B7 /* ExpressionTests.swift in Sources */,
+				C078965F2285880200C506B7 /* IndicatorTests.swift in Sources */,
+				C0789662228589AA00C506B7 /* Equation+Indicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +596,7 @@
 				C0BD61DD226475DC00E48081 /* Appearence.swift in Sources */,
 				C0BD61EF226735ED00E48081 /* User.swift in Sources */,
 				C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */,
+				C0789661228589A800C506B7 /* Equation+Indicator.swift in Sources */,
 				C08E63872271B27C00416D19 /* ExtrasCGFloat+Random.swift in Sources */,
 				C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */,
 				C08E637F2271B27C00416D19 /* ExtrasColor+Conversions.swift in Sources */,

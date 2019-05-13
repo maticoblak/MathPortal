@@ -98,7 +98,7 @@ class TaskViewController: UIViewController {
     private var currentView: UIView?
     func refreshEquation() {
         currentView?.removeFromSuperview()
-        if let view = equation.expression.generateView() {
+        if let view = equation.expression.generateView().view {
             currentView = view
             self.view.addSubview(view)
             view.center = CGPoint(x: 100.0, y: 200.0)

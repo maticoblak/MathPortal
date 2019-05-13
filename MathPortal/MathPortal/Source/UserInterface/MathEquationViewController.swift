@@ -45,7 +45,7 @@ class MathEquationViewController: UIViewController {
     private var currentView: UIView?
     private func refreshEquation() {
         currentView?.removeFromSuperview()
-        if let view = equation.expression.generateView() {
+        if let view = equation.expression.generateView().view {
             currentView = view
             self.view.addSubview(view)
             view.frame.origin = CGPoint(x: 10.0, y: (equationView?.frame.minY ?? 0) + 20.0)
