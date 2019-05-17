@@ -55,7 +55,7 @@ class Equation {
         case .indicator:
             break
         case .fraction:
-            currentIndicator.addFraction()
+            currentIndicator.addFraction2()
             break 
         }
     }
@@ -145,6 +145,89 @@ extension Equation {
         }
     }
     
+    class Fraction: Component {
+
+        var enumerator: Expression {
+            get { return items[0] }
+            set {
+                if items.isEmpty {
+                    newValue.parent = self
+                    if let component = newValue as?  Component, (component is Fraction) == false {
+                        items.append(newValue)
+                    } else if newValue is Empty {
+                        items.append(newValue)
+                    }
+                } else if items[0] is Empty {
+                    if let component = newValue as? Component, (component is Fraction) == false {
+                        newValue.parent = self
+                        items[0] = newValue
+                    } else {
+                        let newComponent = Component(items: [newValue])
+                        newComponent.parent = self
+                        newValue.parent = newComponent
+                        items[0] = newComponent
+                    }
+                } else if let component = items[0] as? Component, component.items.count == 1 {
+                    newValue.parent = component
+                    component.items.append(newValue)
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }
+            }
+        }
+        var denomenator: Expression {
+            get { return items[1] }
+            set {
+                if items.count < 2 {
+                    newValue.parent = self
+                    if let component = newValue as?  Component, (component is Fraction) == false {
+                        items.append(newValue)
+                    } else if newValue is Empty {
+                        items.append(newValue)
+                    }
+                } else if items[1] is Empty {
+                    if let component = newValue as? Component, (component is Fraction) == false {
+                        newValue.parent = self
+                        items[1] = newValue
+                    } else {
+                        let newComponent = Component(items: [newValue])
+                        newComponent.parent = self
+                        newValue.parent = newComponent
+                        items[1] = newComponent
+                    }
+                } else if let component = items[1] as? Component {
+                    newValue.parent = component
+                    component.items.append(newValue)
+                }
+            }
+        }
+        
+        override func generateView() -> View {
+            return verticalyLayoutViews(items.map { $0.generateView() }, color: color)
+        }
+        init(enumerator: Expression?, denomenator: Expression?) {
+            super.init()
+            self.enumerator = enumerator ?? Empty()
+            self.denomenator = denomenator ?? Empty()
+        }
+        override convenience init() {
+            self.init(enumerator: Empty(), denomenator: Empty())
+        }
+    }
+    class Empty: Expression {
+        
+        override func generateView() -> View {
+            let square = UIView(frame: .zero)
+            square.backgroundColor = color
+            square.frame.size = CGSize(width: 20, height: 20)
+            square.layer.borderWidth = 1
+            return View(view: square)
+        }
+    }
+    
     class Component: Expression {
         var showBrackets: Bool = false
         var fraction: Bool = false
@@ -184,11 +267,7 @@ extension Equation {
         }
         
         override func generateView() -> View {
-            if fraction {
-                return verticalyLayoutViews(items.map { $0.generateView() }, color: color)
-            } else {
-                return linearlyLayoutViews(items.map { $0.generateView() }, color: color, brackets: showBrackets)
-            }
+            return linearlyLayoutViews(items.map { $0.generateView() }, color: color, brackets: showBrackets)
         }
     }
     
@@ -242,7 +321,7 @@ extension Equation {
     
     private static func verticalyLayoutViews(_ inputViews: [View], color: UIColor) -> View {
         //var views: [UIView] = inputViews.compactMap { $0 }
-        //guard views.count == 2 else { return nil }
+        guard inputViews.count == 2 else { return .Nil }
         var emptyfraction: UIView {
             let square = UIView(frame: .zero)
             square.frame.size = CGSize(width: 20, height: 20)

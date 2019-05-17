@@ -18,26 +18,28 @@ extension Equation {
         }
         
         func levelIn() {
-            guard let component = expression as? Component else { return }
-            guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
-            guard component.items[offset] as? Operator == nil else { return }
-            self.expression = component.items[offset]
-            self.expression.color = defaultColor
-            offset = 0
-            if let text = self.expression as? Text {
-                text.textRange = NSRange(location: 0, length: 1)
-            } else if let component = self.expression as? Component {
-                if component.items.count > 0, component.fraction == false {
-                    component.items[0].color = selectedColor
-                } else if component.fraction == true {
-                    guard let enumerator = component.items[0] as? Component else { return }
-                    if enumerator.items.count < 2  {
-                        
-                        levelIn()
-                    } else {
+            if let component = expression as? Component {
+                guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
+                guard (component.items[offset] as? Operator == nil), component.items[offset] as? Empty == nil else { return }
+                self.expression = component.items[offset]
+                self.expression.color = defaultColor
+                offset = 0
+                if let text = self.expression as? Text {
+                    text.textRange = NSRange(location: 0, length: 1)
+                } else if let component = self.expression as? Component {
+                    if component.items.count > 0 {
                         component.items[0].color = selectedColor
+            
+                    } else if let fraction = expression as? Fraction, let fractionComponent = fraction.enumerator as? Component  {
+                        
                     }
-                    
+                }
+            } else if let fraction = expression as? Fraction {
+                guard let enumerator = fraction.enumerator as? Component else { return }
+                if enumerator.items.count < 2  {
+                    levelIn()
+                } else {
+                    enumerator.color = selectedColor
                 }
             }
         }
@@ -68,6 +70,7 @@ extension Equation {
         }
         func forward() {
             if let component = expression as? Component {
+                
                 if offset < component.items.count {
                     offset += 1
                     if offset - 1 >= 0 {
@@ -76,14 +79,8 @@ extension Equation {
                     if offset < component.items.count {
                         component.items[offset].color = selectedColor
                     }
-                } else if let parent = expression.parent {
-                    if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
-                        if currentIndex < parent.items.count {
-                            self.offset = currentIndex
-                            parent.items[offset].color = selectedColor
-                            self.expression = parent
-                        }
-                    }
+                } else {
+                    levelOut()
                 }
             } else if let text = expression as? Text {
                 if offset < text.value.count - 1 {
@@ -118,14 +115,8 @@ extension Equation {
                     if offset + 1 < component.items.count {
                         component.items[offset + 1].color = defaultColor
                     }
-                } else if let parent = expression.parent {
-                    if let currentIndex = parent.items.firstIndex(where: {$0 === expression}) {
-                        if currentIndex < parent.items.count {
-                            self.offset = currentIndex
-                            parent.items[offset].color = selectedColor
-                            self.expression = parent
-                        }
-                    }
+                } else {
+                    levelOut()
                 }
             } else if let text = expression as? Text {
                 if offset > 0 {
@@ -157,7 +148,34 @@ extension Equation {
          */
         func addInteger(value: String?) {
             guard let value = value else { return }
-            if let component = expression as? Component {
+            if let fraction = expression as? Fraction {
+                var fractionValue: Text {
+                    let newExpression = Text(value)
+                    return newExpression
+                }
+                if offset == 0 {
+                    fraction.enumerator = fractionValue
+                    levelIn()
+                    if let component = expression as? Component {
+                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
+                        offset = component.items.count
+                        // to move the selected characters colour
+                        back()
+                        forward()
+                    }
+                } else if offset == 1 {
+                    fraction.denomenator = fractionValue
+                    levelIn()
+                    if let component = expression as? Component {
+                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
+                        offset = component.items.count
+                        
+                        // to move the selected characters colour
+                        back()
+                        forward()
+                    }
+                }
+            } else if let component = expression as? Component {
                 if offset == component.items.count {
                     if let text = component.items.last as? Text {
                         text.value += value
@@ -194,7 +212,26 @@ extension Equation {
          - if the expression is a Text
          create two Text expressions, remove the previous one and append them to the component with the operator inbetween*/
         func addOperator(_ operatorType: Operator.OperatorType ) {
-            if let component = expression as? Component {
+            if let fraction = expression as? Fraction {
+                var fractionValue: Operator {
+                    let newExpression = Operator(operatorType)
+                    return newExpression
+                }
+                if offset == 0 {
+                    fraction.enumerator = fractionValue
+                    levelIn()
+                    if let component = expression as? Component {
+                        offset = component.items.count
+                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
+                    }
+                } else if offset == 1 {
+                    fraction.denomenator = fractionValue
+                    levelIn()
+                    if let component = expression as? Component {
+                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
+                    }
+                }
+            } else if let component = expression as? Component {
                 if offset == component.items.count {
                     if let last = component.items.last as? Operator {
                         last.type = operatorType
@@ -239,7 +276,7 @@ extension Equation {
                 let newOperator = Operator(operatorType)
                 newOperator.parent = text.parent
                 
-                if let parent = text.parent {
+                if let parent = text.parent as? Fraction {
                     if let parentIndex = parent.items.firstIndex(where: {$0 === expression}) {
                         parent.items.remove(at: parentIndex)
                         parent.items.insert(secondValue, at: parentIndex)
@@ -248,12 +285,14 @@ extension Equation {
                         expression = parent
                         offset = parentIndex
                         forward()
+                    } else {
+                        
                     }
                 }
             }
         }
         
-        private func checkIfTwoExpresionsAreTheSameType(offset: Int) {
+        func checkIfTwoExpresionsAreTheSameType(offset: Int) {
             guard let component = expression as? Component else { return }
             guard offset > 0 && offset < component.items.count else { return }
             
@@ -272,7 +311,20 @@ extension Equation {
          split text value and create two new Text components coresponding to the offset, that cant be on the first character, and place bracket component between them
          */
         func addComponentInBrackets() {
-            if let component = expression as? Component {
+            if let fraction = expression as? Fraction {
+                let newComponent = Component()
+                newComponent.showBrackets = true
+                newComponent.parent = fraction
+                if fraction.items[offset] is Empty  {
+                    fraction.items[offset] = newComponent
+                } else if offset == 0 {
+                    fraction.enumerator = newComponent
+                } else if offset == 1 {
+                    fraction.enumerator = newComponent
+                }
+                expression = newComponent
+                offset = 0
+            } else if let component = expression as? Component {
                 let newComponent = Component()
                 newComponent.showBrackets = true
                 newComponent.parent = component
@@ -281,6 +333,8 @@ extension Equation {
                     component.items.append(newComponent)
                 } else if offset < 0 {
                     component.items.insert(newComponent, at: 0)
+                } else if component.items[offset] is Empty  {
+                    component.items[offset] = newComponent
                 } else {
                     component.items[offset].color = defaultColor
                     component.items.insert(newComponent, at: offset)
@@ -331,11 +385,26 @@ extension Equation {
             }
             levelIn()
         }
+        func addFraction2() {
+            if let component = expression as? Component {
+                var fraction = Fraction()
+                fraction.parent = component
+                component.items.append(fraction)
+                levelIn()
+            }
+        }
         /* - check what type the expression is
          - if it is a component check if the indicator is at the end, beginning or in the middle of equation and what type the last item is
          - if it is a text remove the character at offset, and if the value is empty delete the whole text expression ad if the value is not empty and the indicator is not at the beginning of the number move back one spot */
         func delete() {
-            if let component = expression as? Component {
+            if let fraction = expression as? Fraction {
+                guard offset >= 0, offset < fraction.items.count else { return }
+                fraction.items[offset] = {
+                    let empty = Empty()
+                    empty.color = selectedColor
+                    return empty
+                }()
+            } else if let component = expression as? Component {
                 if offset == component.items.count {
                     if let text = component.items.last as? Text {
                         text.value.removeLast()
