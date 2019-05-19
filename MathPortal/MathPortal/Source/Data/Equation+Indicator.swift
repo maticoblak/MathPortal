@@ -9,7 +9,7 @@
 import UIKit
 
 extension Equation {
-
+    
     class Indicator {
         var expression: Expression
         var offset: Int = 0
@@ -24,97 +24,125 @@ extension Equation {
                 self.expression = component.items[offset]
                 self.expression.color = defaultColor
                 offset = 0
+                
                 if let text = self.expression as? Text {
                     text.textRange = NSRange(location: 0, length: 1)
-                } else if let component = self.expression as? Component {
-                    if component.items.count > 0 {
+                } else if let component = expression as? Component {
+                    // if component has only one element and that element is not empty go level in (don't konw if needed)
+                    if component.items.count == 1, let secondLevel = component.items[offset] as? Component, secondLevel.showBrackets == false {
+                        levelIn()
+                    // if element that indicator is on is a component and it only has one element go in
+                    } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, secondLevel.showBrackets == false {
+                        levelIn()
+                    } else if component.items.count > 0 {
                         component.items[0].color = selectedColor
-            
-                    } else if let fraction = expression as? Fraction, let fractionComponent = fraction.enumerator as? Component  {
-                        
                     }
-                }
-            } else if let fraction = expression as? Fraction {
-                guard let enumerator = fraction.enumerator as? Component else { return }
-                if enumerator.items.count < 2  {
-                    levelIn()
-                } else {
-                    enumerator.color = selectedColor
                 }
             }
         }
+        
         func levelOut() {
             guard let parent = expression.parent else { return }
             guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
-            if let text = expression as? Text {
+            
+            //remember the current offset
+            let currentOffset = self.offset
+            
+            // change the expression to parent - it does't matter if the offset is greater or les than items count
+            self.expression = parent
+            parent.items[index].color = selectedColor
+            self.offset = index
+            
+            if let text = parent.items[index] as? Text {
                 text.textRange = nil
-                self.offset = index
-                parent.items[index].color = selectedColor
-                self.expression = parent
-            } else if let component = expression as? Component {
-                if offset < component.items.count, offset >= 0 {
-                    component.items[offset].color = defaultColor
-                    self.offset = index
-                    parent.items[index].color = selectedColor
-                    self.expression = parent
-                } else if parent.fraction, component.items.count < 2 {
-                    self.offset = index
-                    self.expression = parent
-                    levelOut()
-                } else {
-                    self.offset = index
-                    parent.items[index].color = selectedColor
-                    self.expression = parent
+            } else if let component = parent.items[index] as? Component {
+                // if the indicator is in th middle of expression its colour has to be set to default
+                if currentOffset < component.items.count, currentOffset >= 0 {
+                    component.items[currentOffset].color = defaultColor
+                    
+                    // if component has only one element and there are no brackets go out another level
+                    if component.items.count == 1, component.showBrackets == false {
+                        levelOut()
+                    }
                 }
             }
         }
         func forward() {
             if let component = expression as? Component {
                 
-                if offset < component.items.count {
+                // if the indicator is on denominator go to whole fraction - we dont watn the indicator to be in the fraction after the denominator
+                if component is Fraction, offset == 1 {
+                    levelOut()
+                // if component only has Empty expression in items - don't want to be in front or behinde it
+                } else if component.items.count == 1, component.items.first is Empty {
+                    levelOut()
+                // if the indicator is somwhere in the middle of component
+                } else if offset < component.items.count {
                     offset += 1
+                    // check if there is a previous expression and set its colour to default (you could be at the beginning of component offset < 0)
                     if offset - 1 >= 0 {
                         component.items[offset-1].color = defaultColor
                     }
+                    // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
                     if offset < component.items.count {
                         component.items[offset].color = selectedColor
+                        // if the expression is a component without brackets and it has only one element go in another level
+                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.showBrackets == false {
+                            levelIn()
+                        }
                     }
+                // if the indicator is at the end and component has only one element
+                } else if component.items.count == 1, component.showBrackets == false {
+                    levelOut()
+                    if let component = expression as? Component, component.items.count > offset {
+                        forward()
+                    }
+                // if the indicator is at the end of component
                 } else {
                     levelOut()
                 }
+                
             } else if let text = expression as? Text {
                 if offset < text.value.count - 1 {
                     offset += 1
                     text.textRange = NSRange(location: offset, length: 1)
-                    text.parent?.color = defaultColor
                 } else {
-                    text.textRange = nil
-                    if let parent = expression.parent {
-                        if let currentIndex = parent.items.firstIndex(where: { $0 === expression }) {
-                            self.expression = parent
-                            self.offset = currentIndex + 1
-                            if currentIndex < parent.items.count-1 {
-                                if let component =  expression as? Component {
-                                    component.items[offset].color = selectedColor
-                                } else {
-                                    expression.color = selectedColor
-                                }
-                            }
-                        }
-                    }
+                    levelOut()
+                    forward()
                 }
             }
         }
+        
         func back() {
             if let component = expression as? Component {
-                if offset  >= 0, component.items.isEmpty == false {
+                // if the indicator is on enumerator go to whole fraction - don7T want to be in fraction before the enumerator
+                if component is Fraction, offset == 0 {
+                    levelOut()
+                // if indicator is somwheare in the middle of component
+                } else if offset  >= 0/*, component.items.isEmpty == false*/ {
                     offset -= 1
-                    if offset >= 0 {
-                        component.items[offset].color = selectedColor
-                    }
+                    
+                    // check if there exist a prvious expression (the indicator could have been at the end of component) and set its colour to default)
                     if offset + 1 < component.items.count {
                         component.items[offset + 1].color = defaultColor
                     }
+                    
+                    // check if the indicator landed on expression (offset >= 0) and set it a colour
+                    if offset >= 0 {
+                        component.items[offset].color = selectedColor
+                        // if the expression is a component without brackets and it has only one element go in another level
+                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.showBrackets == false {
+                            levelIn()
+                        }
+                    }
+                
+                // if the indicator is at the beginning of component ant it has only one element
+                } else if component.items.count == 1, component.showBrackets == false {
+                    levelOut()
+                    if offset >= 0 {
+                        back()
+                    }
+                // if the indcator is at the beginning of the component
                 } else {
                     levelOut()
                 }
@@ -123,180 +151,123 @@ extension Equation {
                     offset -= 1
                     text.textRange = NSRange(location: offset, length: 1)
                 } else {
-                    text.textRange = nil
-                    if let parent = expression.parent {
-                        if let currentIndex = parent.items.firstIndex(where: { $0 === expression }) {
-                            self.expression = parent
-                            if currentIndex > 0 {
-                                self.offset = currentIndex - 1
-                            } else {
-                                self.offset = 0
-                            }
-                            if let component = expression as? Component {
-                                component.items[offset].color = selectedColor
-                            } else {
-                                expression.color = selectedColor
-                            }
-                        }
-                    }
+                    levelOut()
+                    back()
                 }
             }
         }
-        /*
-         - if the expression is a Component and if the indicator is at the end of equation add Character to the existing Text component or append new Text expression
-         - if the expression is Text add a character to the value
-         */
+
         func addInteger(value: String?) {
             guard let value = value else { return }
-            if let fraction = expression as? Fraction {
-                var fractionValue: Text {
-                    let newExpression = Text(value)
-                    return newExpression
-                }
-                if offset == 0 {
-                    fraction.enumerator = fractionValue
-                    levelIn()
-                    if let component = expression as? Component {
-                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
-                        offset = component.items.count
-                        // to move the selected characters colour
-                        back()
-                        forward()
-                    }
-                } else if offset == 1 {
-                    fraction.denomenator = fractionValue
-                    levelIn()
-                    if let component = expression as? Component {
-                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
-                        offset = component.items.count
-                        
-                        // to move the selected characters colour
-                        back()
-                        forward()
-                    }
-                }
-            } else if let component = expression as? Component {
+            let textValue: Text = {
+                let newExpression = Text(value)
+                return newExpression
+            }()
+            if let component = expression as? Component {
+                textValue.parent = component
+                // the indicator is at the end of component
                 if offset == component.items.count {
                     if let text = component.items.last as? Text {
                         text.value += value
-                    } else {
-                        component.items.append({
-                            let newExpression = Text(value)
-                            newExpression.parent = component
-                            return newExpression
-                            }())
+                    // you can't add integeer to fraction since it has exactly 2 components in items
+                    } else if component is Fraction == false {
+                        component.items.append(textValue)
                         offset += 1
                     }
+                // the indicator is at the beginning of component
                 } else if offset < 0 {
                     if let text = component.items[0] as? Text {
                         text.value.insert(Character(value), at: text.value.startIndex)
-                    } else {
-                        component.items.insert({
-                            let newExpression = Text(value)
-                            newExpression.parent = component
-                            return newExpression
-                        }(), at: 0)
+                    // you can't add integeer to fraction since it has exactly 2 components in items
+                    } else if component is Fraction == false {
+                        component.items.insert(textValue, at: 0)
                     }
+                // the indicator is on empty field
+                } else if component.items[offset] is Empty {
+                    if let fraction = component as? Fraction {
+                        fraction.addValues(offset: offset, expression: textValue)
+                        levelIn()
+                        forward()
+                    } else {
+                        component.items[offset] = textValue
+                        forward()
+                    }
+                } else {
+                    // TODO: What happens if you want to add text in the middle
                 }
             } else if let text = expression as? Text {
                 text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset))
                 forward()
             }
         }
-        /*
-         - if the expression is a Component
-         and the indicator is at the end of equation
-         change the operator type or append new operator
-         if the indicator is at the beginning of equation eather add new operator or change existion one
-         If the indicator is in the middle of equation change the operator type
-         - if the expression is a Text
-         create two Text expressions, remove the previous one and append them to the component with the operator inbetween*/
-        func addOperator(_ operatorType: Operator.OperatorType ) {
-            if let fraction = expression as? Fraction {
-                var fractionValue: Operator {
-                    let newExpression = Operator(operatorType)
-                    return newExpression
-                }
-                if offset == 0 {
-                    fraction.enumerator = fractionValue
-                    levelIn()
-                    if let component = expression as? Component {
-                        offset = component.items.count
-                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
-                    }
-                } else if offset == 1 {
-                    fraction.denomenator = fractionValue
-                    levelIn()
-                    if let component = expression as? Component {
-                        checkIfTwoExpresionsAreTheSameType(offset: component.items.count - 1)
-                    }
-                }
-            } else if let component = expression as? Component {
+        
+        func addOperator(_ operatorType: Operator.OperatorType) {
+            
+            let newOperator = Operator(operatorType)
+            
+            if let component = expression as? Component {
+                newOperator.parent = component
+                // if we are at the end of component
                 if offset == component.items.count {
                     if let last = component.items.last as? Operator {
                         last.type = operatorType
                     } else {
-                        component.items.append({
-                            let newExpression = Operator(operatorType)
-                            newExpression.parent = component
-                            return newExpression
-                            }())
-                        component.items[offset].color = defaultColor
-                        offset += 1
+                        component.items.append(newOperator)
+                        forward()
                     }
-                } else if offset <= 0 {
-                    if let first = component.items[0] as? Operator {
+                // if the indicator is at the beginning of the component
+                } else if offset < 0 {
+                    if let first = component.items.first as? Operator {
                         first.type = operatorType
                     } else {
-                        component.items.insert({
-                            let newExpression = Operator(operatorType)
-                            newExpression.parent = component
-                            return newExpression
-                        }(), at: 0)
-                        forward()
-                        back()
+                        component.items.insert(newOperator, at: 0)
+                        
                     }
+                // if indicator is in the middle of component and on operator
                 } else if let operatorAtIndex = component.items[offset] as? Operator {
                     operatorAtIndex.type = operatorType
-                } else if (component.items[offset - 1] is Operator) == false {
-                    component.items.insert({
-                        let newExpression = Operator(operatorType)
-                        newExpression.parent = component
-                        return newExpression
-                    }(), at: offset)
+                // if the indicator is on empty field
+                } else if component.items[offset] is Empty {
+                    if let fraction = component as? Fraction {
+                        fraction.addValues(offset: offset, expression: newOperator)
+                        levelIn()
+                        forward()
+                    } else {
+                        component.items[offset] = newOperator
+                        forward()
+                    }
+                // TODO: figure out what happens if the indicator is on expression
+                //right now if the expression before the indicator is not an operator the operator is added
+                } else if  offset > 0, (component.items[offset - 1] is Operator) == false {
+                    component.items.insert(newOperator, at: offset)
                     forward()
-                    back()
                 }
+                
             } else if let text = expression as? Text {
+                // the operator will be added before the character that indicator is on so we gave to gard that we are not on first character
                 guard offset > 0 else { return }
+                newOperator.parent = text.parent
+                // separate the current text
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
                 secondValue.parent = text.parent
-                let newOperator = Operator(operatorType)
-                newOperator.parent = text.parent
-                
-                if let parent = text.parent as? Fraction {
-                    if let parentIndex = parent.items.firstIndex(where: {$0 === expression}) {
-                        parent.items.remove(at: parentIndex)
-                        parent.items.insert(secondValue, at: parentIndex)
-                        parent.items.insert(newOperator, at: parentIndex)
-                        parent.items.insert(firstValue, at: parentIndex)
-                        expression = parent
-                        offset = parentIndex
-                        forward()
-                    } else {
-                        
-                    }
+                levelOut()
+                // if the parent was a component replae the current text with separated txt and operator in between
+                if let component = expression as? Component {
+                    component.items[offset] = secondValue
+                    component.items.insert(newOperator, at: offset)
+                    component.items.insert(firstValue, at: offset)
+                    forward()
                 }
             }
         }
-        
+
         func checkIfTwoExpresionsAreTheSameType(offset: Int) {
             guard let component = expression as? Component else { return }
             guard offset > 0 && offset < component.items.count else { return }
             
-            if let firstExpression = component.items[offset - 1] as? Operator, let secondExpression = component.items[offset] as? Operator {
+            if  component.items[offset - 1] is Operator, component.items[offset] is Operator {
                 component.items.remove(at: offset)
             } else if let firstExpression = component.items[offset - 1]  as? Text, let secondExpression = component.items[offset] as? Text {
                 let newValue = firstExpression.value + secondExpression.value
@@ -304,33 +275,23 @@ extension Equation {
                 component.items.remove(at: offset)
             }
         }
-        /*
-         Check if the expression is a component
-         create new component in brackets and check if the indicator is at the beginning, end or in the middle of equation, add new component and set it as the expression
-         Check if the expression is a text
-         split text value and create two new Text components coresponding to the offset, that cant be on the first character, and place bracket component between them
-         */
-        func addComponentInBrackets() {
+        
+        // component can be regular component or special cases like fraction
+        func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Bool ) {
+            //let newComponent = Component(items: [Empty()])
+            newComponent.showBrackets = brackets
             if let fraction = expression as? Fraction {
-                let newComponent = Component()
-                newComponent.showBrackets = true
-                newComponent.parent = fraction
-                if fraction.items[offset] is Empty  {
-                    fraction.items[offset] = newComponent
-                } else if offset == 0 {
-                    fraction.enumerator = newComponent
-                } else if offset == 1 {
-                    fraction.enumerator = newComponent
-                }
-                expression = newComponent
-                offset = 0
+                guard fraction.items[offset] is Empty else { return }
+                fraction.addValues(offset: offset, expression: newComponent)
+                levelIn()
+                levelIn()
             } else if let component = expression as? Component {
-                let newComponent = Component()
-                newComponent.showBrackets = true
-                newComponent.parent = component
                 
+                newComponent.parent = component
+                // if the indicator is at the end of component
                 if offset == component.items.count {
                     component.items.append(newComponent)
+                // if the indicator is at the beginning of component
                 } else if offset < 0 {
                     component.items.insert(newComponent, at: 0)
                 } else if component.items[offset] is Empty  {
@@ -339,107 +300,89 @@ extension Equation {
                     component.items[offset].color = defaultColor
                     component.items.insert(newComponent, at: offset)
                 }
-                expression = newComponent
-                offset = 0
+                levelIn()
             } else if let text = expression as? Text {
                 guard offset > 0 else { return }
+                newComponent.parent = text.parent
+                
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
                 secondValue.parent = text.parent
-                let newComponent = Component()
-                newComponent.showBrackets = true
-                newComponent.parent = text.parent
                 
-                if let parent = text.parent {
-                    if let parentIndex = parent.items.firstIndex(where: {$0 === expression}) {
-                        parent.items.remove(at: parentIndex)
-                        parent.items.insert(secondValue, at: parentIndex)
-                        parent.items.insert(newComponent, at: parentIndex)
-                        parent.items.insert(firstValue, at: parentIndex)
-                        expression = newComponent
-                        offset = 0
-                    }
+                levelOut()
+                if let component = expression as? Component {
+                    component.items[offset] = secondValue
+                    component.items.insert(newComponent, at: offset)
+                    component.items.insert(firstValue, at: offset)
+                    forward()
                 }
             }
         }
-        
-        func addFraction() {
-            if let component = expression as? Component {
-                let fractionComponent = Component()
-                let numerator = Component()
-                numerator.parent = fractionComponent
-                //numerator.items.append(Text("124"))
-                let denominator = Component()
-                denominator.parent = fractionComponent
-                //denominator.items.append(Text("12"))
-                fractionComponent.fraction = true
-                fractionComponent.parent = component
-                fractionComponent.items.append(numerator)
-                fractionComponent.items.append(denominator)
-                
-                
-                if offset == component.items.count {
-                    component.items.append(fractionComponent)
-                }
-            }
-            levelIn()
-        }
-        func addFraction2() {
-            if let component = expression as? Component {
-                var fraction = Fraction()
-                fraction.parent = component
-                component.items.append(fraction)
-                levelIn()
-            }
-        }
-        /* - check what type the expression is
-         - if it is a component check if the indicator is at the end, beginning or in the middle of equation and what type the last item is
-         - if it is a text remove the character at offset, and if the value is empty delete the whole text expression ad if the value is not empty and the indicator is not at the beginning of the number move back one spot */
+
         func delete() {
             if let fraction = expression as? Fraction {
-                guard offset >= 0, offset < fraction.items.count else { return }
-                fraction.items[offset] = {
-                    let empty = Empty()
-                    empty.color = selectedColor
-                    return empty
-                }()
+                fraction.deleteComponent(offset: offset)
+                fraction.items[offset].color = selectedColor
             } else if let component = expression as? Component {
+                
+                // if the indicator is at the end of the component
                 if offset == component.items.count {
+                    // if the last item is text delete each character separatly
                     if let text = component.items.last as? Text {
                         text.value.removeLast()
+                        // if the Text expression is empty delete it
                         if text.value.isEmpty {
                             offset -= 1
                             component.items.removeLast()
                         }
-                    } else if let operatorLast = component.items.last as? Operator {
+                    } else if component.items.last is Operator {
                         component.items.removeLast()
                         offset -= 1
-                    } else if let component = component.items.last as? Component {
-                        // TODO - figure out what happens if the last item of component is a component
+                    } else if component.items.last is Component {
                         back()
                     }
+                // the indicator is somwhere in the middle
                 } else if offset >= 0 {
-                    component.items.remove(at: offset)
-                    checkIfTwoExpresionsAreTheSameType(offset: offset)
-                    back()
+                    // if we have an component with one elementt that is Empty expression go level out
+                    if component.items.count == 1, component.items[0] is Empty {
+                        levelOut()
+                    } else {
+                        component.items.remove(at: offset)
+                        checkIfTwoExpresionsAreTheSameType(offset: offset)
+                        back()
+                    }
+                }
+                // after the deletion check if component is empty
+                if component.items.isEmpty {
+                    // if we have deleted all items in component and the component has brackets it should append empty expression
+                    if  component.showBrackets == true {
+                        component.items.append({
+                            let empty = Empty()
+                            empty.color = selectedColor
+                            empty.parent = component
+                            return empty
+                            }())
+                        offset = 0
+                    // if the component does not have brackets (components in fraction)
+                    } else if component.parent != nil {
+                        levelOut()
+                        delete()
+                    // the only component that does not have a parent is top level component - after the deletion of all items the offset should be set at 0
+                    } else {
+                        offset = 0
+                    }
                 }
             } else if let text = expression as? Text {
                 text.value.remove(at: text.value.index(text.value.startIndex, offsetBy: offset))
                 if text.value.isEmpty {
-                    if let parent = text.parent {
-                        if let currentIndex = parent.items.firstIndex(where: { $0 === text }) {
-                            parent.items.remove(at: currentIndex)
-                            expression = parent
-                            offset = currentIndex
-                            checkIfTwoExpresionsAreTheSameType(offset: offset)
-                            back()
-                        }
+                    levelOut()
+                    if let component = expression as? Component {
+                        component.items.remove(at: offset)
+                        checkIfTwoExpresionsAreTheSameType(offset: offset)
                     }
-                    
-                } else if offset != 0 {
-                    back()
                 }
+                back()
             }
         }
     }

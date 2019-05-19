@@ -9,7 +9,7 @@
 import UIKit
 
 class Equation {
-    
+    // MARK: - Equation
     static let selectedColor = UIColor.lightGray
     static let defaultColor = UIColor.clear
 
@@ -34,7 +34,7 @@ class Equation {
         case .minus:
             currentIndicator.addOperator(.minus)
         case .brackets:
-            currentIndicator.addComponentInBrackets()
+            currentIndicator.addComponent(brackets: true)
             break
         case .back:
             currentIndicator.back()
@@ -55,7 +55,7 @@ class Equation {
         case .indicator:
             break
         case .fraction:
-            currentIndicator.addFraction2()
+            currentIndicator.addComponent(Fraction(), brackets: false)
             break 
         }
     }
@@ -64,24 +64,7 @@ class Equation {
 // MARK: - Expressions
 
 extension Equation {
-    
-    struct View {
-        var view: UIView?
-        var horizontalOffset: CGFloat
-        
-        static let Nil = View(view: nil)
-        
-        init(view: UIView?, horizontalOffset: CGFloat) { self.view = view; self.horizontalOffset = horizontalOffset }
-        init(view: UIView?) {
-            self.view = view;
-            if let view = view {
-                self.horizontalOffset = view.bounds.height*0.5
-            } else {
-                self.horizontalOffset = 0.0
-            }
-        }
-    }
-    
+    // MARK: - Expression
     class Expression {
         weak var parent: Component?
         var color: UIColor = defaultColor
@@ -89,7 +72,7 @@ extension Equation {
         
         func generateView() -> View { return .Nil }
     }
-    
+    // MARK: - Operator
     class Operator: Expression {
         enum OperatorType {
             case plus
@@ -117,7 +100,7 @@ extension Equation {
             return View(view: label)
         }
     }
-    
+    // MARK: - Text
     class Text: Expression {
         var value: String
         var textRange: NSRange?
@@ -144,32 +127,24 @@ extension Equation {
             return View(view: label)
         }
     }
-    
+    // MARK: - Fraction
     class Fraction: Component {
-
+        // TODO: Mayby it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
         var enumerator: Expression {
             get { return items[0] }
             set {
+                // don't need?
+                newValue.parent = self
                 if items.isEmpty {
-                    newValue.parent = self
-                    if let component = newValue as?  Component, (component is Fraction) == false {
+                    //new value has to be empty if we are creating new fraction
+                    guard newValue is Empty else { return }
                         items.append(newValue)
-                    } else if newValue is Empty {
-                        items.append(newValue)
-                    }
                 } else if items[0] is Empty {
-                    if let component = newValue as? Component, (component is Fraction) == false {
-                        newValue.parent = self
-                        items[0] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        items[0] = newComponent
-                    }
-                } else if let component = items[0] as? Component, component.items.count == 1 {
-                    newValue.parent = component
-                    component.items.append(newValue)
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                // Probably will need in the future or just a safety case
                 } else {
                     let newComponent = Component(items: [items[0], newValue])
                     newComponent.parent = self
@@ -181,32 +156,44 @@ extension Equation {
         var denomenator: Expression {
             get { return items[1] }
             set {
+                newValue.parent = self
                 if items.count < 2 {
-                    newValue.parent = self
-                    if let component = newValue as?  Component, (component is Fraction) == false {
-                        items.append(newValue)
-                    } else if newValue is Empty {
-                        items.append(newValue)
-                    }
+                    guard newValue is Empty else { return }
+                    items.append(newValue)
                 } else if items[1] is Empty {
-                    if let component = newValue as? Component, (component is Fraction) == false {
-                        newValue.parent = self
-                        items[1] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        items[1] = newComponent
-                    }
-                } else if let component = items[1] as? Component {
-                    newValue.parent = component
-                    component.items.append(newValue)
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[1], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
                 }
             }
         }
         
         override func generateView() -> View {
             return verticalyLayoutViews(items.map { $0.generateView() }, color: color)
+        }
+        func addValues(offset: Int?, expression: Expression?) {
+            guard let offset = offset else { return }
+            guard let expression = expression else { return }
+            if offset == 0  {
+                self.enumerator = expression
+            } else if offset == 1 {
+                self.denomenator = expression
+            }
+        }
+        
+        func deleteComponent(offset: Int?) {
+            guard let offset = offset else { return }
+            guard offset == 0 || offset == 1 else { return }
+            guard self.items[offset] is Empty == false else { return }
+            let empty = Empty()
+            empty.parent = self
+            self.items[offset] = empty
         }
         init(enumerator: Expression?, denomenator: Expression?) {
             super.init()
@@ -217,6 +204,7 @@ extension Equation {
             self.init(enumerator: Empty(), denomenator: Empty())
         }
     }
+    // MARK: - Empty
     class Empty: Expression {
         
         override func generateView() -> View {
@@ -227,7 +215,7 @@ extension Equation {
             return View(view: square)
         }
     }
-    
+    // MARK: - Component
     class Component: Expression {
         var showBrackets: Bool = false
         var fraction: Bool = false
@@ -235,6 +223,7 @@ extension Equation {
         
         convenience init(items: [Expression]) {
             self.init()
+            items.forEach { $0.parent = self }
             self.items = items
         }
         
@@ -268,6 +257,26 @@ extension Equation {
         
         override func generateView() -> View {
             return linearlyLayoutViews(items.map { $0.generateView() }, color: color, brackets: showBrackets)
+        }
+    }
+}
+
+// MARK: - View
+extension Equation {
+    struct View {
+        var view: UIView?
+        var horizontalOffset: CGFloat
+        
+        static let Nil = View(view: nil)
+        
+        init(view: UIView?, horizontalOffset: CGFloat) { self.view = view; self.horizontalOffset = horizontalOffset }
+        init(view: UIView?) {
+            self.view = view;
+            if let view = view {
+                self.horizontalOffset = view.bounds.height*0.5
+            } else {
+                self.horizontalOffset = 0.0
+            }
         }
     }
     
