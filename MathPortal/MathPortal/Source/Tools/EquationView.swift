@@ -55,45 +55,7 @@ class EquationView {
         return EquationView(view: newView)
     }
     
-    static func verticalyLayoutViews(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black) -> EquationView {
-        
-        guard inputViews.count == 2 else { return .Nil }
-        var emptyfraction: UIView {
-            let square = UIView(frame: .zero)
-            square.frame.size = CGSize(width: 20, height: 20)
-            square.layer.borderWidth = 1
-            square.layer.borderColor = color.cgColor
-            return square
-        }
-        var numerator = inputViews[0].view ?? emptyfraction
-        var denominator = inputViews[1].view ?? emptyfraction
-        
-        var fractionLine: UIView {
-            let line = UIView(frame: .zero)
-            line.frame.size = CGSize(width: max(numerator.bounds.width, denominator.bounds.width) + 3, height: 1.5  )
-            line.backgroundColor = color
-            return line
-        }
-        let viewsWithLine = [numerator, fractionLine, denominator]
-        let width: CGFloat = fractionLine.frame.width + 4
-        
-        let fractionView: UIView = UIView(frame: .zero)
-        
-        var y: CGFloat = 0.0
-        viewsWithLine.forEach { item in
-            item.center.x = width / 2
-            item.frame.origin.y = y
-            
-            fractionView.addSubview(item)
-            
-            y += item.bounds.height
-        }
-        
-        fractionView.frame = CGRect(x: 0, y: 0, width: width , height: y)
-        fractionView.backgroundColor = selectedColor
-        fractionView.layer.cornerRadius = 5
-        return EquationView(view: fractionView)
-    }
+    
     
     static func addBracketsToView(views: [UIView], color: UIColor = Equation.defaultColor) -> [UIView] {
         var leftBracket: UILabel  {
@@ -150,18 +112,52 @@ extension EquationView {
         return EquationView(view: label)
     }
     
-    func generateFraction() {
-        
-    }
-    
     static func generateEmpty(backgroundColor: UIColor = Equation.defaultColor, squareColor: UIColor = UIColor.black) -> EquationView {
+        let squareViewHeight = 20
+        let squareRectOffset = 2
+        let SquerRectHeight = squareViewHeight - 2*squareRectOffset
+        
         let square = UIView(frame: .zero)
-        square.backgroundColor = backgroundColor
-        square.frame.size = CGSize(width: 20, height: 20)
-        square.layer.borderWidth = 1
-        square.layer.borderColor = squareColor.cgColor
+        square.frame.size = CGSize(width: squareViewHeight, height: squareViewHeight)
+        let layer = CAShapeLayer()
+        layer.path = UIBezierPath(rect: CGRect(x: squareRectOffset, y: squareRectOffset, width: SquerRectHeight, height: SquerRectHeight)).cgPath
+        
+        layer.fillColor = backgroundColor.cgColor
+        layer.strokeColor = squareColor.cgColor
+        square.layer.addSublayer(layer)
+
         return EquationView(view: square)
     }
     
-    
+    static func generateFraction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black) -> EquationView {
+        
+        guard inputViews.count == 2 else { return .Nil }
+        guard let enumerator = inputViews[0].view, let denominator = inputViews[1].view else { return .Nil}
+
+        var fractionLine: UIView {
+            let line = UIView(frame: .zero)
+            line.frame.size = CGSize(width: max(enumerator.bounds.width, denominator.bounds.width) + 3, height: 1.5  )
+            line.backgroundColor = color
+            return line
+        }
+        let viewsWithLine = [enumerator, fractionLine, denominator]
+        let width: CGFloat = fractionLine.frame.width + 4
+        
+        let fractionView: UIView = UIView(frame: .zero)
+        
+        var y: CGFloat = 0.0
+        viewsWithLine.forEach { item in
+            item.center.x = width / 2
+            item.frame.origin.y = y
+            
+            fractionView.addSubview(item)
+            
+            y += item.bounds.height
+        }
+        
+        fractionView.frame = CGRect(x: 0, y: 0, width: width , height: y)
+        fractionView.backgroundColor = selectedColor
+        fractionView.layer.cornerRadius = 5
+        return EquationView(view: fractionView)
+    }
 }

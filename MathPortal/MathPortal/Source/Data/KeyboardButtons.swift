@@ -55,7 +55,7 @@ extension Button {
         var componentView: UIView? {
             switch self {
             case .fraction:
-                guard let fraction: UIView = EquationView.verticalyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray), EquationView.generateEmpty(squareColor: UIColor.gray)], color: UIColor.gray).view else { return EquationView.Nil.view}
+                guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: UIColor.gray), EquationView.generateEmpty(squareColor: UIColor.gray)], color: UIColor.gray).view else { return EquationView.Nil.view}
                 return fraction
             case .brackets:
                 guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray)], brackets: true, color: UIColor.gray).view else { return EquationView.Nil.view }

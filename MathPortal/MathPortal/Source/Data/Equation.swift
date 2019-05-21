@@ -152,7 +152,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.verticalyLayoutViews(items.map { $0.generateView() }, selectedColor: color)
+            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color)
         }
         func addValues(offset: Int?, expression: Expression?) {
             guard let offset = offset else { return }
