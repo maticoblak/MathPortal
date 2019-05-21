@@ -11,6 +11,7 @@ import UIKit
 extension Equation {
     
     class Indicator {
+        
         var expression: Expression
         var offset: Int = 0
         init(expression: Expression) {

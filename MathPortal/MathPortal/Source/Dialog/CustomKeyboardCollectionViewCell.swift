@@ -16,8 +16,8 @@ class CustomKeyboardCollectionViewCell: UICollectionViewCell {
     
     func setKey(key: Button.ButtonType) {
         switch key {
-        case .fraction:
-            guard let newView = key.fractionView else { return }
+        case .fraction, .brackets:
+            guard let newView = key.componentView else { return }
             guard let cellView = keyboardCellView else { return }
             newView.center = CGPoint(x: cellView.frame.width / 2, y: cellView.frame.height / 2)
             keyboardCellView?.addSubview(newView)
