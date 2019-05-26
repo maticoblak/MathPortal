@@ -53,7 +53,6 @@ class MathEquationViewController: UIViewController {
     }
 }
 
-
 extension MathEquationViewController: CustomKeyboardViewControllerDelegate {
     func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
         switch key {

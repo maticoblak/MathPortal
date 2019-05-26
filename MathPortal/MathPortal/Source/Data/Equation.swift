@@ -67,6 +67,7 @@ extension Equation {
     class Expression {
         weak var parent: Component?
         var color: UIColor = defaultColor
+        var scale: Double = 1.0
         func computeResult() -> Double? { return nil }
         
         func generateView() -> EquationView { return .Nil }
@@ -85,7 +86,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateOperator(type, colour: color)
+            return EquationView.generateOperator(type, colour: color, scale: scale)
         }
     }
     // MARK: - Text
@@ -101,12 +102,27 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateText(value: value, textRange: textRange, color: color)
+            return EquationView.generateText(value: value, textRange: textRange, color: color, scale: scale)
         }
     }
     // MARK: - Fraction
     class Fraction: Component {
-        // TODO: Mayby it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
+        // TODO: Maybe it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
+        override var scale: Double  {
+            didSet {
+                print("didSet")
+                refresh()
+            }
+        }
+        override func refresh() {
+            print("inRefresh")
+            if enumerator is Empty {
+                enumerator.scale = self.scale
+            }
+            if denomenator is Empty {
+                denomenator.scale = self.scale
+            }
+        }
         var enumerator: Expression {
             get { return items[0] }
             set {
@@ -115,10 +131,12 @@ extension Equation {
                 if items.isEmpty {
                     //new value has to be empty if we are creating new fraction
                     guard newValue is Empty else { return }
-                        items.append(newValue)
+                    newValue.scale = self.scale
+                    items.append(newValue)
                 } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale
                     newValue.parent = newComponent
                     items[0] = newComponent
                 // Probably will need in the future or just a safety case
@@ -136,10 +154,12 @@ extension Equation {
                 newValue.parent = self
                 if items.count < 2 {
                     guard newValue is Empty else { return }
+                    newValue.scale = self.scale
                     items.append(newValue)
                 } else if items[1] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale
                     newValue.parent = newComponent
                     items[1] = newComponent
                 } else {
@@ -152,7 +172,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color)
+            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale)
         }
         func addValues(offset: Int?, expression: Expression?) {
             guard let offset = offset else { return }
@@ -185,7 +205,7 @@ extension Equation {
     class Empty: Expression {
         
         override func generateView() -> EquationView {
-            return EquationView.generateEmpty(backgroundColor: color)
+            return EquationView.generateEmpty(backgroundColor: color, scale: scale)
         }
     }
     // MARK: - Component
@@ -193,13 +213,23 @@ extension Equation {
         var showBrackets: Bool = false
         var fraction: Bool = false
         var items: [Expression] = [Expression]()
+        override var scale: Double {
+            didSet {
+                refresh()
+            }
+        }
         
         convenience init(items: [Expression]) {
             self.init()
-            items.forEach { $0.parent = self }
+            items.forEach { $0.parent = self; $0.scale = self.scale }
             self.items = items
         }
-        
+        func refresh() {
+            print("inRefresh")
+            if items.count == 1 {
+                items[0].scale = self.scale
+            }
+        }
         override func computeResult() -> Double? {
             // TODO: fix this, use priorities and stuff
             var value: Double = 0.0
@@ -229,115 +259,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, selectedColor: color, brackets: showBrackets)
+            return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, selectedColor: color, brackets: showBrackets, scale: scale)
         }
     }
 }
-
-// MARK: - View
-//extension Equation {
-//    struct View {
-//        var view: UIView?
-//        var horizontalOffset: CGFloat
-//
-//        static let Nil = View(view: nil)
-//
-//        init(view: UIView?, horizontalOffset: CGFloat) { self.view = view; self.horizontalOffset = horizontalOffset }
-//        init(view: UIView?) {
-//            self.view = view;
-//            if let view = view {
-//                self.horizontalOffset = view.bounds.height*0.5
-//            } else {
-//                self.horizontalOffset = 0.0
-//            }
-//        }
-//    }
-//
-//    private static func linearlyLayoutViews(_ inputViews: [View], color: UIColor, brackets: Bool) -> View {
-//        var views: [UIView] = inputViews.compactMap { $0.view }
-//        if brackets {
-//            views = addBracketsToView(views: views)
-//        }
-//        guard views.count > 0 else { return .Nil }
-//
-//        var frame: CGRect = views[0].bounds
-//        for index in 1..<views.count {
-//            frame = frame.union(views[index].bounds)
-//        }
-//
-//        let newView = UIView(frame: .zero)
-//        var x: CGFloat = 0.0
-//
-//        views.forEach { item in
-//            item.frame.origin.x = x
-//            item.frame.origin.y = frame.height/2.0 - item.bounds.height/2.0
-//
-//            newView.addSubview(item)
-//
-//            x += item.bounds.width
-//        }
-//
-//        newView.frame = CGRect(x: 0.0, y: 0.0, width: x, height: frame.height)
-//        newView.backgroundColor = color
-//        newView.layer.cornerRadius = 5
-//        return View(view: newView)
-//    }
-//    static private func addBracketsToView(views: [UIView]) -> [UIView] {
-//        var leftBracket: UILabel  {
-//            let label = UILabel(frame: .zero)
-//            label.text = "("
-//            label.sizeToFit()
-//            return label
-//        }
-//        var rightBracket: UILabel  {
-//            let label = UILabel(frame: .zero)
-//            label.text = ")"
-//            label.sizeToFit()
-//            return label
-//        }
-//        var newViews = views
-//        newViews.append(rightBracket)
-//        newViews.insert(leftBracket, at: 0)
-//        return newViews
-//    }
-//
-//    private static func verticalyLayoutViews(_ inputViews: [View], color: UIColor) -> View {
-//        //var views: [UIView] = inputViews.compactMap { $0 }
-//        guard inputViews.count == 2 else { return .Nil }
-//        var emptyfraction: UIView {
-//            let square = UIView(frame: .zero)
-//            square.frame.size = CGSize(width: 20, height: 20)
-//            square.layer.borderWidth = 1
-//            return square
-//        }
-//        var numerator = inputViews[0].view ?? emptyfraction
-//        var denominator = inputViews[1].view ?? emptyfraction
-//
-//        var fractionLine: UIView {
-//            let line = UIView(frame: .zero)
-//            line.frame.size = CGSize(width: max(numerator.bounds.width, denominator.bounds.width) + 3, height: 1.5  )
-//            line.backgroundColor = UIColor.black
-//            return line
-//        }
-//        let viewsWithLine = [numerator, fractionLine, denominator]
-//        let width: CGFloat = fractionLine.frame.width + 4
-//
-//        let fractionView: UIView = UIView(frame: .zero)
-//
-//        var y: CGFloat = 0.0
-//        viewsWithLine.forEach { item in
-//            item.center.x = width / 2
-//            item.frame.origin.y = y
-//
-//            fractionView.addSubview(item)
-//
-//            y += item.bounds.height
-//        }
-//
-//        fractionView.frame = CGRect(x: 0, y: 0, width: width , height: y)
-//        fractionView.backgroundColor = color
-//        fractionView.layer.cornerRadius = 5
-//        return View(view: fractionView)
-//
-//    }
-//}

@@ -119,6 +119,9 @@ extension Equation {
                 // if the indicator is on enumerator go to whole fraction - don7T want to be in fraction before the enumerator
                 if component is Fraction, offset == 0 {
                     levelOut()
+                // if component only has Empty expression in items - don't want to be in front or behinde it
+                } else if component.items.count == 1, component.items.first is Empty {
+                    levelOut()
                 // if indicator is somwheare in the middle of component
                 } else if offset  >= 0/*, component.items.isEmpty == false*/ {
                     offset -= 1
@@ -166,6 +169,8 @@ extension Equation {
             }()
             if let component = expression as? Component {
                 textValue.parent = component
+                textValue.scale = adjustScale(expression: textValue)
+                
                 // the indicator is at the end of component
                 if offset == component.items.count {
                     if let text = component.items.last as? Text {
@@ -208,6 +213,7 @@ extension Equation {
             
             if let component = expression as? Component {
                 newOperator.parent = component
+                newOperator.scale = adjustScale(expression: newOperator)
                 // if we are at the end of component
                 if offset == component.items.count {
                     if let last = component.items.last as? Operator {
@@ -248,11 +254,14 @@ extension Equation {
                 // the operator will be added before the character that indicator is on so we gave to gard that we are not on first character
                 guard offset > 0 else { return }
                 newOperator.parent = text.parent
+                newOperator.scale = text.scale
                 // separate the current text
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
+                firstValue.scale = text.scale
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
                 secondValue.parent = text.parent
+                secondValue.scale = text.scale
                 levelOut()
                 // if the parent was a component replae the current text with separated txt and operator in between
                 if let component = expression as? Component {
@@ -279,16 +288,18 @@ extension Equation {
         
         // component can be regular component or special cases like fraction
         func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Bool ) {
-            //let newComponent = Component(items: [Empty()])
             newComponent.showBrackets = brackets
             if let fraction = expression as? Fraction {
                 guard fraction.items[offset] is Empty else { return }
                 fraction.addValues(offset: offset, expression: newComponent)
+                newComponent.scale = adjustScale(expression: newComponent)
+
                 levelIn()
                 levelIn()
             } else if let component = expression as? Component {
                 
                 newComponent.parent = component
+                newComponent.scale = adjustScale(expression: newComponent)
                 // if the indicator is at the end of component
                 if offset == component.items.count {
                     component.items.append(newComponent)
@@ -305,7 +316,7 @@ extension Equation {
             } else if let text = expression as? Text {
                 guard offset > 0 else { return }
                 newComponent.parent = text.parent
-                
+                newComponent.scale = adjustScale(expression: newComponent)
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
@@ -386,6 +397,26 @@ extension Equation {
                 back()
             }
         }
+        
+        func adjustScale(expression: Expression) -> Double  {
+            guard let parent = expression.parent else { return 1 }
+            guard let parentOfParet = parent.parent else {  return parent.scale }
+            if expression is Fraction {
+                if  parentOfParet is Fraction {
+                    if parentOfParet.scale > 0.7 {
+                        return parentOfParet.scale * 0.8
+                    } else {
+                        return parentOfParet.scale
+                    }
+                } else if let parentOfparentOfParet = parentOfParet.parent, parentOfparentOfParet is Fraction, parent.showBrackets == true {
+                    if parentOfParet.scale > 0.7 {
+                        return parentOfparentOfParet.scale * 0.8
+                    } else {
+                        return parentOfparentOfParet.scale
+                    }
+                } else { return parent.scale }
+            }  else { return parent.scale }
+        }
     }
-    
 }
+
