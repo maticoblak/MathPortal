@@ -400,15 +400,15 @@ extension Equation {
         
         func adjustScale(expression: Expression) -> Double  {
             guard let parent = expression.parent else { return 1 }
-            guard let parentOfParet = parent.parent else {  return parent.scale }
+            guard let parentOfParet = parent.parent else { return parent.scale }
             if expression is Fraction {
-                if  parentOfParet is Fraction {
+                if parentOfParet is Fraction {
                     if parentOfParet.scale > 0.7 {
                         return parentOfParet.scale * 0.8
                     } else {
                         return parentOfParet.scale
                     }
-                } else if let parentOfparentOfParet = parentOfParet.parent, parentOfparentOfParet is Fraction, parent.showBrackets == true {
+                } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, parent.showBrackets == true {
                     if parentOfParet.scale > 0.7 {
                         return parentOfparentOfParet.scale * 0.8
                     } else {

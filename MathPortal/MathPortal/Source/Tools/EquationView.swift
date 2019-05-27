@@ -17,8 +17,8 @@ class EquationView {
     
     init(view: UIView?, horizontalOffset: CGFloat) { self.view = view; self.horizontalOffset = horizontalOffset }
     init(view: UIView?) {
-        self.view = view;
         if let view = view {
+            self.view = view
             self.horizontalOffset = view.bounds.height*0.5
         } else {
             self.horizontalOffset = 0.0
@@ -28,9 +28,7 @@ class EquationView {
     static func linearlyLayoutViews(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, brackets: Bool, color: UIColor = UIColor.black, scale: Double) -> EquationView {
         var equationViews: [EquationView] = inputViews
         if brackets {
-            //let height = equationViews.compactMap { $0.view?.frame.height }.max()
             let height = linearComponentHiightAndOffset(inputViews: equationViews)
-            //guard let bracketHeight = height else { return .Nil}
             equationViews = addBracketsToView(views: inputViews, color: color, scale: scale, height: height.height, offset: height.offset)
         }
         let views: [UIView] = inputViews.compactMap { $0.view }
@@ -185,12 +183,13 @@ extension EquationView {
             label.text = "("
             label.font = label.font.withSize(17*CGFloat(scale))
             while label.font.lineHeight < height {
-                label.font = label.font.withSize( label.font.pointSize + 1)
+                label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize + 1)
                 label.sizeToFit()
             }
             label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
             label.font = UIFont(name: "Baskerville", size: label.font.pointSize)
             label.textColor = color
+            
             label.sizeToFit()
             return label
         }

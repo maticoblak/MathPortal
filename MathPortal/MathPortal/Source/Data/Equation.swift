@@ -110,12 +110,10 @@ extension Equation {
         // TODO: Maybe it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
         override var scale: Double  {
             didSet {
-                print("didSet")
                 refresh()
             }
         }
         override func refresh() {
-            print("inRefresh")
             if enumerator is Empty {
                 enumerator.scale = self.scale
             }
@@ -225,7 +223,6 @@ extension Equation {
             self.items = items
         }
         func refresh() {
-            print("inRefresh")
             if items.count == 1 {
                 items[0].scale = self.scale
             }
