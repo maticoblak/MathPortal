@@ -152,7 +152,48 @@ extension EquationView {
         fraction.view = fractionView
         return fraction
     }
-    
+    static func generateRoot(_ imputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: Double = 1) -> EquationView {
+        guard imputViews.count == 2 else { return .Nil}
+        let radicand = imputViews[1]
+        let rootIndex = imputViews[0]
+        guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
+        let frameHeight = radicandView.frame.height
+        /* points to draw fraction lines
+         P1 = starting point
+         p2 = from p1 to the end of rootIndex
+         P3 = from P2 to rhe bottom of the frame with a specific anfle
+         P4 = from P3 to the top of the frame with the same angle as before
+         P5 = from P4 to the end of the frame width
+         */
+        let P1: CGPoint = CGPoint(x: 0, y: frameHeight/2)
+        let P2: CGPoint = CGPoint(x: rootIndexView.frame.width, y: P1.y)
+        let P3: CGPoint = CGPoint(x: (P2.x + 0.5*frameHeight / tan(CGFloat.pi*4 / 9)), y: frameHeight)
+        let P4: CGPoint = CGPoint(x: P3.x + frameHeight / tan(CGFloat.pi*4 / 9), y: 0)
+        let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width, y: 0)
+        let frameWidth = radicandView.frame.width + P4.x
+        let rootView: UIView = UIView(frame: .zero)
+        rootView.frame = CGRect(x: 0, y: 0, width: frameWidth, height: frameHeight)
+        
+        let path = UIBezierPath()
+        path.move(to: P1)
+        path.addLine(to: P2)
+        path.addLine(to: P3)
+        path.addLine(to: P4)
+        path.addLine(to: P5)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = path.cgPath
+        shapeLayer.strokeColor = color.cgColor
+        shapeLayer.fillColor = selectedColor.cgColor
+        shapeLayer.lineWidth = 1.5
+        
+        rootView.layer.addSublayer(shapeLayer)
+        rootIndexView.frame = CGRect(x: 0, y: rootView.frame.height/2 - rootIndexView.frame.height - 1, width: rootIndexView.frame.width, height: rootIndexView.frame.height)
+        radicandView.frame = CGRect(x: P4.x, y: 2, width: radicandView.frame.width, height: radicandView.frame.height)
+        rootView.addSubview(rootIndexView)
+        rootView.addSubview(radicandView)
+        return EquationView(view: rootView)
+    }
 
 }
 

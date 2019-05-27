@@ -32,6 +32,7 @@ extension Button {
         case levelOut
         case levelIn
         case fraction
+        case root
         
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
         
@@ -50,6 +51,7 @@ extension Button {
             case .levelIn: return "In"
             case .levelOut: return "Out"
             case .fraction: return "a/b"
+            case .root: return "Root"
             }
         }
         var componentView: UIView? {
@@ -60,53 +62,14 @@ extension Button {
             case .brackets:
                 guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], brackets: true, color: UIColor.gray, scale: 1).view else { return EquationView.Nil.view }
                 return brackets
+            case .root:
+                guard let root: UIView = EquationView.generateRoot([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.5), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)]).view else { return EquationView.Nil.view}
+                return root
             case .back, .indicator, .integer, .plus, .minus, .forward, .delete, .done, .levelIn, .levelOut:
                 break
             }
             return nil
         }
         
-
-//        func createFractionView() -> UIView {
-//            var numerator: UILabel  {
-//                let label = UILabel(frame: .zero)
-//                label.text = "a"
-//                label.textColor = UIColor.lightGray
-//                label.sizeToFit()
-//                return label
-//            }
-//            var denominator: UILabel  {
-//                let label = UILabel(frame: .zero)
-//                label.text = "b"
-//                label.textColor = UIColor.lightGray
-//                label.sizeToFit()
-//                return label
-//            }
-//            var fractionLine: UIView {
-//                let line = UIView(frame: .zero)
-//                line.frame.size = CGSize(width: max(numerator.bounds.width, denominator.bounds.width) + 3, height: 1.5  )
-//
-//                line.backgroundColor = UIColor.lightGray
-//                return line
-//            }
-//
-//            let views = [numerator, fractionLine, denominator]
-//            let width: CGFloat = fractionLine.frame.width
-//
-//            let fractionView: UIView = UIView(frame: .zero)
-//
-//            var y: CGFloat = 0.0
-//            views.forEach { item in
-//                item.center.x = width / 2
-//                item.frame.origin.y = y
-//
-//                fractionView.addSubview(item)
-//
-//                y += item.bounds.height
-//            }
-//
-//            fractionView.frame = CGRect(x: 0, y: 0, width: width, height: y)
-//            return fractionView
-//        }
     }
 }

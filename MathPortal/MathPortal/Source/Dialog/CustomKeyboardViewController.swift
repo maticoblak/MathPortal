@@ -16,7 +16,7 @@ class CustomKeyboardViewController: UIViewController {
     
     weak var delegate: CustomKeyboardViewControllerDelegate?
     
-    let keyboardButtons: [Button.ButtonType] = Button.ButtonType.integers + [.plus, .minus, .back, .forward, .delete, .brackets, .done, .levelIn, .levelOut, .fraction]
+    let keyboardButtons: [Button.ButtonType] = Button.ButtonType.integers + [.plus, .minus, .back, .forward, .delete, .brackets, .done, .levelIn, .levelOut, .fraction, .root]
 }
 
 extension CustomKeyboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {

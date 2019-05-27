@@ -55,6 +55,8 @@ class Equation {
             break
         case .fraction:
             currentIndicator.addComponent(Fraction(), brackets: false)
+            break
+        case .root:
             break 
         }
     }
@@ -199,6 +201,72 @@ extension Equation {
             self.init(enumerator: Empty(), denomenator: Empty())
         }
     }
+    
+    //Mark: - Root
+    
+    class Root: Component {
+        override var scale: Double {
+            didSet {
+                refresh()
+            }
+        }
+        override func refresh() {
+            
+        }
+        var rootIndex: Expression {
+            get { return items[0]}
+            set {
+                newValue.parent = self
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[0] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }
+            }
+        }
+        var radicand: Expression {
+            get { return items[1] }
+            set {
+                newValue.parent = self
+                if items.count < 2 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[1] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[1], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                }
+            }
+        }
+        init(index: Expression?, radicand: Expression?) {
+            super.init()
+            self.rootIndex = index ?? Empty()
+            self.radicand = radicand ?? Empty()
+        }
+        override convenience init() {
+            self.init(index: Empty(), radicand: Empty())
+        }
+    }
+    
     // MARK: - Empty
     class Empty: Expression {
         
