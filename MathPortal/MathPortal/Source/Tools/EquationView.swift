@@ -157,12 +157,13 @@ extension EquationView {
         let radicand = imputViews[1]
         let rootIndex = imputViews[0]
         guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
-        var offset = radicand.horizontalOffset + 3.5
+        //NOTE: the 4.5, 8 and all hardcoded integers in the function are there because we don't want to color the backhround exactly on the root lines or make the lines stick together - it creats an offset around the lines
+        var offset = radicand.horizontalOffset + 4.5
         var frameHeight = radicandView.frame.height + 8
+        // if the index is to big to fit in the current frame - make frame bigger and move offset
         if rootIndexView.frame.height > offset {
             frameHeight += rootIndexView.frame.height - offset
             offset += rootIndexView.frame.height - offset + 2
-
         }
         /* points to draw fraction lines
          P1 = starting point
@@ -171,11 +172,12 @@ extension EquationView {
          P4 = from P3 to the top of the frame with the same angle as before
          P5 = from P4 to the end of the frame width
          */
+        // TODO: Use similar triangles instead ont tan function
         let P1: CGPoint = CGPoint(x: 2, y: offset)
         let P2: CGPoint = CGPoint(x: P1.x + rootIndexView.frame.width, y: P1.y)
         let P3: CGPoint = CGPoint(x: (P2.x + 0.5*frameHeight / tan(CGFloat.pi*4 / 9)), y: frameHeight - 4)
         let P4: CGPoint = CGPoint(x: P3.x + frameHeight / tan(CGFloat.pi*4 / 9), y: frameHeight - radicandView.frame.height - 4)
-        let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width, y: P4.y)
+        let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width + 2, y: P4.y)
         let frameWidth = radicandView.frame.width + P4.x + 4
         let rootView: UIView = UIView(frame: .zero)
         rootView.frame = CGRect(x: 0, y: 0, width: frameWidth, height: frameHeight)
@@ -194,8 +196,9 @@ extension EquationView {
         shapeLayer.lineWidth = 1.5
         
         rootView.layer.addSublayer(shapeLayer)
+        
         rootIndexView.frame = CGRect(x: P1.x, y: offset - rootIndexView.frame.height - 1, width: rootIndexView.frame.width, height: rootIndexView.frame.height)
-        radicandView.frame = CGRect(x: P4.x, y: /*offset - radicand.horizontalOffset*/ P4.y + 1 , width: radicandView.frame.width, height: radicandView.frame.height)
+        radicandView.frame = CGRect(x: P4.x, y: offset - radicand.horizontalOffset, width: radicandView.frame.width, height: radicandView.frame.height)
         rootView.addSubview(rootIndexView)
         rootView.addSubview(radicandView)
         rootView.backgroundColor = selectedColor

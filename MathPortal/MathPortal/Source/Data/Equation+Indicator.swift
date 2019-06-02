@@ -71,8 +71,8 @@ extension Equation {
         func forward() {
             if let component = expression as? Component {
                 
-                // if the indicator is on denominator go to whole fraction - we dont watn the indicator to be in the fraction after the denominator
-                if component is Fraction, offset == 1 {
+                // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
+                if (component is Fraction || component is Root), offset == component.items.count - 1 {
                     levelOut()
                 // if component only has Empty expression in items - don't want to be in front or behinde it
                 } else if component.items.count == 1, component.items.first is Empty {
@@ -116,8 +116,8 @@ extension Equation {
         
         func back() {
             if let component = expression as? Component {
-                // if the indicator is on enumerator go to whole fraction - don7T want to be in fraction before the enumerator
-                if component is Fraction, offset == 0 {
+                // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
+                if (component is Fraction || component is Root), offset == 0 {
                     levelOut()
                 // if component only has Empty expression in items - don't want to be in front or behinde it
                 } else if component.items.count == 1, component.items.first is Empty {
@@ -190,6 +190,7 @@ extension Equation {
                     }
                 // the indicator is on empty field
                 } else if component.items[offset] is Empty {
+                    // if the componet is special component
                     if component is Fraction || component is Root {
                         component.addValue(expression: textValue, offset: offset)
                         levelIn()
@@ -228,15 +229,14 @@ extension Equation {
                         first.type = operatorType
                     } else {
                         component.items.insert(newOperator, at: 0)
-                        
                     }
                 // if indicator is in the middle of component and on operator
                 } else if let operatorAtIndex = component.items[offset] as? Operator {
                     operatorAtIndex.type = operatorType
                 // if the indicator is on empty field
                 } else if component.items[offset] is Empty {
-                    if let fraction = component as? Fraction {
-                        fraction.addValue(expression: newOperator, offset: offset)
+                    if component is Fraction || component is Root {
+                        component.addValue(expression: newOperator, offset: offset)
                         levelIn()
                         forward()
                     } else {
@@ -289,15 +289,7 @@ extension Equation {
         // component can be regular component or special cases like fraction
         func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Bool ) {
             newComponent.showBrackets = brackets
-            if let fraction = expression as? Fraction {
-                guard fraction.items[offset] is Empty else { return }
-                fraction.addValue(expression: newComponent, offset: offset)
-                newComponent.scale = adjustScale(expression: newComponent)
-
-                levelIn()
-                levelIn()
-            } else if let component = expression as? Component {
-                
+            if let component = expression as? Component {
                 newComponent.parent = component
                 newComponent.scale = adjustScale(expression: newComponent)
                 // if the indicator is at the end of component
@@ -307,7 +299,14 @@ extension Equation {
                 } else if offset < 0 {
                     component.items.insert(newComponent, at: 0)
                 } else if component.items[offset] is Empty  {
-                    component.items[offset] = newComponent
+                    if component is Fraction || component is Root {
+                        component.addValue(expression: newComponent, offset: offset)
+                        newComponent.scale = adjustScale(expression: newComponent)
+                        levelIn()
+                    } else {
+                        component.items[offset] = newComponent
+                        
+                    }
                 } else {
                     component.items[offset].color = defaultColor
                     component.items.insert(newComponent, at: offset)
