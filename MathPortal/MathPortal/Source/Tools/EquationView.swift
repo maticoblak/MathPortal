@@ -173,10 +173,10 @@ extension EquationView {
          P5 = from P4 to the end of the frame width
          */
         // TODO: Use similar triangles instead ont tan function
-        let P1: CGPoint = CGPoint(x: 2, y: offset)
+        let P1: CGPoint = CGPoint(x: 2, y: offset + 1.5/2)
         let P2: CGPoint = CGPoint(x: P1.x + rootIndexView.frame.width, y: P1.y)
-        let P3: CGPoint = CGPoint(x: (P2.x + 0.5*frameHeight / tan(CGFloat.pi*4 / 9)), y: frameHeight - 4)
-        let P4: CGPoint = CGPoint(x: P3.x + frameHeight / tan(CGFloat.pi*4 / 9), y: frameHeight - radicandView.frame.height - 4)
+        let P3: CGPoint = CGPoint(x: P2.x + 2.5, y: frameHeight - 4)
+        let P4: CGPoint = CGPoint(x: P3.x + (2.5*frameHeight / (frameHeight - offset)), y: frameHeight - radicandView.frame.height - 4)
         let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width + 2, y: P4.y)
         let frameWidth = radicandView.frame.width + P4.x + 4
         let rootView: UIView = UIView(frame: .zero)
@@ -197,7 +197,7 @@ extension EquationView {
         
         rootView.layer.addSublayer(shapeLayer)
         
-        rootIndexView.frame = CGRect(x: P1.x, y: offset - rootIndexView.frame.height - 1, width: rootIndexView.frame.width, height: rootIndexView.frame.height)
+        rootIndexView.frame = CGRect(x: P1.x, y: offset - rootIndexView.frame.height - CGFloat(scale), width: rootIndexView.frame.width, height: rootIndexView.frame.height)
         radicandView.frame = CGRect(x: P4.x, y: offset - radicand.horizontalOffset, width: radicandView.frame.width, height: radicandView.frame.height)
         rootView.addSubview(rootIndexView)
         rootView.addSubview(radicandView)

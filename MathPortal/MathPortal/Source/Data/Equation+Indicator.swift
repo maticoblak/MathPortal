@@ -315,7 +315,7 @@ extension Equation {
             } else if let text = expression as? Text {
                 guard offset > 0 else { return }
                 newComponent.parent = text.parent
-                newComponent.scale = adjustScale(expression: newComponent)
+                //newComponent.scale = adjustScale(expression: newComponent)
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
@@ -402,19 +402,11 @@ extension Equation {
             guard let parentOfParet = parent.parent else { return parent.scale }
             if expression is Fraction {
                 if parentOfParet is Fraction {
-//                    if parentOfParet.scale > 0.7 {
-//                        return parentOfParet.scale * 0.8
-//                    } else {
-//                        return parentOfParet.scale
-//                    }
                     return parentOfParet.scale * 0.8
-                } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, parent.showBrackets == true {
-//                    if parentOfParet.scale > 0.7 {
-//                        return parentOfparentOfParet.scale * 0.8
-//                    } else {
-//                        return parentOfparentOfParet.scale
-//                    }
+                } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, (parent.showBrackets == true /*|| parent is Root*/) {
                     return parentOfparentOfParet.scale * 0.8
+                } else if let root = parentOfParet as? Root, root.parent?.parent is Fraction, parent === root.radicand {
+                    return root.scale * 0.8
                 } else { return parent.scale }
             }  else { return parent.scale }
         }

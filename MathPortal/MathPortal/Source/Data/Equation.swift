@@ -70,7 +70,12 @@ extension Equation {
     class Expression {
         weak var parent: Component?
         var color: UIColor = defaultColor
-        var scale: Double = 1.0
+        var scale: Double = 1.0 {
+            didSet {
+                guard scale < 0.5 else { return }
+                scale = 0.5
+            }
+        }
         func computeResult() -> Double? { return nil }
         
         func generateView() -> EquationView { return .Nil }
@@ -81,7 +86,7 @@ extension Equation {
             case plus
             case minus
         }
-        
+
         var type: OperatorType
         
         init(_ type: OperatorType) {
@@ -116,8 +121,9 @@ extension Equation {
                 refresh()
             }
         }
+        
         override func refresh() {
-            guard scale >= 0.7 else { scale = 0.7; return}
+            guard scale >= 0.5 else { scale = 0.5; return}
             if enumerator is Empty {
                 enumerator.scale = self.scale
             }
@@ -204,7 +210,7 @@ extension Equation {
             }
         }
         override func refresh() {
-            guard scale >= 0.7 else { scale = 0.7; return}
+            guard scale >= 0.5 else { scale = 0.5; return}
             if rootIndex is Empty {
                 rootIndex.scale = self.scale / 2
             }
@@ -288,7 +294,6 @@ extension Equation {
     // MARK: - Component
     class Component: Expression {
         var showBrackets: Bool = false
-        var fraction: Bool = false
         var items: [Expression] = [Expression]()
         override var scale: Double {
             didSet {
