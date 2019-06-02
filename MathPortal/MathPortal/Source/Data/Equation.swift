@@ -57,6 +57,7 @@ class Equation {
             currentIndicator.addComponent(Fraction(), brackets: false)
             break
         case .root:
+            currentIndicator.addComponent(Root(), brackets: false)
             break 
         }
     }
@@ -170,11 +171,7 @@ extension Equation {
                 }
             }
         }
-        
-        override func generateView() -> EquationView {
-            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale)
-        }
-        func addValues(offset: Int?, expression: Expression?) {
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
             guard let offset = offset else { return }
             guard let expression = expression else { return }
             if offset == 0  {
@@ -183,15 +180,10 @@ extension Equation {
                 self.denomenator = expression
             }
         }
-        
-        func deleteComponent(offset: Int?) {
-            guard let offset = offset else { return }
-            guard offset == 0 || offset == 1 else { return }
-            guard self.items[offset] is Empty == false else { return }
-            let empty = Empty()
-            empty.parent = self
-            self.items[offset] = empty
+        override func generateView() -> EquationView {
+            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale)
         }
+
         init(enumerator: Expression?, denomenator: Expression?) {
             super.init()
             self.enumerator = enumerator ?? Empty()
@@ -219,12 +211,12 @@ extension Equation {
                 newValue.parent = self
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.scale = self.scale / 2 * newValue.scale
                     items.append(newValue)
                 } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
-                    newComponent.scale = self.scale
+                    newComponent.scale = self.scale / 2
                     newValue.parent = newComponent
                     items[0] = newComponent
                 } else {
@@ -262,8 +254,20 @@ extension Equation {
             self.rootIndex = index ?? Empty()
             self.radicand = radicand ?? Empty()
         }
+        override func addValue(expression: Expression?, offset: Int?) {
+            guard let offset = offset else { return }
+            guard let expression = expression else { return }
+            if offset == 0  {
+                self.rootIndex = expression
+            } else if offset == 1 {
+                self.radicand = expression
+            }
+        }
         override convenience init() {
             self.init(index: Empty(), radicand: Empty())
+        }
+        override func generateView() -> EquationView {
+            return EquationView.generateRoot(items.map { $0.generateView() }, selectedColor: color, scale: scale)
         }
     }
     
@@ -295,6 +299,17 @@ extension Equation {
                 items[0].scale = self.scale
             }
         }
+        
+        func addValue(expression: Expression?, offset: Int?) { }
+        func delete(offset: Int) {
+            guard offset < items.count else { return }
+            guard self.items[offset] is Empty == false else { return }
+            let empty = Empty()
+            empty.parent = self
+            empty.scale = items[offset].scale
+            self.items[offset] = empty
+        }
+        
         override func computeResult() -> Double? {
             // TODO: fix this, use priorities and stuff
             var value: Double = 0.0

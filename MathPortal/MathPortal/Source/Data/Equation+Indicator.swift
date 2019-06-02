@@ -190,8 +190,8 @@ extension Equation {
                     }
                 // the indicator is on empty field
                 } else if component.items[offset] is Empty {
-                    if let fraction = component as? Fraction {
-                        fraction.addValues(offset: offset, expression: textValue)
+                    if component is Fraction || component is Root {
+                        component.addValue(expression: textValue, offset: offset)
                         levelIn()
                         forward()
                     } else {
@@ -236,7 +236,7 @@ extension Equation {
                 // if the indicator is on empty field
                 } else if component.items[offset] is Empty {
                     if let fraction = component as? Fraction {
-                        fraction.addValues(offset: offset, expression: newOperator)
+                        fraction.addValue(expression: newOperator, offset: offset)
                         levelIn()
                         forward()
                     } else {
@@ -291,7 +291,7 @@ extension Equation {
             newComponent.showBrackets = brackets
             if let fraction = expression as? Fraction {
                 guard fraction.items[offset] is Empty else { return }
-                fraction.addValues(offset: offset, expression: newComponent)
+                fraction.addValue(expression: newComponent, offset: offset)
                 newComponent.scale = adjustScale(expression: newComponent)
 
                 levelIn()
@@ -333,13 +333,13 @@ extension Equation {
         }
 
         func delete() {
-            if let fraction = expression as? Fraction {
-                fraction.deleteComponent(offset: offset)
-                fraction.items[offset].color = selectedColor
-            } else if let component = expression as? Component {
-                
+            if let component = expression as? Component {
+                if component is Root || component is Fraction {
+                    component.delete(offset: offset)
+                    component.items[offset].color = selectedColor
+
                 // if the indicator is at the end of the component
-                if offset == component.items.count {
+                } else if offset == component.items.count {
                     // if the last item is text delete each character separatly
                     if let text = component.items.last as? Text {
                         text.value.removeLast()
