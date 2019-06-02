@@ -117,6 +117,7 @@ extension Equation {
             }
         }
         override func refresh() {
+            guard scale >= 0.7 else { scale = 0.7; return}
             if enumerator is Empty {
                 enumerator.scale = self.scale
             }
@@ -203,7 +204,13 @@ extension Equation {
             }
         }
         override func refresh() {
-            
+            guard scale >= 0.7 else { scale = 0.7; return}
+            if rootIndex is Empty {
+                rootIndex.scale = self.scale / 2
+            }
+            if radicand is Empty {
+                radicand.scale = self.scale
+            }
         }
         var rootIndex: Expression {
             get { return items[0]}
@@ -211,7 +218,7 @@ extension Equation {
                 newValue.parent = self
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale / 2 * newValue.scale
+                    newValue.scale = self.scale / 2 /* newValue.scale*/
                     items.append(newValue)
                 } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])

@@ -193,7 +193,7 @@ extension EquationView {
         shapeLayer.path = path.cgPath
         shapeLayer.strokeColor = color.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 1.5
+        shapeLayer.lineWidth = 1.5 * CGFloat(scale * scale)
         
         rootView.layer.addSublayer(shapeLayer)
         

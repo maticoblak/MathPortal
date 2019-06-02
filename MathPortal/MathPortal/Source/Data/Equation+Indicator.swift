@@ -402,17 +402,19 @@ extension Equation {
             guard let parentOfParet = parent.parent else { return parent.scale }
             if expression is Fraction {
                 if parentOfParet is Fraction {
-                    if parentOfParet.scale > 0.7 {
-                        return parentOfParet.scale * 0.8
-                    } else {
-                        return parentOfParet.scale
-                    }
+//                    if parentOfParet.scale > 0.7 {
+//                        return parentOfParet.scale * 0.8
+//                    } else {
+//                        return parentOfParet.scale
+//                    }
+                    return parentOfParet.scale * 0.8
                 } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, parent.showBrackets == true {
-                    if parentOfParet.scale > 0.7 {
-                        return parentOfparentOfParet.scale * 0.8
-                    } else {
-                        return parentOfparentOfParet.scale
-                    }
+//                    if parentOfParet.scale > 0.7 {
+//                        return parentOfparentOfParet.scale * 0.8
+//                    } else {
+//                        return parentOfparentOfParet.scale
+//                    }
+                    return parentOfparentOfParet.scale * 0.8
                 } else { return parent.scale }
             }  else { return parent.scale }
         }
