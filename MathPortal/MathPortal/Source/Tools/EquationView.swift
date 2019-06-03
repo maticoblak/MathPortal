@@ -152,10 +152,10 @@ extension EquationView {
         fraction.view = fractionView
         return fraction
     }
-    static func generateRoot(_ imputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: Double = 1) -> EquationView {
-        guard imputViews.count == 2 else { return .Nil}
-        let radicand = imputViews[1]
-        let rootIndex = imputViews[0]
+    static func generateRoot(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: Double = 1) -> EquationView {
+        guard inputViews.count == 2 else { return .Nil}
+        let radicand = inputViews[1]
+        let rootIndex = inputViews[0]
         guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
         //NOTE: the 4.5, 8 and all hardcoded integers in the function are there because we don't want to color the backhround exactly on the root lines or make the lines stick together - it creats an offset around the lines
         var offset = radicand.horizontalOffset + 4.5
@@ -172,7 +172,7 @@ extension EquationView {
          P4 = from P3 to the top of the frame with the same angle as before
          P5 = from P4 to the end of the frame width
          */
-        // TODO: Use similar triangles instead ont tan function
+        //TODO: Create separate class (UIView subclass that overrides draw rect, and adds labels to it. Also hold color properties and fonts...)
         let P1: CGPoint = CGPoint(x: 2, y: offset + 1.5/2)
         let P2: CGPoint = CGPoint(x: P1.x + rootIndexView.frame.width, y: P1.y)
         let P3: CGPoint = CGPoint(x: P2.x + 2.5, y: frameHeight - 4)
