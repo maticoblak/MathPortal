@@ -60,6 +60,7 @@ extension Button {
                 guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], color: UIColor.gray).view else { return EquationView.Nil.view}
                 return fraction
             case .brackets:
+                //guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], brackets: true, color: UIColor.gray, scale: 1).view else { return EquationView.Nil.view }
                 guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], brackets: true, color: UIColor.gray, scale: 1).view else { return EquationView.Nil.view }
                 return brackets
             case .root:
