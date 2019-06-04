@@ -152,60 +152,79 @@ extension EquationView {
         fraction.view = fractionView
         return fraction
     }
+//    static func generateRoot(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: Double = 1) -> EquationView {
+//        guard inputViews.count == 2 else { return .Nil}
+//        let radicand = inputViews[1]
+//        let rootIndex = inputViews[0]
+//        guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
+//        //NOTE: the 4.5, 8 and all hardcoded integers in the function are there because we don't want to color the backhround exactly on the root lines or make the lines stick together - it creats an offset around the lines
+//        var offset = radicand.horizontalOffset + 4.5
+//        var frameHeight = radicandView.frame.height + 8
+//        // if the index is to big to fit in the current frame - make frame bigger and move offset
+//
+////        let rootView: RootView = RootView()
+////        rootView.rootIndexView = rootIndex.view
+////        rootView.radicandView = radicand.view
+////        rootView.offset = radicand.horizontalOffset + 4.5
+//
+//        if rootIndexView.frame.height > offset {
+//            frameHeight += rootIndexView.frame.height - offset
+//            offset += rootIndexView.frame.height - offset + 2
+//        }
+//        /* points to draw fraction lines
+//         P1 = starting point
+//         p2 = from p1 to the end of rootIndex
+//         P3 = from P2 to rhe bottom of the frame with a specific anfle
+//         P4 = from P3 to the top of the frame with the same angle as before
+//         P5 = from P4 to the end of the frame width
+//         */
+//        //TODO: Create separate class (UIView subclass that overrides draw rect, and adds labels to it. Also hold color properties and fonts...)
+//        let P1: CGPoint = CGPoint(x: 2, y: offset + 1.5/2)
+//        let P2: CGPoint = CGPoint(x: P1.x + rootIndexView.frame.width, y: P1.y)
+//        let P3: CGPoint = CGPoint(x: P2.x + 2.5, y: frameHeight - 4)
+//        let P4: CGPoint = CGPoint(x: P3.x + (2.5*frameHeight / (frameHeight - offset)), y: frameHeight - radicandView.frame.height - 4)
+//        let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width + 2, y: P4.y)
+//        let frameWidth = radicandView.frame.width + P4.x + 4
+//        let rootView: UIView = UIView(frame: .zero)
+//        rootView.frame = CGRect(x: 0, y: 0, width: frameWidth, height: frameHeight)
+//
+//        let path = UIBezierPath()
+//        path.move(to: P1)
+//        path.addLine(to: P2)
+//        path.addLine(to: P3)
+//        path.addLine(to: P4)
+//        path.addLine(to: P5)
+//
+//        let shapeLayer = CAShapeLayer()
+//        shapeLayer.path = path.cgPath
+//        shapeLayer.strokeColor = color.cgColor
+//        shapeLayer.fillColor = UIColor.clear.cgColor
+//        shapeLayer.lineWidth = 1.5 * CGFloat(scale * scale)
+//
+//        rootView.layer.addSublayer(shapeLayer)
+//
+//        rootIndexView.frame = CGRect(x: P1.x, y: offset - rootIndexView.frame.height - CGFloat(scale), width: rootIndexView.frame.width, height: rootIndexView.frame.height)
+//        radicandView.frame = CGRect(x: P4.x, y: offset - radicand.horizontalOffset, width: radicandView.frame.width, height: radicandView.frame.height)
+//        rootView.addSubview(rootIndexView)
+//        rootView.addSubview(radicandView)
+//        rootView.backgroundColor = selectedColor
+//        rootView.layer.cornerRadius = 5
+//        return EquationView(view: rootView, horizontalOffset: offset)
+//    }
+    
     static func generateRoot(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: Double = 1) -> EquationView {
         guard inputViews.count == 2 else { return .Nil}
         let radicand = inputViews[1]
         let rootIndex = inputViews[0]
         guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
-        //NOTE: the 4.5, 8 and all hardcoded integers in the function are there because we don't want to color the backhround exactly on the root lines or make the lines stick together - it creats an offset around the lines
-        var offset = radicand.horizontalOffset + 4.5
-        var frameHeight = radicandView.frame.height + 8
-        // if the index is to big to fit in the current frame - make frame bigger and move offset
-        if rootIndexView.frame.height > offset {
-            frameHeight += rootIndexView.frame.height - offset
-            offset += rootIndexView.frame.height - offset + 2
-        }
-        /* points to draw fraction lines
-         P1 = starting point
-         p2 = from p1 to the end of rootIndex
-         P3 = from P2 to rhe bottom of the frame with a specific anfle
-         P4 = from P3 to the top of the frame with the same angle as before
-         P5 = from P4 to the end of the frame width
-         */
-        //TODO: Create separate class (UIView subclass that overrides draw rect, and adds labels to it. Also hold color properties and fonts...)
-        let P1: CGPoint = CGPoint(x: 2, y: offset + 1.5/2)
-        let P2: CGPoint = CGPoint(x: P1.x + rootIndexView.frame.width, y: P1.y)
-        let P3: CGPoint = CGPoint(x: P2.x + 2.5, y: frameHeight - 4)
-        let P4: CGPoint = CGPoint(x: P3.x + (2.5*frameHeight / (frameHeight - offset)), y: frameHeight - radicandView.frame.height - 4)
-        let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width + 2, y: P4.y)
-        let frameWidth = radicandView.frame.width + P4.x + 4
-        let rootView: UIView = UIView(frame: .zero)
-        rootView.frame = CGRect(x: 0, y: 0, width: frameWidth, height: frameHeight)
-        
-        let path = UIBezierPath()
-        path.move(to: P1)
-        path.addLine(to: P2)
-        path.addLine(to: P3)
-        path.addLine(to: P4)
-        path.addLine(to: P5)
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = color.cgColor
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 1.5 * CGFloat(scale * scale)
-        
-        rootView.layer.addSublayer(shapeLayer)
-        
-        rootIndexView.frame = CGRect(x: P1.x, y: offset - rootIndexView.frame.height - CGFloat(scale), width: rootIndexView.frame.width, height: rootIndexView.frame.height)
-        radicandView.frame = CGRect(x: P4.x, y: offset - radicand.horizontalOffset, width: radicandView.frame.width, height: radicandView.frame.height)
-        rootView.addSubview(rootIndexView)
-        rootView.addSubview(radicandView)
+        let rootView = Draw.RootView(rootIndex: rootIndexView, theOtherView: radicandView, radicandHorizontalOffset: radicand.horizontalOffset)
+        rootView.scale = CGFloat(scale)
+        rootView.strokeColor = color
         rootView.backgroundColor = selectedColor
-        rootView.layer.cornerRadius = 5
-        return EquationView(view: rootView, horizontalOffset: offset)
+        
+        return EquationView(view: rootView, horizontalOffset: rootView.offset)
     }
-
+    
 }
 
 
@@ -263,5 +282,4 @@ extension EquationView {
         newViews.insert(EquationView(view: leftBracket, horizontalOffset: offset), at: 0)
         return newViews
     }
-    
 }
