@@ -400,7 +400,7 @@ extension Equation {
                 back()
             }
         }
-        
+        // TODO: adjust for all special components
         func adjustScale(expression: Expression) -> CGFloat  {
             guard let parent = expression.parent else { return 1 }
             guard let parentOfParet = parent.parent else { return parent.scale }
