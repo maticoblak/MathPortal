@@ -16,14 +16,14 @@ class CustomKeyboardCollectionViewCell: UICollectionViewCell {
     
     func setKey(key: Button.ButtonType) {
         switch key {
-        case .indicator:
-            //keyboardKeyLabel?.text = key.string
-            return
-        default:
+        case .back, .brackets, .delete, .done, .exponent, .forward, .fraction, .index, .root, .plus, .minus, .logarithm, .levelOut, .levelIn, .integer, .indexAndExponent:
             guard let newView = key.componentView else { return }
             guard let cellView = keyboardCellView else { return }
             newView.center = CGPoint(x: cellView.frame.width / 2, y: cellView.frame.height / 2)
             keyboardCellView?.addSubview(newView)
+        case .indicator:
+            //keyboardKeyLabel?.text = key.string
+            return
         }
         
     }
