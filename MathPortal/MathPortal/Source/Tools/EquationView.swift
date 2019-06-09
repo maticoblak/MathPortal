@@ -82,7 +82,7 @@ class EquationView {
 // MARK: - Expresson views
 extension EquationView {
     
-    static func generateOperator(_ operatorType: Equation.Operator.OperatorType, colour: UIColor, scale: CGFloat) -> EquationView {
+    static func generateOperator(_ operatorType: Equation.Operator.OperatorType, backgroundColor: UIColor = Equation.defaultColor, scale: CGFloat = 1, color: UIColor = UIColor.black) -> EquationView {
         let label = UILabel(frame: .zero)
         label.text = {
             switch operatorType {
@@ -90,8 +90,9 @@ extension EquationView {
             case .minus: return "-"
             }
         }()
-        label.backgroundColor = colour
+        label.backgroundColor = backgroundColor
         label.font = label.font.withSize(17*CGFloat(scale))
+        label.textColor = color
         label.sizeToFit()
         label.layer.masksToBounds = true
         label.layer.cornerRadius = 5
@@ -99,14 +100,15 @@ extension EquationView {
     }
 
     
-    static func generateText(value: String, textRange: NSRange?, color: UIColor, scale: CGFloat) -> EquationView {
+    static func generateText(value: String, textRange: NSRange? = nil, backgroundColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1) -> EquationView {
         let label = UILabel(frame: .zero)
         let atributedString = NSMutableAttributedString(string: value)
         if let range = textRange  {
             atributedString.addAttribute(NSAttributedString.Key.backgroundColor, value: Equation.selectedColor, range: range)
         }
         label.attributedText = atributedString
-        label.backgroundColor = color
+        label.backgroundColor = backgroundColor
+        label.textColor = color
         label.font = label.font.withSize(17*scale)
         label.sizeToFit()
         label.layer.masksToBounds = true

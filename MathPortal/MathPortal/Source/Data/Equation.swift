@@ -106,7 +106,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateOperator(type, colour: color, scale: scale)
+            return EquationView.generateOperator(type, backgroundColor: color, scale: scale)
         }
     }
     // MARK: - Text
@@ -122,7 +122,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateText(value: value, textRange: textRange, color: color, scale: scale)
+            return EquationView.generateText(value: value, textRange: textRange, backgroundColor: color, scale: scale)
         }
     }
     // MARK: - Fraction
