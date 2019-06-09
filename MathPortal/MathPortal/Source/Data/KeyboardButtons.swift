@@ -36,6 +36,7 @@ extension Button {
         case exponent
         case index
         case indexAndExponent
+        case logarithm
 
         
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
@@ -59,6 +60,8 @@ extension Button {
             case .exponent: return "exp"
             case .index: return "index"
             case .indexAndExponent: return "indexAndExponent"
+            case .logarithm: return "log"
+                
             }
         }
         var componentView: UIView? {
@@ -81,6 +84,9 @@ extension Button {
             case .indexAndExponent:
                 guard let indexAndExponent: UIView = EquationView.generateExponentAndIndex([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7) , EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7) ], type: .indexAndExponent, color: UIColor.gray).view else { return EquationView.Nil.view }
                 return indexAndExponent
+            case .logarithm:
+                guard let log: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], color: UIColor.gray, type: .logarithm).view else { return EquationView.Nil.view}
+                return log
             case .back, .indicator, .integer, .plus, .minus, .forward, .delete, .done, .levelIn, .levelOut:
                 break
             }

@@ -41,6 +41,8 @@ class EquationView {
         case index
         case exponent
         case indexAndExponent
+        case logarithm
+        case empty
         case other
     }
     
@@ -126,7 +128,7 @@ extension EquationView {
         layer.strokeColor = squareColor.cgColor
         square.layer.addSublayer(layer)
 
-        return EquationView(view: square, type: .other)
+        return EquationView(view: square, type: .empty)
     }
     
     static func generateFraction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
@@ -246,18 +248,26 @@ extension EquationView {
         }
     }
     
-    static func generateLogarithm(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1) -> EquationView {
-        
-        guard inputViews.count == 3 else { return .Nil }
-        
-        var logView: UILabel {
-            var label = UILabel(frame: .zero)
-            label.text = "log"
-            label.font = label.font.withSize(17*scale)
-            label.textColor = color
-            label.sizeToFit()
-            return label
+    static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: ExpressionType, brackets: Bool = false) -> EquationView {
+        guard inputViews.count > 0 else { return .Nil }
+        if type == .logarithm {
+            guard inputViews.count == 2 else { return .Nil }
+            let base = inputViews[1]
+            let index = inputViews[0]
+            var logView: EquationView {
+                let label = UILabel(frame: .zero)
+                label.text = "log"
+                label.font = label.font.withSize(17*scale)
+                label.textColor = color
+                label.sizeToFit()
+                return EquationView(view: label, type: .other)
+            }
+            var log: EquationView = generateExponentAndIndex([logView, index], type: .index, scale: scale)
+            log = linearlyLayoutViews([log, base], type: .logarithm, brackets: brackets, scale: scale)
+            log.view?.backgroundColor = selectedColor
+            return log
         }
+        
         return .Nil
     }
 }
