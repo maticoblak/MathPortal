@@ -58,7 +58,7 @@ extension MathEquationViewController: CustomKeyboardViewControllerDelegate {
         switch key {
         case .done:
             keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root:
+        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent:
             equation.handelMathKeyboardButtonsPressed(button: key)
         }
         refreshEquation()

@@ -58,8 +58,18 @@ class Equation {
             break
         case .root:
             currentIndicator.addComponent(Root(), brackets: false)
-            break 
+            break
+        case .indexAndExponent:
+            currentIndicator.addComponent(IndexAndExponent(), brackets: false)
+            break
+        case .exponent:
+            currentIndicator.addComponent(Exponent(), brackets: false)
+        case .index:
+            currentIndicator.addComponent(Index(), brackets: false)
+            break
         }
+        
+        
     }
 }
 
@@ -70,7 +80,7 @@ extension Equation {
     class Expression {
         weak var parent: Component?
         var color: UIColor = defaultColor
-        var scale: Double = 1.0 {
+        var scale: CGFloat = 1.0 {
             didSet {
                 guard scale < 0.5 else { return }
                 scale = 0.5
@@ -116,7 +126,7 @@ extension Equation {
     // MARK: - Fraction
     class Fraction: Component {
         // TODO: Maybe it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
-        override var scale: Double  {
+        override var scale: CGFloat  {
             didSet {
                 refresh()
             }
@@ -188,7 +198,7 @@ extension Equation {
             }
         }
         override func generateView() -> EquationView {
-            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale)
+            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: showBrackets)
         }
 
         init(enumerator: Expression?, denomenator: Expression?) {
@@ -204,7 +214,7 @@ extension Equation {
     //Mark: - Root
     
     class Root: Component {
-        override var scale: Double {
+        override var scale: CGFloat {
             didSet {
                 refresh()
             }
@@ -280,7 +290,233 @@ extension Equation {
             self.init(index: Empty(), radicand: Empty())
         }
         override func generateView() -> EquationView {
-            return EquationView.generateRoot(items.map { $0.generateView() }, selectedColor: color, scale: scale)
+            return EquationView.generateRoot(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: showBrackets)
+        }
+    }
+    
+    // MARK: - Exponent
+    class Exponent: Index {
+        override func generateView() -> EquationView {
+            return EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .exponent, selectedColor: color, scale: scale, brackets: showBrackets)
+        }
+    }
+    
+    // MARK: - Index
+    
+    class Index: Component {
+        override var scale: CGFloat {
+            didSet {
+                refresh()
+            }
+        }
+        override func refresh() {
+            guard scale >= 0.5 else { scale = 0.5; return}
+            if base is Empty {
+                base.scale = self.scale
+            }
+            if index is Empty {
+                index.scale = self.scale * 0.7
+            }
+        }
+        
+        var base: Expression {
+            get { return items[0]}
+            set {
+                newValue.parent = self
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[0] is Empty {
+                    if let newValue = newValue as? Component {
+                        newValue.showBrackets = true
+                        items[0] = newValue
+                    } else {
+                        let newComponent = Component(items: [newValue])
+                        newComponent.parent = self
+                        newComponent.scale = self.scale
+                        newValue.parent = newComponent
+                        items[0] = newComponent
+                    }
+//                    if let newValue = newValue as? Component, newValue.showBrackets == true {
+//                        items[0] = newValue
+//                    } else {
+//                        let newComponent = Component(items: [newValue])
+//                        newComponent.parent = self
+//                        newComponent.scale = self.scale
+//                        newValue.parent = newComponent
+//                        if let newValue = newValue as? Component, newValue.showBrackets == false {
+//                            newComponent.showBrackets = true
+//                        }
+//                        items[0] = newComponent
+//                    }
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }}
+        }
+        
+        var index: Expression {
+            get { return items[1]}
+            set {
+                newValue.parent = self
+                if items.count < 2 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale * 0.7
+                    items.append(newValue)
+                } else if items[1] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[2], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                }}
+        }
+        
+        init(base: Expression, exponent: Expression ) {
+            super.init()
+            self.base = base
+            self.index = exponent
+        }
+        override convenience init() {
+            self.init(base: Empty(), exponent: Empty())
+        }
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
+            guard let offset = offset, offset <= 2 else { return }
+            guard let expression = expression else { return }
+            if offset == 0 {
+                base = expression
+            } else if offset == 1 {
+                index = expression
+            }
+        }
+        override func generateView() -> EquationView {
+            return EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .index, selectedColor: color, scale: scale, brackets: showBrackets)
+        }
+    }
+    
+    // MARK: - Exponent & index
+    
+    class IndexAndExponent: Component {
+        override var scale: CGFloat {
+            didSet {
+                refresh()
+            }
+        }
+        override func refresh() {
+            guard scale >= 0.5 else { scale = 0.5; return}
+            if base is Empty {
+                base.scale = self.scale
+            }
+            if index is Empty {
+                index.scale = self.scale * 0.7
+            }
+            if exponent is Empty {
+                exponent.scale = self.scale * 0.7
+            }
+        }
+        
+        var base: Expression {
+            get { return items[0]}
+            set {
+                newValue.parent = self
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[0] is Empty {
+                    if let newValue = newValue as? Component, newValue.showBrackets == true {
+                        items[0] = newValue
+                    } else {
+                        let newComponent = Component(items: [newValue])
+                        newComponent.parent = self
+                        newComponent.scale = self.scale
+                        newValue.parent = newComponent
+                        if let newValue = newValue as? Component, newValue.showBrackets == false {
+                            newComponent.showBrackets = true
+                        }
+                        items[0] = newComponent
+                    }
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }}
+        }
+        var index: Expression {
+            get { return items[1]}
+            set {
+                newValue.parent = self
+                if items.count < 2 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale * 0.7
+                    items.append(newValue)
+                } else if items[1] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[1], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                }}
+        }
+        
+        var exponent: Expression {
+            get { return items[2]}
+            set {
+                newValue.parent = self
+                if items.count < 3 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale * 0.7
+                    items.append(newValue)
+                } else if items[2] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
+                    newValue.parent = newComponent
+                    items[2] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[2], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[2] = newComponent
+                }}
+        }
+        
+        init(base: Expression, index: Expression, exponent: Expression ) {
+            super.init()
+            self.base = base
+            self.index = index
+            self.exponent = exponent
+        }
+        override convenience init() {
+            self.init(base: Empty(), index: Empty(), exponent: Empty())
+        }
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
+            guard let offset = offset, offset <= 2 else { return }
+            guard let expression = expression else { return }
+            if offset == 0 {
+                base = expression
+            } else if offset == 1 {
+                index = expression
+            } else if offset == 2 {
+                exponent = expression
+            }
+        }
+        override func generateView() -> EquationView {
+            return EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .indexAndExponent, selectedColor: color, scale: scale, brackets: showBrackets)
         }
     }
     
@@ -295,7 +531,7 @@ extension Equation {
     class Component: Expression {
         var showBrackets: Bool = false
         var items: [Expression] = [Expression]()
-        override var scale: Double {
+        override var scale: CGFloat {
             didSet {
                 refresh()
             }
@@ -351,7 +587,11 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, selectedColor: color, brackets: showBrackets, scale: scale)
+            if items.isEmpty {
+                return .Nil
+            } else {
+                return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: showBrackets, scale: scale)
+            }
         }
     }
 }

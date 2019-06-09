@@ -24,8 +24,16 @@ class RootView: UIView {
     private(set) var offset: CGFloat = 0
     
     // accessable vars
-    var scale: CGFloat = 1
-    var strokeColor: UIColor = UIColor.black
+    var scale: CGFloat = 1 {
+        didSet {
+            refresh()
+        }
+    }
+    var strokeColor: UIColor = UIColor.black {
+        didSet {
+            refresh()
+        }
+    }
     
     init(rootIndex: UIView, theOtherView: UIView, radicandHorizontalOffset: CGFloat) {
         super.init(frame: .zero)
@@ -84,6 +92,7 @@ class RootView: UIView {
         self.frame = CGRect(x: 0, y: 0, width: frameWidth, height: frameHeight)
         self.clipsToBounds = true
         self.layer.cornerRadius = 5
+        self.backgroundColor = UIColor.clear
     }
     
     override func draw(_ rect: CGRect) {

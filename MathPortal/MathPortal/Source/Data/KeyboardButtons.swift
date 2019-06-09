@@ -33,6 +33,10 @@ extension Button {
         case levelIn
         case fraction
         case root
+        case exponent
+        case index
+        case indexAndExponent
+
         
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
         
@@ -52,6 +56,9 @@ extension Button {
             case .levelOut: return "Out"
             case .fraction: return "a/b"
             case .root: return "Root"
+            case .exponent: return "exp"
+            case .index: return "index"
+            case .indexAndExponent: return "indexAndExponent"
             }
         }
         var componentView: UIView? {
@@ -60,12 +67,20 @@ extension Button {
                 guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], color: UIColor.gray).view else { return EquationView.Nil.view}
                 return fraction
             case .brackets:
-                //guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], brackets: true, color: UIColor.gray, scale: 1).view else { return EquationView.Nil.view }
-                guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], brackets: true, color: UIColor.gray, scale: 1).view else { return EquationView.Nil.view }
+                guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], type: .brackets, brackets: true, color: UIColor.gray, scale: 1).view else { return EquationView.Nil.view }
                 return brackets
             case .root:
                 guard let root: UIView = EquationView.generateRoot([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.5), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1)], color: UIColor.gray).view else { return EquationView.Nil.view}
                 return root
+            case .exponent:
+                guard let exponent: UIView = EquationView.generateExponentAndIndex([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7)], type: .exponent, color: UIColor.gray).view else { return EquationView.Nil.view }
+                return exponent
+            case .index:
+                guard let index: UIView = EquationView.generateExponentAndIndex([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7) ], type: .index, color: UIColor.gray).view else { return EquationView.Nil.view }
+                return index
+            case .indexAndExponent:
+                guard let indexAndExponent: UIView = EquationView.generateExponentAndIndex([EquationView.generateEmpty(squareColor: UIColor.gray, scale: 1), EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7) , EquationView.generateEmpty(squareColor: UIColor.gray, scale: 0.7) ], type: .indexAndExponent, color: UIColor.gray).view else { return EquationView.Nil.view }
+                return indexAndExponent
             case .back, .indicator, .integer, .plus, .minus, .forward, .delete, .done, .levelIn, .levelOut:
                 break
             }

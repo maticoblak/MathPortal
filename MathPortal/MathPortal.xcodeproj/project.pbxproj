@@ -179,6 +179,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C006E62D22A78F140017EC6F /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				C006E62922A5014F0017EC6F /* RootView.swift */,
+				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
+			);
+			path = "Custom Views";
+			sourceTree = "<group>";
+		};
 		C078964F22857F9900C506B7 /* MathPortalTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,8 +353,7 @@
 				C0BD61D22263895E00E48081 /* ErrorMessage.swift */,
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
 				C03EA93C22940BE4005853BE /* EquationView.swift */,
-				C006E62922A5014F0017EC6F /* RootView.swift */,
-				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
+				C006E62D22A78F140017EC6F /* Custom Views */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
