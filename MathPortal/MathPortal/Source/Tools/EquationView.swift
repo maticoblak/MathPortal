@@ -69,7 +69,7 @@ class EquationView {
         var currentType: ExpressionType = type
         if brackets {
             currentType = .brackets
-            addBrackets(to: &newView, withScale: scale, andColor: color)
+            newView = addBrackets(to: newView, withScale: scale, andColor: color)
         }
         
         newView.backgroundColor = selectedColor
@@ -172,7 +172,7 @@ extension EquationView {
             y += view.bounds.height
         }
         fractionView.frame = CGRect(x: 0, y: 0, width: width , height: y)
-        if brackets { addBrackets(to: &fractionView, withScale: scale, andColor: color) }
+        if brackets { fractionView = addBrackets(to: fractionView, withScale: scale, andColor: color) }
         fractionView.backgroundColor = selectedColor
         fractionView.layer.cornerRadius = 5
         fraction.view = fractionView
@@ -184,17 +184,11 @@ extension EquationView {
         let radicand = inputViews[1]
         let rootIndex = inputViews[0]
         guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
-        var rootView = RootView(rootIndex: rootIndexView, theOtherView: radicandView, radicandHorizontalOffset: radicand.horizontalOffset)
-        rootView.scale = scale
-        rootView.strokeColor = color
-
-        //if brackets { rootView = addBrackets(to: rootView, withScale: scale, andColor: color)}
+        
+        let rootView = RootView(rootIndex: rootIndexView, theOtherView: radicandView, radicandHorizontalOffset: radicand.horizontalOffset, scale: scale, strokeColor: color)
+        
         if brackets {
-            let viewWithBrackets = BracketsView(viewInBrackets: rootView)
-            viewWithBrackets.strokeColor = color
-            viewWithBrackets.scale = scale
-            viewWithBrackets.backgroundColor = selectedColor
-            return EquationView(view: viewWithBrackets, horizontalOffset: rootView.offset, type: .root)
+            return EquationView(view: addBrackets(to: rootView, withScale: scale, andColor: color), horizontalOffset: rootView.offset, type: .root)
         } else {
             rootView.backgroundColor = selectedColor
             return EquationView(view: rootView, horizontalOffset: rootView.offset, type: .root)
@@ -202,7 +196,7 @@ extension EquationView {
     }
     
     static func generateExponentAndIndex (_ inputViews: [EquationView], type: ExpressionType, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
-        // NOTE: Always have 3 views if there should not be an indrx have it to .Nil
+        
         guard inputViews.count > 1 else { return .Nil }
         var viewIndex = 0
         let base = inputViews[0]
@@ -293,10 +287,21 @@ extension EquationView {
         }
         return (height: offserBottom + offsetTop, offset: offsetTop)
     }
-    static private func addBrackets(to view: inout UIView, withScale scale: CGFloat, andColor color: UIColor) {
+    static private func addBrackets(to view: UIView, withScale scale: CGFloat, andColor color: UIColor) -> BracketsView {
         let viewWithBrackets = BracketsView(viewInBrackets: view)
         viewWithBrackets.strokeColor = color
         viewWithBrackets.scale = scale
-        view = viewWithBrackets
+        return viewWithBrackets
     }
+}
+
+// MARK: extension RootView
+private extension RootView {
+    
+    convenience init(rootIndex: UIView, theOtherView: UIView, radicandHorizontalOffset: CGFloat, scale: CGFloat, strokeColor: UIColor) {
+        self.init(rootIndex: rootIndex, theOtherView: theOtherView, radicandHorizontalOffset: radicandHorizontalOffset)
+        self.scale = scale
+        self.strokeColor = strokeColor
+    }
+    
 }

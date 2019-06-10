@@ -42,6 +42,7 @@ class RootView: UIView {
         self.radicandHorizontalOffset = radicandHorizontalOffset
         refresh()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -71,13 +72,17 @@ class RootView: UIView {
         let P4: CGPoint = CGPoint(x: P3.x + (2.5*frameHeight / (frameHeight - offset)), y: frameHeight - radicandView.frame.height - 4)
         let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width + 2, y: P4.y)
         
-        path = UIBezierPath()
-        path?.move(to: P1)
-        path?.addLine(to: P2)
-        path?.addLine(to: P3)
-        path?.addLine(to: P4)
-        path?.addLine(to: P5)
-        radicandViewXValue = P4.x
+        path = {
+            let path = UIBezierPath()
+            path.move(to: P1)
+            path.addLine(to: P2)
+            path.addLine(to: P3)
+            path.addLine(to: P4)
+            path.addLine(to: P5)
+            return path 
+
+        }()
+                radicandViewXValue = P4.x
     }
     
     private func addViews() {

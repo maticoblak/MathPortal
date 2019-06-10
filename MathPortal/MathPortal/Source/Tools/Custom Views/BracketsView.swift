@@ -47,13 +47,15 @@ class BracketsView: UIView {
         setUpFrame()
     }
     private func refreshPath() {
-        bracketWidth = viewInBrackets.frame.height / 5
+        bracketWidth = viewInBrackets.frame.height / 4
         viewWidth = viewInBrackets.frame.width + 2*bracketWidth
-        path = UIBezierPath(rect: CGRect(origin: CGPoint(x: bracketWidth, y: 0), size: CGSize(width: 0, height: 0)))
-        path?.addCurve(to: CGPoint(x: bracketWidth, y: viewHeight) , controlPoint1: CGPoint(x: 0, y: viewHeight/4), controlPoint2: CGPoint(x: 0, y: 3*viewHeight/4))
-        path?.move(to: CGPoint(x: viewWidth - bracketWidth, y: 0))
-        path?.addCurve(to: CGPoint(x: viewWidth - bracketWidth, y: viewHeight), controlPoint1: CGPoint(x: viewWidth, y: viewHeight/4), controlPoint2: CGPoint(x: viewWidth, y: 3*viewHeight/4))
-        
+        path = {
+            let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: bracketWidth, y: 0), size: CGSize(width: 0, height: 0)))
+            path.addQuadCurve(to: CGPoint(x: bracketWidth, y: viewHeight), controlPoint: CGPoint(x: 0, y: viewHeight/2))
+            path.move(to: CGPoint(x: viewWidth - bracketWidth, y: 0))
+            path.addQuadCurve(to: CGPoint(x: viewWidth - bracketWidth, y: viewHeight), controlPoint: CGPoint(x: viewWidth, y: viewHeight/2))
+            return path
+        }()
     }
     private func addView() {
         viewInBrackets.frame = CGRect(origin: CGPoint(x: bracketWidth, y: 0), size: viewInBrackets.frame.size)
