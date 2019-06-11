@@ -41,9 +41,12 @@ class LoadingViewController: UIViewController {
         indicator?.startAnimating()
     }
     
-    func dismissLoadingScreen() {
-        self.dismiss(animated: false, completion: nil)
-        UIApplication.shared.endIgnoringInteractionEvents()
+    func dismissLoadingScreen(completion : @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.dismiss(animated: false, completion: nil)
+            UIApplication.shared.endIgnoringInteractionEvents()
+            completion()
+        }
     }
 }
 

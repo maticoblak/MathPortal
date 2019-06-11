@@ -74,6 +74,7 @@ class TaskViewController: UIViewController {
     @IBAction func goToEquationViewController(_ sender: Any) {
         let controller = R.storyboard.main.mathEquationViewController()!
         navigationController?.pushViewController(controller, animated: true)
+        
     }
     
     @IBAction func saveTask(_ sender: Any) {
@@ -90,8 +91,9 @@ class TaskViewController: UIViewController {
         
         task.name = titleTextField?.text
         task.save(completion: { (success, error) in
-            loadingSpinner.dismissLoadingScreen()
-            self.goToLoggedInViewController()
+            loadingSpinner.dismissLoadingScreen() {
+                self.goToLoggedInViewController()
+            }
         })
     }
     

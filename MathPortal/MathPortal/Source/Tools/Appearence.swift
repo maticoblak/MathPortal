@@ -41,17 +41,21 @@ class Appearence {
     }
     
     static func addRightBarButton(controller: UIViewController, rightBarButtonTitle: String, rightBarButtonAction: Selector, font: String? = nil , fontSize: Int? = nil) {
-        setUpnavigationBar(controller: controller, leftBarButtonTitle: nil , leftBarButtonAction: nil , rightBarButtonTitle: rightBarButtonTitle, rightBarButtonAction: rightBarButtonAction, font: font, fontSize: fontSize)
+        setUpnavigationBar(controller: controller, leftBarButtonTitle: nil, leftBarButtonAction: nil , rightBarButtonTitle: rightBarButtonTitle, rightBarButtonAction: rightBarButtonAction, font: font, fontSize: fontSize)
     }
     static func addLeftBarButton(controller: UIViewController, leftBarButtonTitle: String, leftBarButtonAction: Selector, font: String? = nil, fontSize: Int? = nil) {
         setUpnavigationBar(controller: controller, leftBarButtonTitle: leftBarButtonTitle , leftBarButtonAction: leftBarButtonAction , rightBarButtonTitle: nil , rightBarButtonAction: nil, font: font, fontSize: fontSize)
     }
     
     
-    static func setUpNavigationController(controller: UIViewController, titleColor: UIColor = UIColor.black, barColor: UIColor = UIColor.gray, font: String, titleFontSize: CGFloat = UIFont.systemFontSize, title: String = "" ) {
-        controller.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor :  titleColor, NSAttributedString.Key.font: UIFont(name: font, size: 22) ?? UIFont.systemFontSize]
+    static func setUpNavigationController(controller: UIViewController, titleColor: UIColor = UIColor.black, barColor: UIColor = UIColor.groupTableViewBackground, font: String = "System", titleFontSize: CGFloat = UIFont.systemFontSize, title: String? = nil ) {
+        if let title = title {
+            controller.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor :  titleColor, NSAttributedString.Key.font: UIFont(name: font, size: 22) ?? UIFont.systemFontSize]
+            controller.title = title
+            
+        }
         controller.navigationController?.navigationBar.barTintColor = barColor
-        controller.title = title
+        
     }
 }
     

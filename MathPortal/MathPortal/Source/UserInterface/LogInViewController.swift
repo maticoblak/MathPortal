@@ -51,7 +51,7 @@ class LogInViewController: UIViewController {
         super.viewDidAppear(animated)
         let currentUser = PFUser.current()
         if currentUser != nil {
-            goToLoggedInScreen()
+            goToMainMenuViewController()
         }
     }
     
@@ -71,14 +71,15 @@ class LogInViewController: UIViewController {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         user.signUpInBackground { (success, error) in
-            loadingSpinner.dismissLoadingScreen()
-            if success {
-                self.goToLoggedInScreen()
-            } else {
-                if let description = error?.localizedDescription {
-                    ErrorMessage.displayErrorMessage(controller: self, message: description)
+            loadingSpinner.dismissLoadingScreen() {
+                if success {
+                    self.goToMainMenuViewController()
                 } else {
-                    ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
+                    if let description = error?.localizedDescription {
+                        ErrorMessage.displayErrorMessage(controller: self, message: description)
+                    } else {
+                        ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
+                    }
                 }
             }
         }
@@ -87,26 +88,29 @@ class LogInViewController: UIViewController {
     private func logInUser() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
-        guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else {
-            loadingSpinner.dismissLoadingScreen()
-            return }
+        guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else { loadingSpinner.dismissLoadingScreen() { return }; return }
         PFUser.logInWithUsername(inBackground: username, password: password ) { (user, error) in
-            loadingSpinner.dismissLoadingScreen()
-            if user != nil {
-                self.goToLoggedInScreen()
-            } else {
-                if let description = error?.localizedDescription {
-                    ErrorMessage.displayErrorMessage(controller: self, message: (description))
+            loadingSpinner.dismissLoadingScreen() {
+                if user != nil {
+                    self.goToMainMenuViewController()
                 } else {
-                    ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
+                    if let description = error?.localizedDescription {
+                        ErrorMessage.displayErrorMessage(controller: self, message: (description))
+                    } else {
+                        ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
+                    }
                 }
             }
         }
     }
    
-    func goToLoggedInScreen() {
-        let controller = R.storyboard.main.loggedInViewController()!
-        navigationController?.pushViewController(controller, animated: true)
+//    func goToLoggedInScreen() {
+//        let controller = R.storyboard.main.loggedInViewController()!
+//        navigationController?.pushViewController(controller, animated: true)
+//    }
+    func goToMainMenuViewController() {
+        let controller = R.storyboard.main.tabBarViewController()!
+        self.present(controller, animated: true)
     }
 
 }
@@ -123,5 +127,4 @@ extension LogInViewController: KeyboardManagerWillChangeFrameDelegate {
         }
     }
 }
-
 

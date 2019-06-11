@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C006E62A22A5014F0017EC6F /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006E62922A5014F0017EC6F /* RootView.swift */; };
 		C006E62C22A6C66A0017EC6F /* BracketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006E62B22A6C66A0017EC6F /* BracketsView.swift */; };
+		C008B82A22AFADB800707D71 /* SolvedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */; };
+		C008B82C22AFADDD00707D71 /* SolvedTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */; };
 		C03EA93D22940BE4005853BE /* EquationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03EA93C22940BE4005853BE /* EquationView.swift */; };
 		C07896582285803400C506B7 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
 		C07896592285811D00C506B7 /* KeyboardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E635A226CE5A800416D19 /* KeyboardButtons.swift */; };
@@ -16,6 +18,11 @@
 		C078965F2285880200C506B7 /* IndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078965E2285880200C506B7 /* IndicatorTests.swift */; };
 		C0789661228589A800C506B7 /* Equation+Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0789660228589A800C506B7 /* Equation+Indicator.swift */; };
 		C0789662228589AA00C506B7 /* Equation+Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0789660228589A800C506B7 /* Equation+Indicator.swift */; };
+		C0875E5422AE4F55008C73A9 /* TabBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0875E5322AE4F55008C73A9 /* TabBarButton.xib */; };
+		C0875E5622AE50CA008C73A9 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0875E5522AE50CA008C73A9 /* TabBarButton.swift */; };
+		C0875E5822AE63C5008C73A9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */; };
+		C0875E5B22AE779E008C73A9 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0875E5A22AE779E008C73A9 /* UserViewController.swift */; };
+		C0875E5D22AE77B8008C73A9 /* UserViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0875E5C22AE77B8008C73A9 /* UserViewController.storyboard */; };
 		C08E634D2269E52100416D19 /* CustomKeyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C08E634C2269E52100416D19 /* CustomKeyboard.storyboard */; };
 		C08E634F2269E53E00416D19 /* CustomKeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E634E2269E53E00416D19 /* CustomKeyboardViewController.swift */; };
 		C08E63552269EA3400416D19 /* ContentControllerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E63522269EA3400416D19 /* ContentControllerOverlay.swift */; };
@@ -83,12 +90,19 @@
 		AF6DD9B84DA0E639CB01DA22 /* Pods-MathPortal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MathPortal.release.xcconfig"; path = "Target Support Files/Pods-MathPortal/Pods-MathPortal.release.xcconfig"; sourceTree = "<group>"; };
 		C006E62922A5014F0017EC6F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		C006E62B22A6C66A0017EC6F /* BracketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BracketsView.swift; sourceTree = "<group>"; };
+		C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolvedTasksViewController.swift; sourceTree = "<group>"; };
+		C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SolvedTasksViewController.storyboard; sourceTree = "<group>"; };
 		C03EA93C22940BE4005853BE /* EquationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquationView.swift; sourceTree = "<group>"; };
 		C078964E22857F9900C506B7 /* MathPortalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathPortalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C078965222857F9900C506B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C078965A2285819000C506B7 /* ExpressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionTests.swift; sourceTree = "<group>"; };
 		C078965E2285880200C506B7 /* IndicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorTests.swift; sourceTree = "<group>"; };
 		C0789660228589A800C506B7 /* Equation+Indicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Equation+Indicator.swift"; sourceTree = "<group>"; };
+		C0875E5322AE4F55008C73A9 /* TabBarButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TabBarButton.xib; sourceTree = "<group>"; };
+		C0875E5522AE50CA008C73A9 /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
+		C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		C0875E5A22AE779E008C73A9 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		C0875E5C22AE77B8008C73A9 /* UserViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = UserViewController.storyboard; sourceTree = "<group>"; };
 		C08E634C2269E52100416D19 /* CustomKeyboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomKeyboard.storyboard; sourceTree = "<group>"; };
 		C08E634E2269E53E00416D19 /* CustomKeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboardViewController.swift; sourceTree = "<group>"; };
 		C08E63522269EA3400416D19 /* ContentControllerOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentControllerOverlay.swift; sourceTree = "<group>"; };
@@ -188,6 +202,44 @@
 			path = "Custom Views";
 			sourceTree = "<group>";
 		};
+		C008B82522AFAAA300707D71 /* TabBarViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C0875E5922AE777E008C73A9 /* User */,
+				C008B82822AFAD8F00707D71 /* SolvedTasks */,
+				C008B82622AFAADC00707D71 /* CreatedTasks */,
+			);
+			path = TabBarViewControllers;
+			sourceTree = "<group>";
+		};
+		C008B82622AFAADC00707D71 /* CreatedTasks */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61D02263849500E48081 /* LoggedInViewController.swift */,
+				C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */,
+				C008B82722AFAB0B00707D71 /* TaskViewController */,
+			);
+			path = CreatedTasks;
+			sourceTree = "<group>";
+		};
+		C008B82722AFAB0B00707D71 /* TaskViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61E0226485E100E48081 /* TaskViewController.swift */,
+				C08E639D22732A9500416D19 /* MathEquationViewController.swift */,
+			);
+			path = TaskViewController;
+			sourceTree = "<group>";
+		};
+		C008B82822AFAD8F00707D71 /* SolvedTasks */ = {
+			isa = PBXGroup;
+			children = (
+				C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */,
+				C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */,
+			);
+			path = SolvedTasks;
+			sourceTree = "<group>";
+		};
 		C078964F22857F9900C506B7 /* MathPortalTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +248,33 @@
 				C078965222857F9900C506B7 /* Info.plist */,
 			);
 			path = MathPortalTests;
+			sourceTree = "<group>";
+		};
+		C0875E5122AE3538008C73A9 /* Launch Screen */ = {
+			isa = PBXGroup;
+			children = (
+				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
+				C0BD61B3225F7D8100E48081 /* ViewController.swift */,
+			);
+			path = "Launch Screen";
+			sourceTree = "<group>";
+		};
+		C0875E5222AE4EED008C73A9 /* TabBarButton */ = {
+			isa = PBXGroup;
+			children = (
+				C0875E5322AE4F55008C73A9 /* TabBarButton.xib */,
+				C0875E5522AE50CA008C73A9 /* TabBarButton.swift */,
+			);
+			path = TabBarButton;
+			sourceTree = "<group>";
+		};
+		C0875E5922AE777E008C73A9 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				C0875E5A22AE779E008C73A9 /* UserViewController.swift */,
+				C0875E5C22AE77B8008C73A9 /* UserViewController.storyboard */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		C08E63642271B27C00416D19 /* Extras Wrappers */ = {
@@ -361,14 +440,12 @@
 		C0BD61D72263C55E00E48081 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
-				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
+				C0875E5222AE4EED008C73A9 /* TabBarButton */,
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
-				C0BD61B3225F7D8100E48081 /* ViewController.swift */,
+				C0875E5122AE3538008C73A9 /* Launch Screen */,
 				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
-				C0BD61D02263849500E48081 /* LoggedInViewController.swift */,
-				C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */,
-				C0BD61E0226485E100E48081 /* TaskViewController.swift */,
-				C08E639D22732A9500416D19 /* MathEquationViewController.swift */,
+				C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */,
+				C008B82522AFAAA300707D71 /* TabBarViewControllers */,
 			);
 			path = UserInterface;
 			sourceTree = "<group>";
@@ -501,7 +578,10 @@
 				C0BD61BC225F7D8300E48081 /* LaunchScreen.storyboard in Resources */,
 				C0BD61B9225F7D8300E48081 /* Assets.xcassets in Resources */,
 				C0BD61B7225F7D8100E48081 /* Main.storyboard in Resources */,
+				C0875E5D22AE77B8008C73A9 /* UserViewController.storyboard in Resources */,
+				C008B82C22AFADDD00707D71 /* SolvedTasksViewController.storyboard in Resources */,
 				C0BD61CF2263800A00E48081 /* Loading.storyboard in Resources */,
+				C0875E5422AE4F55008C73A9 /* TabBarButton.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,11 +690,13 @@
 				C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */,
 				C08E63822271B27C00416D19 /* ExtrasUIBezierPath.swift in Sources */,
 				C0BD61EB226720ED00E48081 /* Task.swift in Sources */,
+				C0875E5822AE63C5008C73A9 /* TabBarViewController.swift in Sources */,
 				C08E639A2271B55A00416D19 /* ExtrasUIView+Keyboard.swift in Sources */,
 				C0BD61DD226475DC00E48081 /* Appearence.swift in Sources */,
 				C0BD61EF226735ED00E48081 /* User.swift in Sources */,
 				C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */,
 				C0789661228589A800C506B7 /* Equation+Indicator.swift in Sources */,
+				C0875E5B22AE779E008C73A9 /* UserViewController.swift in Sources */,
 				C03EA93D22940BE4005853BE /* EquationView.swift in Sources */,
 				C08E63872271B27C00416D19 /* ExtrasCGFloat+Random.swift in Sources */,
 				C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */,
@@ -640,6 +722,8 @@
 				C08E638F2271B27C00416D19 /* ExtrasUIView+Frame.swift in Sources */,
 				C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */,
 				C08E63902271B27C00416D19 /* ExtrasUIView+ApplyText.swift in Sources */,
+				C008B82A22AFADB800707D71 /* SolvedTasksViewController.swift in Sources */,
+				C0875E5622AE50CA008C73A9 /* TabBarButton.swift in Sources */,
 				C0BD61CD22637FCA00E48081 /* LoadingViewController.swift in Sources */,
 				C08E63592269EE4000416D19 /* CustomKeyboardCollectionViewCell.swift in Sources */,
 			);

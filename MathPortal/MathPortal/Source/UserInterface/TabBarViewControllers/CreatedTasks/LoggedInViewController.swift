@@ -11,21 +11,18 @@ import Parse
 
 class LoggedInViewController: UIViewController {
 
-    @IBOutlet private var logOutButton: UIButton?
+ 
     @IBOutlet private var tasksTableView: UITableView?
     
     private var tasks: [Task] = [Task]()
     
     let user = PFUser.current()
     
-    @IBAction func logOut(_ sender: Any) {
-        logoutOfApp()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tasksTableView?.tableFooterView = UIView()
-        Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Add Task", rightBarButtonAction: #selector(addTask))
+        Appearence.setUpNavigationController(controller: self)
+        Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Add task", rightBarButtonAction: #selector(addTask))
         reloadTasks()
     }
     
@@ -49,23 +46,6 @@ class LoggedInViewController: UIViewController {
         let controller = R.storyboard.main.taskViewController()!
         controller.task = Task()
         navigationController?.pushViewController(controller, animated: true)
-    }
-    func logoutOfApp() {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-        self.present(loadingSpinner, animated: false, completion: nil)
-        
-        PFUser.logOutInBackground { (error: Error?) in
-            loadingSpinner.dismissLoadingScreen()
-            if error == nil {
-                self.navigationController?.popViewController(animated: true)
-            } else {
-                if let descrip = error?.localizedDescription{
-                    ErrorMessage.displayErrorMessage(controller: self, message: descrip)
-                } else {
-                    ErrorMessage.displayErrorMessage(controller: self, message: "error logging out")
-                }
-            }
-        }
     }
 }
 
@@ -95,4 +75,10 @@ extension LoggedInViewController: UITableViewDelegate, UITableViewDataSource {
             }) 
         }
     }
+    
+    
+    static func createFromStoryboard() -> LoggedInViewController {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+    }
 }
+

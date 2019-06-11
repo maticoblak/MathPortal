@@ -35,7 +35,7 @@ class ViewController: UIViewController {
                 self.introText?.alpha = 0
             }
         }) { _ in
-            self.goToTaskViewController()
+            self.goToLogInViewController()
         }
     }
     
@@ -43,5 +43,9 @@ class ViewController: UIViewController {
         let controller = R.storyboard.main.mathEquationViewController()!
         self.present(controller, animated: true)
     }
+//    func goToMainMenuViewController() {
+//        let controller = R.storyboard.main.tabBarViewController()!
+//        self.present(controller, animated: true)
+//    }
 }
 
