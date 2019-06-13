@@ -21,7 +21,7 @@ class User: ParseObject {
         super.init()
         username = PFUser.current()?.username
         userId = PFUser.current()?.objectId
-        tasks = PFUser.current()?["TasksNames"] as? [String] ?? [String]()
+        tasks = PFUser.current()?["Tasks"] as? [String] ?? [String]()
         
     }
     
@@ -37,12 +37,18 @@ class User: ParseObject {
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let username = object["username"] as? String, let userId = object["objectId"] as? String, let tasks = object["TasksNames"] as? [String] else {
+        guard let username = object["username"] as? String, let userId = object.objectId, let tasks = object["Tasks"] as? [String] else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse User data from PFObject"])
         }
         self.username = username
         self.userId = userId
         self.tasks = tasks
+    }
+    
+    func updateUser() {
+        if let currentUser = PFUser.current() {
+            try? self.updateWithPFObject(currentUser)
+        }
     }
     
 }

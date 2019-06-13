@@ -25,10 +25,11 @@ class UserViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        user.updateUser()
         refreshUserProfile()
     }
     func refreshUserProfile() {
-        tasksLabel?.text = String(describing: user.tasks?.count)
+        tasksLabel?.text = String(describing: user.tasks?.count ?? 0) 
         usernameLabel?.text = user.username
     }
     

@@ -16,7 +16,8 @@ class LoggedInViewController: UIViewController {
     
     private var tasks: [Task] = [Task]()
     
-    let user = PFUser.current()
+    //let user = PFUser.current()
+    var user: User = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,24 +29,28 @@ class LoggedInViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        user.updateUser()
         reloadTasks()
     }
     
     private func reloadTasks() {
-        guard let userId = user?.objectId else { return  }
+        guard let userId = user.userId else { return  }
         Task.fetchUserTasks(userId: userId, completion: { (tasks, error) in
             if let error = error {
                 print(error.localizedDescription)
             } else if let tasks = tasks {
                 self.tasks = tasks
                 self.tasksTableView?.reloadData()
+                self.user.tasks = tasks.compactMap { $0.name }
+                self.user.save(completion: nil)
+                
 //                self.user?["TasksNames"] = ["1","2"]
 //                self.user?.saveInBackground()
-                let ghj = PFObject(className: "User")
-                
-                ghj["lolo"] = "KLKJ"
-                ghj.saveInBackground()
-                print(ghj["lolo"])
+//                let ghj = PFObject(className: "User")
+//
+//                ghj["lolo"] = "KLKJ"
+//                ghj.saveInBackground()
+//                print(ghj["lolo"])
             }
         })
     }
