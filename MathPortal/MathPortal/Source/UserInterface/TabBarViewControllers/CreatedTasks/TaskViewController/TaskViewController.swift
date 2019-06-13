@@ -29,7 +29,7 @@ class TaskViewController: UIViewController {
     
     private let equation: Equation = Equation()
     
-    
+
     var task: Task!
     var taskTitle: String?
     var saveButtonHidden: Bool = false {

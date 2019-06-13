@@ -26,10 +26,10 @@ class Task: ParseObject {
     
     override class var entityName: String { return "Task" }
     
-    override func generetePFObject() -> PFObject {
+    override func generetePFObject() -> PFObject? {
         let item = super.generetePFObject()
-        item["taskName"] = name
-        item["userId"] = userId
+        item?["taskName"] = name
+        item?["userId"] = userId
         return item
     }
     

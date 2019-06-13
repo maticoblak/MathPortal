@@ -67,7 +67,6 @@ class LogInViewController: UIViewController {
         let user = PFUser()
         user.username = signUpUsernameTextField?.text
         user.password = signUpPasswordTextField?.text
-        
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         user.signUpInBackground { (success, error) in

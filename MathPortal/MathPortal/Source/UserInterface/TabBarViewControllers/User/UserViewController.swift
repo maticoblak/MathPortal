@@ -11,12 +11,25 @@ import Parse
 
 class UserViewController: UIViewController {
     
-    let user = PFUser.current()
+    let user = User()
 
+    @IBOutlet private var tasksLabel: UILabel?
+    @IBOutlet private var usernameLabel: UILabel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "Log out", leftBarButtonAction: #selector(logoutOfApp))
+        refreshUserProfile()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshUserProfile()
+    }
+    func refreshUserProfile() {
+        tasksLabel?.text = String(describing: user.tasks?.count)
+        usernameLabel?.text = user.username
     }
     
     @objc func logoutOfApp() {

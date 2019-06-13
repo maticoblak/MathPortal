@@ -19,7 +19,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mn4-Sh-bGk">
-                                <rect key="frame" x="189" y="443" width="36.5" height="20.5"/>
+                                <rect key="frame" x="189" y="144" width="36.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="66K-mA-duf">
+                                <rect key="frame" x="186" y="395.5" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5Y-wS-oyp">
+                                <rect key="frame" x="186" y="272" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -27,15 +39,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="mn4-Sh-bGk" firstAttribute="centerY" secondItem="4Gs-mZ-M14" secondAttribute="centerY" id="8lj-aT-JHx"/>
-                            <constraint firstItem="mn4-Sh-bGk" firstAttribute="centerX" secondItem="4Gs-mZ-M14" secondAttribute="centerX" id="aU4-Od-IW3"/>
+                            <constraint firstItem="mn4-Sh-bGk" firstAttribute="top" secondItem="4Gs-mZ-M14" secondAttribute="top" constant="100" id="6tK-Y7-onD"/>
+                            <constraint firstItem="h5Y-wS-oyp" firstAttribute="top" secondItem="mn4-Sh-bGk" secondAttribute="bottom" constant="107.5" id="HM6-Hf-Esc"/>
+                            <constraint firstItem="66K-mA-duf" firstAttribute="centerX" secondItem="h5Y-wS-oyp" secondAttribute="centerX" id="NUk-cx-jrO"/>
+                            <constraint firstItem="h5Y-wS-oyp" firstAttribute="centerX" secondItem="mn4-Sh-bGk" secondAttribute="centerX" id="Vey-tP-9k9"/>
+                            <constraint firstItem="mn4-Sh-bGk" firstAttribute="centerX" secondItem="4Gs-mZ-M14" secondAttribute="centerX" id="byU-Kl-XEc"/>
+                            <constraint firstItem="66K-mA-duf" firstAttribute="top" secondItem="h5Y-wS-oyp" secondAttribute="bottom" constant="103" id="uae-ty-YXZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4Gs-mZ-M14"/>
                     </view>
+                    <connections>
+                        <outlet property="tasksLabel" destination="h5Y-wS-oyp" id="83e-o7-oIm"/>
+                        <outlet property="usernameLabel" destination="mn4-Sh-bGk" id="M3b-RS-Fba"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="twL-WG-SEi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="30" y="73"/>
+            <point key="canvasLocation" x="28.985507246376812" y="72.991071428571431"/>
         </scene>
     </scenes>
 </document>

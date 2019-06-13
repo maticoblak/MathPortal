@@ -39,6 +39,13 @@ class LoggedInViewController: UIViewController {
             } else if let tasks = tasks {
                 self.tasks = tasks
                 self.tasksTableView?.reloadData()
+//                self.user?["TasksNames"] = ["1","2"]
+//                self.user?.saveInBackground()
+                let ghj = PFObject(className: "User")
+                
+                ghj["lolo"] = "KLKJ"
+                ghj.saveInBackground()
+                print(ghj["lolo"])
             }
         })
     }

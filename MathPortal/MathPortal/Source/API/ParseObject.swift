@@ -15,7 +15,7 @@ class ParseObject {
     class var entityName: String { return "" }
     var entityName: String { return type(of: self).entityName }
     
-    private var pfObject: PFObject?
+    var pfObject: PFObject?
     
     init() {}
     init?(pfObject: PFObject?) {
@@ -32,7 +32,7 @@ class ParseObject {
         }
     }
 
-    func generetePFObject() -> PFObject {
+    func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFObject(className: entityName)
         return object
     }
@@ -46,13 +46,13 @@ class ParseObject {
     }
     
     func save(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        generetePFObject().saveInBackground { (success: Bool, error: Error?) in
+        generetePFObject()?.saveInBackground { (success: Bool, error: Error?) in
             completion?(success, error)
         }
     }
     
     func delete(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        generetePFObject().deleteInBackground { (success, error) in
+        generetePFObject()?.deleteInBackground { (success, error) in
             completion?(success, error)
         }
     }
