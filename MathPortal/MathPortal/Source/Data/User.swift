@@ -14,6 +14,9 @@ class User: ParseObject {
     var username: String?
     var userId: String?
     var tasks: [String]?
+    var dateCreated: String?
+    var role: [Role]?
+    var age: Int?
     
     
     override class var entityName: String { return "User" }
@@ -21,7 +24,10 @@ class User: ParseObject {
         super.init()
         username = PFUser.current()?.username
         userId = PFUser.current()?.objectId
-        tasks = PFUser.current()?["Tasks"] as? [String] ?? [String]()
+        tasks = PFUser.current()?["Tasks"] as? [String]
+        dateCreated = DateTools.stringFromDate(date: PFUser.current()?.createdAt)
+        role = fromStringToRole(role: PFUser.current()?["role"] as? [String] )
+        age = PFUser.current()?["age"] as? Int
         
     }
     
@@ -31,18 +37,23 @@ class User: ParseObject {
     
     override func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFUser.current()
-        object?["Tasks"] = tasks
+        object?["Tasks"] = tasks == nil ? NSNull() : tasks
+        object?["role"] = role?.compactMap { $0.string }
+        object?["age"] = age == nil ? NSNull() : age
         return object
     }
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let username = object["username"] as? String, let userId = object.objectId, let tasks = object["Tasks"] as? [String] else {
+        guard let username = object["username"] as? String, let userId = object.objectId, let dateCreated = object.createdAt else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse User data from PFObject"])
         }
         self.username = username
         self.userId = userId
-        self.tasks = tasks
+        self.tasks = object["Tasks"] as? [String]
+        self.dateCreated = DateTools.stringFromDate(date: dateCreated)
+        self.role = fromStringToRole(role: object["role"] as? [String])
+        self.age = object["age"] as? Int
     }
     
     func updateUser() {
@@ -51,4 +62,29 @@ class User: ParseObject {
         }
     }
     
+}
+extension User {
+    enum Role {
+        case teacher
+        case student
+        case undefined
+        
+        var string: String {
+            switch self {
+            case .teacher: return "Teacher"
+            case .student: return "Strudent"
+            case .undefined: return "Undefined"
+            }
+        }
+    }
+    
+    func fromStringToRole(role: [String]?) -> [Role] {
+        guard let role = role else { return [.undefined] }
+        let convertedRoles: [Role] = role.map {
+            if $0 ==  "Teacher" { return .teacher }
+            else if $0 ==  "Strudent" { return .student }
+            else { return .undefined }
+        }
+        return convertedRoles
+    }
 }

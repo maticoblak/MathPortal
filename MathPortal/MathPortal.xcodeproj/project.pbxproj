@@ -11,6 +11,7 @@
 		C006E62C22A6C66A0017EC6F /* BracketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006E62B22A6C66A0017EC6F /* BracketsView.swift */; };
 		C008B82A22AFADB800707D71 /* SolvedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */; };
 		C008B82C22AFADDD00707D71 /* SolvedTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */; };
+		C01A65A422B37BE7008F4B07 /* DateTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A322B37BE7008F4B07 /* DateTools.swift */; };
 		C03EA93D22940BE4005853BE /* EquationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03EA93C22940BE4005853BE /* EquationView.swift */; };
 		C07896582285803400C506B7 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
 		C07896592285811D00C506B7 /* KeyboardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E635A226CE5A800416D19 /* KeyboardButtons.swift */; };
@@ -92,6 +93,7 @@
 		C006E62B22A6C66A0017EC6F /* BracketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BracketsView.swift; sourceTree = "<group>"; };
 		C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolvedTasksViewController.swift; sourceTree = "<group>"; };
 		C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SolvedTasksViewController.storyboard; sourceTree = "<group>"; };
+		C01A65A322B37BE7008F4B07 /* DateTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTools.swift; sourceTree = "<group>"; };
 		C03EA93C22940BE4005853BE /* EquationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquationView.swift; sourceTree = "<group>"; };
 		C078964E22857F9900C506B7 /* MathPortalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathPortalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C078965222857F9900C506B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 				C0BD61D22263895E00E48081 /* ErrorMessage.swift */,
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
 				C03EA93C22940BE4005853BE /* EquationView.swift */,
+				C01A65A322B37BE7008F4B07 /* DateTools.swift */,
 				C006E62D22A78F140017EC6F /* Custom Views */,
 			);
 			path = Tools;
@@ -683,6 +686,7 @@
 				C08E638D2271B27C00416D19 /* ExtrasUIView+Shake.swift in Sources */,
 				C006E62C22A6C66A0017EC6F /* BracketsView.swift in Sources */,
 				C08E63882271B27C00416D19 /* ExtrasCGFloat.swift in Sources */,
+				C01A65A422B37BE7008F4B07 /* DateTools.swift in Sources */,
 				C08E63832271B27C00416D19 /* ExtrasDate+Tools.swift in Sources */,
 				C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */,
 				C08E63892271B27C00416D19 /* ExtrasCGFloat+Formatting.swift in Sources */,

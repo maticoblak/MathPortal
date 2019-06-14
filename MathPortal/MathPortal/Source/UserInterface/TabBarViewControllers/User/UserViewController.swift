@@ -15,22 +15,39 @@ class UserViewController: UIViewController {
 
     @IBOutlet private var tasksLabel: UILabel?
     @IBOutlet private var usernameLabel: UILabel?
+    @IBOutlet private var imageView: UIView?
+    
+    @IBOutlet var profileImage: UIImageView?
+    
+    @IBOutlet var emailLabel: UILabel?
+    
+    @IBOutlet var memberSinceLabel: UILabel?
+    
+    @IBOutlet var ageLabel: UILabel?
+    @IBOutlet var roleLabel: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
-        Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "Log out", leftBarButtonAction: #selector(logoutOfApp))
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "Log out", leftBarButtonAction: #selector(logoutOfApp), rightBarButtonTitle: "Edit Profile", rightBarButtonAction: #selector(editProfile))
         refreshUserProfile()
+    }
+    
+    @objc func editProfile() {
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        user.updateUser()
-        refreshUserProfile()
+        self.user.updateUser()
+        self.refreshUserProfile()
     }
     func refreshUserProfile() {
         tasksLabel?.text = String(describing: user.tasks?.count ?? 0) 
         usernameLabel?.text = user.username
+        memberSinceLabel?.text = user.dateCreated
+        roleLabel?.text = user.role?.map { $0.string }.joined(separator: ", ")
+        ageLabel?.text = user.age == nil ? "Undefined" : String(describing: user.age ?? 0)
     }
     
     @objc func logoutOfApp() {
