@@ -20,6 +20,7 @@ class LogInViewController: UIViewController {
     
     @IBOutlet private var signUpUsernameTextField: UITextField?
     @IBOutlet private var signUpPasswordTextField: UITextField?
+    @IBOutlet private var signUpEmailTextField: UITextField?
     @IBOutlet private var signUpButton: UIButton?
     
     @IBOutlet private var bottomLayoutConstraint: NSLayoutConstraint?
@@ -67,18 +68,21 @@ class LogInViewController: UIViewController {
         let user = PFUser()
         user.username = signUpUsernameTextField?.text
         user.password = signUpPasswordTextField?.text
+        user.email = signUpEmailTextField?.text
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         user.signUpInBackground { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
-                if success {
-                    self.goToMainMenuViewController()
-                } else {
+                if success == false {
                     if let description = error?.localizedDescription {
                         ErrorMessage.displayErrorMessage(controller: self, message: description)
                     } else {
                         ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                     }
+                } else if user.email?.count == 0 {
+                    ErrorMessage.displayErrorMessage(controller: self, message: "Missing email")
+                } else if success {
+                    self.goToMainMenuViewController()
                 }
             }
         }

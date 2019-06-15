@@ -106,14 +106,20 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iX9-kM-WeF">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mvV-2b-XT7">
                                                         <rect key="frame" x="20" y="70" width="374" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iX9-kM-WeF">
+                                                        <rect key="frame" x="20" y="120" width="374" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="csa-mj-gN4">
-                                                        <rect key="frame" x="180" y="130" width="54" height="248"/>
+                                                        <rect key="frame" x="180" y="180" width="54" height="198"/>
                                                         <state key="normal" title="Sign Up"/>
                                                         <connections>
                                                             <action selector="signUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bKK-Du-GQK"/>
@@ -122,12 +128,16 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstItem="mvV-2b-XT7" firstAttribute="height" secondItem="OIi-pc-g38" secondAttribute="height" id="6ti-Iw-eWQ"/>
                                                     <constraint firstItem="iX9-kM-WeF" firstAttribute="height" secondItem="OIi-pc-g38" secondAttribute="height" id="838-9e-5V3"/>
+                                                    <constraint firstAttribute="trailing" secondItem="mvV-2b-XT7" secondAttribute="trailing" constant="20" id="AyW-nm-imS"/>
                                                     <constraint firstItem="OIi-pc-g38" firstAttribute="top" secondItem="NRc-o6-EiP" secondAttribute="top" constant="20" id="P8E-xq-4Iq"/>
                                                     <constraint firstItem="OIi-pc-g38" firstAttribute="leading" secondItem="NRc-o6-EiP" secondAttribute="leading" constant="20" id="QQU-nC-Ee8"/>
                                                     <constraint firstAttribute="trailing" secondItem="iX9-kM-WeF" secondAttribute="trailing" constant="20" id="WGd-gp-Nuv"/>
+                                                    <constraint firstItem="mvV-2b-XT7" firstAttribute="top" secondItem="OIi-pc-g38" secondAttribute="bottom" constant="20" id="XpO-z6-Ide"/>
+                                                    <constraint firstItem="mvV-2b-XT7" firstAttribute="leading" secondItem="NRc-o6-EiP" secondAttribute="leading" constant="20" id="YH3-De-OPu"/>
+                                                    <constraint firstItem="iX9-kM-WeF" firstAttribute="top" secondItem="mvV-2b-XT7" secondAttribute="bottom" constant="20" id="gbD-qf-eNb"/>
                                                     <constraint firstItem="csa-mj-gN4" firstAttribute="top" secondItem="iX9-kM-WeF" secondAttribute="bottom" constant="30" id="gpX-GK-HHs"/>
-                                                    <constraint firstItem="iX9-kM-WeF" firstAttribute="top" secondItem="OIi-pc-g38" secondAttribute="bottom" constant="20" id="i4b-SU-qhs"/>
                                                     <constraint firstItem="iX9-kM-WeF" firstAttribute="leading" secondItem="NRc-o6-EiP" secondAttribute="leading" constant="20" id="qie-Rw-cll"/>
                                                     <constraint firstAttribute="bottom" secondItem="csa-mj-gN4" secondAttribute="bottom" constant="20" id="rS8-YS-L4M"/>
                                                     <constraint firstItem="csa-mj-gN4" firstAttribute="centerX" secondItem="NRc-o6-EiP" secondAttribute="centerX" id="sga-ML-D1g"/>
@@ -166,6 +176,7 @@
                         <outlet property="logInUsernameTextField" destination="4yt-ng-xLQ" id="Te2-NQ-rib"/>
                         <outlet property="scrollView" destination="E4s-GI-Hru" id="kM7-Nl-cUC"/>
                         <outlet property="signUpButton" destination="csa-mj-gN4" id="GEh-k8-lTQ"/>
+                        <outlet property="signUpEmailTextField" destination="mvV-2b-XT7" id="gb5-Md-nyW"/>
                         <outlet property="signUpPasswordTextField" destination="iX9-kM-WeF" id="e2p-El-897"/>
                         <outlet property="signUpUsernameTextField" destination="OIi-pc-g38" id="ffA-Yd-BkW"/>
                     </connections>

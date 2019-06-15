@@ -48,6 +48,8 @@ class UserViewController: UIViewController {
         memberSinceLabel?.text = user.dateCreated
         roleLabel?.text = user.role?.map { $0.string }.joined(separator: ", ")
         ageLabel?.text = user.age == nil ? "Undefined" : String(describing: user.age ?? 0)
+        emailLabel?.text = user.email
+        profileImage?.image = user.image ?? R.image.profile()
     }
     
     @objc func logoutOfApp() {

@@ -17,6 +17,8 @@ class User: ParseObject {
     var dateCreated: String?
     var role: [Role]?
     var age: Int?
+    var email: String?
+    var image: UIImage?
     
     
     override class var entityName: String { return "User" }
@@ -28,6 +30,7 @@ class User: ParseObject {
         dateCreated = DateTools.stringFromDate(date: PFUser.current()?.createdAt)
         role = fromStringToRole(role: PFUser.current()?["role"] as? [String] )
         age = PFUser.current()?["age"] as? Int
+        email = PFUser.current()?.email
         
     }
     
@@ -45,7 +48,7 @@ class User: ParseObject {
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let username = object["username"] as? String, let userId = object.objectId, let dateCreated = object.createdAt else {
+        guard let username = object["username"] as? String, let userId = object.objectId, let dateCreated = object.createdAt, let email = object["email"] as? String else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse User data from PFObject"])
         }
         self.username = username
@@ -54,6 +57,7 @@ class User: ParseObject {
         self.dateCreated = DateTools.stringFromDate(date: dateCreated)
         self.role = fromStringToRole(role: object["role"] as? [String])
         self.age = object["age"] as? Int
+        self.email = email
     }
     
     func updateUser() {
