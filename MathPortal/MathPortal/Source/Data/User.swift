@@ -15,10 +15,10 @@ class User: ParseObject {
     var userId: String?
     var tasks: [String]?
     var dateCreated: String?
-    var role: [Role]?
+    var role: [Role] = [.undefined]
     var age: Int?
     var email: String?
-    var image: UIImage?
+    var profileImage: UIImage?
     
     
     override class var entityName: String { return "User" }
@@ -41,8 +41,10 @@ class User: ParseObject {
     override func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFUser.current()
         object?["Tasks"] = tasks == nil ? NSNull() : tasks
-        object?["role"] = role?.compactMap { $0.string }
+        object?["role"] = role.compactMap { $0.string }
         object?["age"] = age == nil ? NSNull() : age
+        object?["username"] = username
+        object?["email"] = email
         return object
     }
     
@@ -63,6 +65,34 @@ class User: ParseObject {
     func updateUser() {
         if let currentUser = PFUser.current() {
             try? self.updateWithPFObject(currentUser)
+        }
+    }
+    
+    static func generateQueryWithEmail(_ email: String ) -> PFQuery<PFObject>? {
+        let query = PFUser.query()
+        query?.whereKey("email", equalTo: email)
+        return query
+    }
+    
+    static func generateQueryWithUsername(_ username: String ) -> PFQuery<PFObject>? {
+        let query = PFUser.query()
+        query?.whereKey("username", equalTo: username)
+        return query
+    }
+    
+    static func usernameIsAlreadyTaken(username: String?, compleation: @escaping ((_ state: Bool ) -> Void)) {
+        guard let username = username else { return }
+        generateQueryWithUsername(username)?.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
+            guard let objects = objects else { compleation(false); return }
+            compleation(!objects.isEmpty)
+        }
+    }
+    
+    static func emailIsAlreadyTaken(email: String?, compleation: @escaping ((_ state: Bool ) -> Void)) {
+        guard let email = email else { return }
+        generateQueryWithEmail(email)?.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
+            guard let objects = objects else { compleation(false); return }
+            compleation(!objects.isEmpty)
         }
     }
     

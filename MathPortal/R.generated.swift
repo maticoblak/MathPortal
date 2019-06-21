@@ -16,14 +16,21 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
   
-  /// This `R.image` struct is generated, and contains static references to 1 images.
+  /// This `R.image` struct is generated, and contains static references to 2 images.
   struct image {
+    /// Image `profile2`.
+    static let profile2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile2")
     /// Image `profile`.
     static let profile = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile")
     
     /// `UIImage(named: "profile", bundle: ..., traitCollection: ...)`
     static func profile(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.profile, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "profile2", bundle: ..., traitCollection: ...)`
+    static func profile2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.profile2, compatibleWith: traitCollection)
     }
     
     fileprivate init() {}
@@ -262,8 +269,13 @@ struct _R: Rswift.Validatable {
     
     struct userViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
+      let editUserViewController = StoryboardViewControllerResource<EditUserViewController>(identifier: "EditUserViewController")
       let name = "UserViewController"
       let userViewController = StoryboardViewControllerResource<UserViewController>(identifier: "UserViewController")
+      
+      func editUserViewController(_: Void = ()) -> EditUserViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: editUserViewController)
+      }
       
       func userViewController(_: Void = ()) -> UserViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: userViewController)
@@ -272,6 +284,7 @@ struct _R: Rswift.Validatable {
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
+        if _R.storyboard.userViewController().editUserViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'editUserViewController' could not be loaded from storyboard 'UserViewController' as 'EditUserViewController'.") }
         if _R.storyboard.userViewController().userViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'userViewController' could not be loaded from storyboard 'UserViewController' as 'UserViewController'.") }
       }
       

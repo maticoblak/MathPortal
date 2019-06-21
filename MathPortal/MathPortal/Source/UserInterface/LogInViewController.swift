@@ -71,6 +71,8 @@ class LogInViewController: UIViewController {
         user.email = signUpEmailTextField?.text
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
+        
+        
         user.signUpInBackground { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
                 if success == false {

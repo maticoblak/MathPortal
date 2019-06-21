@@ -34,7 +34,10 @@ class UserViewController: UIViewController {
     }
     
     @objc func editProfile() {
-        
+        let controller = R.storyboard.userViewController.editUserViewController()!
+        controller.user = user
+        navigationController?.pushViewController(controller, animated: true)
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -46,10 +49,10 @@ class UserViewController: UIViewController {
         tasksLabel?.text = String(describing: user.tasks?.count ?? 0) 
         usernameLabel?.text = user.username
         memberSinceLabel?.text = user.dateCreated
-        roleLabel?.text = user.role?.map { $0.string }.joined(separator: ", ")
+        roleLabel?.text = user.role.map { $0.string }.joined(separator: ", ")
         ageLabel?.text = user.age == nil ? "Undefined" : String(describing: user.age ?? 0)
         emailLabel?.text = user.email
-        profileImage?.image = user.image ?? R.image.profile()
+        profileImage?.image = user.profileImage ?? R.image.profile()
     }
     
     @objc func logoutOfApp() {

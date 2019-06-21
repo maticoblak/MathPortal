@@ -41,7 +41,7 @@ class Task: ParseObject {
         self.name = name
         self.userId = userId
     }
-    
+
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
         query.whereKey("userId", equalTo: userId)

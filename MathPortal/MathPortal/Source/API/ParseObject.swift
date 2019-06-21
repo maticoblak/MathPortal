@@ -56,4 +56,19 @@ class ParseObject {
             completion?(success, error)
         }
     }
+    
+//    static func findObjectsWithKey(_ key: String, equalTo object: Any, for query: PFQuery<PFObject>, copleation: @escaping (_ objects: [PFObject]) -> Void) {
+//        //let query = generatePFQuery()
+//        query.whereKey(key, equalTo: object)
+//        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+//            if let error = error {
+//                print(error.localizedDescription)
+//                copleation([PFObject]())
+//            } else if let objects = objects {
+//                copleation(objects)
+//            }
+//            print("completion")
+//        }
+//        print("func")
+//    }
 }
