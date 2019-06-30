@@ -59,15 +59,6 @@ class EditUserViewController: UIViewController {
         }
     }
     
-//    var username: String? {
-//        didSet {
-//            if username?.isEmpty == false  {
-//                user.username = username
-//            } else {
-//                user.username = usernameTextField?.placeholder
-//            }
-//        }
-//    }
 
     @IBAction func editProfileImage(_ sender: Any) {
         // TODO: Go to new screen and select a predefined image or image from your library
@@ -75,67 +66,6 @@ class EditUserViewController: UIViewController {
     @IBAction func selectTeacher(_ sender: Any) {
         teacherRoleSelected = !teacherRoleSelected
     }
-    
-//    class FieldValidator {
-//        let username: String
-//
-//        init(username: String) {
-//            self.username = username
-//        }
-//        
-//        enum Result {
-//            case OK
-//            case usernameAlreadyTaken
-//            case emailInvalid
-//        }
-//
-//        private var nameValid: Bool? { didSet { checkValid() } }
-//        private var emailValid: Bool? { didSet { checkValid() } }
-//        private var completion: ((_ result: Result) -> Void)?
-//
-//        private var selfReference: FieldValidator?
-//
-//        func validate(_ completion: @escaping (_ result: Result) -> Void) {
-//            self.completion = completion
-//            selfReference = self
-//
-//            User.usernameIsAlreadyTaken(username: username) { taken in
-//                self.nameValid = !taken
-//            }
-//            UIView.animate(withDuration: 10) {
-//                print("ads")
-//            }
-//        }
-//
-//        private func checkValid() {
-//            guard let nameValid = nameValid else { return }
-//            guard let emailValid = emailValid else { return }
-//
-//            if !nameValid { completion?(.usernameAlreadyTaken) }
-//            if !emailValid { completion?(.emailInvalid) }
-//            else { completion?(.OK) }
-//
-//            completion = nil
-//            selfReference = nil
-//        }
-//
-//    }
-    
-//    func doMagic() {
-//        FieldValidator(username: "dsf").validate { result in
-//            switch result {
-//
-//            case .OK:
-//                print("hfgf")
-//            case .usernameAlreadyTaken:
-//                print("hfgf")
-//            case .emailInvalid:
-//                print("hfgf")
-//            @unknown default:
-//                print("hfgf")
-//            }
-//        }
-//    }
     
     
     @IBAction func selectStudent(_ sender: Any) {
@@ -166,15 +96,13 @@ class EditUserViewController: UIViewController {
             }
         }
     }
-    
+    // TODO: sinc the validate and save: right now .OK is triggered every time the field is correct regarding the fact that the next field might not be
     func validateAndSave() {
         FieldValidator.init(username: usernameTextField?.text, email: emailTextField?.text, age: ageTextField?.text).validate { result in
             print(result)
             switch result {
             case .OK:
-                if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text }
-                if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text }
-                if let text = self.ageTextField?.text, text.count > 0 { self.user.age = Int(text) }
+                self.updateUser()
                 self.save()
                 break
             case .usernameAlreadyTaken:
@@ -193,46 +121,18 @@ class EditUserViewController: UIViewController {
         }
     }
     
-//    var userSuccessfulyUpdated: Bool = false
-//    private func updateUser(compleation: @escaping () -> Void) {
-//
-//        FieldValidator.init(username: usernameTextField?.text).validate { result in
-//            compleation()
-//            switch result {
-//
-//            case .OK:
-//                self.user.username = self.usernameTextField?.text
-//            case .usernameAlreadyTaken:
-//                ErrorMessage.displayErrorMessage(controller: self, message: "Username is alreadi taken")
-//                break
-//            case .emailInvalid:
-//                ErrorMessage.displayErrorMessage(controller: self, message: "Email is already teken")
-//                break
-//            @unknown default:
-//                break
-//            }
-    
-//        }
-//
-//
-//        //if let newUsername = usernameTextField?.text { username = usernameTextField?.text }
-//       // if let newEmail = emailTextField?.text?.isEmpty, newEmail == false { user.email = emailTextField?.text }
-//        if let newAge = ageTextField?.text, newAge.isEmpty == false {
-//            guard let ageAsInt = Int(newAge) else {
-//                ErrorMessage.displayErrorMessage(controller: self, message: "Age format is wrong")
-//                userSuccessfulyUpdated = false
-//                return
-//            }
-//            user.age =  ageAsInt
-//        }
-//        var newRoles: [User.Role] {
-//            var roles = [User.Role]()
-//            if teacherRoleSelected { roles.append(.teacher) }
-//            if studentRoleSelected { roles.append(.student) }
-//            if roles.isEmpty { roles.append(.undefined) }
-//            return roles
-//        }
-//        user.role = newRoles
-//        userSuccessfulyUpdated = true
-//    }
+    func updateUser() {
+        if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text } else { self.user.username = self.usernameTextField?.placeholder}
+        if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text } else { self.user.email = self.emailTextField?.placeholder}
+        if let text = self.ageTextField?.text, text.count > 0 { self.user.age = Int(text) }
+
+        var newRoles: [User.Role] {
+            var roles = [User.Role]()
+            if teacherRoleSelected { roles.append(.teacher) }
+            if studentRoleSelected { roles.append(.student) }
+            if roles.isEmpty { roles.append(.undefined) }
+            return roles
+        }
+        user.role = newRoles
+    }
 }

@@ -64,6 +64,8 @@ class FieldValidator {
         
         if let age = age, age.count > 0, Int(age) == nil {
             self.ageValid = false
+        } else if let age = age, let ageAsInt = Int(age) , ageAsInt < 0 {
+                self.ageValid = false
         } else { ageValid = true }
     }
     

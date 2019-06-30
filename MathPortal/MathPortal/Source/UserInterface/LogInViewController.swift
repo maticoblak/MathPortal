@@ -61,14 +61,13 @@ class LogInViewController: UIViewController {
     }
     
     @IBAction private func signUp(_ sender: Any) {
-        signUpNewUser()
+        validateAndSignUp()
     }
 
-    private func signUpNewUser() {
-        let user = PFUser()
-        user.username = signUpUsernameTextField?.text
-        user.password = signUpPasswordTextField?.text
-        user.email = signUpEmailTextField?.text
+    private func signUpNewUser(user: PFUser) {
+        
+        
+        
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         
@@ -86,6 +85,31 @@ class LogInViewController: UIViewController {
                 } else if success {
                     self.goToMainMenuViewController()
                 }
+            }
+        }
+    }
+    
+    private func validateAndSignUp() {
+        let user = PFUser()
+        user.username = signUpUsernameTextField?.text
+        user.password = signUpPasswordTextField?.text
+        user.email = signUpEmailTextField?.text
+        FieldValidator.init(username: user.username, email: user.email, age: nil).validate { result in
+            switch result {
+            case .OK:
+                self.signUpNewUser(user: user)
+            case .usernameAlreadyTaken:
+                ErrorMessage.displayErrorMessage(controller: self, message: "Username is alreadi taken")
+                break
+            case .emailInvalid:
+                ErrorMessage.displayErrorMessage(controller: self, message: "Email is invalid")
+                break
+            case .ageInvalid:
+                ErrorMessage.displayErrorMessage(controller: self, message: "Age format is wrong")
+                break
+            case .emailAlreadyTaken:
+                ErrorMessage.displayErrorMessage(controller: self, message: "Email is already taken")
+                break
             }
         }
     }
