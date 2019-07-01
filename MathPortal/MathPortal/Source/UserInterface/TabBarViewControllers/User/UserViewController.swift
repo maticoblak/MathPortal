@@ -17,14 +17,14 @@ class UserViewController: UIViewController {
     @IBOutlet private var usernameLabel: UILabel?
     @IBOutlet private var imageView: UIView?
     
-    @IBOutlet var profileImage: UIImageView?
+    @IBOutlet private var profileImage: UIImageView?
     
-    @IBOutlet var emailLabel: UILabel?
+    @IBOutlet private var emailLabel: UILabel?
     
-    @IBOutlet var memberSinceLabel: UILabel?
+    @IBOutlet private var memberSinceLabel: UILabel?
     
-    @IBOutlet var ageLabel: UILabel?
-    @IBOutlet var roleLabel: UILabel?
+    @IBOutlet private var ageLabel: UILabel?
+    @IBOutlet private var roleLabel: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class UserViewController: UIViewController {
         refreshUserProfile()
     }
     
-    @objc func editProfile() {
+    @objc private func editProfile() {
         let controller = R.storyboard.userViewController.editUserViewController()!
         controller.user = user
         navigationController?.pushViewController(controller, animated: true)

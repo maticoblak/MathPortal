@@ -10,6 +10,7 @@
 import Foundation
 
 class DateTools {
+    
     static let hourMinuteDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = NSCalendar.autoupdatingCurrent

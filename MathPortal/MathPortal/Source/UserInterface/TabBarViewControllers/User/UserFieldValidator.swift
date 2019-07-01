@@ -49,13 +49,17 @@ class FieldValidator {
         self.completion = completion
         selfReference = self
         if let username = username, username.count > 0 {
-            User.usernameIsAlreadyTaken(username: username) { taken in
-                self.nameValid = !taken
+            User.usernameIsAlreadyTaken(username: username) { (taken, error)  in
+                if let taken = taken {
+                    self.nameValid = !taken
+                }
             }
         }
         if let email = email, email.count > 0 {
-            User.emailIsAlreadyTaken(email: email) { taken in
-                self.emailTaken = taken
+            User.emailIsAlreadyTaken(email: email) { (taken, error)  in
+                if let taken = taken {
+                     self.emailTaken = taken
+                }
             }
             let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
             let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
@@ -65,7 +69,7 @@ class FieldValidator {
         if let age = age, age.count > 0, Int(age) == nil {
             self.ageValid = false
         } else if let age = age, let ageAsInt = Int(age) , ageAsInt < 0 {
-                self.ageValid = false
+            self.ageValid = false
         } else { ageValid = true }
     }
     

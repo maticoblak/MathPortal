@@ -16,11 +16,15 @@ class EditUserViewController: UIViewController {
     @IBOutlet private var usernameTextField: UITextField?
     @IBOutlet private var emailTextField: UITextField?
     @IBOutlet private var teacherButton: UIButton?
-    @IBOutlet private var ageTextField: UITextField?
+    @IBOutlet private var ageDayTextField: UITextField?
+    @IBOutlet private var ageMonthTextField: UITextField?
+    @IBOutlet private var ageYearTextField: UITextField?
     @IBOutlet private var studentButton: UIButton?
     
     @IBOutlet private var saveButton: UIButton?
     @IBOutlet private var deleteAccountButton: UIButton?
+    
+    // TODO: add birthdate logic
     
     var user: User!
     
@@ -35,8 +39,8 @@ class EditUserViewController: UIViewController {
         emailTextField?.placeholder = user.email
         ageTextField?.placeholder = String(describing: user.age)
         profileImage?.image = user.profileImage
-        studentRoleSelected = user.role.contains(.student) ? true : false
-        teacherRoleSelected = user.role.contains(.teacher) ? true : false
+        studentRoleSelected = user.role.contains(.student)
+        teacherRoleSelected = user.role.contains(.teacher)
     }
     private func setUpKeyboard() {
         usernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
@@ -60,23 +64,23 @@ class EditUserViewController: UIViewController {
     }
     
 
-    @IBAction func editProfileImage(_ sender: Any) {
+    @IBAction private func editProfileImage(_ sender: Any) {
         // TODO: Go to new screen and select a predefined image or image from your library
     }
-    @IBAction func selectTeacher(_ sender: Any) {
+    @IBAction private func selectTeacher(_ sender: Any) {
         teacherRoleSelected = !teacherRoleSelected
     }
     
     
-    @IBAction func selectStudent(_ sender: Any) {
+    @IBAction private func selectStudent(_ sender: Any) {
         studentRoleSelected = !studentRoleSelected
     }
-    @IBAction func saveChanges(_ sender: Any) {
+    @IBAction private func saveChanges(_ sender: Any) {
         validateAndSave()
 
     }
-    @IBAction func deleteAccount(_ sender: Any) {
-        
+    @IBAction private func deleteAccount(_ sender: Any) {
+        // TODO: have a delete account option
     }
     
     func save() {

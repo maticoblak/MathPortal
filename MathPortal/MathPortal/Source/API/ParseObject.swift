@@ -46,13 +46,21 @@ class ParseObject {
     }
     
     func save(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        generetePFObject()?.saveInBackground { (success: Bool, error: Error?) in
+        guard let object = generetePFObject() else {
+            completion?(false, NSError())
+            return
+        }
+        object.saveInBackground { (success: Bool, error: Error?) in
             completion?(success, error)
         }
     }
     
     func delete(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
-        generetePFObject()?.deleteInBackground { (success, error) in
+        guard let object = generetePFObject() else {
+            completion?(false, NSError())
+            return
+        }
+        object.deleteInBackground { (success, error) in
             completion?(success, error)
         }
     }
