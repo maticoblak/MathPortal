@@ -19,7 +19,9 @@ class EditUserViewController: UIViewController {
     @IBOutlet private var ageDayTextField: UITextField?
     @IBOutlet private var ageMonthTextField: UITextField?
     @IBOutlet private var ageYearTextField: UITextField?
+    @IBOutlet private var ageTextField: UITextField?
     @IBOutlet private var studentButton: UIButton?
+    
     
     @IBOutlet private var saveButton: UIButton?
     @IBOutlet private var deleteAccountButton: UIButton?

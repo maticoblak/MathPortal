@@ -49,7 +49,7 @@ class User: ParseObject {
         object?["age"] = age == nil ? NSNull() : age
         object?["username"] = username
         object?["email"] = email
-        object?["birthDate"] = birthDate
+        object?["birthDate"] = birthDate == nil ? NSNull() : tasks
         return object
     }
     
