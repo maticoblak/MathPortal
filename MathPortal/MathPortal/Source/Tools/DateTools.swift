@@ -11,6 +11,7 @@ import Foundation
 
 class DateTools {
     
+    
     static let hourMinuteDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = NSCalendar.autoupdatingCurrent
@@ -35,6 +36,32 @@ class DateTools {
     static func stringFromDate(date: Date?) -> String {
         guard let date = date else { return "" }
         return fullDateFormatter.string(from: date)
+    }
+    
+    static func dateFromString(string: String?) -> Date? {
+        guard let string = string else { return nil }
+        return fullDateFormatter.date(from: string)
+    }
+    
+    static func getStringComponent(_ component: Calendar.Component , fromDate date: Date?) -> String? {
+        guard let date = date else { return nil }
+        let components = NSCalendar.autoupdatingCurrent.dateComponents([.day, .month, .year], from: date)
+        var value: Int?
+        switch component {
+        case .day:  value = components.day
+        case .year: value = components.year
+        case .month: value = components.month
+        default: return nil
+        }
+        guard let componentValue = value else { return nil }
+        return String(componentValue)
+    }
+    
+    static func getDateFromStringComponents(day: String?, month: String?, year: String?) -> Date? {
+        guard let day = day, let month = month, let year = year else { return nil }
+        let date = day + "." + month + "." + year
+        return dateFromString(string: date)
+        
     }
     
     static func ageString(ofDate olderDate: Date, relativeTo nowDate: Date = Date()) -> String {

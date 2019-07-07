@@ -22,7 +22,6 @@ class User: ParseObject {
     var profileImage: UIImage?
     var birthDate: Date?
     
-    // TODO: create enum with current user objects
     override class var entityName: String { return "User" }
     override init() {
         super.init()
@@ -48,7 +47,7 @@ class User: ParseObject {
         object?[Object.age.rawValue] = age == nil ? NSNull() : age
         object?[Object.username.rawValue] = username
         object?[Object.email.rawValue] = email
-        object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : tasks
+        object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : birthDate
         return object
     }
     

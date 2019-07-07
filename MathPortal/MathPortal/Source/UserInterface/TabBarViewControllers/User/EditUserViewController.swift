@@ -43,6 +43,10 @@ class EditUserViewController: UIViewController {
         profileImage?.image = user.profileImage
         studentRoleSelected = user.role.contains(.student)
         teacherRoleSelected = user.role.contains(.teacher)
+        ageDayTextField?.placeholder = DateTools.getStringComponent(.day, fromDate: user.birthDate) ?? "dd"
+        ageMonthTextField?.placeholder = DateTools.getStringComponent(.month, fromDate: user.birthDate) ?? "mm"
+        ageYearTextField?.placeholder = DateTools.getStringComponent(.year, fromDate: user.birthDate) ?? "yyyy"
+        
     }
     private func setUpKeyboard() {
         usernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
@@ -84,6 +88,8 @@ class EditUserViewController: UIViewController {
     @IBAction private func deleteAccount(_ sender: Any) {
         // TODO: have a delete account option
     }
+    
+    
     
     func save() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
@@ -131,7 +137,8 @@ class EditUserViewController: UIViewController {
         if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text } else { self.user.username = self.usernameTextField?.placeholder}
         if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text } else { self.user.email = self.emailTextField?.placeholder}
         if let text = self.ageTextField?.text, text.count > 0 { self.user.age = Int(text) }
-
+        
+        user.birthDate = DateTools.getDateFromStringComponents(day: ageDayTextField?.text, month: ageMonthTextField?.text, year: ageYearTextField?.text) 
         var newRoles: [User.Role] {
             var roles = [User.Role]()
             if teacherRoleSelected { roles.append(.teacher) }
@@ -140,5 +147,6 @@ class EditUserViewController: UIViewController {
             return roles
         }
         user.role = newRoles
+        
     }
 }
