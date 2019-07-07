@@ -28,13 +28,12 @@ class User: ParseObject {
         super.init()
         username = PFUser.current()?.username
         userId = PFUser.current()?.objectId
-        tasks = PFUser.current()?["tasks"] as? [String]
+        tasks = PFUser.current()?[Object.tasks.rawValue] as? [String]
         dateCreated = DateTools.stringFromDate(date: PFUser.current()?.createdAt)
-        //role = fromStringToRole(role: PFUser.current()?["role"] as? [String] )
-        role = (PFUser.current()?["role"] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
-        age = PFUser.current()?["age"] as? Int
+        role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
+        age = PFUser.current()?[Object.age.rawValue] as? Int
         email = PFUser.current()?.email
-        birthDate = PFUser.current()?["birthDate"] as? Date
+        birthDate = PFUser.current()?[Object.birthDate.rawValue] as? Date
         
     }
     
@@ -44,28 +43,28 @@ class User: ParseObject {
     
     override func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFUser.current()
-        object?["tasks"] = tasks == nil ? NSNull() : tasks
-        object?["role"] = role.compactMap { $0.string }
-        object?["age"] = age == nil ? NSNull() : age
-        object?["username"] = username
-        object?["email"] = email
-        object?["birthDate"] = birthDate == nil ? NSNull() : tasks
+        object?[Object.tasks.rawValue] = tasks == nil ? NSNull() : tasks
+        object?[Object.role.rawValue] = role.compactMap { $0.string }
+        object?[Object.age.rawValue] = age == nil ? NSNull() : age
+        object?[Object.username.rawValue] = username
+        object?[Object.email.rawValue] = email
+        object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : tasks
         return object
     }
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let username = object["username"] as? String, let userId = object.objectId, let dateCreated = object.createdAt, let email = object["email"] as? String else {
+        guard let username = object[Object.username.rawValue] as? String, let userId = object.objectId, let dateCreated = object.createdAt, let email = object[Object.email.rawValue] as? String else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse User data from PFObject"])
         }
         self.username = username
         self.userId = userId
-        self.tasks = object["tasks"] as? [String]
+        self.tasks = object[Object.tasks.rawValue] as? [String]
         self.dateCreated = DateTools.stringFromDate(date: dateCreated)
-        self.role = (PFUser.current()?["role"] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
-        self.age = object["age"] as? Int
+        self.role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
+        self.age = object[Object.age.rawValue] as? Int
         self.email = email
-        self.birthDate = object["birthDate"] as? Date
+        self.birthDate = object[Object.birthDate.rawValue] as? Date
     }
     
     func updateUser() {
@@ -76,13 +75,13 @@ class User: ParseObject {
     
     static func generateQueryWithEmail(_ email: String ) -> PFQuery<PFObject>? {
         let query = PFUser.query()
-        query?.whereKey("email", equalTo: email)
+        query?.whereKey(Object.email.rawValue, equalTo: email)
         return query
     }
     
     static func generateQueryWithUsername(_ username: String ) -> PFQuery<PFObject>? {
         let query = PFUser.query()
-        query?.whereKey("username", equalTo: username)
+        query?.whereKey(Object.username.rawValue, equalTo: username)
         return query
     }
     
@@ -106,7 +105,6 @@ class User: ParseObject {
     
 }
 
-// TODO: change the enum and check CaseIterable
 extension User {
     enum Role: CaseIterable {
         case teacher
@@ -120,19 +118,19 @@ extension User {
             case .undefined: return "Undefined"
             }
         }
-        
-        //static var supportedRoles: [Role] = [.teacher, .student, .undefined]
-        //static func fromParseString(_ string: String) -> Role { return supportedRoles.first(where: { $0.string == string }) ?? .undefined }
         static func fromParseString(_ string: String) -> Role { return Role.allCases.first(where: { $0.string == string }) ?? .undefined }
     }
-    
-//    func fromStringToRole(role: [String]?) -> [Role] {
-//        guard let role = role else { return [.undefined] }
-//        let convertedRoles: [Role] = role.map {
-//            if $0 ==  "Teacher" { return .teacher }
-//            else if $0 ==  "Strudent" { return .student }
-//            else { return .undefined }
-//        }
-//        return convertedRoles
-//    }
+
+}
+extension User {
+    enum Object: String {
+        case tasks = "taskes"
+        case role = "role"
+        case age = "age"
+        case profileImage  = "image"
+        case birthDate = "birthDate"
+        case username = "username"
+        case email = "email"
+        
+    }
 }
