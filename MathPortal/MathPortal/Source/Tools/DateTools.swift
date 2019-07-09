@@ -43,6 +43,12 @@ class DateTools {
         return fullDateFormatter.date(from: string)
     }
     
+    static func getAgeFromDate(date: Date?) -> Int? {
+        guard let date = date else { return nil }
+        let components = Calendar.current.dateComponents( [.year], from: date, to: Date())
+        return components.year
+    }
+    
     static func getStringComponent(_ component: Calendar.Component , fromDate date: Date?) -> String? {
         guard let date = date else { return nil }
         let components = NSCalendar.autoupdatingCurrent.dateComponents([.day, .month, .year], from: date)

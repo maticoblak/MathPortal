@@ -19,7 +19,7 @@ class EditUserViewController: UIViewController {
     @IBOutlet private var ageDayTextField: UITextField?
     @IBOutlet private var ageMonthTextField: UITextField?
     @IBOutlet private var ageYearTextField: UITextField?
-    @IBOutlet private var ageTextField: UITextField?
+    //@IBOutlet private var ageTextField: UITextField?
     @IBOutlet private var studentButton: UIButton?
     
     
@@ -39,7 +39,6 @@ class EditUserViewController: UIViewController {
     private func refresh() {
         usernameTextField?.placeholder = user.username
         emailTextField?.placeholder = user.email
-        ageTextField?.placeholder = String(describing: user.age)
         profileImage?.image = user.profileImage
         studentRoleSelected = user.role.contains(.student)
         teacherRoleSelected = user.role.contains(.teacher)
@@ -51,7 +50,6 @@ class EditUserViewController: UIViewController {
     private func setUpKeyboard() {
         usernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         emailTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
-        ageTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
     @objc private func dismissKeyboard() {
@@ -108,26 +106,22 @@ class EditUserViewController: UIViewController {
             }
         }
     }
-    // TODO: sinc the validate and save: right now .OK is triggered every time the field is correct regarding the fact that the next field might not be
+    
     func validateAndSave() {
-        FieldValidator.init(username: usernameTextField?.text, email: emailTextField?.text, age: ageTextField?.text).validate { result in
+        var fields: [FieldValidator.Field] = [FieldValidator.Field] ()
+        if emailTextField?.text?.isEmpty == false { fields.append(.email) }
+        if usernameTextField?.text?.isEmpty == false { fields.append(.username)}
+        if ageDayTextField?.text?.isEmpty == false { fields.append(.age)}
+        
+        FieldValidator.init(validate: fields, username: usernameTextField?.text, email: emailTextField?.text).validate { result in
             print(result)
             switch result {
             case .OK:
                 self.updateUser()
                 self.save()
                 break
-            case .usernameAlreadyTaken:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Username is alreadi taken")
-                break
-            case .emailInvalid:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Email is invalid")
-                break
-            case .ageInvalid:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Age format is wrong")
-                break
-            case .emailAlreadyTaken:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Email is already taken")
+            case .usernameAlreadyTaken, .ageInvalid, .emailAlreadyTaken, .emailInvalid:
+                ErrorMessage.displayErrorMessage(controller: self, message: result.error)
                 break
             }
         }
@@ -136,9 +130,10 @@ class EditUserViewController: UIViewController {
     func updateUser() {
         if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text } else { self.user.username = self.usernameTextField?.placeholder}
         if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text } else { self.user.email = self.emailTextField?.placeholder}
-        if let text = self.ageTextField?.text, text.count > 0 { self.user.age = Int(text) }
-        
-        user.birthDate = DateTools.getDateFromStringComponents(day: ageDayTextField?.text, month: ageMonthTextField?.text, year: ageYearTextField?.text) 
+        if ageDayTextField?.text?.isEmpty == false , ageYearTextField?.text?.isEmpty == false, ageMonthTextField?.text?.isEmpty == false {
+            user.birthDate = DateTools.getDateFromStringComponents(day: ageDayTextField?.text, month: ageMonthTextField?.text, year: ageYearTextField?.text)
+            user.age = DateTools.getAgeFromDate(date: user.birthDate)
+        }
         var newRoles: [User.Role] {
             var roles = [User.Role]()
             if teacherRoleSelected { roles.append(.teacher) }

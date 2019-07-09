@@ -94,21 +94,12 @@ class LogInViewController: UIViewController {
         user.username = signUpUsernameTextField?.text
         user.password = signUpPasswordTextField?.text
         user.email = signUpEmailTextField?.text
-        FieldValidator.init(username: user.username, email: user.email, age: nil).validate { result in
+        FieldValidator.init(validate: [.username, .email], username: user.username, email: user.email, age: nil).validate { result in
             switch result {
             case .OK:
                 self.signUpNewUser(user: user)
-            case .usernameAlreadyTaken:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Username is alreadi taken")
-                break
-            case .emailInvalid:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Email is invalid")
-                break
-            case .ageInvalid:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Age format is wrong")
-                break
-            case .emailAlreadyTaken:
-                ErrorMessage.displayErrorMessage(controller: self, message: "Email is already taken")
+            case .emailInvalid, .ageInvalid, .emailAlreadyTaken, .usernameAlreadyTaken:
+                ErrorMessage.displayErrorMessage(controller: self, message: result.error)
                 break
             }
         }
