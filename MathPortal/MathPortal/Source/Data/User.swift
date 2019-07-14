@@ -101,7 +101,9 @@ class User: ParseObject {
             completion(!objects.isEmpty, nil)
         }
     }
-    
+    func logOut() {
+        PFUser.logOut()
+    }
 }
 
 extension User {

@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class EditUserViewController: UIViewController {
     
     
@@ -19,7 +20,6 @@ class EditUserViewController: UIViewController {
     @IBOutlet private var ageDayTextField: UITextField?
     @IBOutlet private var ageMonthTextField: UITextField?
     @IBOutlet private var ageYearTextField: UITextField?
-    //@IBOutlet private var ageTextField: UITextField?
     @IBOutlet private var studentButton: UIButton?
     
     
@@ -85,9 +85,29 @@ class EditUserViewController: UIViewController {
     }
     @IBAction private func deleteAccount(_ sender: Any) {
         // TODO: have a delete account option
+        ErrorMessage.displayConformationMessage(controller: self, message: "Are you sure you want to delete the account", onYes: delete)
+        
     }
     
-    
+    func delete(action: UIAlertAction) {
+         let loadingSpinner = LoadingViewController.activateIndicator(text: "Deleting")
+        self.present(loadingSpinner, animated: false, completion: nil)
+        user.delete { (success, error) in
+            loadingSpinner.dismissLoadingScreen {
+                if success == false {
+                    if let description = error?.localizedDescription {
+                        ErrorMessage.displayErrorMessage(controller: self, message: description)
+                    } else {
+                        ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
+                    }
+                } else {
+                    self.user.logOut()
+                    let logInController = R.storyboard.main.logInViewController()!
+                    self.present(logInController, animated: true)
+                }
+            }
+        }
+    }
     
     func save() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")

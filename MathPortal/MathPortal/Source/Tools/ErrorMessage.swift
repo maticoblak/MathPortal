@@ -20,4 +20,17 @@ class ErrorMessage {
         }
         controller.present(alertView, animated: true, completion:nil)
     }
+    
+    static func displayConformationMessage(controller: UIViewController, message: String, onYes: @escaping ((UIAlertAction) -> Void)) {
+        let alertView = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Yes", style: .default, handler: onYes)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        alertView.addAction(confirmAction)
+        alertView.addAction(cancelAction)
+        if let presenter = alertView.popoverPresentationController {
+            presenter.sourceView = controller.view
+            presenter.sourceRect = controller.view.bounds
+        }
+        controller.present(alertView, animated: true, completion:nil)
+    }
 }
