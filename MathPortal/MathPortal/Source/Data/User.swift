@@ -16,7 +16,6 @@ class User: ParseObject {
     var tasks: [String]?
     var dateCreated: String?
     var role: [Role] = [.undefined]
-    // TODO: change to birthdate
     var age: Int?
     var email: String?
     var profileImage: UIImage?
@@ -125,13 +124,12 @@ extension User {
 }
 extension User {
     enum Object: String {
-        case tasks = "taskes"
+        case tasks = "tasks"
         case role = "role"
         case age = "age"
-        case profileImage  = "image"
+        case profileImage  = "profileImage"
         case birthDate = "birthDate"
         case username = "username"
         case email = "email"
-        
     }
 }

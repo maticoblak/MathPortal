@@ -11,6 +11,8 @@
 		C006E62C22A6C66A0017EC6F /* BracketsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C006E62B22A6C66A0017EC6F /* BracketsView.swift */; };
 		C008B82A22AFADB800707D71 /* SolvedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */; };
 		C008B82C22AFADDD00707D71 /* SolvedTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */; };
+		C00C922422DB98990068A3EE /* ProfileImagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C922322DB98990068A3EE /* ProfileImagesViewController.swift */; };
+		C00C922622DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00C922522DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift */; };
 		C01A65A422B37BE7008F4B07 /* DateTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A322B37BE7008F4B07 /* DateTools.swift */; };
 		C01A65A622B5448C008F4B07 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A522B5448C008F4B07 /* EditUserViewController.swift */; };
 		C01A65A822B7BB68008F4B07 /* UserFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */; };
@@ -95,6 +97,8 @@
 		C006E62B22A6C66A0017EC6F /* BracketsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BracketsView.swift; sourceTree = "<group>"; };
 		C008B82922AFADB800707D71 /* SolvedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolvedTasksViewController.swift; sourceTree = "<group>"; };
 		C008B82B22AFADDD00707D71 /* SolvedTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SolvedTasksViewController.storyboard; sourceTree = "<group>"; };
+		C00C922322DB98990068A3EE /* ProfileImagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImagesViewController.swift; sourceTree = "<group>"; };
+		C00C922522DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImagesCollectionViewCell.swift; sourceTree = "<group>"; };
 		C01A65A322B37BE7008F4B07 /* DateTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTools.swift; sourceTree = "<group>"; };
 		C01A65A522B5448C008F4B07 /* EditUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
 		C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFieldValidator.swift; sourceTree = "<group>"; };
@@ -281,6 +285,8 @@
 				C0875E5A22AE779E008C73A9 /* UserViewController.swift */,
 				C01A65A522B5448C008F4B07 /* EditUserViewController.swift */,
 				C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */,
+				C00C922322DB98990068A3EE /* ProfileImagesViewController.swift */,
+				C00C922522DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -729,11 +735,13 @@
 				C08E635B226CE5A800416D19 /* KeyboardButtons.swift in Sources */,
 				C08E638A2271B27C00416D19 /* ExtrasCGRect+Common.swift in Sources */,
 				C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */,
+				C00C922422DB98990068A3EE /* ProfileImagesViewController.swift in Sources */,
 				C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */,
 				C08E63612271822800416D19 /* KeyboardManager.swift in Sources */,
 				C08E638F2271B27C00416D19 /* ExtrasUIView+Frame.swift in Sources */,
 				C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */,
 				C08E63902271B27C00416D19 /* ExtrasUIView+ApplyText.swift in Sources */,
+				C00C922622DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift in Sources */,
 				C008B82A22AFADB800707D71 /* SolvedTasksViewController.swift in Sources */,
 				C0875E5622AE50CA008C73A9 /* TabBarButton.swift in Sources */,
 				C0BD61CD22637FCA00E48081 /* LoadingViewController.swift in Sources */,

@@ -32,11 +32,13 @@ class EditUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpKeyboard()
         refresh()
     }
     
     private func refresh() {
+        
         usernameTextField?.placeholder = user.username
         emailTextField?.placeholder = user.email
         profileImage?.image = user.profileImage
@@ -70,24 +72,24 @@ class EditUserViewController: UIViewController {
 
     @IBAction private func editProfileImage(_ sender: Any) {
         // TODO: Go to new screen and select a predefined image or image from your library
+        let controller = R.storyboard.userViewController.profileImagesViewController()!
+        controller.delegate = self
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     @IBAction private func selectTeacher(_ sender: Any) {
         teacherRoleSelected = !teacherRoleSelected
     }
-    
     
     @IBAction private func selectStudent(_ sender: Any) {
         studentRoleSelected = !studentRoleSelected
     }
     @IBAction private func saveChanges(_ sender: Any) {
         validateAndSave()
-
     }
     @IBAction private func deleteAccount(_ sender: Any) {
-        // TODO: have a delete account option
         ErrorMessage.displayConformationMessage(controller: self, message: "Are you sure you want to delete the account", onYes: delete)
-        
     }
+    
     
     func delete(action: UIAlertAction) {
          let loadingSpinner = LoadingViewController.activateIndicator(text: "Deleting")
@@ -146,7 +148,7 @@ class EditUserViewController: UIViewController {
             }
         }
     }
-    
+    // TODO: Save image
     func updateUser() {
         if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text } else { self.user.username = self.usernameTextField?.placeholder}
         if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text } else { self.user.email = self.emailTextField?.placeholder}
@@ -164,4 +166,13 @@ class EditUserViewController: UIViewController {
         user.role = newRoles
         
     }
+}
+
+extension EditUserViewController: ProfileImagesViewControllerDelegate {
+    func profileImagesViewController(sender: ProfileImagesViewController, didChoseImage image: UIImage) {
+        profileImage?.image = image
+        profileImage?.setNeedsDisplay()
+    }
+    
+    
 }

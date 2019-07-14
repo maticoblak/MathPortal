@@ -16,12 +16,75 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
   
-  /// This `R.image` struct is generated, and contains static references to 2 images.
+  /// This `R.image` struct is generated, and contains static references to 11 images.
   struct image {
+    /// Image `boyBlack`.
+    static let boyBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyBlack")
+    /// Image `boyColor`.
+    static let boyColor = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyColor")
+    /// Image `boyWhite`.
+    static let boyWhite = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyWhite")
+    /// Image `einsteinBlack`.
+    static let einsteinBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "einsteinBlack")
+    /// Image `einsteinColor`.
+    static let einsteinColor = Rswift.ImageResource(bundle: R.hostingBundle, name: "einsteinColor")
+    /// Image `einsteinWhite`.
+    static let einsteinWhite = Rswift.ImageResource(bundle: R.hostingBundle, name: "einsteinWhite")
+    /// Image `girlBlack`.
+    static let girlBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "girlBlack")
+    /// Image `girlColor`.
+    static let girlColor = Rswift.ImageResource(bundle: R.hostingBundle, name: "girlColor")
+    /// Image `girlWhite`.
+    static let girlWhite = Rswift.ImageResource(bundle: R.hostingBundle, name: "girlWhite")
     /// Image `profile2`.
     static let profile2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile2")
     /// Image `profile`.
     static let profile = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile")
+    
+    /// `UIImage(named: "boyBlack", bundle: ..., traitCollection: ...)`
+    static func boyBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.boyBlack, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "boyColor", bundle: ..., traitCollection: ...)`
+    static func boyColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.boyColor, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "boyWhite", bundle: ..., traitCollection: ...)`
+    static func boyWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.boyWhite, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "einsteinBlack", bundle: ..., traitCollection: ...)`
+    static func einsteinBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.einsteinBlack, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "einsteinColor", bundle: ..., traitCollection: ...)`
+    static func einsteinColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.einsteinColor, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "einsteinWhite", bundle: ..., traitCollection: ...)`
+    static func einsteinWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.einsteinWhite, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "girlBlack", bundle: ..., traitCollection: ...)`
+    static func girlBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.girlBlack, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "girlColor", bundle: ..., traitCollection: ...)`
+    static func girlColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.girlColor, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "girlWhite", bundle: ..., traitCollection: ...)`
+    static func girlWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.girlWhite, compatibleWith: traitCollection)
+    }
     
     /// `UIImage(named: "profile", bundle: ..., traitCollection: ...)`
     static func profile(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
@@ -54,8 +117,10 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 2 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 3 reuse identifiers.
   struct reuseIdentifier {
+    /// Reuse identifier `ImageCell`.
+    static let imageCell: Rswift.ReuseIdentifier<ProfileImagesCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "ImageCell")
     /// Reuse identifier `KeyboardCell`.
     static let keyboardCell: Rswift.ReuseIdentifier<CustomKeyboardCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "KeyboardCell")
     /// Reuse identifier `UserCell`.
@@ -271,10 +336,15 @@ struct _R: Rswift.Validatable {
       let bundle = R.hostingBundle
       let editUserViewController = StoryboardViewControllerResource<EditUserViewController>(identifier: "EditUserViewController")
       let name = "UserViewController"
+      let profileImagesViewController = StoryboardViewControllerResource<ProfileImagesViewController>(identifier: "ProfileImagesViewController")
       let userViewController = StoryboardViewControllerResource<UserViewController>(identifier: "UserViewController")
       
       func editUserViewController(_: Void = ()) -> EditUserViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: editUserViewController)
+      }
+      
+      func profileImagesViewController(_: Void = ()) -> ProfileImagesViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: profileImagesViewController)
       }
       
       func userViewController(_: Void = ()) -> UserViewController? {
@@ -282,9 +352,11 @@ struct _R: Rswift.Validatable {
       }
       
       static func validate() throws {
+        if UIKit.UIImage(named: "einsteinBlack", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'einsteinBlack' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.userViewController().editUserViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'editUserViewController' could not be loaded from storyboard 'UserViewController' as 'EditUserViewController'.") }
+        if _R.storyboard.userViewController().profileImagesViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'profileImagesViewController' could not be loaded from storyboard 'UserViewController' as 'ProfileImagesViewController'.") }
         if _R.storyboard.userViewController().userViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'userViewController' could not be loaded from storyboard 'UserViewController' as 'UserViewController'.") }
       }
       
