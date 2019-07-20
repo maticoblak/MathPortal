@@ -92,20 +92,20 @@ class EditUserViewController: UIViewController {
     
     
     func delete(action: UIAlertAction) {
-         let loadingSpinner = LoadingViewController.activateIndicator(text: "Deleting")
+        let loadingSpinner = LoadingViewController.activateIndicator(text: "Deleting")
         self.present(loadingSpinner, animated: false, completion: nil)
         user.delete { (success, error) in
             loadingSpinner.dismissLoadingScreen {
-                if success == false {
+                if success {
+                    self.user.logOut()
+                    let logInController = R.storyboard.main.logInViewController()!
+                    self.present(logInController, animated: true)
+                } else {
                     if let description = error?.localizedDescription {
                         ErrorMessage.displayErrorMessage(controller: self, message: description)
                     } else {
                         ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                     }
-                } else {
-                    self.user.logOut()
-                    let logInController = R.storyboard.main.logInViewController()!
-                    self.present(logInController, animated: true)
                 }
             }
         }

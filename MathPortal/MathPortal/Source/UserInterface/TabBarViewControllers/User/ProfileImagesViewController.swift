@@ -21,9 +21,9 @@ class ProfileImagesViewController: UIViewController {
     }
     weak var delegate: ProfileImagesViewControllerDelegate?
     
-    @IBOutlet var profileImagesCollectionView: UICollectionView!
+    @IBOutlet private var profileImagesCollectionView: UICollectionView!
     
-    let defaultImages = [R.image.einsteinBlack(), R.image.einsteinColor(), R.image.einsteinWhite(), R.image.girlBlack(), R.image.girlColor(), R.image.girlWhite(), R.image.boyBlack(), R.image.boyColor(), R.image.boyWhite()]
+    private let defaultImages = [R.image.einsteinBlack(), R.image.einsteinColor(), R.image.einsteinWhite(), R.image.girlBlack(), R.image.girlColor(), R.image.girlWhite(), R.image.boyBlack(), R.image.boyColor(), R.image.boyWhite()]
  
 }
 extension ProfileImagesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
