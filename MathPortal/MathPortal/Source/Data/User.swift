@@ -32,7 +32,9 @@ class User: ParseObject {
         age = PFUser.current()?[Object.age.rawValue] as? Int
         email = PFUser.current()?.email
         birthDate = PFUser.current()?[Object.birthDate.rawValue] as? Date
-        
+        if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
+            profileImage = UIImage(data:imageData)
+        }
     }
     
     override init?(pfObject: PFObject?) {
@@ -47,6 +49,7 @@ class User: ParseObject {
         object?[Object.username.rawValue] = username
         object?[Object.email.rawValue] = email
         object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : birthDate
+        if let profileImageData = profileImage?.pngData() { object?[Object.profileImage.rawValue] = PFFileObject(data: profileImageData)}
         return object
     }
     
@@ -63,6 +66,7 @@ class User: ParseObject {
         self.age = object[Object.age.rawValue] as? Int
         self.email = email
         self.birthDate = object[Object.birthDate.rawValue] as? Date
+        if let imageData = PFUser.current()?[Object.profileImage.rawValue] as? Data { profileImage = UIImage(data:imageData )}
     }
     
     func updateUser() {

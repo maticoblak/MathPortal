@@ -26,8 +26,6 @@ class EditUserViewController: UIViewController {
     @IBOutlet private var saveButton: UIButton?
     @IBOutlet private var deleteAccountButton: UIButton?
     
-    // TODO: add birthdate logic
-    
     var user: User!
     
     override func viewDidLoad() {
@@ -71,7 +69,6 @@ class EditUserViewController: UIViewController {
     
 
     @IBAction private func editProfileImage(_ sender: Any) {
-        // TODO: Go to new screen and select a predefined image or image from your library
         let controller = R.storyboard.userViewController.profileImagesViewController()!
         controller.delegate = self
         self.navigationController?.pushViewController(controller, animated: true)
@@ -164,7 +161,7 @@ class EditUserViewController: UIViewController {
             return roles
         }
         user.role = newRoles
-        
+        user.profileImage = profileImage?.image
     }
 }
 
