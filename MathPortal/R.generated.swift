@@ -117,12 +117,14 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 3 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 4 reuse identifiers.
   struct reuseIdentifier {
     /// Reuse identifier `ImageCell`.
     static let imageCell: Rswift.ReuseIdentifier<ProfileImagesCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "ImageCell")
     /// Reuse identifier `KeyboardCell`.
     static let keyboardCell: Rswift.ReuseIdentifier<CustomKeyboardCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "KeyboardCell")
+    /// Reuse identifier `TaskViewControllerTableViewCell`.
+    static let taskViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskViewControllerTableViewCell")
     /// Reuse identifier `UserCell`.
     static let userCell: Rswift.ReuseIdentifier<LoggedInViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "UserCell")
     

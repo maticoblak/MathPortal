@@ -12,27 +12,21 @@ import Parse
 class TaskViewController: UIViewController {
 
     @IBOutlet private var titleTextField: UITextField?
-    @IBOutlet private var textView: UITextView?
     @IBOutlet private var saveButton: UIButton?
     
-    @IBOutlet private var titleAndTextView: UIView?
-    @IBOutlet private var equationView: UIView?
-    
     @IBOutlet private var keyboardHeightConstraint: NSLayoutConstraint?
-    @IBOutlet private var equationLabel: UILabel?
-    
-    @IBOutlet private var scrollView: UIScrollView?
-    
-    @IBOutlet private var scrollViewBottomConstraint: NSLayoutConstraint?
-    
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     
-    private let equation: Equation = Equation()
+    @IBOutlet var equationsTableView: UITableView?
     
+    private var equation: Equation = Equation()
+    
+    private var equationsAndTexts: [Equation] = [Equation]()
 
     var task: Task!
     
     var taskTitle: String?
+    
     var saveButtonHidden: Bool = false {
         didSet {
             saveButton?.isHidden = saveButtonHidden
@@ -43,37 +37,39 @@ class TaskViewController: UIViewController {
             saveButtonHidden = !saveButtonHidden
             let height: CGFloat = mathKeyboardOpened ? 280 : 0
             keyboardHeightConstraint?.constant = height
-            scrollViewBottomConstraint?.constant = height
+            //scrollViewBottomConstraint?.constant = height
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             }
-            scrollView?.extras.scrollToViews([equationLabel])
+            //scrollView?.extras.scrollToViews([equationLabel])
         }
     }
         
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        KeyboardManager.sharedInstance.willChangeFrameDelegate = self
+        //KeyboardManager.sharedInstance.willChangeFrameDelegate = self
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardHeightConstraint?.constant = 0
-        Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
+        //Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
         setUpDefaultKeyboard()
     }
     private func setUpDefaultKeyboard() {
         titleTextField?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
-        textView?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
+        //textView?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
     }
     
     @objc func dismissDefaultKeyboard() {
         view.endEditing(true)
     }
     
-    @IBAction func goToEquationViewController(_ sender: Any) {
+    @objc func goToEquationViewController() {
         let controller = R.storyboard.main.mathEquationViewController()!
+        controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
         
     }
@@ -98,29 +94,57 @@ class TaskViewController: UIViewController {
         })
     }
     
-    private var currentView: UIView?
-    func refreshEquation() {
-        currentView?.removeFromSuperview()
-        if let view = equation.expression.generateView().view {
-            currentView = view
-            self.view.addSubview(view)
-            view.center = CGPoint(x: 100.0, y: 200.0)
-        }
+//    private var currentView: UIView?
+//    func refreshEquation() {
+//        currentView?.removeFromSuperview()
+//        if let view = equation.expression.generateView().view {
+//            currentView = view
+//            equationView?.addSubview(view)
+//            view.center = CGPoint(x: 100.0, y: 200.0)
+//        }
+//
+//    }
+}
+
+//extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
+//    func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
+//        mathKeyboardOpened = false
+//        saveButtonHidden = false
+//        //scrollViewBottomConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, to: nil).minY
+//        self.view.layoutIfNeeded()
+//        if titleTextField?.isFirstResponder == true {
+//            //scrollView?.extras.scrollToViews([titleTextField])
+//        } else if textView?.isFirstResponder == true {
+//            //scrollView?.extras.scrollToViews([textView])
+//        }
+//
+//    }
+//}
+
+extension TaskViewController: MathEquationViewControllerDelegate {
+    func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
+        self.equation = equation
+        equationsAndTexts.append(equation)
+        equationsTableView?.reloadData()
         
+        //refreshEquation()
     }
 }
 
-extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
-    func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
-        mathKeyboardOpened = false
-        saveButtonHidden = false
-        scrollViewBottomConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, to: nil).minY
-        self.view.layoutIfNeeded()
-        if titleTextField?.isFirstResponder == true {
-            scrollView?.extras.scrollToViews([titleTextField])
-        } else if textView?.isFirstResponder == true {
-            scrollView?.extras.scrollToViews([textView])
-        }
-        
+extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return equationsAndTexts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.taskViewControllerTableViewCell, for: indexPath)!
+        cell.equation = equationsAndTexts[indexPath.row]
+        cell.refreshEquation()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let height = equationsAndTexts[indexPath.row].expression.generateView().view?.frame.height ?? 44
+        return height + 10
     }
 }

@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol MathEquationViewControllerDelegate: class {
+    func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation)
+}
+
 class MathEquationViewController: UIViewController {
     
     private let equation: Equation = Equation()
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     @IBOutlet private var keyboardHightConstraint: NSLayoutConstraint?
     @IBOutlet private var equationView: UIView?
+    
+    weak var delegate: MathEquationViewControllerDelegate?
     
     private var keyboardOpened: Bool = false {
         didSet {
@@ -36,6 +42,7 @@ class MathEquationViewController: UIViewController {
         }(), animationStyle: .fade)
     }
     @objc func goToTaskViewController() {
+        delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)
         navigationController?.popViewController(animated: true)
     }
     @objc private func openCloseKeyboard() {
