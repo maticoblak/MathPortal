@@ -22,6 +22,8 @@ class TaskViewController: UIViewController {
     private var equation: Equation = Equation()
     
     private var equationsAndTexts: [Equation] = [Equation]()
+    
+    private var currentSelectedEquationIndex: Int?
 
     var task: Task!
     
@@ -124,7 +126,12 @@ class TaskViewController: UIViewController {
 extension TaskViewController: MathEquationViewControllerDelegate {
     func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
         self.equation = equation
-        equationsAndTexts.append(equation)
+        if let currentSelectedEquationIndex = currentSelectedEquationIndex {
+            equationsAndTexts[currentSelectedEquationIndex] = equation
+        } else {
+            equationsAndTexts.append(equation)
+        }
+        currentSelectedEquationIndex = nil 
         equationsTableView?.reloadData()
         
         //refreshEquation()
@@ -146,5 +153,14 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let height = equationsAndTexts[indexPath.row].expression.generateView().view?.frame.height ?? 44
         return height + 10
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        currentSelectedEquationIndex = indexPath.row
+        let controller = R.storyboard.main.mathEquationViewController()!
+        controller.delegate = self
+        controller.equation = equationsAndTexts[indexPath.row]
+        navigationController?.pushViewController(controller, animated: true)
+        
     }
 }

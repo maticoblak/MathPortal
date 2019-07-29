@@ -14,7 +14,7 @@ protocol MathEquationViewControllerDelegate: class {
 
 class MathEquationViewController: UIViewController {
     
-    private let equation: Equation = Equation()
+    var equation: Equation = Equation()
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     @IBOutlet private var keyboardHightConstraint: NSLayoutConstraint?
     @IBOutlet private var equationView: UIView?
@@ -40,6 +40,7 @@ class MathEquationViewController: UIViewController {
             controller.delegate = self
             return controller
         }(), animationStyle: .fade)
+        refreshEquation()
     }
     @objc func goToTaskViewController() {
         delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)

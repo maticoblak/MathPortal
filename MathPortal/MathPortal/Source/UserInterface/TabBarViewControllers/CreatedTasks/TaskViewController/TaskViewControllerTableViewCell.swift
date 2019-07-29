@@ -25,7 +25,7 @@ class TaskViewControllerTableViewCell: UITableViewCell {
         if let view = equation.expression.generateView().view {
             currentView = view
             equationView?.addSubview(view)
-            view.frame.origin = .zero
+            view.frame.origin = CGPoint(x: 5, y: 5)
         }
         
     }
