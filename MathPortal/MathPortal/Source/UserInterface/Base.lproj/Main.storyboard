@@ -386,31 +386,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7ug-c8-2OA">
                                 <rect key="frame" x="0.0" y="74" width="414" height="738"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TaskViewControllerTableViewCell" id="yNf-qD-FPz" customClass="TaskViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yNf-qD-FPz" id="rvG-bj-npZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fkl-QT-99R">
-                                                    <rect key="frame" x="10" y="0.0" width="404" height="44"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </view>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="fkl-QT-99R" firstAttribute="leading" secondItem="rvG-bj-npZ" secondAttribute="leading" constant="10" id="Sy9-gQ-jiM"/>
-                                                <constraint firstItem="fkl-QT-99R" firstAttribute="top" secondItem="rvG-bj-npZ" secondAttribute="top" id="ark-7B-Su5"/>
-                                                <constraint firstAttribute="bottom" secondItem="fkl-QT-99R" secondAttribute="bottom" id="bar-bl-zr2"/>
-                                                <constraint firstAttribute="trailing" secondItem="fkl-QT-99R" secondAttribute="trailing" id="nla-pq-GL2"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="equationView" destination="fkl-QT-99R" id="JmM-yZ-KlL"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="6OY-hP-fad" id="Gok-hX-ABR"/>
                                     <outlet property="delegate" destination="6OY-hP-fad" id="fah-7b-usP"/>

@@ -99,10 +99,12 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.nib` struct is generated, and contains static references to 1 nibs.
+  /// This `R.nib` struct is generated, and contains static references to 2 nibs.
   struct nib {
     /// Nib `TabBarButton`.
     static let tabBarButton = _R.nib._TabBarButton()
+    /// Nib `TaskViewControllerTableViewCell`.
+    static let taskViewControllerTableViewCell = _R.nib._TaskViewControllerTableViewCell()
     
     /// `UINib(name: "TabBarButton", in: bundle)`
     @available(*, deprecated, message: "Use UINib(resource: R.nib.tabBarButton) instead")
@@ -110,8 +112,18 @@ struct R: Rswift.Validatable {
       return UIKit.UINib(resource: R.nib.tabBarButton)
     }
     
+    /// `UINib(name: "TaskViewControllerTableViewCell", in: bundle)`
+    @available(*, deprecated, message: "Use UINib(resource: R.nib.taskViewControllerTableViewCell) instead")
+    static func taskViewControllerTableViewCell(_: Void = ()) -> UIKit.UINib {
+      return UIKit.UINib(resource: R.nib.taskViewControllerTableViewCell)
+    }
+    
     static func tabBarButton(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
       return R.nib.tabBarButton.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
+    }
+    
+    static func taskViewControllerTableViewCell(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskViewControllerTableViewCell? {
+      return R.nib.taskViewControllerTableViewCell.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskViewControllerTableViewCell
     }
     
     fileprivate init() {}
@@ -204,6 +216,20 @@ struct _R: Rswift.Validatable {
       
       func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
+      }
+      
+      fileprivate init() {}
+    }
+    
+    struct _TaskViewControllerTableViewCell: Rswift.NibResourceType, Rswift.ReuseIdentifierType {
+      typealias ReusableType = TaskViewControllerTableViewCell
+      
+      let bundle = R.hostingBundle
+      let identifier = "TaskViewControllerTableViewCell"
+      let name = "TaskViewControllerTableViewCell"
+      
+      func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskViewControllerTableViewCell? {
+        return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskViewControllerTableViewCell
       }
       
       fileprivate init() {}

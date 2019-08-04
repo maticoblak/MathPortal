@@ -54,10 +54,10 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardHeightConstraint?.constant = 0
-        //Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController))
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
+        equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         setUpDefaultKeyboard()
     }
     private func setUpDefaultKeyboard() {
@@ -133,8 +133,7 @@ extension TaskViewController: MathEquationViewControllerDelegate {
         }
         currentSelectedEquationIndex = nil 
         equationsTableView?.reloadData()
-        
-        //refreshEquation()
+
     }
 }
 
@@ -145,8 +144,7 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.taskViewControllerTableViewCell, for: indexPath)!
-        cell.equation = equationsAndTexts[indexPath.row]
-        cell.refreshEquation()
+        cell.setupCell(delegate: self, equation: equationsAndTexts[indexPath.row])
         return cell
     }
     
@@ -155,12 +153,32 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
         return height + 10
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        currentSelectedEquationIndex = indexPath.row
+//        let controller = R.storyboard.main.mathEquationViewController()!
+//        controller.delegate = self
+//        controller.equation = equationsAndTexts[indexPath.row]
+//        navigationController?.pushViewController(controller, animated: true)
+//
+//    }
+}
+
+extension TaskViewController: TaskViewControllerTableViewCellDelegate {
+    func taskViewControllerTableViewCell(sender: TaskViewControllerTableViewCell, didDeleteCellAt location: CGPoint) {
+        guard let indexPath = equationsTableView?.indexPathForRow(at: location) else { return }
+        equationsAndTexts.remove(at: indexPath.row)
+        equationsTableView?.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
+    func taskViewControllerTableViewCell(sender: TaskViewControllerTableViewCell, didSelectCellAt location: CGPoint) {
+        guard let indexPath = equationsTableView?.indexPathForRow(at: location) else { return }
         currentSelectedEquationIndex = indexPath.row
         let controller = R.storyboard.main.mathEquationViewController()!
         controller.delegate = self
         controller.equation = equationsAndTexts[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
-        
     }
+    
+    
 }
+
