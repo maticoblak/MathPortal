@@ -58,6 +58,7 @@ class TaskViewController: UIViewController {
         taskTitle = task.name
         titleTextField?.text = taskTitle ?? "Title"
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
+        equationsTableView?.isEditing = true
         setUpDefaultKeyboard()
     }
     private func setUpDefaultKeyboard() {
@@ -153,14 +154,19 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
         return height + 10
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        currentSelectedEquationIndex = indexPath.row
-//        let controller = R.storyboard.main.mathEquationViewController()!
-//        controller.delegate = self
-//        controller.equation = equationsAndTexts[indexPath.row]
-//        navigationController?.pushViewController(controller, animated: true)
-//
-//    }
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let equation = equationsAndTexts[sourceIndexPath.row]
+        equationsAndTexts.remove(at: sourceIndexPath.row)
+        equationsAndTexts.insert(equation, at: destinationIndexPath.row)
+    }
 }
 
 extension TaskViewController: TaskViewControllerTableViewCellDelegate {

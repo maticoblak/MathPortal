@@ -49,8 +49,9 @@ class TaskViewControllerTableViewCell: UITableViewCell {
     }
     
     func setupCell(delegate: TaskViewControllerTableViewCellDelegate, equation: Equation) {
-        self.selectionStyle = .none
+        //self.selectionStyle = .none
         //self.deleteViewClosed = true
+        self.showsReorderControl = false
         self.delegate = delegate
         self.equation = equation
         refreshEquation()
@@ -68,6 +69,7 @@ class TaskViewControllerTableViewCell: UITableViewCell {
     }
 
     private func setupGestureRecognisers() {
+        //TODO: add long gesture rcogniser for reordering the cells
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipe))
         panGestureRecognizer?.delegate = self
         guard let panGestureRecognizer = panGestureRecognizer else { return }
