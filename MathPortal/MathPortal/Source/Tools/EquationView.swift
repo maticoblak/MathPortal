@@ -12,16 +12,16 @@ class EquationView {
     
     var view: UIView?
     var horizontalOffset: CGFloat
-    var type: ExpressionType
+    var type: Equation.ExpressionType
     
     static let Nil = EquationView(view: nil, type: nil )
     
-    init(view: UIView?, horizontalOffset: CGFloat, type: ExpressionType) {
+    init(view: UIView?, horizontalOffset: CGFloat, type: Equation.ExpressionType) {
         self.view = view
         self.horizontalOffset = horizontalOffset
         self.type = type
     }
-    init(view: UIView?, type: ExpressionType?) {
+    init(view: UIView?, type: Equation.ExpressionType?) {
         if let view = view, let type = type {
             self.view = view
             self.horizontalOffset = view.bounds.height*0.5
@@ -31,22 +31,8 @@ class EquationView {
             self.type = .other
         }
     }
-    enum ExpressionType {
-        case text
-        case mathOperator
-        case brackets
-        case component
-        case fraction
-        case root
-        case index
-        case exponent
-        case indexAndExponent
-        case logarithm
-        case empty
-        case other
-    }
     
-    static func linearlyLayoutViews(_ inputViews: [EquationView], type: ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Bool, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
+    static func linearlyLayoutViews(_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Bool, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let equationViews: [EquationView] = inputViews
         
         let views: [UIView] = inputViews.compactMap { $0.view }
@@ -66,7 +52,7 @@ class EquationView {
             x += view.bounds.width
         }
         newView.frame = CGRect(x: 0.0, y: 0.0, width: x, height: heightOffset.height)
-        var currentType: ExpressionType = type
+        var currentType: Equation.ExpressionType = type
         if brackets {
             currentType = .brackets
             newView = addBrackets(to: newView, withScale: scale, andColor: color)
@@ -84,12 +70,13 @@ extension EquationView {
     
     static func generateOperator(_ operatorType: Equation.Operator.OperatorType, backgroundColor: UIColor = Equation.defaultColor, scale: CGFloat = 1, color: UIColor = UIColor.black) -> EquationView {
         let label = UILabel(frame: .zero)
-        label.text = {
-            switch operatorType {
-            case .plus: return "+"
-            case .minus: return "-"
-            }
-        }()
+        label.text = operatorType.string
+//            {
+//            switch operatorType {
+//            case .plus: return "+"
+//            case .minus: return "-"
+//            }
+//        }()
         label.backgroundColor = backgroundColor
         label.font = label.font.withSize(17*CGFloat(scale))
         label.textColor = color
@@ -195,7 +182,7 @@ extension EquationView {
         }        
     }
     
-    static func generateExponentAndIndex (_ inputViews: [EquationView], type: ExpressionType, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
+    static func generateExponentAndIndex (_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         
         guard inputViews.count > 1 else { return .Nil }
         var viewIndex = 0
@@ -244,7 +231,7 @@ extension EquationView {
         }
     }
     
-    static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: ExpressionType, brackets: Bool = false) -> EquationView {
+    static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Bool = false) -> EquationView {
         guard inputViews.count > 0 else { return .Nil }
         if type == .logarithm {
             guard inputViews.count == 2 else { return .Nil }

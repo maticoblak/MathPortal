@@ -10,6 +10,39 @@ import UIKit
 
 class Equation {
     // MARK: - Equation
+    enum ExpressionType {
+        case text
+        case mathOperator
+        case brackets
+        case component
+        case fraction
+        case root
+        case index
+        case exponent
+        case indexAndExponent
+        case logarithm
+        case empty
+        case other
+        
+        var string: String {
+            switch self {
+            case .text: return "text"
+            case .mathOperator: return "operator"
+            case .brackets: return "brackets"
+            case .component: return "component"
+            case .fraction: return "fraction"
+            case .root: return "root"
+            case .index: return "index"
+            case .exponent: return "exponent"
+            case .indexAndExponent: return "indexAndExponent"
+            case .logarithm: return "logarithm"
+            case .empty: return "empty"
+            case .other: return "other"
+            }
+            
+        }
+    }
+    
     static let selectedColor = UIColor.lightGray
     static let defaultColor = UIColor.clear
 
@@ -23,6 +56,11 @@ class Equation {
         return Indicator(expression: expression)
     }()
     
+    convenience init(expression: Expression ) {
+        self.init()
+        guard let expression = expression as? Component else { return }
+        self.expression = expression
+    }
     
     func handelMathKeyboardButtonsPressed(button: Button.ButtonType) {
         switch button {
@@ -94,9 +132,17 @@ extension Equation {
     }
     // MARK: - Operator
     class Operator: Expression {
-        enum OperatorType {
+        enum OperatorType: CaseIterable {
             case plus
             case minus
+            
+            var string: String {
+                switch self {
+                case .minus: return "-"
+                case .plus: return "+"
+                }
+            }
+            static func fromParseString(_ string: String) -> OperatorType { return OperatorType.allCases.first(where: { $0.string == string }) ?? .plus }
         }
 
         var type: OperatorType

@@ -19,7 +19,7 @@ class TaskViewController: UIViewController {
     
     @IBOutlet var equationsTableView: UITableView?
     
-    private var equation: Equation = Equation()
+    //private var equation: Equation = Equation()
     
     private var equationsAndTexts: [Equation] = [Equation]()
     
@@ -55,7 +55,9 @@ class TaskViewController: UIViewController {
         super.viewDidLoad()
         keyboardHeightConstraint?.constant = 0
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
+        
         taskTitle = task.name
+        equationsAndTexts = task.equations ?? [Equation]()
         titleTextField?.text = taskTitle ?? "Title"
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         equationsTableView?.isEditing = true
@@ -88,8 +90,9 @@ class TaskViewController: UIViewController {
     func saveTask() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
         self.present(loadingSpinner, animated: false, completion: nil)
-        
+
         task.name = titleTextField?.text
+        task.equations = equationsAndTexts
         task.save(completion: { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
                 self.goToLoggedInViewController()
@@ -126,7 +129,7 @@ class TaskViewController: UIViewController {
 
 extension TaskViewController: MathEquationViewControllerDelegate {
     func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
-        self.equation = equation
+        //self.equation = equation
         if let currentSelectedEquationIndex = currentSelectedEquationIndex {
             equationsAndTexts[currentSelectedEquationIndex] = equation
         } else {
