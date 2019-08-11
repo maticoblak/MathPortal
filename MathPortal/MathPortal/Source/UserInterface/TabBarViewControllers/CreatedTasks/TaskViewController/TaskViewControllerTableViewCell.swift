@@ -49,7 +49,7 @@ class TaskViewControllerTableViewCell: UITableViewCell {
     }
     
     func setupCell(delegate: TaskViewControllerTableViewCellDelegate, equation: Equation) {
-        //self.selectionStyle = .none
+        self.selectionStyle = .none
         //self.deleteViewClosed = true
         self.showsReorderControl = false
         self.delegate = delegate
