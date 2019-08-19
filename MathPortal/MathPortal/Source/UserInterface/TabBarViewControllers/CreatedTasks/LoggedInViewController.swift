@@ -16,7 +16,6 @@ class LoggedInViewController: UIViewController {
     
     private var tasks: [Task] = [Task]()
     
-    //let user = PFUser.current()
     var user: User = User()
     
     override func viewDidLoad() {
@@ -43,14 +42,6 @@ class LoggedInViewController: UIViewController {
                 self.tasksTableView?.reloadData()
                 self.user.tasks = tasks.compactMap { $0.name }
                 self.user.save(completion: nil)
-                
-//                self.user?["TasksNames"] = ["1","2"]
-//                self.user?.saveInBackground()
-//                let ghj = PFObject(className: "User")
-//
-//                ghj["lolo"] = "KLKJ"
-//                ghj.saveInBackground()
-//                print(ghj["lolo"])
             }
         })
     }

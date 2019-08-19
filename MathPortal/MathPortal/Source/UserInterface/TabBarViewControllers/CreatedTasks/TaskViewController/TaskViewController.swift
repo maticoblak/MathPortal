@@ -19,8 +19,6 @@ class TaskViewController: UIViewController {
     
     @IBOutlet var equationsTableView: UITableView?
     
-    //private var equation: Equation = Equation()
-    
     private var equationsAndTexts: [Equation] = [Equation]()
     
     private var currentSelectedEquationIndex: Int?
@@ -64,7 +62,6 @@ class TaskViewController: UIViewController {
         equationsAndTexts = task.equations ?? [Equation]()
         titleTextField?.text = taskTitle ?? "Title"
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
-        //equationsTableView?.isEditing = true
         setUpDefaultKeyboard()
         addLongPressGestureRecogniser()
     }
@@ -104,17 +101,6 @@ class TaskViewController: UIViewController {
             }
         })
     }
-    
-//    private var currentView: UIView?
-//    func refreshEquation() {
-//        currentView?.removeFromSuperview()
-//        if let view = equation.expression.generateView().view {
-//            currentView = view
-//            equationView?.addSubview(view)
-//            view.center = CGPoint(x: 100.0, y: 200.0)
-//        }
-//
-//    }
 }
 
 //extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
@@ -134,7 +120,6 @@ class TaskViewController: UIViewController {
 
 extension TaskViewController: MathEquationViewControllerDelegate {
     func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
-        //self.equation = equation
         if let currentSelectedEquationIndex = currentSelectedEquationIndex {
             equationsAndTexts[currentSelectedEquationIndex] = equation
         } else {
@@ -142,7 +127,6 @@ extension TaskViewController: MathEquationViewControllerDelegate {
         }
         currentSelectedEquationIndex = nil 
         equationsTableView?.reloadData()
-
     }
 }
 
@@ -161,20 +145,6 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
         let height = equationsAndTexts[indexPath.row].expression.generateView().view?.frame.height ?? 44
         return height + 10
     }
-    
-//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-//        return .none
-//    }
-    
-//    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-//        return false
-//    }
-    
-//    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//        let equation = equationsAndTexts[sourceIndexPath.row]
-//        equationsAndTexts.remove(at: sourceIndexPath.row)
-//        equationsAndTexts.insert(equation, at: destinationIndexPath.row)
-//    }
 }
 
 extension TaskViewController: TaskViewControllerTableViewCellDelegate {
@@ -192,8 +162,6 @@ extension TaskViewController: TaskViewControllerTableViewCellDelegate {
         controller.equation = equationsAndTexts[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
     }
-    
-    
 }
 
 extension TaskViewController {

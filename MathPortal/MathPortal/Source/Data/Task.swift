@@ -59,9 +59,8 @@ class Task: ParseObject {
     /* NOTE:
         - Exponent should always be checked before Index since exponent is subclass of Index
         - Fraction, Root, Index, Exponent, IndexAndExponent, Logarithm should alyas be checked before Component, since they are subclasses of component
-     
     */
-    func equationToJson(equation: Equation.Expression) -> [String: Any] {
+    private func equationToJson(equation: Equation.Expression) -> [String: Any] {
         if let fraction = equation as? Equation.Fraction {
             return [Equation.ExpressionType.fraction.string : fraction.items.map { equationToJson(equation: $0) }]
         } else if let root = equation as? Equation.Root {
@@ -91,7 +90,7 @@ class Task: ParseObject {
         }
     }
     
-    func JSONToEquation(json: [String : Any]?) -> Equation.Expression {
+    private func JSONToEquation(json: [String : Any]?) -> Equation.Expression {
         guard let json = json else { return Equation.Expression() }
         if let text = json[Equation.ExpressionType.text.string] as? String {
             return Equation.Text(text)
@@ -102,27 +101,21 @@ class Task: ParseObject {
         } else if let fraction = json[Equation.ExpressionType.fraction.string] as? [[String:Any]] {
             guard fraction.count == 2 else { return Equation.Fraction() }
             return Equation.Fraction(items: fraction.map { JSONToEquation(json: $0)})
-            //return Equation.Fraction(enumerator: JSONToEquation(json: fraction[0] ), denomenator: JSONToEquation(json: fraction[1] ))
         } else if let root = json[Equation.ExpressionType.root.string] as? [[String : Any]] {
             guard root.count == 2 else { return Equation.Root() }
             return Equation.Root(items: root.map { JSONToEquation(json: $0)})
-            //return Equation.Root(index: JSONToEquation(json: root[0]), radicand: JSONToEquation(json: root[1]))
         } else if let exponent = json[Equation.ExpressionType.exponent.string] as? [[String : Any]] {
             guard exponent.count == 2 else { return Equation.Exponent() }
             return Equation.Exponent(items: exponent.map { JSONToEquation(json: $0)})
-            //return Equation.Exponent(base: JSONToEquation(json: exponent[0]), exponent: JSONToEquation(json: exponent[1]))
         } else if let index = json[Equation.ExpressionType.index.string] as? [[String : Any]] {
             guard index.count == 2 else { return Equation.Index() }
             return Equation.Index(items: index.map { JSONToEquation(json: $0)})
-            //return Equation.Index(base: JSONToEquation(json: index[0]), exponent: JSONToEquation(json: index[1]))
         } else if let indexAndExponent = json[Equation.ExpressionType.indexAndExponent.string] as? [[String : Any]] {
             guard indexAndExponent.count == 3 else { return Equation.IndexAndExponent() }
             return Equation.IndexAndExponent(items: indexAndExponent.map { JSONToEquation(json: $0)})
-            //return Equation.IndexAndExponent(base: JSONToEquation(json: indexAndExponent[0]), index: JSONToEquation(json: indexAndExponent[1]), exponent: JSONToEquation(json: indexAndExponent[2]))
         } else if let logarithm = json[Equation.ExpressionType.logarithm.string] as? [[String : Any]] {
             guard logarithm.count == 2 else { return Equation.Logarithm() }
             return Equation.Logarithm(items: logarithm.map { JSONToEquation(json: $0)})
-            //return Equation.Logarithm(base: JSONToEquation(json: logarithm[0]), exponent: JSONToEquation(json: logarithm[1]))
         } else if let componentBrackets = json[Equation.ExpressionType.brackets.string] as? [[String : Any]] {
             let brackets = Equation.Component(items: componentBrackets.map { JSONToEquation(json: $0)})
             brackets.showBrackets = true

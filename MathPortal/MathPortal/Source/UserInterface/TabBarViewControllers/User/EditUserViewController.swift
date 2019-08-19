@@ -145,7 +145,7 @@ class EditUserViewController: UIViewController {
             }
         }
     }
-    // TODO: Save image
+    
     func updateUser() {
         if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text } else { self.user.username = self.usernameTextField?.placeholder}
         if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text } else { self.user.email = self.emailTextField?.placeholder}

@@ -124,10 +124,6 @@ class LogInViewController: UIViewController {
         }
     }
    
-//    func goToLoggedInScreen() {
-//        let controller = R.storyboard.main.loggedInViewController()!
-//        navigationController?.pushViewController(controller, animated: true)
-//    }
     func goToMainMenuViewController() {
         let controller = R.storyboard.main.tabBarViewController()!
         self.present(controller, animated: true)
