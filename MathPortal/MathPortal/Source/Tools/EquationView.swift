@@ -71,12 +71,6 @@ extension EquationView {
     static func generateOperator(_ operatorType: Equation.Operator.OperatorType, backgroundColor: UIColor = Equation.defaultColor, scale: CGFloat = 1, color: UIColor = UIColor.black) -> EquationView {
         let label = UILabel(frame: .zero)
         label.text = operatorType.string
-//            {
-//            switch operatorType {
-//            case .plus: return "+"
-//            case .minus: return "-"
-//            }
-//        }()
         label.backgroundColor = backgroundColor
         label.font = label.font.withSize(17*CGFloat(scale))
         label.textColor = color
