@@ -19,9 +19,9 @@ class TaskViewControllerTableViewCell: UITableViewCell {
 
     @IBOutlet private var deleteView: UIView?
     @IBOutlet private var equationView: UIView?
-    @IBOutlet var deleteLeadingConstraint: NSLayoutConstraint?
-    @IBOutlet var deleteButtonShadow: UIView?
-    @IBOutlet var deleteButtonView: UIView?
+    @IBOutlet private var deleteLeadingConstraint: NSLayoutConstraint?
+    @IBOutlet private var deleteButtonShadow: UIView?
+    @IBOutlet private var deleteButtonView: UIView?
     
     weak var delegate: TaskViewControllerTableViewCellDelegate?
     
@@ -68,23 +68,26 @@ class TaskViewControllerTableViewCell: UITableViewCell {
     }
 
     private func setupGestureRecognisers() {
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(swipe))
-        panGestureRecognizer?.delegate = self
-        if let panGestureRecognizer = panGestureRecognizer {
-            self.equationView?.addGestureRecognizer(panGestureRecognizer)
-        }
+        panGestureRecognizer = {
+            let recogniser = UIPanGestureRecognizer(target: self, action: #selector(swipe))
+            recogniser.delegate = self
+            self.equationView?.addGestureRecognizer(recogniser)
+            return recogniser
+        }()
         
-        tapGestureRecogniserDelete = UITapGestureRecognizer(target: self, action: #selector(deleteEquation))
-        tapGestureRecogniserDelete?.delegate = self
-        if let tapGestureRecogniserDelete = tapGestureRecogniserDelete {
-            self.deleteButtonView?.addGestureRecognizer(tapGestureRecogniserDelete)
-        }
+        tapGestureRecogniserDelete = {
+            let recogniser = UITapGestureRecognizer(target: self, action: #selector(deleteEquation))
+            recogniser.delegate = self
+            self.deleteButtonView?.addGestureRecognizer(recogniser)
+            return recogniser
+        }()
         
-        tapGestureRecogniserSelect = UITapGestureRecognizer(target: self, action: #selector(selectCell))
-        tapGestureRecogniserSelect?.delegate = self
-        if let tapGestureRecogniserSelect = tapGestureRecogniserSelect {
-            self.equationView?.addGestureRecognizer(tapGestureRecogniserSelect)
-        }
+        tapGestureRecogniserSelect = {
+            let recogniser = UITapGestureRecognizer(target: self, action: #selector(selectCell))
+            recogniser.delegate = self
+            self.equationView?.addGestureRecognizer(recogniser)
+            return recogniser
+        }()
     }
     
     @objc private func deleteEquation(sender: UITapGestureRecognizer) {
@@ -123,19 +126,23 @@ class TaskViewControllerTableViewCell: UITableViewCell {
             if abs(translation.x) > abs(translation.y) {
                 cellLocation = panGestureRecogniser.location(in: superview)
                 return true
-            } else { return false }
+            } else {
+                return false
+            }
         } else if let tapGestureRecogniser = gestureRecognizer as? UITapGestureRecognizer {
             cellLocation = tapGestureRecogniser.location(in: superview)
             return true
-        } else { return false }
+        } else {
+            return false
+        }
     }
     
     private func moveOnSwipe() {
         guard let deleteLeadingConstraint = deleteLeadingConstraint, let deleteView = deleteView  else { return }
-        let constraintConstatn = deleteLeadingConstraint.constant
-        if constraintConstatn > deleteView.frame.width/2 {
+        let constraintConstant = deleteLeadingConstraint.constant
+        if constraintConstant > deleteView.frame.width/2 {
             deleteViewClosed = false
-        } else if constraintConstatn <= deleteView.frame.width/2 {
+        } else if constraintConstant <= deleteView.frame.width/2 {
             deleteViewClosed = true
         }
     }

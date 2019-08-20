@@ -176,8 +176,8 @@ extension TaskViewController {
         guard let equationsTableView = equationsTableView else { return }
         let locationInTableView = sender.location(in: equationsTableView)
         let currentIndexPath = equationsTableView.indexPathForRow(at: locationInTableView)
-        
-        if sender.state == .began {
+        switch sender.state {
+        case .began:
             guard let currentIndexPath = currentIndexPath, let cell = equationsTableView.cellForRow(at: currentIndexPath) else { return }
             UISelectionFeedbackGenerator().selectionChanged()
             previousIndexPath = currentIndexPath
@@ -191,9 +191,7 @@ extension TaskViewController {
                 self.cellSnapshot.alpha = 0.80
                 
             }, completion: nil )
-            
-        } else if sender.state == .changed {
-            
+        case .changed:
             cellSnapshot.center.y = locationInTableView.y - cellAndTapDifference
             guard  let currentIndexPath = currentIndexPath, currentIndexPath != previousIndexPath else { return }
             let itemToMove = equationsAndTexts[previousIndexPath.row]
@@ -202,8 +200,7 @@ extension TaskViewController {
             
             equationsTableView.moveRow(at: previousIndexPath, to: currentIndexPath)
             self.previousIndexPath = currentIndexPath
-            
-        } else if sender.state == .ended  {
+        case .ended, .cancelled:
             guard let cell = equationsTableView.cellForRow(at: previousIndexPath) else { return }
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 self.cellSnapshot.center = cell.center
@@ -215,6 +212,8 @@ extension TaskViewController {
                     self.cellSnapshot.removeFromSuperview()
                 }
             })
+        case .possible, .failed:
+            print("possible??")
         }
     }
     
