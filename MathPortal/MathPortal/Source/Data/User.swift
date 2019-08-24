@@ -40,7 +40,7 @@ class User: ParseObject {
     override init?(pfObject: PFObject?) {
         super.init(pfObject: pfObject)
     }
-    
+    // TODO: Fix : Warning: A long-running operation is being executed on the main thread. - It happenes when saving images
     override func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFUser.current()
         object?[Object.tasks.rawValue] = tasks == nil ? NSNull() : tasks

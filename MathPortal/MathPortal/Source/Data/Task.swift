@@ -56,6 +56,13 @@ class Task: ParseObject {
         }
     }
     
+    static func fetchAllTasks(completion:  ((_ objects: [Task]?, _ Error: Error?) -> Void)?) {
+        let query = generatePFQuery()
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            completion?(objects?.compactMap {Task(pfObject: $0)}, error)
+        }
+    }
+    
     /* NOTE:
         - Exponent should always be checked before Index since exponent is subclass of Index
         - Fraction, Root, Index, Exponent, IndexAndExponent, Logarithm should alyas be checked before Component, since they are subclasses of component

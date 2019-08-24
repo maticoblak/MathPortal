@@ -129,8 +129,10 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 4 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 5 reuse identifiers.
   struct reuseIdentifier {
+    /// Reuse identifier `BrowseViewControllerTableViewCell`.
+    static let browseViewControllerTableViewCell: Rswift.ReuseIdentifier<BrowseViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "BrowseViewControllerTableViewCell")
     /// Reuse identifier `ImageCell`.
     static let imageCell: Rswift.ReuseIdentifier<ProfileImagesCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "ImageCell")
     /// Reuse identifier `KeyboardCell`.
@@ -143,8 +145,10 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.storyboard` struct is generated, and contains static references to 6 storyboards.
+  /// This `R.storyboard` struct is generated, and contains static references to 7 storyboards.
   struct storyboard {
+    /// Storyboard `BrowseTasksViewController`.
+    static let browseTasksViewController = _R.storyboard.browseTasksViewController()
     /// Storyboard `CustomKeyboard`.
     static let customKeyboard = _R.storyboard.customKeyboard()
     /// Storyboard `LaunchScreen`.
@@ -157,6 +161,11 @@ struct R: Rswift.Validatable {
     static let solvedTasksViewController = _R.storyboard.solvedTasksViewController()
     /// Storyboard `UserViewController`.
     static let userViewController = _R.storyboard.userViewController()
+    
+    /// `UIStoryboard(name: "BrowseTasksViewController", bundle: ...)`
+    static func browseTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.browseTasksViewController)
+    }
     
     /// `UIStoryboard(name: "CustomKeyboard", bundle: ...)`
     static func customKeyboard(_: Void = ()) -> UIKit.UIStoryboard {
@@ -240,12 +249,31 @@ struct _R: Rswift.Validatable {
   
   struct storyboard: Rswift.Validatable {
     static func validate() throws {
+      try browseTasksViewController.validate()
       try customKeyboard.validate()
       try launchScreen.validate()
       try loading.validate()
       try main.validate()
       try solvedTasksViewController.validate()
       try userViewController.validate()
+    }
+    
+    struct browseTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
+      let browseTasksViewController = StoryboardViewControllerResource<BrowseTasksViewController>(identifier: "BrowseTasksViewController")
+      let bundle = R.hostingBundle
+      let name = "BrowseTasksViewController"
+      
+      func browseTasksViewController(_: Void = ()) -> BrowseTasksViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: browseTasksViewController)
+      }
+      
+      static func validate() throws {
+        if #available(iOS 11.0, *) {
+        }
+        if _R.storyboard.browseTasksViewController().browseTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseTasksViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseTasksViewController'.") }
+      }
+      
+      fileprivate init() {}
     }
     
     struct customKeyboard: Rswift.StoryboardResourceType, Rswift.Validatable {

@@ -207,7 +207,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpd-11-qiz" customClass="TabBarButton" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="138" height="60"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="103.5" height="60"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
@@ -221,7 +221,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Arg-UK-lom" customClass="TabBarButton" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="138" y="0.0" width="138" height="60"/>
+                                                <rect key="frame" x="103.5" y="0.0" width="103.5" height="60"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
@@ -235,7 +235,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fii-Ub-8hx" customClass="TabBarButton" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="276" y="0.0" width="138" height="60"/>
+                                                <rect key="frame" x="207" y="0.0" width="103.5" height="60"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
@@ -246,6 +246,20 @@
                                                         <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Solved"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="miE-Hh-wot" customClass="TabBarButton" customModule="MathPortal" customModuleProvider="target">
+                                                <rect key="frame" x="310.5" y="0.0" width="103.5" height="60"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="text" value="Browse"/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
+                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
@@ -277,6 +291,7 @@
                     <connections>
                         <outlet property="contentController" destination="1PN-Ye-uaI" id="MfJ-P2-8I7"/>
                         <outlet property="firstButton" destination="Fpd-11-qiz" id="SCf-EA-f1w"/>
+                        <outlet property="fourthButton" destination="miE-Hh-wot" id="W5E-2K-fzo"/>
                         <outlet property="secondButton" destination="Arg-UK-lom" id="iq1-pS-hHw"/>
                         <outlet property="thirdButton" destination="Fii-Ub-8hx" id="Rsb-qP-Jbj"/>
                     </connections>

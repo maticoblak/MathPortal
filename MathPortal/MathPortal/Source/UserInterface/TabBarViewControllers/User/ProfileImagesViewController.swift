@@ -64,7 +64,6 @@ extension ProfileImagesViewController: UIImagePickerControllerDelegate, UINaviga
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         /*
         TODO:
-        - Images are to large and eather take too long or don't save
         - Add edit image before displaying it in the profile frame
          */
         if let image = info[.originalImage] as? UIImage {
