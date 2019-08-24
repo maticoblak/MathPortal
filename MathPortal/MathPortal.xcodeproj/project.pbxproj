@@ -20,6 +20,8 @@
 		C0668F5B231158CB008B69FC /* BrowseTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */; };
 		C0668F5D231158F8008B69FC /* BrowseTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */; };
 		C0668F5F23119A0D008B69FC /* BrowseViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0668F5E23119A0D008B69FC /* BrowseViewControllerTableViewCell.swift */; };
+		C0668F6123119F31008B69FC /* TaskDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0668F6023119F31008B69FC /* TaskDetailsViewController.swift */; };
+		C0668F6523119FFA008B69FC /* TaskDetailsViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0668F6423119FFA008B69FC /* TaskDetailsViewControllerTableViewCell.swift */; };
 		C06F562822EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06F562722EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift */; };
 		C06F562C22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F562B22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib */; };
 		C07896582285803400C506B7 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
@@ -111,6 +113,8 @@
 		C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTasksViewController.swift; sourceTree = "<group>"; };
 		C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BrowseTasksViewController.storyboard; sourceTree = "<group>"; };
 		C0668F5E23119A0D008B69FC /* BrowseViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewControllerTableViewCell.swift; sourceTree = "<group>"; };
+		C0668F6023119F31008B69FC /* TaskDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailsViewController.swift; sourceTree = "<group>"; };
+		C0668F6423119FFA008B69FC /* TaskDetailsViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailsViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 		C06F562722EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 		C06F562B22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskViewControllerTableViewCell.xib; sourceTree = "<group>"; };
 		C078964E22857F9900C506B7 /* MathPortalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathPortalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -216,6 +220,7 @@
 		C006E62D22A78F140017EC6F /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				C03EA93C22940BE4005853BE /* EquationView.swift */,
 				C006E62922A5014F0017EC6F /* RootView.swift */,
 				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
 			);
@@ -269,8 +274,18 @@
 				C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */,
 				C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */,
 				C0668F5E23119A0D008B69FC /* BrowseViewControllerTableViewCell.swift */,
+				C0668F6223119FCD008B69FC /* TaskDetails */,
 			);
 			path = BrowseTasks;
+			sourceTree = "<group>";
+		};
+		C0668F6223119FCD008B69FC /* TaskDetails */ = {
+			isa = PBXGroup;
+			children = (
+				C0668F6023119F31008B69FC /* TaskDetailsViewController.swift */,
+				C0668F6423119FFA008B69FC /* TaskDetailsViewControllerTableViewCell.swift */,
+			);
+			path = TaskDetails;
 			sourceTree = "<group>";
 		};
 		C078964F22857F9900C506B7 /* MathPortalTests */ = {
@@ -468,7 +483,6 @@
 				C08E63532269EA3400416D19 /* CustomView.swift */,
 				C0BD61D22263895E00E48081 /* ErrorMessage.swift */,
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
-				C03EA93C22940BE4005853BE /* EquationView.swift */,
 				C01A65A322B37BE7008F4B07 /* DateTools.swift */,
 				C006E62D22A78F140017EC6F /* Custom Views */,
 			);
@@ -758,6 +772,7 @@
 				C08E63552269EA3400416D19 /* ContentControllerOverlay.swift in Sources */,
 				C08E639C2272E9F700416D19 /* Equation.swift in Sources */,
 				C08E638B2271B27C00416D19 /* ExtrasCGRect.swift in Sources */,
+				C0668F6523119FFA008B69FC /* TaskDetailsViewControllerTableViewCell.swift in Sources */,
 				C0BD61CA226379B500E48081 /* LogInViewController.swift in Sources */,
 				C006E62A22A5014F0017EC6F /* RootView.swift in Sources */,
 				C08E635B226CE5A800416D19 /* KeyboardButtons.swift in Sources */,
@@ -766,6 +781,7 @@
 				C00C922422DB98990068A3EE /* ProfileImagesViewController.swift in Sources */,
 				C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */,
 				C08E63612271822800416D19 /* KeyboardManager.swift in Sources */,
+				C0668F6123119F31008B69FC /* TaskDetailsViewController.swift in Sources */,
 				C08E638F2271B27C00416D19 /* ExtrasUIView+Frame.swift in Sources */,
 				C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */,
 				C08E63902271B27C00416D19 /* ExtrasUIView+ApplyText.swift in Sources */,

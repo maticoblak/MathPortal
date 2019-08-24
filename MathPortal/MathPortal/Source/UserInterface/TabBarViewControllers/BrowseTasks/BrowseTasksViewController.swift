@@ -25,10 +25,10 @@ class BrowseTasksViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        relodeAllTasks()
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        relodeAllTasks()
+//    }
     
     private func relodeAllTasks() {
         Task.fetchAllTasks { (tasks, error) in
@@ -57,5 +57,9 @@ extension BrowseTasksViewController: UITableViewDelegate, UITableViewDataSource 
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = R.storyboard.browseTasksViewController.taskDetailsViewController()!
+        controller.task = tasks[indexPath.row]
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }

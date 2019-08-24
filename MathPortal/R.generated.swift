@@ -129,7 +129,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 5 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 6 reuse identifiers.
   struct reuseIdentifier {
     /// Reuse identifier `BrowseViewControllerTableViewCell`.
     static let browseViewControllerTableViewCell: Rswift.ReuseIdentifier<BrowseViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "BrowseViewControllerTableViewCell")
@@ -137,6 +137,8 @@ struct R: Rswift.Validatable {
     static let imageCell: Rswift.ReuseIdentifier<ProfileImagesCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "ImageCell")
     /// Reuse identifier `KeyboardCell`.
     static let keyboardCell: Rswift.ReuseIdentifier<CustomKeyboardCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "KeyboardCell")
+    /// Reuse identifier `TaskDetailsViewControllerTableViewCell`.
+    static let taskDetailsViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskDetailsViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskDetailsViewControllerTableViewCell")
     /// Reuse identifier `TaskViewControllerTableViewCell`.
     static let taskViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskViewControllerTableViewCell")
     /// Reuse identifier `UserCell`.
@@ -262,15 +264,21 @@ struct _R: Rswift.Validatable {
       let browseTasksViewController = StoryboardViewControllerResource<BrowseTasksViewController>(identifier: "BrowseTasksViewController")
       let bundle = R.hostingBundle
       let name = "BrowseTasksViewController"
+      let taskDetailsViewController = StoryboardViewControllerResource<TaskDetailsViewController>(identifier: "TaskDetailsViewController")
       
       func browseTasksViewController(_: Void = ()) -> BrowseTasksViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: browseTasksViewController)
+      }
+      
+      func taskDetailsViewController(_: Void = ()) -> TaskDetailsViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskDetailsViewController)
       }
       
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.browseTasksViewController().browseTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseTasksViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseTasksViewController'.") }
+        if _R.storyboard.browseTasksViewController().taskDetailsViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskDetailsViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'TaskDetailsViewController'.") }
       }
       
       fileprivate init() {}
