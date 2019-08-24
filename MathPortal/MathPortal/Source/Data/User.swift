@@ -49,7 +49,7 @@ class User: ParseObject {
         object?[Object.username.rawValue] = username
         object?[Object.email.rawValue] = email
         object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : birthDate
-        if let profileImageData = profileImage?.pngData() { object?[Object.profileImage.rawValue] = PFFileObject(data: profileImageData)}
+        if let profileImageData = profileImage?.jpegData(compressionQuality: 0.5) { object?[Object.profileImage.rawValue] = PFFileObject(data: profileImageData)}
         return object
     }
     
@@ -65,7 +65,7 @@ class User: ParseObject {
         self.role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
         self.age = object[Object.age.rawValue] as? Int
         self.email = email
-        self.birthDate = object[Object.birthDate.rawValue] as? Date
+        self.birthDate = object[Object.birthDate.rawValue] as? Date        
         if let imageData = PFUser.current()?[Object.profileImage.rawValue] as? Data { profileImage = UIImage(data:imageData )}
     }
     
