@@ -14,6 +14,7 @@ class Task: ParseObject {
     var name: String?
     var userId: String?
     var equations: [Equation]?
+    var objectId: String = ""
     
     // MARK: Sync
     
@@ -37,12 +38,13 @@ class Task: ParseObject {
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let name = object[Object.name.rawValue] as? String, let userId = object[Object.userId.rawValue] as? String else {
+        guard let name = object[Object.name.rawValue] as? String, let userId = object[Object.userId.rawValue] as? String, let objectId = object.objectId else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse Task data from PFObject"])
         }
         self.name = name
         self.userId = userId
         self.equations = (object[Object.equations.rawValue] as? [[String : Any]])?.map { Equation(expression: JSONToEquation(json: $0 )) }
+        self.objectId = objectId
     }
 
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
@@ -50,8 +52,21 @@ class Task: ParseObject {
         query.whereKey(Object.userId.rawValue, equalTo: userId)
         return query
     }
+    
+    static func generateQueryContainingObjectIds(_ objectIds: [String]) -> PFQuery<PFObject>? {
+        let query = generatePFQuery()
+        query.whereKey(Object.objectId.rawValue, containedIn: objectIds)
+        return query
+    }
+    
     static func fetchUserTasks(userId: String, completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            completion?(objects?.compactMap {Task(pfObject: $0) }, error)
+        }
+    }
+    
+    static func fetchSolvedTasks(objectIds: [String], completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+        generateQueryContainingObjectIds(objectIds)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0) }, error)
         }
     }
@@ -141,5 +156,6 @@ extension Task {
         case name = "taskName"
         case userId = "userId"
         case equations = "equations"
+        case objectId = "objectId"
     }
 }

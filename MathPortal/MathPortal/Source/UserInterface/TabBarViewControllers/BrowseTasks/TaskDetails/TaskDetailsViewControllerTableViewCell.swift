@@ -17,6 +17,7 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
         titleLabel?.text = title
         guard let equation = equation, let view = equation.expression.generateView().view else { return }
         equationView?.addSubview(view)
+        view.frame.origin = CGPoint(x: 10, y: 5)
     }
     
     override func awakeFromNib() {

@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import Parse
 
 class BrowseTasksViewController: UIViewController {
 
     @IBOutlet private var tasksTableView: UITableView?
     
     var tasks: [Task] = [Task]()
-    
+    var user = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +26,11 @@ class BrowseTasksViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        relodeAllTasks()
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        user.updateUser()
+    }
+    
     
     private func relodeAllTasks() {
         Task.fetchAllTasks { (tasks, error) in
@@ -60,6 +62,7 @@ extension BrowseTasksViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = R.storyboard.browseTasksViewController.taskDetailsViewController()!
         controller.task = tasks[indexPath.row]
+        controller.user = user
         navigationController?.pushViewController(controller, animated: true)
     }
 }

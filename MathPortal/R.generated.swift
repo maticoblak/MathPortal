@@ -129,7 +129,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 6 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 7 reuse identifiers.
   struct reuseIdentifier {
     /// Reuse identifier `BrowseViewControllerTableViewCell`.
     static let browseViewControllerTableViewCell: Rswift.ReuseIdentifier<BrowseViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "BrowseViewControllerTableViewCell")
@@ -137,6 +137,8 @@ struct R: Rswift.Validatable {
     static let imageCell: Rswift.ReuseIdentifier<ProfileImagesCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "ImageCell")
     /// Reuse identifier `KeyboardCell`.
     static let keyboardCell: Rswift.ReuseIdentifier<CustomKeyboardCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "KeyboardCell")
+    /// Reuse identifier `SolvedTasksViewControllerTableViewCell`.
+    static let solvedTasksViewControllerTableViewCell: Rswift.ReuseIdentifier<SolvedTasksViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "SolvedTasksViewControllerTableViewCell")
     /// Reuse identifier `TaskDetailsViewControllerTableViewCell`.
     static let taskDetailsViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskDetailsViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskDetailsViewControllerTableViewCell")
     /// Reuse identifier `TaskViewControllerTableViewCell`.

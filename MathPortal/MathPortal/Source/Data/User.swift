@@ -20,6 +20,7 @@ class User: ParseObject {
     var email: String?
     var profileImage: UIImage?
     var birthDate: Date?
+    var tasksOwned: [String : Bool] = [String : Bool]()
     
     override class var entityName: String { return "User" }
     override init() {
@@ -35,6 +36,7 @@ class User: ParseObject {
         if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
             profileImage = UIImage(data:imageData)
         }
+        tasksOwned = PFUser.current()?[Object.tasksOwned.rawValue] as? [String : Bool] ?? [String : Bool]()
     }
     
     override init?(pfObject: PFObject?) {
@@ -50,6 +52,7 @@ class User: ParseObject {
         object?[Object.email.rawValue] = email
         object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : birthDate
         if let profileImageData = profileImage?.jpegData(compressionQuality: 0.5) { object?[Object.profileImage.rawValue] = PFFileObject(data: profileImageData)}
+        object?[Object.tasksOwned.rawValue] = tasksOwned
         return object
     }
     
@@ -67,6 +70,7 @@ class User: ParseObject {
         self.email = email
         self.birthDate = object[Object.birthDate.rawValue] as? Date        
         if let imageData = PFUser.current()?[Object.profileImage.rawValue] as? Data { profileImage = UIImage(data:imageData )}
+        self.tasksOwned = object[Object.tasksOwned.rawValue] as? [String : Bool] ?? [String : Bool]()
     }
     
     func updateUser() {
@@ -135,5 +139,6 @@ extension User {
         case birthDate = "birthDate"
         case username = "username"
         case email = "email"
+        case tasksOwned = "tasksOwned"
     }
 }
