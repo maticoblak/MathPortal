@@ -81,19 +81,54 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XCe-bz-V8m">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-TH-cjl" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="low-g1-vfx">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="parentViewController" destination="MQq-dz-l8j" id="HLy-5k-qr4"/>
-                                        </connections>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-TH-cjl" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                                <rect key="frame" x="10" y="10" width="394" height="389"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <outlet property="parentViewController" destination="MQq-dz-l8j" id="HLy-5k-qr4"/>
+                                                </connections>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.15101402997970581" green="0.1798069179058075" blue="0.24625536799430847" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Ddn-TH-cjl" secondAttribute="bottom" constant="10" id="6JG-vM-DVU"/>
+                                            <constraint firstItem="Ddn-TH-cjl" firstAttribute="top" secondItem="low-g1-vfx" secondAttribute="top" constant="10" id="8KW-ks-km7"/>
+                                            <constraint firstItem="Ddn-TH-cjl" firstAttribute="leading" secondItem="low-g1-vfx" secondAttribute="leading" constant="10" id="Hyn-fW-h3i"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ddn-TH-cjl" secondAttribute="trailing" constant="10" id="tFT-lk-qUz"/>
+                                        </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3oe-Zk-c4n" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3oe-Zk-c4n">
                                         <rect key="frame" x="0.0" y="409" width="414" height="409"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <outlet property="parentViewController" destination="MQq-dz-l8j" id="7gD-Sc-iSE"/>
-                                        </connections>
+                                        <subviews>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ySL-ZF-lm8" customClass="CustomTableView" customModule="MathPortal" customModuleProvider="target">
+                                                <rect key="frame" x="10" y="10" width="394" height="389"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="MQq-dz-l8j" id="JJG-YS-Bmo"/>
+                                                    <outlet property="delegate" destination="MQq-dz-l8j" id="Rav-FE-LFf"/>
+                                                </connections>
+                                            </tableView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5P-bL-Kjr">
+                                                <rect key="frame" x="364" y="20" width="30" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                <state key="normal" title="+"/>
+                                                <connections>
+                                                    <action selector="addEquation:" destination="MQq-dz-l8j" eventType="touchUpInside" id="ehN-n4-MkL"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="0.44305509328842163" blue="0.34973174333572388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="ySL-ZF-lm8" secondAttribute="trailing" constant="10" id="45z-m8-SKa"/>
+                                            <constraint firstAttribute="trailing" secondItem="S5P-bL-Kjr" secondAttribute="trailing" constant="20" id="HC1-hk-V1B"/>
+                                            <constraint firstItem="S5P-bL-Kjr" firstAttribute="top" secondItem="3oe-Zk-c4n" secondAttribute="top" constant="20" id="e2n-Gb-OP0"/>
+                                            <constraint firstAttribute="bottom" secondItem="ySL-ZF-lm8" secondAttribute="bottom" constant="10" id="jS2-AH-Fqi"/>
+                                            <constraint firstItem="ySL-ZF-lm8" firstAttribute="leading" secondItem="3oe-Zk-c4n" secondAttribute="leading" constant="10" id="lWA-VP-wMm"/>
+                                            <constraint firstItem="ySL-ZF-lm8" firstAttribute="top" secondItem="3oe-Zk-c4n" secondAttribute="top" constant="10" id="mSJ-kR-hqt"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -108,7 +143,7 @@
                         <viewLayoutGuide key="safeArea" id="ySc-Cz-LOT"/>
                     </view>
                     <connections>
-                        <outlet property="answerContentController" destination="3oe-Zk-c4n" id="olw-JF-WJG"/>
+                        <outlet property="equationsTableView" destination="ySL-ZF-lm8" id="F7z-07-xMP"/>
                         <outlet property="taskContentController" destination="Ddn-TH-cjl" id="JGX-l4-VBT"/>
                     </connections>
                 </viewController>

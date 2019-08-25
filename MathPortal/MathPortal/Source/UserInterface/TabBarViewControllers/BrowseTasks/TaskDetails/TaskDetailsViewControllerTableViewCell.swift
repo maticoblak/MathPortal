@@ -15,6 +15,7 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
     
     func setupCell(title: String? = nil, equation: Equation? = nil) {
         titleLabel?.text = title
+        titleLabel?.backgroundColor = .clear
         guard let equation = equation, let view = equation.expression.generateView().view else { return }
         equationView?.addSubview(view)
         view.frame.origin = CGPoint(x: 10, y: 5)

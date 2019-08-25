@@ -398,7 +398,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7ug-c8-2OA">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7ug-c8-2OA" customClass="CustomTableView" customModule="MathPortal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="74" width="414" height="738"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
@@ -446,7 +446,7 @@
                         <viewLayoutGuide key="safeArea" id="alB-6V-j1S"/>
                     </view>
                     <connections>
-                        <outlet property="equationsTableView" destination="7ug-c8-2OA" id="vk0-AJ-iac"/>
+                        <outlet property="equationsTableView" destination="7ug-c8-2OA" id="AvP-PB-buE"/>
                         <outlet property="keyboardContentControllerView" destination="xgk-bO-Pfu" id="A9H-Uw-RR5"/>
                         <outlet property="keyboardHeightConstraint" destination="CPq-gk-5oL" id="geX-9f-Tef"/>
                         <outlet property="saveButton" destination="mcg-ET-79C" id="oqX-10-xX7"/>
