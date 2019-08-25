@@ -60,5 +60,12 @@ extension SolvedTasksViewController: UITableViewDataSource, UITableViewDelegate 
         controller.task = tasks[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
     }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            tasks[indexPath.row].delete(completion: { (success, error) in
+                self.reloadTasks()
+            })
+        }
+    }
     
 }
