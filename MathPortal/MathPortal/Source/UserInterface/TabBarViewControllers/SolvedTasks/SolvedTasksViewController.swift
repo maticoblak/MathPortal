@@ -54,5 +54,11 @@ extension SolvedTasksViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = R.storyboard.solvedTasksViewController.solveTaskViewController()!
+        controller.user = user
+        controller.task = tasks[indexPath.row]
+        navigationController?.pushViewController(controller, animated: true)
+    }
     
 }

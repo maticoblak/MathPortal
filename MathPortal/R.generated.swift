@@ -383,7 +383,12 @@ struct _R: Rswift.Validatable {
     struct solvedTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let name = "SolvedTasksViewController"
+      let solveTaskViewController = StoryboardViewControllerResource<SolveTaskViewController>(identifier: "SolveTaskViewController")
       let solvedTasksViewController = StoryboardViewControllerResource<SolvedTasksViewController>(identifier: "SolvedTasksViewController")
+      
+      func solveTaskViewController(_: Void = ()) -> SolveTaskViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: solveTaskViewController)
+      }
       
       func solvedTasksViewController(_: Void = ()) -> SolvedTasksViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: solvedTasksViewController)
@@ -392,6 +397,7 @@ struct _R: Rswift.Validatable {
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
+        if _R.storyboard.solvedTasksViewController().solveTaskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solveTaskViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolveTaskViewController'.") }
         if _R.storyboard.solvedTasksViewController().solvedTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solvedTasksViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolvedTasksViewController'.") }
       }
       

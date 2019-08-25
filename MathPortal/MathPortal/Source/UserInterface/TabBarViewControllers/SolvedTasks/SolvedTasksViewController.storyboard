@@ -70,5 +70,51 @@
             </objects>
             <point key="canvasLocation" x="-46" y="86"/>
         </scene>
+        <!--Parent View Controller-->
+        <scene sceneID="LSY-JY-UXn">
+            <objects>
+                <viewController storyboardIdentifier="SolveTaskViewController" id="MQq-dz-l8j" customClass="SolveTaskViewController" customModule="MathPortal" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mZU-JV-U6k">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XCe-bz-V8m">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-TH-cjl" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="parentViewController" destination="MQq-dz-l8j" id="HLy-5k-qr4"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3oe-Zk-c4n" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="409" width="414" height="409"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="parentViewController" destination="MQq-dz-l8j" id="7gD-Sc-iSE"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ySc-Cz-LOT" firstAttribute="bottom" secondItem="XCe-bz-V8m" secondAttribute="bottom" id="Ed2-xX-Qwq"/>
+                            <constraint firstItem="ySc-Cz-LOT" firstAttribute="trailing" secondItem="XCe-bz-V8m" secondAttribute="trailing" id="MWN-WX-AjM"/>
+                            <constraint firstItem="XCe-bz-V8m" firstAttribute="leading" secondItem="ySc-Cz-LOT" secondAttribute="leading" id="PAs-rb-RUz"/>
+                            <constraint firstItem="XCe-bz-V8m" firstAttribute="top" secondItem="ySc-Cz-LOT" secondAttribute="top" id="v1V-Wy-YHL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ySc-Cz-LOT"/>
+                    </view>
+                    <connections>
+                        <outlet property="answerContentController" destination="3oe-Zk-c4n" id="olw-JF-WJG"/>
+                        <outlet property="taskContentController" destination="Ddn-TH-cjl" id="JGX-l4-VBT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="21e-uS-k6g" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="754" y="86"/>
+        </scene>
     </scenes>
 </document>
