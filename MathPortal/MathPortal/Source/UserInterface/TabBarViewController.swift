@@ -21,91 +21,91 @@ class TabBarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        createdTasksButtonView?.addTarget(self, action: #selector(firstButtonPressed), for: .touchUpInside)
-        userButtonView?.addTarget(self, action: #selector(secondButtonPressed), for: .touchUpInside)
-        solvedTasksButtonView?.addTarget(self, action: #selector(thirdButtonPressed), for: .touchUpInside)
-        browseButtonView?.addTarget(self, action: #selector(fourthButtonPressed), for: .touchUpInside)
-        navigateTo(tab: .secondTab)
+        createdTasksButtonView?.addTarget(self, action: #selector(createdTaskButtonPressed), for: .touchUpInside)
+        userButtonView?.addTarget(self, action: #selector(userButtonPressed), for: .touchUpInside)
+        solvedTasksButtonView?.addTarget(self, action: #selector(solvedTaskPressed), for: .touchUpInside)
+        browseButtonView?.addTarget(self, action: #selector(browseButtonPressed), for: .touchUpInside)
+        navigateTo(tab: .userTab)
     }
     
     private var allButtons: [TabBarButtonView?] { return [createdTasksButtonView, userButtonView, solvedTasksButtonView, browseButtonView] }
     
-    var currentTab: Tab = .firstTab {
+    var currentTab: Tab = .userTab {
         didSet {
             switch currentTab {
-            case .firstTab: allButtons.forEach { $0?.selected = $0 === createdTasksButtonView }
-            case .secondTab: allButtons.forEach { $0?.selected = $0 === userButtonView }
-            case .thirdTab: allButtons.forEach { $0?.selected = $0 === solvedTasksButtonView }
-            case .fourthTab: allButtons.forEach { $0?.selected = $0 === browseButtonView }
+            case .userTab: allButtons.forEach { $0?.selected = $0 === userButtonView }
+            case .createdTaskTab: allButtons.forEach { $0?.selected = $0 === createdTasksButtonView }
+            case .solvedTaskTab: allButtons.forEach { $0?.selected = $0 === solvedTasksButtonView }
+            case .browseTab: allButtons.forEach { $0?.selected = $0 === browseButtonView }
             }
         }
     }
     
-    lazy private var firstController: (controller: LoggedInViewController, navigationController: UINavigationController) = {
-        let controller = LoggedInViewController.createFromStoryboard()
+    lazy private var createdTasksViewController: (controller: CreatedTasksViewController, navigationController: UINavigationController) = {
+        let controller = CreatedTasksViewController.createFromStoryboard()
         let navigationController = UINavigationController(rootViewController: controller)
         return (controller, navigationController)
     }()
     
-    lazy private var secondController: (controller: UserViewController, navigationController: UINavigationController) = {
+    lazy private var userViewController: (controller: UserViewController, navigationController: UINavigationController) = {
         let controller = UserViewController.createFromStoryboard()
         let navigationController = UINavigationController(rootViewController: controller)
         return (controller, navigationController)
     }()
     
-    lazy private var thirdController: (controller: SolvedTasksViewController, navigationController: UINavigationController) = {
+    lazy private var solvedTasksViewController: (controller: SolvedTasksViewController, navigationController: UINavigationController) = {
         let controller = SolvedTasksViewController.createFromStoryboard()
         let navigationController = UINavigationController(rootViewController: controller)
         return (controller, navigationController)
     }()
     
-    lazy private var fourthController: (controller: BrowseTasksViewController, navigationController: UINavigationController) = {
+    lazy private var browseTasksViewController: (controller: BrowseTasksViewController, navigationController: UINavigationController) = {
         let controller = BrowseTasksViewController.createFromStoryboard()
         let navigationController = UINavigationController(rootViewController: controller)
         return (controller, navigationController)
     }()
     
-    @objc private func firstButtonPressed() {
-        if currentTab == .firstTab {
-            firstController.navigationController.popToRootViewController(animated: true)
+    @objc private func userButtonPressed() {
+        if currentTab == .userTab {
+            userViewController.navigationController.popToRootViewController(animated: true)
         } else {
-            navigateTo(tab: .firstTab)
+            navigateTo(tab: .userTab)
         }
     }
     
-    @objc private func secondButtonPressed() {
-        if currentTab == .secondTab {
-            secondController.navigationController.popToRootViewController(animated: true)
+    @objc private func createdTaskButtonPressed() {
+        if currentTab == .createdTaskTab {
+            createdTasksViewController.navigationController.popToRootViewController(animated: true)
         } else {
-            navigateTo(tab: .secondTab)
+            navigateTo(tab: .createdTaskTab)
         }
     }
-    @objc private func thirdButtonPressed() {
-        if currentTab == .thirdTab {
-            thirdController.navigationController.popToRootViewController(animated: true)
+    @objc private func solvedTaskPressed() {
+        if currentTab == .solvedTaskTab {
+            solvedTasksViewController.navigationController.popToRootViewController(animated: true)
         } else {
-            navigateTo(tab: .thirdTab)
+            navigateTo(tab: .solvedTaskTab)
         }
     }
     
-    @objc private func fourthButtonPressed() {
-        if currentTab == .fourthTab {
-            fourthController.navigationController.popToRootViewController(animated: true)
+    @objc private func browseButtonPressed() {
+        if currentTab == .browseTab {
+            browseTasksViewController.navigationController.popToRootViewController(animated: true)
         } else {
-            navigateTo(tab: .fourthTab)
+            navigateTo(tab: .browseTab)
         }
     }
     
     func navigateTo(tab: Tab) {
         switch tab {
-        case .firstTab:
-            contentController?.setViewController(controller: firstController.navigationController, animationStyle: .fade)
-        case .secondTab:
-            contentController?.setViewController(controller: secondController.navigationController, animationStyle:  .fade)
-        case .thirdTab:
-            contentController?.setViewController(controller: thirdController.navigationController, animationStyle: .fade)
-        case .fourthTab:
-            contentController?.setViewController(controller: fourthController.navigationController, animationStyle: .fade)
+        case .userTab:
+            contentController?.setViewController(controller: userViewController.navigationController, animationStyle: .fade)
+        case .createdTaskTab:
+            contentController?.setViewController(controller: createdTasksViewController.navigationController, animationStyle:  .fade)
+        case .solvedTaskTab:
+            contentController?.setViewController(controller: solvedTasksViewController.navigationController, animationStyle: .fade)
+        case .browseTab:
+            contentController?.setViewController(controller: browseTasksViewController.navigationController, animationStyle: .fade)
         }
         currentTab = tab
     }
@@ -114,9 +114,9 @@ class TabBarViewController: UIViewController {
 
 extension TabBarViewController {
     enum Tab {
-        case firstTab
-        case secondTab
-        case thirdTab
-        case fourthTab
+        case userTab
+        case createdTaskTab
+        case solvedTaskTab
+        case browseTab
     }
 }

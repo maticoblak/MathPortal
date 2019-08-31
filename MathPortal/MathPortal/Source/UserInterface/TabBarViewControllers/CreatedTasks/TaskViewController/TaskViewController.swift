@@ -23,10 +23,6 @@ class TaskViewController: UIViewController {
     
     private var currentSelectedEquationIndex: Int?
     
-//    private var previousIndexPath: IndexPath = IndexPath(row: 0, section: 0)
-//    private var cellSnapshot: UIView = UIView()
-//    private var cellAndTapDifference: CGFloat = 0
-
     var task: Task!
     
     var taskTitle: String?
@@ -56,7 +52,7 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardHeightConstraint?.constant = 0
-        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToLoggedInViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
         
         taskTitle = task.name
         equationsAndTexts = task.equations ?? [Equation]()
@@ -84,10 +80,10 @@ class TaskViewController: UIViewController {
     
     @IBAction func saveTask(_ sender: Any) {
         saveTask()
-        self.goToLoggedInViewController()
+        self.goToCreatedTasksViewController()
         
     }
-    @objc func goToLoggedInViewController() {
+    @objc func goToCreatedTasksViewController() {
         navigationController?.popViewController(animated: true)
     }
     func saveTask() {
@@ -98,7 +94,7 @@ class TaskViewController: UIViewController {
         task.equations = equationsAndTexts
         task.save(completion: { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
-                self.goToLoggedInViewController()
+                self.goToCreatedTasksViewController()
             }
         })
     }

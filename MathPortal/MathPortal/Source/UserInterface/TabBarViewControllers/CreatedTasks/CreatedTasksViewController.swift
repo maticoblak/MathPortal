@@ -1,5 +1,5 @@
 //
-//  LoggedInViewController.swift
+//  CreatedTasksViewController.swift
 //  MathPortal
 //
 //  Created by Petra Čačkov on 14/04/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoggedInViewController: UIViewController {
+class CreatedTasksViewController: UIViewController {
 
  
     @IBOutlet private var tasksTableView: UITableView?
@@ -51,13 +51,13 @@ class LoggedInViewController: UIViewController {
     }
 }
 
-extension LoggedInViewController: UITableViewDelegate, UITableViewDataSource {
+extension CreatedTasksViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! LoggedInViewControllerTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! CreatedTasksViewControllerTableViewCell
         cell.task = tasks[indexPath.row]
         return cell
     }
@@ -79,8 +79,8 @@ extension LoggedInViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    static func createFromStoryboard() -> LoggedInViewController {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+    static func createFromStoryboard() -> CreatedTasksViewController {
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreatedTasksViewController") as! CreatedTasksViewController
     }
 }
 

@@ -77,12 +77,12 @@
 		C0BD61CA226379B500E48081 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61C9226379B500E48081 /* LogInViewController.swift */; };
 		C0BD61CD22637FCA00E48081 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61CC22637FCA00E48081 /* LoadingViewController.swift */; };
 		C0BD61CF2263800A00E48081 /* Loading.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0BD61CE2263800A00E48081 /* Loading.storyboard */; };
-		C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D02263849500E48081 /* LoggedInViewController.swift */; };
+		C0BD61D12263849500E48081 /* CreatedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D02263849500E48081 /* CreatedTasksViewController.swift */; };
 		C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D22263895E00E48081 /* ErrorMessage.swift */; };
 		C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D52263BEA000E48081 /* R.generated.swift */; };
 		C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61D922645A4300E48081 /* ParseManager.swift */; };
 		C0BD61DD226475DC00E48081 /* Appearence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61DC226475DC00E48081 /* Appearence.swift */; };
-		C0BD61DF2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */; };
+		C0BD61DF2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61DE2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift */; };
 		C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61E0226485E100E48081 /* TaskViewController.swift */; };
 		C0BD61EB226720ED00E48081 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EA226720ED00E48081 /* Task.swift */; };
 		C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EC2267213800E48081 /* ParseObject.swift */; };
@@ -174,12 +174,12 @@
 		C0BD61C9226379B500E48081 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		C0BD61CC22637FCA00E48081 /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		C0BD61CE2263800A00E48081 /* Loading.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Loading.storyboard; sourceTree = "<group>"; };
-		C0BD61D02263849500E48081 /* LoggedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewController.swift; sourceTree = "<group>"; };
+		C0BD61D02263849500E48081 /* CreatedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedTasksViewController.swift; sourceTree = "<group>"; };
 		C0BD61D22263895E00E48081 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		C0BD61D52263BEA000E48081 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		C0BD61D922645A4300E48081 /* ParseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseManager.swift; sourceTree = "<group>"; };
 		C0BD61DC226475DC00E48081 /* Appearence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearence.swift; sourceTree = "<group>"; };
-		C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewControllerTableViewCell.swift; sourceTree = "<group>"; };
+		C0BD61DE2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedTasksViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 		C0BD61E0226485E100E48081 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		C0BD61EA226720ED00E48081 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C0BD61EC2267213800E48081 /* ParseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseObject.swift; sourceTree = "<group>"; };
@@ -236,10 +236,10 @@
 		C008B82522AFAAA300707D71 /* TabBarViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C0668F592311589E008B69FC /* BrowseTasks */,
 				C0875E5922AE777E008C73A9 /* User */,
-				C008B82822AFAD8F00707D71 /* SolvedTasks */,
 				C008B82622AFAADC00707D71 /* CreatedTasks */,
+				C008B82822AFAD8F00707D71 /* SolvedTasks */,
+				C0668F592311589E008B69FC /* BrowseTasks */,
 			);
 			path = TabBarViewControllers;
 			sourceTree = "<group>";
@@ -247,8 +247,8 @@
 		C008B82622AFAADC00707D71 /* CreatedTasks */ = {
 			isa = PBXGroup;
 			children = (
-				C0BD61D02263849500E48081 /* LoggedInViewController.swift */,
-				C0BD61DE2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift */,
+				C0BD61D02263849500E48081 /* CreatedTasksViewController.swift */,
+				C0BD61DE2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift */,
 				C008B82722AFAB0B00707D71 /* TaskViewController */,
 			);
 			path = CreatedTasks;
@@ -302,6 +302,16 @@
 				C0668F692312C396008B69FC /* SolveTaskViewController.swift */,
 			);
 			path = SolveTask;
+			sourceTree = "<group>";
+		};
+		C0744235231AA69100B2F2AA /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				C006E62D22A78F140017EC6F /* Custom Views */,
+				C0875E5222AE4EED008C73A9 /* TabBarButton */,
+				C0668F752312D3E6008B69FC /* CustomTableView.swift */,
+			);
+			path = Custom;
 			sourceTree = "<group>";
 		};
 		C078964F22857F9900C506B7 /* MathPortalTests */ = {
@@ -463,6 +473,7 @@
 		C0BD61C3225F7F1100E48081 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C0744235231AA69100B2F2AA /* Custom */,
 				C0BD61E52267061100E48081 /* Dialog */,
 				C0BD61E22265F64600E48081 /* Data */,
 				C0BD61D822645A0800E48081 /* API */,
@@ -500,8 +511,6 @@
 				C0BD61D22263895E00E48081 /* ErrorMessage.swift */,
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
 				C01A65A322B37BE7008F4B07 /* DateTools.swift */,
-				C006E62D22A78F140017EC6F /* Custom Views */,
-				C0668F752312D3E6008B69FC /* CustomTableView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -510,7 +519,6 @@
 			isa = PBXGroup;
 			children = (
 				C0875E5122AE3538008C73A9 /* Launch Screen */,
-				C0875E5222AE4EED008C73A9 /* TabBarButton */,
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
 				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
 				C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */,
@@ -751,7 +759,7 @@
 				C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */,
 				C08E63812271B27C00416D19 /* ExtrasUIBezierPath+Lines.swift in Sources */,
 				C08E63802271B27C00416D19 /* ExtrasColor.swift in Sources */,
-				C0BD61DF2264829A00E48081 /* LoggedInViewControllerTableViewCell.swift in Sources */,
+				C0BD61DF2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift in Sources */,
 				C08E638D2271B27C00416D19 /* ExtrasUIView+Shake.swift in Sources */,
 				C006E62C22A6C66A0017EC6F /* BracketsView.swift in Sources */,
 				C08E63882271B27C00416D19 /* ExtrasCGFloat.swift in Sources */,
@@ -761,7 +769,7 @@
 				C08E63892271B27C00416D19 /* ExtrasCGFloat+Formatting.swift in Sources */,
 				C06F562822EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift in Sources */,
 				C08E63982271B38E00416D19 /* ExtrasUIView+ScrollView.swift in Sources */,
-				C0BD61D12263849500E48081 /* LoggedInViewController.swift in Sources */,
+				C0BD61D12263849500E48081 /* CreatedTasksViewController.swift in Sources */,
 				C08E63822271B27C00416D19 /* ExtrasUIBezierPath.swift in Sources */,
 				C0BD61EB226720ED00E48081 /* Task.swift in Sources */,
 				C0875E5822AE63C5008C73A9 /* TabBarViewController.swift in Sources */,

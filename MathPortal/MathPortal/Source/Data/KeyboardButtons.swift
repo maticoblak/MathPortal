@@ -11,11 +11,9 @@ import UIKit
 class Button {
     
     let keyName: ButtonType
-    //let name: String
     
     init(key: ButtonType) {
         self.keyName = key
-        //self.name = key.string
     }
 }
 extension Button {
@@ -38,33 +36,8 @@ extension Button {
         case indexAndExponent
         case logarithm
 
-
-        
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
         
-        
-//        var string: String {
-//            switch self {
-//            case .integer(let value): return String(value)
-//            case .plus: return "+"
-//            case .minus: return "-"
-//            case .back: return "<"
-//            case .forward: return ">"
-//            case .delete: return "Delete"
-//            case .brackets: return "()"
-//            case .indicator: return "|"
-//            case .done: return "Done"
-//            case .levelIn: return "In"
-//            case .levelOut: return "Out"
-//            case .fraction: return "a/b"
-//            case .root: return "Root"
-//            case .exponent: return "exp"
-//            case .index: return "index"
-//            case .indexAndExponent: return "indexAndExponent"
-//            case .logarithm: return "log"
-//
-//            }
-//        }
         var componentView: UIView? {
             switch self {
             case .fraction:

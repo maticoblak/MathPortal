@@ -1,5 +1,5 @@
 //
-//  LoggedInViewControllerTableViewCell.swift
+//  CreatedTasksViewControllerTableViewCell.swift
 //  MathPortal
 //
 //  Created by Petra Čačkov on 15/04/2019.
@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class LoggedInViewControllerTableViewCell: UITableViewCell {
+class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     
     
     @IBOutlet private var taskLabel: UILabel?

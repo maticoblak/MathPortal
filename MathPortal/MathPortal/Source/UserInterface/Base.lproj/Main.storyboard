@@ -300,10 +300,10 @@
             </objects>
             <point key="canvasLocation" x="1328" y="130"/>
         </scene>
-        <!--Logged In View Controller-->
+        <!--Created Tasks View Controller-->
         <scene sceneID="Fbe-eN-Acp">
             <objects>
-                <viewController storyboardIdentifier="LoggedInViewController" id="1Zf-ge-2rN" customClass="LoggedInViewController" customModule="MathPortal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreatedTasksViewController" id="1Zf-ge-2rN" customClass="CreatedTasksViewController" customModule="MathPortal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="25b-So-XWb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -315,7 +315,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserCell" id="brm-ID-fPU" customClass="LoggedInViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserCell" id="brm-ID-fPU" customClass="CreatedTasksViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="brm-ID-fPU" id="tOV-Zy-U77">

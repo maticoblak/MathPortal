@@ -29,7 +29,7 @@ class TaskDetailsViewController: UIViewController {
         user.tasksOwned[task.objectId] = false
         user.save { (success, error) in
             if success {
-                // go to solve task screen
+                //TODO: go to solve task screen
             } else if let error = error {
                 print(error)
             }

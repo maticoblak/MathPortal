@@ -144,7 +144,7 @@ struct R: Rswift.Validatable {
     /// Reuse identifier `TaskViewControllerTableViewCell`.
     static let taskViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskViewControllerTableViewCell")
     /// Reuse identifier `UserCell`.
-    static let userCell: Rswift.ReuseIdentifier<LoggedInViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "UserCell")
+    static let userCell: Rswift.ReuseIdentifier<CreatedTasksViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "UserCell")
     
     fileprivate init() {}
   }
@@ -340,19 +340,19 @@ struct _R: Rswift.Validatable {
       typealias InitialController = ViewController
       
       let bundle = R.hostingBundle
+      let createdTasksViewController = StoryboardViewControllerResource<CreatedTasksViewController>(identifier: "CreatedTasksViewController")
       let logInViewController = StoryboardViewControllerResource<LogInViewController>(identifier: "LogInViewController")
-      let loggedInViewController = StoryboardViewControllerResource<LoggedInViewController>(identifier: "LoggedInViewController")
       let mathEquationViewController = StoryboardViewControllerResource<MathEquationViewController>(identifier: "MathEquationViewController")
       let name = "Main"
       let tabBarViewController = StoryboardViewControllerResource<TabBarViewController>(identifier: "TabBarViewController")
       let taskViewController = StoryboardViewControllerResource<MathPortal.TaskViewController>(identifier: "TaskViewController")
       
-      func logInViewController(_: Void = ()) -> LogInViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: logInViewController)
+      func createdTasksViewController(_: Void = ()) -> CreatedTasksViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: createdTasksViewController)
       }
       
-      func loggedInViewController(_: Void = ()) -> LoggedInViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: loggedInViewController)
+      func logInViewController(_: Void = ()) -> LogInViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: logInViewController)
       }
       
       func mathEquationViewController(_: Void = ()) -> MathEquationViewController? {
@@ -370,8 +370,8 @@ struct _R: Rswift.Validatable {
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
+        if _R.storyboard.main().createdTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'createdTasksViewController' could not be loaded from storyboard 'Main' as 'CreatedTasksViewController'.") }
         if _R.storyboard.main().logInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'logInViewController' could not be loaded from storyboard 'Main' as 'LogInViewController'.") }
-        if _R.storyboard.main().loggedInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loggedInViewController' could not be loaded from storyboard 'Main' as 'LoggedInViewController'.") }
         if _R.storyboard.main().mathEquationViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'mathEquationViewController' could not be loaded from storyboard 'Main' as 'MathEquationViewController'.") }
         if _R.storyboard.main().tabBarViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'tabBarViewController' could not be loaded from storyboard 'Main' as 'TabBarViewController'.") }
         if _R.storyboard.main().taskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskViewController' could not be loaded from storyboard 'Main' as 'MathPortal.TaskViewController'.") }

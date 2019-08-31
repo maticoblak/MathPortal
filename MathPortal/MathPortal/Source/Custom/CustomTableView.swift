@@ -93,5 +93,4 @@ class CustomTableView: UITableView {
         cellSnapshot.alpha = alpha
         return cellSnapshot
     }
-    
 }
