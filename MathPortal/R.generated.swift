@@ -101,15 +101,15 @@ struct R: Rswift.Validatable {
   
   /// This `R.nib` struct is generated, and contains static references to 2 nibs.
   struct nib {
-    /// Nib `TabBarButton`.
-    static let tabBarButton = _R.nib._TabBarButton()
+    /// Nib `TabBarButtonView`.
+    static let tabBarButtonView = _R.nib._TabBarButtonView()
     /// Nib `TaskViewControllerTableViewCell`.
     static let taskViewControllerTableViewCell = _R.nib._TaskViewControllerTableViewCell()
     
-    /// `UINib(name: "TabBarButton", in: bundle)`
-    @available(*, deprecated, message: "Use UINib(resource: R.nib.tabBarButton) instead")
-    static func tabBarButton(_: Void = ()) -> UIKit.UINib {
-      return UIKit.UINib(resource: R.nib.tabBarButton)
+    /// `UINib(name: "TabBarButtonView", in: bundle)`
+    @available(*, deprecated, message: "Use UINib(resource: R.nib.tabBarButtonView) instead")
+    static func tabBarButtonView(_: Void = ()) -> UIKit.UINib {
+      return UIKit.UINib(resource: R.nib.tabBarButtonView)
     }
     
     /// `UINib(name: "TaskViewControllerTableViewCell", in: bundle)`
@@ -118,8 +118,8 @@ struct R: Rswift.Validatable {
       return UIKit.UINib(resource: R.nib.taskViewControllerTableViewCell)
     }
     
-    static func tabBarButton(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
-      return R.nib.tabBarButton.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
+    static func tabBarButtonView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
+      return R.nib.tabBarButtonView.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
     }
     
     static func taskViewControllerTableViewCell(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskViewControllerTableViewCell? {
@@ -223,9 +223,9 @@ struct _R: Rswift.Validatable {
   }
   
   struct nib {
-    struct _TabBarButton: Rswift.NibResourceType {
+    struct _TabBarButtonView: Rswift.NibResourceType {
       let bundle = R.hostingBundle
-      let name = "TabBarButton"
+      let name = "TabBarButtonView"
       
       func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView

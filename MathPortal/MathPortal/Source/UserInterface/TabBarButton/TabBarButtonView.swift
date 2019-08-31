@@ -1,5 +1,5 @@
 //
-//  TabBarButton.swift
+//  TabBarButtonView.swift
 //  MathPortal
 //
 //  Created by Petra Čačkov on 10/06/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabBarButton: CustomView {
+class TabBarButtonView: CustomView {
 
     @IBOutlet private var buttonTitle: UILabel?
     @IBOutlet private var button: UIButton?

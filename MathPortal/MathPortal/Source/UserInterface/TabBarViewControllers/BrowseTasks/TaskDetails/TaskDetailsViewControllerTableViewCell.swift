@@ -20,16 +20,4 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
         equationView?.addSubview(view)
         view.frame.origin = CGPoint(x: 10, y: 5)
     }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

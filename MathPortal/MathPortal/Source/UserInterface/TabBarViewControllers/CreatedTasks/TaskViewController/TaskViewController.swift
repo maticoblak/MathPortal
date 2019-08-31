@@ -167,7 +167,7 @@ extension TaskViewController: TaskViewControllerTableViewCellDelegate {
 
 
 extension TaskViewController: CustomTableViewDelegate {
-    func customTableView(sender: CustomTableView, didRemoveCellAt previousIndexPath: IndexPath, didInsertCellAt currentIndexPath: IndexPath) {
+    func customTableView(_ sender: CustomTableView, didMoveCellAt previousIndexPath: IndexPath, to currentIndexPath: IndexPath) {
         let itemToMove = equationsAndTexts[previousIndexPath.row]
         equationsAndTexts.remove(at: previousIndexPath.row)
         equationsAndTexts.insert(itemToMove, at: currentIndexPath.row)

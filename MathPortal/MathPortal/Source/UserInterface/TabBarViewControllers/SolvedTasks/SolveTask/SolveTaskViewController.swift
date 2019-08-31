@@ -88,9 +88,10 @@ extension SolveTaskViewController: MathEquationViewControllerDelegate {
 }
 
 extension SolveTaskViewController: CustomTableViewDelegate {
-    func customTableView(sender: CustomTableView, didRemoveCellAt previousIndexPath: IndexPath, didInsertCellAt currentIndexPath: IndexPath) {
+    func customTableView(_ sender: CustomTableView, didMoveCellAt previousIndexPath: IndexPath, to currentIndexPath: IndexPath) {
         let itemToMove = equations[previousIndexPath.row]
         equations.remove(at: previousIndexPath.row)
         equations.insert(itemToMove, at: currentIndexPath.row)
     }
 }
+

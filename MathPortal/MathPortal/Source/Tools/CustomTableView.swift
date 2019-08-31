@@ -9,13 +9,13 @@
 import UIKit
 
 protocol CustomTableViewDelegate: class {
-    func customTableView(sender: CustomTableView, didRemoveCellAt previousIndexPath: IndexPath, didInsertCellAt currentIndexPath: IndexPath)
+    func customTableView(_ sender: CustomTableView, didMoveCellAt fromIndexPath: IndexPath, to indexPath: IndexPath)
 }
 
 class CustomTableView: UITableView {
     
     private var previousIndexPath: IndexPath = IndexPath(row: 0, section: 0)
-    private var cellSnapshot: UIView = UIView()
+    private var cellSnapshotView: UIView = UIView()
     private var cellAndTapDifference: CGFloat = 0
     
     override init(frame: CGRect, style: UITableView.Style = UITableView.Style.plain) {
@@ -46,35 +46,31 @@ class CustomTableView: UITableView {
             UISelectionFeedbackGenerator().selectionChanged()
             previousIndexPath = currentIndexPath
             cellAndTapDifference = locationInTableView.y - cell.center.y
-            cellSnapshot = snapshotOfCell(inputView: cell, center: cell.center, alpha: 0.8)
-            self.addSubview(cellSnapshot)
+            cellSnapshotView = snapshotOfCell(inputView: cell, center: cell.center, alpha: 0.8)
+            self.addSubview(cellSnapshotView)
             cell.isHidden = true
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
                 
-                self.cellSnapshot.transform = self.cellSnapshot.transform.scaledBy(x: 1.05, y: 1.05)
-                self.cellSnapshot.alpha = 0.80
+                self.cellSnapshotView.transform = self.cellSnapshotView.transform.scaledBy(x: 1.05, y: 1.05)
+                self.cellSnapshotView.alpha = 0.80
                 
             }, completion: nil )
         case .changed:
-            cellSnapshot.center.y = locationInTableView.y - cellAndTapDifference
+            cellSnapshotView.center.y = locationInTableView.y - cellAndTapDifference
             guard  let currentIndexPath = currentIndexPath, currentIndexPath != previousIndexPath else { return }
-            //let itemToMove = equationsAndTexts[previousIndexPath.row]
-            customDelegate?.customTableView(sender: self, didRemoveCellAt: previousIndexPath, didInsertCellAt: currentIndexPath)
-            //equationsAndTexts.remove(at: previousIndexPath.row)
-            //equationsAndTexts.insert(itemToMove, at: currentIndexPath.row)
-            
+            customDelegate?.customTableView(self, didMoveCellAt: previousIndexPath, to : currentIndexPath)
             self.moveRow(at: previousIndexPath, to: currentIndexPath)
             self.previousIndexPath = currentIndexPath
         case .ended, .cancelled:
             guard let cell = self.cellForRow(at: previousIndexPath) else { return }
             UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                self.cellSnapshot.center = cell.center
-                self.cellSnapshot.transform = CGAffineTransform.identity
+                self.cellSnapshotView.center = cell.center
+                self.cellSnapshotView.transform = CGAffineTransform.identity
             }, completion: { (finished) -> Void in
                 if finished {
                     cell.isHidden = false
                     cell.alpha = 1
-                    self.cellSnapshot.removeFromSuperview()
+                    self.cellSnapshotView.removeFromSuperview()
                 }
             })
         case .possible, .failed:

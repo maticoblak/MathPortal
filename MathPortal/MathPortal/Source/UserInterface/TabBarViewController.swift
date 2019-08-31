@@ -13,30 +13,30 @@ class TabBarViewController: UIViewController {
     
     @IBOutlet private var contentController: ContentControllerView?
     
-    @IBOutlet private var firstButton: TabBarButton?
-    @IBOutlet private var secondButton: TabBarButton?
-    @IBOutlet private var thirdButton: TabBarButton?
-    @IBOutlet private var fourthButton: TabBarButton?
+    @IBOutlet private var createdTasksButtonView: TabBarButtonView?
+    @IBOutlet private var userButtonView: TabBarButtonView?
+    @IBOutlet private var solvedTasksButtonView: TabBarButtonView?
+    @IBOutlet private var browseButtonView: TabBarButtonView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        firstButton?.addTarget(self, action: #selector(firstButtonPressed), for: .touchUpInside)
-        secondButton?.addTarget(self, action: #selector(secondButtonPressed), for: .touchUpInside)
-        thirdButton?.addTarget(self, action: #selector(thirdButtonPressed), for: .touchUpInside)
-        fourthButton?.addTarget(self, action: #selector(fourthButtonPressed), for: .touchUpInside)
+        createdTasksButtonView?.addTarget(self, action: #selector(firstButtonPressed), for: .touchUpInside)
+        userButtonView?.addTarget(self, action: #selector(secondButtonPressed), for: .touchUpInside)
+        solvedTasksButtonView?.addTarget(self, action: #selector(thirdButtonPressed), for: .touchUpInside)
+        browseButtonView?.addTarget(self, action: #selector(fourthButtonPressed), for: .touchUpInside)
         navigateTo(tab: .secondTab)
     }
     
-    private var allButtons: [TabBarButton?] { return [firstButton, secondButton, thirdButton, fourthButton] }
+    private var allButtons: [TabBarButtonView?] { return [createdTasksButtonView, userButtonView, solvedTasksButtonView, browseButtonView] }
     
     var currentTab: Tab = .firstTab {
         didSet {
             switch currentTab {
-            case .firstTab: allButtons.forEach { $0?.selected = $0 === firstButton }
-            case .secondTab: allButtons.forEach { $0?.selected = $0 === secondButton }
-            case .thirdTab: allButtons.forEach { $0?.selected = $0 === thirdButton }
-            case .fourthTab: allButtons.forEach { $0?.selected = $0 === fourthButton }
+            case .firstTab: allButtons.forEach { $0?.selected = $0 === createdTasksButtonView }
+            case .secondTab: allButtons.forEach { $0?.selected = $0 === userButtonView }
+            case .thirdTab: allButtons.forEach { $0?.selected = $0 === solvedTasksButtonView }
+            case .fourthTab: allButtons.forEach { $0?.selected = $0 === browseButtonView }
             }
         }
     }
