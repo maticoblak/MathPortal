@@ -45,14 +45,6 @@ class LaunchLogoViewController: UIViewController {
         controller.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         self.present(controller, animated: true)
     }
-
-    private func goToLogInViewController() {
-        
-        let controller = R.storyboard.main.logInViewController()!
-        let navigationController = UINavigationController.init(rootViewController: controller)
-        navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-        self.present(navigationController, animated: true, completion: nil)
-    }
     
     private func goToLogInOrRegisterViewController() {
         

@@ -18,6 +18,8 @@
 		C01A65A822B7BB68008F4B07 /* UserFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */; };
 		C02FEA18231C06AE007E190D /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02FEA17231C06AE007E190D /* RegisterViewController.swift */; };
 		C02FEA1D231C2F0A007E190D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02FEA1C231C2F0A007E190D /* Colors.swift */; };
+		C02FEA20231C390B007E190D /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C02FEA1F231C390B007E190D /* Onboarding.storyboard */; };
+		C02FEA22231C3986007E190D /* OnboardingBasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02FEA21231C3986007E190D /* OnboardingBasicInfoViewController.swift */; };
 		C03EA93D22940BE4005853BE /* EquationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03EA93C22940BE4005853BE /* EquationView.swift */; };
 		C0668F5B231158CB008B69FC /* BrowseTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */; };
 		C0668F5D231158F8008B69FC /* BrowseTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */; };
@@ -119,6 +121,8 @@
 		C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFieldValidator.swift; sourceTree = "<group>"; };
 		C02FEA17231C06AE007E190D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		C02FEA1C231C2F0A007E190D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		C02FEA1F231C390B007E190D /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
+		C02FEA21231C3986007E190D /* OnboardingBasicInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingBasicInfoViewController.swift; sourceTree = "<group>"; };
 		C03EA93C22940BE4005853BE /* EquationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquationView.swift; sourceTree = "<group>"; };
 		C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTasksViewController.swift; sourceTree = "<group>"; };
 		C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BrowseTasksViewController.storyboard; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 		C008B82522AFAAA300707D71 /* TabBarViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */,
 				C0875E5922AE777E008C73A9 /* User */,
 				C008B82622AFAADC00707D71 /* CreatedTasks */,
 				C008B82822AFAD8F00707D71 /* SolvedTasks */,
@@ -293,6 +298,15 @@
 				C02FEA1C231C2F0A007E190D /* Colors.swift */,
 			);
 			path = Design;
+			sourceTree = "<group>";
+		};
+		C02FEA1E231C38E4007E190D /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				C02FEA1F231C390B007E190D /* Onboarding.storyboard */,
+				C02FEA21231C3986007E190D /* OnboardingBasicInfoViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		C0668F592311589E008B69FC /* BrowseTasks */ = {
@@ -551,7 +565,7 @@
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
 				C0BD61B3225F7D8100E48081 /* LaunchLogoViewController.swift */,
 				C074423B231BE0F900B2F2AA /* LoginAndRegister */,
-				C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */,
+				C02FEA1E231C38E4007E190D /* Onboarding */,
 				C008B82522AFAAA300707D71 /* TabBarViewControllers */,
 			);
 			path = UserInterface;
@@ -685,6 +699,7 @@
 				C08E634D2269E52100416D19 /* CustomKeyboard.storyboard in Resources */,
 				C0BD61BC225F7D8300E48081 /* LaunchScreen.storyboard in Resources */,
 				C0BD61B9225F7D8300E48081 /* Assets.xcassets in Resources */,
+				C02FEA20231C390B007E190D /* Onboarding.storyboard in Resources */,
 				C0BD61B7225F7D8100E48081 /* Main.storyboard in Resources */,
 				C0875E5D22AE77B8008C73A9 /* UserViewController.storyboard in Resources */,
 				C06F562C22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib in Resources */,
@@ -809,6 +824,7 @@
 				C0875E5822AE63C5008C73A9 /* TabBarViewController.swift in Sources */,
 				C0668F6A2312C396008B69FC /* SolveTaskViewController.swift in Sources */,
 				C08E639A2271B55A00416D19 /* ExtrasUIView+Keyboard.swift in Sources */,
+				C02FEA22231C3986007E190D /* OnboardingBasicInfoViewController.swift in Sources */,
 				C0BD61DD226475DC00E48081 /* Appearence.swift in Sources */,
 				C0BD61EF226735ED00E48081 /* User.swift in Sources */,
 				C0BD61DA22645A4300E48081 /* ParseManager.swift in Sources */,

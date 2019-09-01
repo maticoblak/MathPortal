@@ -63,7 +63,8 @@ class UserViewController: UIViewController {
             loadingSpinner.dismissLoadingScreen() {
                 if error == nil {
                     let controller = R.storyboard.main.loginOrRegisterViewController()!
-                    self.present(controller, animated: true )
+                    let navigationController = UINavigationController.init(rootViewController: controller)
+                    self.present(navigationController, animated: true, completion: nil)
                 } else {
                     if let descrip = error?.localizedDescription{
                         ErrorMessage.displayErrorMessage(controller: self, message: descrip)
