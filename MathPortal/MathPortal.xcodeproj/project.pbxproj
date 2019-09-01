@@ -71,7 +71,7 @@
 		C08E639C2272E9F700416D19 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
 		C08E639E22732A9500416D19 /* MathEquationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639D22732A9500416D19 /* MathEquationViewController.swift */; };
 		C0BD61B2225F7D8100E48081 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61B1225F7D8100E48081 /* AppDelegate.swift */; };
-		C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61B3225F7D8100E48081 /* ViewController.swift */; };
+		C0BD61B4225F7D8100E48081 /* LaunchLogoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61B3225F7D8100E48081 /* LaunchLogoViewController.swift */; };
 		C0BD61B7225F7D8100E48081 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0BD61B5225F7D8100E48081 /* Main.storyboard */; };
 		C0BD61B9225F7D8300E48081 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0BD61B8225F7D8300E48081 /* Assets.xcassets */; };
 		C0BD61BC225F7D8300E48081 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */; };
@@ -168,7 +168,7 @@
 		C08E639D22732A9500416D19 /* MathEquationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathEquationViewController.swift; sourceTree = "<group>"; };
 		C0BD61AE225F7D8100E48081 /* MathPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0BD61B1225F7D8100E48081 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C0BD61B3225F7D8100E48081 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C0BD61B3225F7D8100E48081 /* LaunchLogoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLogoViewController.swift; sourceTree = "<group>"; };
 		C0BD61B6225F7D8100E48081 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0BD61B8225F7D8300E48081 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0BD61BB225F7D8300E48081 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -330,7 +330,6 @@
 			isa = PBXGroup;
 			children = (
 				C0BD61BA225F7D8300E48081 /* LaunchScreen.storyboard */,
-				C0BD61B3225F7D8100E48081 /* ViewController.swift */,
 			);
 			path = "Launch Screen";
 			sourceTree = "<group>";
@@ -522,6 +521,7 @@
 			children = (
 				C0875E5122AE3538008C73A9 /* Launch Screen */,
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
+				C0BD61B3225F7D8100E48081 /* LaunchLogoViewController.swift */,
 				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
 				C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */,
 				C008B82522AFAAA300707D71 /* TabBarViewControllers */,
@@ -759,7 +759,7 @@
 				C0668F762312D3E6008B69FC /* CustomTableView.swift in Sources */,
 				C08E63572269EA3400416D19 /* ContentControllerView.swift in Sources */,
 				C08E638C2271B27C00416D19 /* ExtrasUIView.swift in Sources */,
-				C0BD61B4225F7D8100E48081 /* ViewController.swift in Sources */,
+				C0BD61B4225F7D8100E48081 /* LaunchLogoViewController.swift in Sources */,
 				C08E63812271B27C00416D19 /* ExtrasUIBezierPath+Lines.swift in Sources */,
 				C08E63802271B27C00416D19 /* ExtrasColor.swift in Sources */,
 				C0BD61DF2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift in Sources */,

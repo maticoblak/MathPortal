@@ -47,14 +47,7 @@ class LogInViewController: UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let currentUser = PFUser.current()
-        if currentUser != nil {
-            goToMainMenuViewController()
-        }
-    }
+
     
     @IBAction private func logIn(_ sender: Any) {
         logInUser()
@@ -128,7 +121,6 @@ class LogInViewController: UIViewController {
         let controller = R.storyboard.main.tabBarViewController()!
         self.present(controller, animated: true)
     }
-
 }
 extension LogInViewController: KeyboardManagerWillChangeFrameDelegate {
     func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
