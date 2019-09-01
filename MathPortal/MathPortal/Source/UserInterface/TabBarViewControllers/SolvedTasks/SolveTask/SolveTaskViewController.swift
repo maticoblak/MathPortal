@@ -13,9 +13,9 @@ class SolveTaskViewController: UIViewController {
     @IBOutlet private var taskContentController: ContentControllerView?
     @IBOutlet private var equationsTableView: CustomTableView?
     
-    
     var user: User!
     var task: Task!
+    var solution: TaskSolution = TaskSolution()
     
     private var equations: [Equation] = [Equation]()
     private var currentSelectedEquationIndex: Int?
@@ -28,17 +28,63 @@ class SolveTaskViewController: UIViewController {
             controller?.task = task
             return controller
         }(), animationStyle: .fade)
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(save))
         taskContentController?.layer.cornerRadius = 10
         equationsTableView?.layer.cornerRadius = 10
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         equationsTableView?.customDelegate = self
+        reloadSolution()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard equations.count < 0 else { return }
+        equationsTableView?.scrollToRow(at: IndexPath(row: equations.count - 1, section: 0), at: .middle, animated: false)
+    }
+    
     @IBAction func addEquation(_ sender: Any) {
         let controller = R.storyboard.main.mathEquationViewController()!
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
     
+    @objc private func goBack() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func save() {
+        saveSolution()
+    }
+    
+    func saveSolution() {
+        let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
+        self.present(loadingSpinner, animated: false, completion: nil)
+        solution.ownerId = user.userId
+        solution.taskId = task.objectId
+        solution.equations = equations
+        solution.save(completion: { (success, error) in
+            loadingSpinner.dismissLoadingScreen() {
+                if success {
+                    self.goBack()
+                } else if let error = error {
+                    print(error)
+                }
+            }
+        })
+    }
+    
+    private func reloadSolution() {
+        guard let userId = user.userId else { return }
+        TaskSolution.fechUsersTaskSolution(task.objectId, userId: userId) { (solution, error) in
+            if let error = error {
+                print(error)
+            } else if let solution = solution, let equations = solution.equations {
+                self.solution = solution
+                self.equations = equations
+                self.equationsTableView?.reloadData()
+            }
+        }
+    }
 }
 extension SolveTaskViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

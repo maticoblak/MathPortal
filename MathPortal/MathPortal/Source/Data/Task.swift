@@ -46,7 +46,8 @@ class Task: ParseObject {
         self.equations = (object[Object.equations.rawValue] as? [[String : Any]])?.map { Equation(expression: Equation.JSONToEquation(json: $0 )) }
         self.objectId = objectId
     }
-
+    
+    // TODO: Move all funcs related to user to user
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
         query.whereKey(Object.userId.rawValue, equalTo: userId)

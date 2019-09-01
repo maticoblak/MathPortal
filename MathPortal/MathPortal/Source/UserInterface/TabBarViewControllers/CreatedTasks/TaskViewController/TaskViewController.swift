@@ -80,8 +80,6 @@ class TaskViewController: UIViewController {
     
     @IBAction func saveTask(_ sender: Any) {
         saveTask()
-        self.goToCreatedTasksViewController()
-        
     }
     @objc func goToCreatedTasksViewController() {
         navigationController?.popViewController(animated: true)
@@ -89,7 +87,7 @@ class TaskViewController: UIViewController {
     func saveTask() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
         self.present(loadingSpinner, animated: false, completion: nil)
-
+        //TODO: handel error
         task.name = titleTextField?.text
         task.equations = equationsAndTexts
         task.save(completion: { (success, error) in

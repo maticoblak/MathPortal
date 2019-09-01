@@ -16,7 +16,7 @@ class TaskSolution: ParseObject {
     var objectId: String?
     var equations: [Equation]?
     
-    override var entityName: String { return "Solution" }
+    override class var entityName: String { return "Solution" }
     
     override init() {
         super.init()
@@ -52,10 +52,23 @@ class TaskSolution: ParseObject {
         return query
     }
     
-    static func fechUsersSolvedTasks(userId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
+    static func generateQueryWithTaskIdAndUserId(_ taskId: String, userId: String) -> PFQuery<PFObject>? {
+        let query = generatePFQuery()
+        query.whereKey(Object.ownerId.rawValue, equalTo: userId)
+        query.whereKey(Object.taskId.rawValue, equalTo: taskId)
+        return query
+    }
+
+    static func fechUsersTaskSolutions(userId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
         generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap { TaskSolution(pfObject: $0) }, error)
         }
+    }
+    
+    static func fechUsersTaskSolution(_ taskId: String, userId: String, completion: ((_ objects: TaskSolution?, _ error: Error?) -> Void)?) {
+        generateQueryWithTaskIdAndUserId(taskId, userId: userId)?.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?)  in
+            completion?(TaskSolution(pfObject: objects?.first), error)
+        })
     }
 }
 

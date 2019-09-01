@@ -140,5 +140,6 @@ extension User {
         case username = "username"
         case email = "email"
         case tasksOwned = "tasksOwned"
+        case userId = "userId"
     }
 }
