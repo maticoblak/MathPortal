@@ -36,7 +36,7 @@ class LaunchLogoViewController: UIViewController {
         if let _ = PFUser.current() {
             goToTabBarViewController()
         } else {
-            goToLogInViewController()
+            goToLogInOrRegisterViewController()
         }
     }
     
@@ -49,6 +49,14 @@ class LaunchLogoViewController: UIViewController {
     private func goToLogInViewController() {
         
         let controller = R.storyboard.main.logInViewController()!
+        let navigationController = UINavigationController.init(rootViewController: controller)
+        navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func goToLogInOrRegisterViewController() {
+        
+        let controller = R.storyboard.main.loginOrRegisterViewController()!
         let navigationController = UINavigationController.init(rootViewController: controller)
         navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         self.present(navigationController, animated: true, completion: nil)

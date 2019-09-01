@@ -45,7 +45,7 @@ class CreatedTasksViewController: UIViewController {
         })
     }
     @objc func addTask() {
-        let controller = R.storyboard.main.taskViewController()!
+        let controller = R.storyboard.createdTasksViewController.taskViewController()!
         controller.task = Task()
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -62,7 +62,7 @@ extension CreatedTasksViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = R.storyboard.main.taskViewController()!
+        let controller = R.storyboard.createdTasksViewController.taskViewController()!
         controller.task = tasks[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
     
@@ -80,7 +80,7 @@ extension CreatedTasksViewController: UITableViewDelegate, UITableViewDataSource
     
     
     static func createFromStoryboard() -> CreatedTasksViewController {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreatedTasksViewController") as! CreatedTasksViewController
+        return UIStoryboard(name: "CreatedTasksViewController", bundle: nil).instantiateViewController(withIdentifier: "CreatedTasksViewController") as! CreatedTasksViewController
     }
 }
 

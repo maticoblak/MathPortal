@@ -149,10 +149,12 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.storyboard` struct is generated, and contains static references to 7 storyboards.
+  /// This `R.storyboard` struct is generated, and contains static references to 8 storyboards.
   struct storyboard {
     /// Storyboard `BrowseTasksViewController`.
     static let browseTasksViewController = _R.storyboard.browseTasksViewController()
+    /// Storyboard `CreatedTasksViewController`.
+    static let createdTasksViewController = _R.storyboard.createdTasksViewController()
     /// Storyboard `CustomKeyboard`.
     static let customKeyboard = _R.storyboard.customKeyboard()
     /// Storyboard `LaunchScreen`.
@@ -169,6 +171,11 @@ struct R: Rswift.Validatable {
     /// `UIStoryboard(name: "BrowseTasksViewController", bundle: ...)`
     static func browseTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
       return UIKit.UIStoryboard(resource: R.storyboard.browseTasksViewController)
+    }
+    
+    /// `UIStoryboard(name: "CreatedTasksViewController", bundle: ...)`
+    static func createdTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.createdTasksViewController)
     }
     
     /// `UIStoryboard(name: "CustomKeyboard", bundle: ...)`
@@ -254,6 +261,7 @@ struct _R: Rswift.Validatable {
   struct storyboard: Rswift.Validatable {
     static func validate() throws {
       try browseTasksViewController.validate()
+      try createdTasksViewController.validate()
       try customKeyboard.validate()
       try launchScreen.validate()
       try loading.validate()
@@ -281,6 +289,36 @@ struct _R: Rswift.Validatable {
         }
         if _R.storyboard.browseTasksViewController().browseTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseTasksViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseTasksViewController'.") }
         if _R.storyboard.browseTasksViewController().taskDetailsViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskDetailsViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'TaskDetailsViewController'.") }
+      }
+      
+      fileprivate init() {}
+    }
+    
+    struct createdTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
+      let bundle = R.hostingBundle
+      let createdTasksViewController = StoryboardViewControllerResource<CreatedTasksViewController>(identifier: "CreatedTasksViewController")
+      let mathEquationViewController = StoryboardViewControllerResource<MathEquationViewController>(identifier: "MathEquationViewController")
+      let name = "CreatedTasksViewController"
+      let taskViewController = StoryboardViewControllerResource<MathPortal.TaskViewController>(identifier: "TaskViewController")
+      
+      func createdTasksViewController(_: Void = ()) -> CreatedTasksViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: createdTasksViewController)
+      }
+      
+      func mathEquationViewController(_: Void = ()) -> MathEquationViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: mathEquationViewController)
+      }
+      
+      func taskViewController(_: Void = ()) -> MathPortal.TaskViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskViewController)
+      }
+      
+      static func validate() throws {
+        if #available(iOS 11.0, *) {
+        }
+        if _R.storyboard.createdTasksViewController().createdTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'createdTasksViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'CreatedTasksViewController'.") }
+        if _R.storyboard.createdTasksViewController().mathEquationViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'mathEquationViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'MathEquationViewController'.") }
+        if _R.storyboard.createdTasksViewController().taskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'MathPortal.TaskViewController'.") }
       }
       
       fileprivate init() {}
@@ -340,41 +378,29 @@ struct _R: Rswift.Validatable {
       typealias InitialController = LaunchLogoViewController
       
       let bundle = R.hostingBundle
-      let createdTasksViewController = StoryboardViewControllerResource<CreatedTasksViewController>(identifier: "CreatedTasksViewController")
       let logInViewController = StoryboardViewControllerResource<LogInViewController>(identifier: "LogInViewController")
-      let mathEquationViewController = StoryboardViewControllerResource<MathEquationViewController>(identifier: "MathEquationViewController")
+      let loginOrRegisterViewController = StoryboardViewControllerResource<LoginOrRegisterViewController>(identifier: "LoginOrRegisterViewController")
       let name = "Main"
       let tabBarViewController = StoryboardViewControllerResource<TabBarViewController>(identifier: "TabBarViewController")
-      let taskViewController = StoryboardViewControllerResource<MathPortal.TaskViewController>(identifier: "TaskViewController")
-      
-      func createdTasksViewController(_: Void = ()) -> CreatedTasksViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: createdTasksViewController)
-      }
       
       func logInViewController(_: Void = ()) -> LogInViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: logInViewController)
       }
       
-      func mathEquationViewController(_: Void = ()) -> MathEquationViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: mathEquationViewController)
+      func loginOrRegisterViewController(_: Void = ()) -> LoginOrRegisterViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: loginOrRegisterViewController)
       }
       
       func tabBarViewController(_: Void = ()) -> TabBarViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: tabBarViewController)
       }
       
-      func taskViewController(_: Void = ()) -> MathPortal.TaskViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskViewController)
-      }
-      
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
-        if _R.storyboard.main().createdTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'createdTasksViewController' could not be loaded from storyboard 'Main' as 'CreatedTasksViewController'.") }
         if _R.storyboard.main().logInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'logInViewController' could not be loaded from storyboard 'Main' as 'LogInViewController'.") }
-        if _R.storyboard.main().mathEquationViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'mathEquationViewController' could not be loaded from storyboard 'Main' as 'MathEquationViewController'.") }
+        if _R.storyboard.main().loginOrRegisterViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loginOrRegisterViewController' could not be loaded from storyboard 'Main' as 'LoginOrRegisterViewController'.") }
         if _R.storyboard.main().tabBarViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'tabBarViewController' could not be loaded from storyboard 'Main' as 'TabBarViewController'.") }
-        if _R.storyboard.main().taskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskViewController' could not be loaded from storyboard 'Main' as 'MathPortal.TaskViewController'.") }
       }
       
       fileprivate init() {}

@@ -43,7 +43,7 @@ class SolveTaskViewController: UIViewController {
     }
     
     @IBAction func addEquation(_ sender: Any) {
-        let controller = R.storyboard.main.mathEquationViewController()!
+        let controller = R.storyboard.createdTasksViewController.mathEquationViewController()!
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -114,7 +114,7 @@ extension SolveTaskViewController: TaskViewControllerTableViewCellDelegate {
     func taskViewControllerTableViewCell(sender: TaskViewControllerTableViewCell, didSelectCellAt location: CGPoint) {
         guard let indexPath = equationsTableView?.indexPathForRow(at: location) else { return }
         currentSelectedEquationIndex = indexPath.row
-        let controller = R.storyboard.main.mathEquationViewController()!
+        let controller = R.storyboard.createdTasksViewController.mathEquationViewController()!
         controller.delegate = self
         controller.equation = equations[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)

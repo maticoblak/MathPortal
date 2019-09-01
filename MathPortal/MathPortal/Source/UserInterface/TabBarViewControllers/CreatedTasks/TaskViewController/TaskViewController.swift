@@ -72,7 +72,7 @@ class TaskViewController: UIViewController {
     }
     
     @objc func goToEquationViewController() {
-        let controller = R.storyboard.main.mathEquationViewController()!
+        let controller = R.storyboard.createdTasksViewController.mathEquationViewController()!
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
         
@@ -152,7 +152,7 @@ extension TaskViewController: TaskViewControllerTableViewCellDelegate {
     func taskViewControllerTableViewCell(sender: TaskViewControllerTableViewCell, didSelectCellAt location: CGPoint) {
         guard let indexPath = equationsTableView?.indexPathForRow(at: location) else { return }
         currentSelectedEquationIndex = indexPath.row
-        let controller = R.storyboard.main.mathEquationViewController()!
+        let controller = R.storyboard.createdTasksViewController.mathEquationViewController()!
         controller.delegate = self
         controller.equation = equationsAndTexts[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)

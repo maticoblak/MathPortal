@@ -28,6 +28,8 @@
 		C06F562822EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06F562722EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift */; };
 		C06F562C22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F562B22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib */; };
 		C0744237231AB8E000B2F2AA /* TaskSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0744236231AB8E000B2F2AA /* TaskSolution.swift */; };
+		C074423A231BDEC500B2F2AA /* CreatedTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0744239231BDEC500B2F2AA /* CreatedTasksViewController.storyboard */; };
+		C074423D231BE12C00B2F2AA /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074423C231BE12C00B2F2AA /* LoginOrRegisterViewController.swift */; };
 		C07896582285803400C506B7 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E639B2272E9F700416D19 /* Equation.swift */; };
 		C07896592285811D00C506B7 /* KeyboardButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E635A226CE5A800416D19 /* KeyboardButtons.swift */; };
 		C078965B2285819000C506B7 /* ExpressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C078965A2285819000C506B7 /* ExpressionTests.swift */; };
@@ -125,6 +127,8 @@
 		C06F562722EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 		C06F562B22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskViewControllerTableViewCell.xib; sourceTree = "<group>"; };
 		C0744236231AB8E000B2F2AA /* TaskSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSolution.swift; sourceTree = "<group>"; };
+		C0744239231BDEC500B2F2AA /* CreatedTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreatedTasksViewController.storyboard; sourceTree = "<group>"; };
+		C074423C231BE12C00B2F2AA /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
 		C078964E22857F9900C506B7 /* MathPortalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathPortalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C078965222857F9900C506B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C078965A2285819000C506B7 /* ExpressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionTests.swift; sourceTree = "<group>"; };
@@ -249,6 +253,7 @@
 		C008B82622AFAADC00707D71 /* CreatedTasks */ = {
 			isa = PBXGroup;
 			children = (
+				C0744239231BDEC500B2F2AA /* CreatedTasksViewController.storyboard */,
 				C0BD61D02263849500E48081 /* CreatedTasksViewController.swift */,
 				C0BD61DE2264829A00E48081 /* CreatedTasksViewControllerTableViewCell.swift */,
 				C008B82722AFAB0B00707D71 /* TaskViewController */,
@@ -314,6 +319,14 @@
 				C0668F752312D3E6008B69FC /* CustomTableView.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		C074423B231BE0F900B2F2AA /* LoginAndRegister */ = {
+			isa = PBXGroup;
+			children = (
+				C074423C231BE12C00B2F2AA /* LoginOrRegisterViewController.swift */,
+			);
+			path = LoginAndRegister;
 			sourceTree = "<group>";
 		};
 		C078964F22857F9900C506B7 /* MathPortalTests */ = {
@@ -521,6 +534,7 @@
 			children = (
 				C0875E5122AE3538008C73A9 /* Launch Screen */,
 				C0BD61B5225F7D8100E48081 /* Main.storyboard */,
+				C074423B231BE0F900B2F2AA /* LoginAndRegister */,
 				C0BD61B3225F7D8100E48081 /* LaunchLogoViewController.swift */,
 				C0BD61C9226379B500E48081 /* LogInViewController.swift */,
 				C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */,
@@ -662,6 +676,7 @@
 				C06F562C22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib in Resources */,
 				C008B82C22AFADDD00707D71 /* SolvedTasksViewController.storyboard in Resources */,
 				C0BD61CF2263800A00E48081 /* Loading.storyboard in Resources */,
+				C074423A231BDEC500B2F2AA /* CreatedTasksViewController.storyboard in Resources */,
 				C0668F5D231158F8008B69FC /* BrowseTasksViewController.storyboard in Resources */,
 				C0875E5422AE4F55008C73A9 /* TabBarButtonView.xib in Resources */,
 			);
@@ -771,6 +786,7 @@
 				C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */,
 				C08E63892271B27C00416D19 /* ExtrasCGFloat+Formatting.swift in Sources */,
 				C06F562822EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift in Sources */,
+				C074423D231BE12C00B2F2AA /* LoginOrRegisterViewController.swift in Sources */,
 				C08E63982271B38E00416D19 /* ExtrasUIView+ScrollView.swift in Sources */,
 				C0BD61D12263849500E48081 /* CreatedTasksViewController.swift in Sources */,
 				C08E63822271B27C00416D19 /* ExtrasUIBezierPath.swift in Sources */,
