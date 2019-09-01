@@ -17,6 +17,7 @@
 		C01A65A622B5448C008F4B07 /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A522B5448C008F4B07 /* EditUserViewController.swift */; };
 		C01A65A822B7BB68008F4B07 /* UserFieldValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */; };
 		C02FEA18231C06AE007E190D /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02FEA17231C06AE007E190D /* RegisterViewController.swift */; };
+		C02FEA1D231C2F0A007E190D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02FEA1C231C2F0A007E190D /* Colors.swift */; };
 		C03EA93D22940BE4005853BE /* EquationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03EA93C22940BE4005853BE /* EquationView.swift */; };
 		C0668F5B231158CB008B69FC /* BrowseTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */; };
 		C0668F5D231158F8008B69FC /* BrowseTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */; };
@@ -117,6 +118,7 @@
 		C01A65A522B5448C008F4B07 /* EditUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserViewController.swift; sourceTree = "<group>"; };
 		C01A65A722B7BB68008F4B07 /* UserFieldValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFieldValidator.swift; sourceTree = "<group>"; };
 		C02FEA17231C06AE007E190D /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		C02FEA1C231C2F0A007E190D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		C03EA93C22940BE4005853BE /* EquationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquationView.swift; sourceTree = "<group>"; };
 		C0668F5A231158CB008B69FC /* BrowseTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTasksViewController.swift; sourceTree = "<group>"; };
 		C0668F5C231158F8008B69FC /* BrowseTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BrowseTasksViewController.storyboard; sourceTree = "<group>"; };
@@ -283,6 +285,14 @@
 				C0668F682312BE24008B69FC /* SolveTask */,
 			);
 			path = SolvedTasks;
+			sourceTree = "<group>";
+		};
+		C02FEA1B231C2EEC007E190D /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				C02FEA1C231C2F0A007E190D /* Colors.swift */,
+			);
+			path = Design;
 			sourceTree = "<group>";
 		};
 		C0668F592311589E008B69FC /* BrowseTasks */ = {
@@ -491,6 +501,7 @@
 		C0BD61C3225F7F1100E48081 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C02FEA1B231C2EEC007E190D /* Design */,
 				C0744235231AA69100B2F2AA /* Custom */,
 				C0BD61E52267061100E48081 /* Dialog */,
 				C0BD61E22265F64600E48081 /* Data */,
@@ -787,6 +798,7 @@
 				C01A65A422B37BE7008F4B07 /* DateTools.swift in Sources */,
 				C08E63832271B27C00416D19 /* ExtrasDate+Tools.swift in Sources */,
 				C0BD61D62263BEA000E48081 /* R.generated.swift in Sources */,
+				C02FEA1D231C2F0A007E190D /* Colors.swift in Sources */,
 				C08E63892271B27C00416D19 /* ExtrasCGFloat+Formatting.swift in Sources */,
 				C06F562822EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift in Sources */,
 				C074423D231BE12C00B2F2AA /* LoginOrRegisterViewController.swift in Sources */,

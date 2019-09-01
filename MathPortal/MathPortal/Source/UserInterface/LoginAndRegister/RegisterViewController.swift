@@ -23,6 +23,7 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardSetup()
+        setup()
     
     }
     
@@ -36,6 +37,12 @@ class RegisterViewController: UIViewController {
     }
     @IBAction func registerUser(_ sender: Any) {
         validateAndSignUp()
+    }
+    
+    private func setup() {
+        signUpButton?.backgroundColor = .clear
+        signUpButton?.layer.borderWidth = 1.5
+        signUpButton?.layer.borderColor = UIColor.mathPink.cgColor
     }
     
     private func signUpNewUser(user: PFUser) {
