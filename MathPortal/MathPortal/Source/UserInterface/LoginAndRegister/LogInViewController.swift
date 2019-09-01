@@ -54,49 +54,49 @@ class LogInViewController: UIViewController {
     }
     
     @IBAction private func signUp(_ sender: Any) {
-        validateAndSignUp()
+        //validateAndSignUp()
     }
 
-    private func signUpNewUser(user: PFUser) {
-        
-        
-        
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-        self.present(loadingSpinner, animated: false, completion: nil)
-        
-        
-        user.signUpInBackground { (success, error) in
-            loadingSpinner.dismissLoadingScreen() {
-                if success == false {
-                    if let description = error?.localizedDescription {
-                        ErrorMessage.displayErrorMessage(controller: self, message: description)
-                    } else {
-                        ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
-                    }
-                } else if user.email?.count == 0 {
-                    ErrorMessage.displayErrorMessage(controller: self, message: "Missing email")
-                } else if success {
-                    self.goToMainMenuViewController()
-                }
-            }
-        }
-    }
-    
-    private func validateAndSignUp() {
-        let user = PFUser()
-        user.username = signUpUsernameTextField?.text
-        user.password = signUpPasswordTextField?.text
-        user.email = signUpEmailTextField?.text
-        FieldValidator.init(validate: [.username, .email], username: user.username, email: user.email, age: nil).validate { result in
-            switch result {
-            case .OK:
-                self.signUpNewUser(user: user)
-            case .emailInvalid, .ageInvalid, .emailAlreadyTaken, .usernameAlreadyTaken:
-                ErrorMessage.displayErrorMessage(controller: self, message: result.error)
-                break
-            }
-        }
-    }
+//    private func signUpNewUser(user: PFUser) {
+//
+//
+//
+//        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
+//        self.present(loadingSpinner, animated: false, completion: nil)
+//
+//
+//        user.signUpInBackground { (success, error) in
+//            loadingSpinner.dismissLoadingScreen() {
+//                if success == false {
+//                    if let description = error?.localizedDescription {
+//                        ErrorMessage.displayErrorMessage(controller: self, message: description)
+//                    } else {
+//                        ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
+//                    }
+//                } else if user.email?.count == 0 {
+//                    ErrorMessage.displayErrorMessage(controller: self, message: "Missing email")
+//                } else if success {
+//                    self.goToMainMenuViewController()
+//                }
+//            }
+//        }
+//    }
+//
+//    private func validateAndSignUp() {
+//        let user = PFUser()
+//        user.username = signUpUsernameTextField?.text
+//        user.password = signUpPasswordTextField?.text
+//        user.email = signUpEmailTextField?.text
+//        FieldValidator.init(validate: [.username, .email], username: user.username, email: user.email, age: nil).validate { result in
+//            switch result {
+//            case .OK:
+//                self.signUpNewUser(user: user)
+//            case .emailInvalid, .ageInvalid, .emailAlreadyTaken, .usernameAlreadyTaken:
+//                ErrorMessage.displayErrorMessage(controller: self, message: result.error)
+//                break
+//            }
+//        }
+//    }
     
     private func logInUser() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")

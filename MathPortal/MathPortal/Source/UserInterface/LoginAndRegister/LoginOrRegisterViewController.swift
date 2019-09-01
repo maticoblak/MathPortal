@@ -26,6 +26,7 @@ class LoginOrRegisterViewController: UIViewController {
     }
     
     @IBAction func registerButtonTapped(_ sender: Any) {
+        goToRegisterScreen()
     }
     @IBAction func loginButtonTapped(_ sender: Any) {
         goToLoginScreen()
@@ -33,6 +34,11 @@ class LoginOrRegisterViewController: UIViewController {
     
     private func goToLoginScreen() {
         let controller = R.storyboard.main.logInViewController()!
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    private func goToRegisterScreen() {
+        let controller = R.storyboard.main.registerViewController()!
         self.navigationController?.pushViewController(controller, animated: true)
     }
 

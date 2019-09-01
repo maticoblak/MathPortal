@@ -62,7 +62,7 @@ class UserViewController: UIViewController {
         PFUser.logOutInBackground { (error: Error?) in
             loadingSpinner.dismissLoadingScreen() {
                 if error == nil {
-                    let controller = R.storyboard.main.logInViewController()!
+                    let controller = R.storyboard.main.loginOrRegisterViewController()!
                     self.present(controller, animated: true )
                 } else {
                     if let descrip = error?.localizedDescription{

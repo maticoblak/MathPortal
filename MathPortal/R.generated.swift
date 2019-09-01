@@ -16,8 +16,10 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
   
-  /// This `R.image` struct is generated, and contains static references to 11 images.
+  /// This `R.image` struct is generated, and contains static references to 12 images.
   struct image {
+    /// Image `BackIcon`.
+    static let backIcon = Rswift.ImageResource(bundle: R.hostingBundle, name: "BackIcon")
     /// Image `boyBlack`.
     static let boyBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyBlack")
     /// Image `boyColor`.
@@ -40,6 +42,11 @@ struct R: Rswift.Validatable {
     static let profile2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile2")
     /// Image `profile`.
     static let profile = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile")
+    
+    /// `UIImage(named: "BackIcon", bundle: ..., traitCollection: ...)`
+    static func backIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.backIcon, compatibleWith: traitCollection)
+    }
     
     /// `UIImage(named: "boyBlack", bundle: ..., traitCollection: ...)`
     static func boyBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
@@ -381,6 +388,7 @@ struct _R: Rswift.Validatable {
       let logInViewController = StoryboardViewControllerResource<LogInViewController>(identifier: "LogInViewController")
       let loginOrRegisterViewController = StoryboardViewControllerResource<LoginOrRegisterViewController>(identifier: "LoginOrRegisterViewController")
       let name = "Main"
+      let registerViewController = StoryboardViewControllerResource<RegisterViewController>(identifier: "RegisterViewController")
       let tabBarViewController = StoryboardViewControllerResource<TabBarViewController>(identifier: "TabBarViewController")
       
       func logInViewController(_: Void = ()) -> LogInViewController? {
@@ -391,15 +399,21 @@ struct _R: Rswift.Validatable {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: loginOrRegisterViewController)
       }
       
+      func registerViewController(_: Void = ()) -> RegisterViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: registerViewController)
+      }
+      
       func tabBarViewController(_: Void = ()) -> TabBarViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: tabBarViewController)
       }
       
       static func validate() throws {
+        if UIKit.UIImage(named: "BackIcon", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'BackIcon' is used in storyboard 'Main', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.main().logInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'logInViewController' could not be loaded from storyboard 'Main' as 'LogInViewController'.") }
         if _R.storyboard.main().loginOrRegisterViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loginOrRegisterViewController' could not be loaded from storyboard 'Main' as 'LoginOrRegisterViewController'.") }
+        if _R.storyboard.main().registerViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'registerViewController' could not be loaded from storyboard 'Main' as 'RegisterViewController'.") }
         if _R.storyboard.main().tabBarViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'tabBarViewController' could not be loaded from storyboard 'Main' as 'TabBarViewController'.") }
       }
       
