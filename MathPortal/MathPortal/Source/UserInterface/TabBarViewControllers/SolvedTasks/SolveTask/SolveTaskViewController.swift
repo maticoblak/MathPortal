@@ -38,8 +38,9 @@ class SolveTaskViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard equations.count < 0 else { return }
-        equationsTableView?.scrollToRow(at: IndexPath(row: equations.count - 1, section: 0), at: .middle, animated: false)
+        if !equations.isEmpty {
+            equationsTableView?.scrollToRow(at: IndexPath(row: equations.count - 1, section: 0), at: .middle, animated: false)
+        }
     }
     
     @IBAction func addEquation(_ sender: Any) {

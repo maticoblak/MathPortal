@@ -60,7 +60,7 @@ class RegisterViewController: UIViewController {
                     }
                 } else if user.email?.count == 0 {
                     ErrorMessage.displayErrorMessage(controller: self, message: "Missing email")
-                } else if success {
+                } else {
                     self.goToMainMenuViewController()
                 }
             }

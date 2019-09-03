@@ -24,14 +24,14 @@ class LogInViewController: UIViewController {
         super.viewDidLoad()
         keyboardSetup()
         setup()
-        
-        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         KeyboardManager.sharedInstance.willChangeFrameDelegate = self
     }
-    @IBAction func goBack(_ sender: Any) {
+    
+    @IBAction private func goBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -50,7 +50,7 @@ class LogInViewController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
     
-    @objc func dismissKeyboard() {
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
@@ -78,11 +78,12 @@ class LogInViewController: UIViewController {
         }
     }
    
-    func goToMainMenuViewController() {
+    private func goToMainMenuViewController() {
         let controller = R.storyboard.main.tabBarViewController()!
         self.present(controller, animated: true)
     }
 }
+
 extension LogInViewController: KeyboardManagerWillChangeFrameDelegate {
     func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
         
