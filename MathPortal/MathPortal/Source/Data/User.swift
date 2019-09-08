@@ -11,6 +11,13 @@ import Parse
 
 class User: ParseObject {
     
+    static var current: User? {
+        guard let _ = PFUser.current() else { return nil }
+        let user = User()
+        user.updateUser()
+        return user
+    }
+    
     var username: String?
     var userId: String?
     var tasks: [String]?

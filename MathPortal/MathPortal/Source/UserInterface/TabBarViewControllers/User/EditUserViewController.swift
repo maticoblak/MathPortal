@@ -127,6 +127,8 @@ class EditUserViewController: UIViewController {
     }
     
     func validateAndSave() {
+        // TODO: validate whole date
+        
         var fields: [FieldValidator.Field] = [FieldValidator.Field] ()
         if emailTextField?.text?.isEmpty == false { fields.append(.email) }
         if usernameTextField?.text?.isEmpty == false { fields.append(.username)}

@@ -18,27 +18,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwA-OW-bKc">
-                                <rect key="frame" x="172.5" y="434.5" width="69" height="37"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEs-Js-eSY">
+                                <rect key="frame" x="118.5" y="94" width="177" height="100.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Math" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXM-bb-Qgl">
+                                        <rect key="frame" x="0.0" y="0.0" width="133" height="61.5"/>
+                                        <fontDescription key="fontDescription" name="Charter-Black" family="Charter" pointSize="50"/>
+                                        <color key="textColor" red="1" green="0.44431170819999999" blue="0.34917443990000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Portal" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUd-JN-Xd0">
+                                        <rect key="frame" x="66.5" y="51.5" width="110.5" height="49"/>
+                                        <fontDescription key="fontDescription" name="Charter-Bold" family="Charter" pointSize="40"/>
+                                        <color key="textColor" red="0.4418587685" green="0.48366057870000001" blue="0.59133809800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="nUd-JN-Xd0" secondAttribute="trailing" id="1yC-qw-CGQ"/>
+                                    <constraint firstItem="OXM-bb-Qgl" firstAttribute="top" secondItem="GEs-Js-eSY" secondAttribute="top" id="GJx-YP-G3T"/>
+                                    <constraint firstItem="OXM-bb-Qgl" firstAttribute="leading" secondItem="GEs-Js-eSY" secondAttribute="leading" id="LT1-Xh-Mm7"/>
+                                    <constraint firstAttribute="bottom" secondItem="nUd-JN-Xd0" secondAttribute="bottom" id="PnE-Do-Xod"/>
+                                    <constraint firstItem="nUd-JN-Xd0" firstAttribute="top" secondItem="OXM-bb-Qgl" secondAttribute="bottom" constant="-10" id="dqc-Vp-nc7"/>
+                                    <constraint firstItem="nUd-JN-Xd0" firstAttribute="leading" secondItem="OXM-bb-Qgl" secondAttribute="centerX" id="jon-WN-oob"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="lwA-OW-bKc" firstAttribute="centerX" secondItem="fLv-47-tIS" secondAttribute="centerX" id="Qil-HR-Iaz"/>
-                            <constraint firstItem="lwA-OW-bKc" firstAttribute="centerY" secondItem="fLv-47-tIS" secondAttribute="centerY" id="vij-Ew-CGK"/>
+                            <constraint firstItem="GEs-Js-eSY" firstAttribute="centerX" secondItem="E9X-aa-Gxu" secondAttribute="centerX" id="Lvx-r6-jb8"/>
+                            <constraint firstItem="GEs-Js-eSY" firstAttribute="top" secondItem="fLv-47-tIS" secondAttribute="top" constant="50" id="wmT-kq-43d"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fLv-47-tIS"/>
                     </view>
                     <connections>
-                        <outlet property="introText" destination="lwA-OW-bKc" id="AUL-rQ-ZfW"/>
+                        <outlet property="logoView" destination="GEs-Js-eSY" id="z0T-e1-q2d"/>
+                        <outlet property="topConstraint" destination="wmT-kq-43d" id="53T-di-No6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nnQ-hQ-dhB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-362" y="137"/>
+            <point key="canvasLocation" x="-509" y="38"/>
         </scene>
         <!--Login Or Register View Controller-->
         <scene sceneID="VeG-fV-BhV">

@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class UserViewController: UIViewController {
+class UserViewController: BaseViewController {
     
     let user = User()
 
@@ -50,7 +50,7 @@ class UserViewController: UIViewController {
         usernameLabel?.text = user.username
         memberSinceLabel?.text = user.dateCreated
         roleLabel?.text = user.role.map { $0.string }.joined(separator: ", ")
-        ageLabel?.text = user.age == nil ? "Undefined" : String(describing: user.age ?? 0)
+        ageLabel?.text = String(DateTools.getAgeFromDate(date: user.birthDate) ?? 0)
         emailLabel?.text = user.email
         profileImage?.image = user.profileImage ?? R.image.profile()
     }

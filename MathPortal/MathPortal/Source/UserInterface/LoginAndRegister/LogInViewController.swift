@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class LogInViewController: UIViewController {
+class LogInViewController: BaseViewController {
 
     @IBOutlet private var scrollView: UIScrollView?
     

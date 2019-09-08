@@ -9,23 +9,33 @@
 import UIKit
 import Parse
 
-class LaunchLogoViewController: UIViewController {
+class LaunchLogoViewController: BaseViewController {
     
-    @IBOutlet private var introText: UILabel?
+    @IBOutlet private var logoView: UIView?
+    @IBOutlet private var topConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.introText?.alpha = 0
-        fadeInFadeOutAnimation()
+        self.logoView?.alpha = 0
+        topConstraint?.isActive = false
+        logoView?.center = self.view.center
     }
     
-    func fadeInFadeOutAnimation() {
-        UIView.animateKeyframes(withDuration: 5, delay: 0, options: .calculationModeCubicPaced, animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 1.0) {
-                self.introText?.alpha = 1
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fadeInAndMoveToTopAnimation()
+    }
+    
+    func fadeInAndMoveToTopAnimation() {
+        
+        UIView.animateKeyframes(withDuration: 5, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5) {
+                self.logoView?.alpha = 1
+                
             }
-            UIView.addKeyframe(withRelativeStartTime: 1.0, relativeDuration: 1.0) {
-                self.introText?.alpha = 0
+            UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+                self.topConstraint?.isActive = true
+                self.view.layoutIfNeeded()
             }
         }) { _ in
             self.goToFirstScreen()
@@ -47,10 +57,15 @@ class LaunchLogoViewController: UIViewController {
     }
     
     private func goToLogInOrRegisterViewController() {
-        
         let controller = R.storyboard.main.loginOrRegisterViewController()!
         let navigationController = UINavigationController.init(rootViewController: controller)
         navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    private func testNavigation() {
+        let controller = R.storyboard.onboarding.onboardingRoleViewController()!
+        let navigationController = UINavigationController(rootViewController: controller)
         self.present(navigationController, animated: true, completion: nil)
     }
 }

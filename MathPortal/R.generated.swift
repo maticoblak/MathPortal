@@ -16,10 +16,14 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
   
-  /// This `R.image` struct is generated, and contains static references to 12 images.
+  /// This `R.image` struct is generated, and contains static references to 16 images.
   struct image {
     /// Image `BackIcon`.
     static let backIcon = Rswift.ImageResource(bundle: R.hostingBundle, name: "BackIcon")
+    /// Image `NextArrow`.
+    static let nextArrow = Rswift.ImageResource(bundle: R.hostingBundle, name: "NextArrow")
+    /// Image `birthday`.
+    static let birthday = Rswift.ImageResource(bundle: R.hostingBundle, name: "birthday")
     /// Image `boyBlack`.
     static let boyBlack = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyBlack")
     /// Image `boyColor`.
@@ -42,10 +46,24 @@ struct R: Rswift.Validatable {
     static let profile2 = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile2")
     /// Image `profile`.
     static let profile = Rswift.ImageResource(bundle: R.hostingBundle, name: "profile")
+    /// Image `student`.
+    static let student = Rswift.ImageResource(bundle: R.hostingBundle, name: "student")
+    /// Image `teacher`.
+    static let teacher = Rswift.ImageResource(bundle: R.hostingBundle, name: "teacher")
     
     /// `UIImage(named: "BackIcon", bundle: ..., traitCollection: ...)`
     static func backIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.backIcon, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "NextArrow", bundle: ..., traitCollection: ...)`
+    static func nextArrow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.nextArrow, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "birthday", bundle: ..., traitCollection: ...)`
+    static func birthday(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.birthday, compatibleWith: traitCollection)
     }
     
     /// `UIImage(named: "boyBlack", bundle: ..., traitCollection: ...)`
@@ -103,6 +121,16 @@ struct R: Rswift.Validatable {
       return UIKit.UIImage(resource: R.image.profile2, compatibleWith: traitCollection)
     }
     
+    /// `UIImage(named: "student", bundle: ..., traitCollection: ...)`
+    static func student(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.student, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "teacher", bundle: ..., traitCollection: ...)`
+    static func teacher(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.teacher, compatibleWith: traitCollection)
+    }
+    
     fileprivate init() {}
   }
   
@@ -156,7 +184,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.storyboard` struct is generated, and contains static references to 8 storyboards.
+  /// This `R.storyboard` struct is generated, and contains static references to 9 storyboards.
   struct storyboard {
     /// Storyboard `BrowseTasksViewController`.
     static let browseTasksViewController = _R.storyboard.browseTasksViewController()
@@ -170,6 +198,8 @@ struct R: Rswift.Validatable {
     static let loading = _R.storyboard.loading()
     /// Storyboard `Main`.
     static let main = _R.storyboard.main()
+    /// Storyboard `Onboarding`.
+    static let onboarding = _R.storyboard.onboarding()
     /// Storyboard `SolvedTasksViewController`.
     static let solvedTasksViewController = _R.storyboard.solvedTasksViewController()
     /// Storyboard `UserViewController`.
@@ -203,6 +233,11 @@ struct R: Rswift.Validatable {
     /// `UIStoryboard(name: "Main", bundle: ...)`
     static func main(_: Void = ()) -> UIKit.UIStoryboard {
       return UIKit.UIStoryboard(resource: R.storyboard.main)
+    }
+    
+    /// `UIStoryboard(name: "Onboarding", bundle: ...)`
+    static func onboarding(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.onboarding)
     }
     
     /// `UIStoryboard(name: "SolvedTasksViewController", bundle: ...)`
@@ -273,6 +308,7 @@ struct _R: Rswift.Validatable {
       try launchScreen.validate()
       try loading.validate()
       try main.validate()
+      try onboarding.validate()
       try solvedTasksViewController.validate()
       try userViewController.validate()
     }
@@ -415,6 +451,34 @@ struct _R: Rswift.Validatable {
         if _R.storyboard.main().loginOrRegisterViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loginOrRegisterViewController' could not be loaded from storyboard 'Main' as 'LoginOrRegisterViewController'.") }
         if _R.storyboard.main().registerViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'registerViewController' could not be loaded from storyboard 'Main' as 'RegisterViewController'.") }
         if _R.storyboard.main().tabBarViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'tabBarViewController' could not be loaded from storyboard 'Main' as 'TabBarViewController'.") }
+      }
+      
+      fileprivate init() {}
+    }
+    
+    struct onboarding: Rswift.StoryboardResourceType, Rswift.Validatable {
+      let bundle = R.hostingBundle
+      let name = "Onboarding"
+      let onboardingBasicInfoViewController = StoryboardViewControllerResource<OnboardingBasicInfoViewController>(identifier: "OnboardingBasicInfoViewController")
+      let onboardingRoleViewController = StoryboardViewControllerResource<OnboardingRoleViewController>(identifier: "OnboardingRoleViewController")
+      
+      func onboardingBasicInfoViewController(_: Void = ()) -> OnboardingBasicInfoViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: onboardingBasicInfoViewController)
+      }
+      
+      func onboardingRoleViewController(_: Void = ()) -> OnboardingRoleViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: onboardingRoleViewController)
+      }
+      
+      static func validate() throws {
+        if UIKit.UIImage(named: "birthday", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'birthday' is used in storyboard 'Onboarding', but couldn't be loaded.") }
+        if UIKit.UIImage(named: "einsteinColor", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'einsteinColor' is used in storyboard 'Onboarding', but couldn't be loaded.") }
+        if UIKit.UIImage(named: "student", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'student' is used in storyboard 'Onboarding', but couldn't be loaded.") }
+        if UIKit.UIImage(named: "teacher", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'teacher' is used in storyboard 'Onboarding', but couldn't be loaded.") }
+        if #available(iOS 11.0, *) {
+        }
+        if _R.storyboard.onboarding().onboardingBasicInfoViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'onboardingBasicInfoViewController' could not be loaded from storyboard 'Onboarding' as 'OnboardingBasicInfoViewController'.") }
+        if _R.storyboard.onboarding().onboardingRoleViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'onboardingRoleViewController' could not be loaded from storyboard 'Onboarding' as 'OnboardingRoleViewController'.") }
       }
       
       fileprivate init() {}

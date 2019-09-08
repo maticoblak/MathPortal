@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginOrRegisterViewController: UIViewController {
+class LoginOrRegisterViewController: BaseViewController {
 
     @IBOutlet private var registerButton: UIButton?
     @IBOutlet private var loginButton: UIButton?

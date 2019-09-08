@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreatedTasksViewController: UIViewController {
+class CreatedTasksViewController: BaseViewController {
 
  
     @IBOutlet private var tasksTableView: UITableView?

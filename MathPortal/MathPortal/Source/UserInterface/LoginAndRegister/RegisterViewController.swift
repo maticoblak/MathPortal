@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: BaseViewController {
 
     @IBOutlet private var scrollView: UIScrollView?
     @IBOutlet private var backButton: UIButton?
@@ -61,7 +61,7 @@ class RegisterViewController: UIViewController {
                 } else if user.email?.count == 0 {
                     ErrorMessage.displayErrorMessage(controller: self, message: "Missing email")
                 } else {
-                    self.goToMainMenuViewController()
+                    self.goToOnboarding()
                 }
             }
         }
@@ -82,9 +82,11 @@ class RegisterViewController: UIViewController {
             }
         }
     }
-    func goToMainMenuViewController() {
-        let controller = R.storyboard.main.tabBarViewController()!
-        self.present(controller, animated: true)
+    
+    private func goToOnboarding() {
+        let controller = R.storyboard.onboarding.onboardingRoleViewController()!
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present(navigationController, animated: true)
     }
 }
 

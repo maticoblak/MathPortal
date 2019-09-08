@@ -25,12 +25,12 @@ class Appearence {
         
         controller.navigationItem.leftBarButtonItem  = {
             let button = UIBarButtonItem(title: leftBarButtonTitle, style: .plain, target: controller, action: leftBarButtonAction )
-            button.tintColor = UIColor.black
+            button.tintColor = UIColor.white
             return button
         }()
         controller.navigationItem.rightBarButtonItem  = {
             let button = UIBarButtonItem(title: rightBarButtonTitle, style: .plain, target: controller, action: rightBarButtonAction )
-            button.tintColor = UIColor.black
+            button.tintColor = UIColor.white
             return button
         }()
         if leftBarButtonTitle != nil , leftBarButtonAction != nil  { controller.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: font ?? "Helvetica", size: CGFloat(fontSize ?? 15)) ?? UIFont.systemFontSize ], for: UIControl.State.normal)
@@ -48,14 +48,16 @@ class Appearence {
     }
     
     
-    static func setUpNavigationController(controller: UIViewController, titleColor: UIColor = UIColor.black, barColor: UIColor = UIColor.groupTableViewBackground, font: String = "System", titleFontSize: CGFloat = UIFont.systemFontSize, title: String? = nil ) {
+    static func setUpNavigationController(controller: UIViewController, titleColor: UIColor = UIColor.white, barColor: UIColor = UIColor.mathDarkBlue, font: String = "System", titleFontSize: CGFloat = UIFont.systemFontSize, title: String? = nil ) {
         if let title = title {
             controller.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor :  titleColor, NSAttributedString.Key.font: UIFont(name: font, size: 22) ?? UIFont.systemFontSize]
             controller.title = title
             
         }
-        controller.navigationController?.navigationBar.barTintColor = barColor
-        
+        controller.navigationController?.navigationBar.isTranslucent = false
+        controller.navigationController?.navigationBar.barTintColor = barColor.withAlphaComponent(1)
+        //controller.navigationController?.navigationBar.backgroundColor = barColor.withAlphaComponent(1)
+
     }
 }
     
