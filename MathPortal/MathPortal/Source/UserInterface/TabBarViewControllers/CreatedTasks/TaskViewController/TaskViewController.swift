@@ -25,8 +25,6 @@ class TaskViewController: UIViewController {
     
     var task: Task!
     
-    var taskTitle: String?
-    
     var saveButtonHidden: Bool = false {
         didSet {
             saveButton?.isHidden = saveButtonHidden
@@ -53,10 +51,9 @@ class TaskViewController: UIViewController {
         super.viewDidLoad()
         keyboardHeightConstraint?.constant = 0
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
-        
-        taskTitle = task.name
+    
         equationsAndTexts = task.equations ?? [Equation]()
-        titleTextField?.text = taskTitle ?? "Title"
+        titleTextField?.text = task.name ?? "Title"
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         setUpDefaultKeyboard()
         
@@ -87,12 +84,17 @@ class TaskViewController: UIViewController {
     func saveTask() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
         self.present(loadingSpinner, animated: false, completion: nil)
-        //TODO: handel error
+        
         task.name = titleTextField?.text
         task.equations = equationsAndTexts
+        
         task.save(completion: { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
-                self.goToCreatedTasksViewController()
+                if success {
+                    self.goToCreatedTasksViewController()
+                } else {
+                    print(error?.localizedDescription)
+                }
             }
         })
     }

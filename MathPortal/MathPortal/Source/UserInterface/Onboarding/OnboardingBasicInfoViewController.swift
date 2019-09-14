@@ -10,7 +10,6 @@ import UIKit
 
 class OnboardingBasicInfoViewController: BaseViewController {
     
-    var user: User!
     @IBOutlet private var birthdayLabel: UILabel?
     
     @IBOutlet private var datePicker: UIDatePicker?
@@ -18,10 +17,7 @@ class OnboardingBasicInfoViewController: BaseViewController {
     private var selectedDate: Date?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         birthdayLabel?.textColor = UIColor.white
-        
         datePicker?.setValue(UIColor.mathLightGrey, forKey: "textColor")
         datePicker?.addTarget(self, action: #selector(getSelectedDate), for: .valueChanged)
         selectedDate = datePicker?.date
@@ -37,25 +33,24 @@ class OnboardingBasicInfoViewController: BaseViewController {
     }
     
     private func updateAndSaveUser() {
-        if let date = selectedDate {
-            user.birthDate = date
-            let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-            self.present(loadingSpinner, animated: false, completion: nil)
+        guard let user = User.current, let date = selectedDate else { return }
+        user.birthDate = date
+        
+        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
+        self.present(loadingSpinner, animated: false, completion: nil)
             
-            user.save { (succcess, error) in
-                loadingSpinner.dismissLoadingScreen() {
-                    if succcess {
-                        self.goToMainMenuViewController()
+        user.save { (succcess, error) in
+            loadingSpinner.dismissLoadingScreen() {
+                if succcess {
+                    self.goToMainMenuViewController()
+                } else {
+                    if let description = error?.localizedDescription {
+                        ErrorMessage.displayErrorMessage(controller: self, message: description)
                     } else {
-                        if let description = error?.localizedDescription {
-                            ErrorMessage.displayErrorMessage(controller: self, message: description)
-                        } else {
-                            ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
-                        }
+                        ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                     }
                 }
             }
-            
         }
     }
     

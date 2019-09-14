@@ -45,12 +45,13 @@ class RegisterViewController: BaseViewController {
         signUpButton?.layer.borderColor = UIColor.mathPink.cgColor
     }
     
-    private func signUpNewUser(user: PFUser) {
+    private func signUpNewUser() {
+        guard let username = usernameTextFieeld?.text, let password = passwordTextField?.text, let email = emailTextField?.text else { return }
     
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         
-        user.signUpInBackground { (success, error) in
+        User.signUpUser(username: username, password: password, email: email) { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
                 if success == false {
                     if let description = error?.localizedDescription {
@@ -58,7 +59,7 @@ class RegisterViewController: BaseViewController {
                     } else {
                         ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                     }
-                } else if user.email?.count == 0 {
+                } else if email.count == 0 {
                     ErrorMessage.displayErrorMessage(controller: self, message: "Missing email")
                 } else {
                     self.goToOnboarding()
@@ -68,14 +69,10 @@ class RegisterViewController: BaseViewController {
     }
     
     private func validateAndSignUp() {
-        let user = PFUser()
-        user.username = usernameTextFieeld?.text
-        user.password = passwordTextField?.text
-        user.email = emailTextField?.text
-        FieldValidator.init(validate: [.username, .email], username: user.username, email: user.email, age: nil).validate { result in
+        FieldValidator.init(validate: [.username, .email], username: usernameTextFieeld?.text, email: emailTextField?.text, age: nil).validate { result in
             switch result {
             case .OK:
-                self.signUpNewUser(user: user)
+                self.signUpNewUser()
             case .emailInvalid, .ageInvalid, .emailAlreadyTaken, .usernameAlreadyTaken:
                 ErrorMessage.displayErrorMessage(controller: self, message: result.error)
                 break

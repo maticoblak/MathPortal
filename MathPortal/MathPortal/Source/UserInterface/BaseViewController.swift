@@ -15,13 +15,17 @@ class BaseViewController: UIViewController {
         self.view.backgroundColor = UIColor.mathDarkBlue
         self.navigationController?.navigationBar.backgroundColor = UIColor.mathDarkBlue
         
-        guard let statusBarView = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView else {
-            return
+        if let statusBarView = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView {
+            statusBarView.backgroundColor = UIColor.mathDarkBlue
         }
-        statusBarView.backgroundColor = UIColor.mathDarkGrey
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return false
     }
 }

@@ -384,7 +384,7 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="240" id="4sG-Ns-TxP"/>
                                                     <constraint firstItem="sSG-ml-qz7" firstAttribute="centerY" secondItem="3Zy-pz-qOS" secondAttribute="centerY" id="SZO-m5-3M1"/>
@@ -491,7 +491,7 @@
                                                         </constraints>
                                                     </view>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="K6q-Ug-MbI" firstAttribute="leading" secondItem="4Jd-uj-U3d" secondAttribute="trailing" constant="20" id="8wq-Hz-qaf"/>
                                                     <constraint firstAttribute="trailing" secondItem="WpS-v1-ofq" secondAttribute="trailing" constant="40" id="9MU-H6-bs7"/>
@@ -541,7 +541,7 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="6Zf-um-ddc"/>
                                                     <constraint firstItem="Sxm-zv-3sr" firstAttribute="leading" secondItem="Siu-5R-90j" secondAttribute="leading" constant="40" id="6aY-n7-zSI"/>
@@ -566,7 +566,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.033974476160000003" green="0.1178456023" blue="0.25907284019999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jpT-Mr-p1r" firstAttribute="trailing" secondItem="U0w-3e-tEh" secondAttribute="trailing" id="3RA-x5-wAC"/>
                             <constraint firstItem="jpT-Mr-p1r" firstAttribute="bottom" secondItem="U0w-3e-tEh" secondAttribute="bottom" id="DVq-Vd-wad"/>

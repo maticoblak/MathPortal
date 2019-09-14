@@ -33,11 +33,8 @@ class UserViewController: BaseViewController {
     }
     
     @objc private func editProfile() {
-        guard let user = User.current else { return }
         let controller = R.storyboard.userViewController.editUserViewController()!
-        controller.user = user
         navigationController?.pushViewController(controller, animated: true)
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,9 +57,9 @@ class UserViewController: BaseViewController {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         
-        loadingSpinner.dismissLoadingScreen() {
-            User.logOut { (error: Error?) in
-            
+        
+        User.logOut { (error: Error?) in
+            loadingSpinner.dismissLoadingScreen() {
                 if error == nil {
                     let controller = R.storyboard.main.loginOrRegisterViewController()!
                     let navigationController = UINavigationController.init(rootViewController: controller)

@@ -22,7 +22,7 @@ class ProfileImagesViewController: UIViewController {
     private var imagePicker: UIImagePickerController = UIImagePickerController()
     private let defaultImages = [UIImage(), R.image.einsteinBlack(), R.image.einsteinColor(), R.image.einsteinWhite(), R.image.girlBlack(), R.image.girlColor(), R.image.girlWhite(), R.image.boyBlack(), R.image.boyColor(), R.image.boyWhite()]
     
-    func openImageGallery() {
+    private func openImageGallery() {
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum) {
             imagePicker.delegate = self
             imagePicker.sourceType = .photoLibrary

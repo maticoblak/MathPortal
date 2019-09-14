@@ -11,37 +11,6 @@ import Parse
 
 class User: ParseObject {
     
-    private static var currentLoadedUser: User? {
-        didSet {
-            if currentLoadedUser == nil && oldValue != nil {
-                LaunchLogoViewController.current?.dismissToRoot()
-            }
-        }
-    }
-    
-    static var current: User? {
-        guard let currentUser = PFUser.current() else {
-            currentLoadedUser = nil
-            return nil
-        }
-        
-        if let currentLoadedUser = currentLoadedUser, currentLoadedUser.userId == currentUser.objectId {
-            return currentLoadedUser
-        } else {
-            let user = User(user: currentUser)
-            currentLoadedUser = user
-            return user
-        }
-    }
-    
-    static func fetchCurrent() -> User {
-        guard let user = User.current else {
-            
-            return User()
-        }
-        return user
-    }
-    
     var username: String?
     var userId: String?
     var tasks: [String]?
@@ -137,6 +106,22 @@ class User: ParseObject {
         }
     }
     
+    static func logIn(username: String, password: String, _ completion: ((_ user: PFUser?, _ error: Error?) -> Void)? = nil) {
+        PFUser.logInWithUsername(inBackground: username, password: password) { (user, error) in
+            completion?(user, error)
+        }
+    }
+    
+    static func signUpUser(username: String, password: String, email: String,  _ completion: ((_ user: Bool?, _ error: Error?) -> Void)? = nil)  {
+        let user = PFUser()
+        user.username = username
+        user.password = password
+        user.email = email
+        user.signUpInBackground { (success, error) in
+            completion?(success, error)
+        }
+    }
+    
     
     func fetchTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         guard let id = userId else {
@@ -150,7 +135,52 @@ class User: ParseObject {
         
     }
     
+    func fetchSolvedTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+        let objectIds = tasksOwned.map {$0.key}
+        Task.fetchSolvedTasks(objectIds: objectIds) { (tasks, error) in
+            completion?(tasks, error)
+        }
+    }
+    
 }
+
+// MARK: - Current User
+
+extension User {
+    private static var currentLoadedUser: User? {
+        didSet {
+            if currentLoadedUser == nil && oldValue != nil {
+                LaunchLogoViewController.current?.dismissToRoot()
+            }
+        }
+    }
+    
+    static var current: User? {
+        guard let currentUser = PFUser.current() else {
+            currentLoadedUser = nil
+            return nil
+        }
+        
+        if let currentLoadedUser = currentLoadedUser, currentLoadedUser.userId == currentUser.objectId {
+            return currentLoadedUser
+        } else {
+            let user = User(user: currentUser)
+            currentLoadedUser = user
+            return user
+        }
+    }
+    
+    static func fetchCurrent() -> User {
+        guard let user = User.current else {
+            
+            return User()
+        }
+        return user
+    }
+    
+}
+
+// MARK: - Role
 
 extension User {
     enum Role: CaseIterable {
@@ -169,6 +199,9 @@ extension User {
     }
 
 }
+
+// MARK: - Objct
+
 extension User {
     enum Object: String {
         case tasks = "tasks"

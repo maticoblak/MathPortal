@@ -72,6 +72,7 @@ class LaunchLogoViewController: BaseViewController {
         self.present(navigationController, animated: true, completion: nil)
     }
     
+    // NOTE: For testing
     private func testNavigation() {
         let controller = R.storyboard.onboarding.onboardingRoleViewController()!
         let navigationController = UINavigationController(rootViewController: controller)

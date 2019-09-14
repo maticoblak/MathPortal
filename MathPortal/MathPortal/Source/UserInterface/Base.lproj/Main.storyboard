@@ -527,90 +527,98 @@
                                     <outlet property="parentViewController" destination="mE6-tD-n8O" id="ypo-s6-CaB"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hau-ex-Ia6" userLabel="SuperviewOffset">
+                                <rect key="frame" x="0.0" y="802" width="414" height="94"/>
+                                <color key="backgroundColor" red="0.033974476158618927" green="0.11784560233354568" blue="0.25907284021377563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3iy-lc-YEK">
                                 <rect key="frame" x="0.0" y="802" width="414" height="60"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="L23-nO-T60">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                        <rect key="frame" x="0.0" y="3" width="414" height="57"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Arg-UK-lom" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="103.5" height="60"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="103.5" height="57"/>
+                                                <color key="backgroundColor" red="0.036123309284448624" green="0.11618173867464066" blue="0.25952804088592529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
-                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.005673704668879509" green="0.055538661777973175" blue="0.16783544421195984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="User"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpd-11-qiz" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="103.5" y="0.0" width="103.5" height="60"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <rect key="frame" x="103.5" y="0.0" width="103.5" height="57"/>
+                                                <color key="backgroundColor" red="0.036123309284448624" green="0.11618173867464066" blue="0.25952804088592529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
-                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.005673704668879509" green="0.055538661777973175" blue="0.16783544421195984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Created"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fii-Ub-8hx" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="207" y="0.0" width="103.5" height="60"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <rect key="frame" x="207" y="0.0" width="103.5" height="57"/>
+                                                <color key="backgroundColor" red="0.036123309284448624" green="0.11618173867464066" blue="0.25952804088592529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
-                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.005673704668879509" green="0.055538661777973175" blue="0.16783544421195984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Solved"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="miE-Hh-wot" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="310.5" y="0.0" width="103.5" height="60"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <rect key="frame" x="310.5" y="0.0" width="103.5" height="57"/>
+                                                <color key="backgroundColor" red="0.033974476158618927" green="0.11784560233354568" blue="0.25907284021377563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Browse"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
-                                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.005673704668879509" green="0.055538661777973175" blue="0.16783544421195984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
-                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" red="0.2297140221" green="0.3334615917" blue="0.56325695610000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="1" green="0.44431170819999999" blue="0.34917443990000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="L23-nO-T60" secondAttribute="bottom" id="HBW-Jz-9YJ"/>
                                     <constraint firstAttribute="trailing" secondItem="L23-nO-T60" secondAttribute="trailing" id="dsd-qf-JgC"/>
                                     <constraint firstAttribute="height" constant="60" id="f52-U6-qFJ"/>
                                     <constraint firstItem="L23-nO-T60" firstAttribute="leading" secondItem="3iy-lc-YEK" secondAttribute="leading" id="tCM-jf-jGO"/>
-                                    <constraint firstItem="L23-nO-T60" firstAttribute="top" secondItem="3iy-lc-YEK" secondAttribute="top" id="uue-YZ-Iev"/>
+                                    <constraint firstItem="L23-nO-T60" firstAttribute="top" secondItem="3iy-lc-YEK" secondAttribute="top" constant="3" id="uue-YZ-Iev"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Hau-ex-Ia6" firstAttribute="top" secondItem="3iy-lc-YEK" secondAttribute="top" id="0O4-yk-2jK"/>
+                            <constraint firstItem="3iy-lc-YEK" firstAttribute="bottom" secondItem="vtZ-tF-ylt" secondAttribute="bottom" id="0Uc-cK-164"/>
+                            <constraint firstItem="Hau-ex-Ia6" firstAttribute="leading" secondItem="vtZ-tF-ylt" secondAttribute="leading" id="1FE-Z8-vbv"/>
+                            <constraint firstAttribute="bottom" secondItem="Hau-ex-Ia6" secondAttribute="bottom" id="DXM-oq-Jwo"/>
                             <constraint firstItem="vtZ-tF-ylt" firstAttribute="trailing" secondItem="3iy-lc-YEK" secondAttribute="trailing" id="LR9-em-Uw0"/>
                             <constraint firstItem="1PN-Ye-uaI" firstAttribute="top" secondItem="vtZ-tF-ylt" secondAttribute="top" id="NrE-SV-9eI"/>
                             <constraint firstItem="1PN-Ye-uaI" firstAttribute="leading" secondItem="vtZ-tF-ylt" secondAttribute="leading" id="PMU-mQ-Wlq"/>
+                            <constraint firstItem="vtZ-tF-ylt" firstAttribute="trailing" secondItem="Hau-ex-Ia6" secondAttribute="trailing" id="RNn-ns-udy"/>
                             <constraint firstItem="vtZ-tF-ylt" firstAttribute="trailing" secondItem="1PN-Ye-uaI" secondAttribute="trailing" id="SPC-fu-P3T"/>
                             <constraint firstItem="3iy-lc-YEK" firstAttribute="top" secondItem="1PN-Ye-uaI" secondAttribute="bottom" id="dxi-fi-fB6"/>
-                            <constraint firstItem="vtZ-tF-ylt" firstAttribute="bottom" secondItem="3iy-lc-YEK" secondAttribute="bottom" id="kqs-Oc-Odp"/>
                             <constraint firstItem="3iy-lc-YEK" firstAttribute="leading" secondItem="vtZ-tF-ylt" secondAttribute="leading" id="uer-i4-agn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vtZ-tF-ylt"/>

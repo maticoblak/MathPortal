@@ -103,7 +103,6 @@ class OnboardingRoleViewController: BaseViewController {
         if let user = User.current, let roles = selectedRole {
             user.role = roles
             let controller = R.storyboard.onboarding.onboardingBasicInfoViewController()!
-            controller.user = user
             navigationController?.pushViewController(controller, animated: true)
         }
     }

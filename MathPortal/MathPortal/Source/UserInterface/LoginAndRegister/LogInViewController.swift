@@ -63,7 +63,7 @@ class LogInViewController: BaseViewController {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else { loadingSpinner.dismissLoadingScreen() { return }; return }
-        PFUser.logInWithUsername(inBackground: username, password: password ) { (user, error) in
+        User.logIn(username: username, password: password) { (user, error) in
             loadingSpinner.dismissLoadingScreen() {
                 if user != nil {
                     self.goToMainMenuViewController()

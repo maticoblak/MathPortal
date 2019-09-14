@@ -26,8 +26,6 @@ class EditUserViewController: UIViewController {
     @IBOutlet private var saveButton: UIButton?
     @IBOutlet private var deleteAccountButton: UIButton?
     
-    var user: User!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,14 +35,14 @@ class EditUserViewController: UIViewController {
     
     private func refresh() {
         
-        usernameTextField?.placeholder = user.username
-        emailTextField?.placeholder = user.email
-        profileImage?.image = user.profileImage
-        studentRoleSelected = user.role.contains(.student)
-        teacherRoleSelected = user.role.contains(.teacher)
-        ageDayTextField?.placeholder = DateTools.getStringComponent(.day, fromDate: user.birthDate) ?? "dd"
-        ageMonthTextField?.placeholder = DateTools.getStringComponent(.month, fromDate: user.birthDate) ?? "mm"
-        ageYearTextField?.placeholder = DateTools.getStringComponent(.year, fromDate: user.birthDate) ?? "yyyy"
+        usernameTextField?.placeholder = User.current?.username
+        emailTextField?.placeholder = User.current?.email
+        profileImage?.image = User.current?.profileImage
+        studentRoleSelected = User.current?.role.contains(.student) ?? false
+        teacherRoleSelected = User.current?.role.contains(.teacher)  ?? false
+        ageDayTextField?.placeholder = DateTools.getStringComponent(.day, fromDate: User.current?.birthDate) ?? "dd"
+        ageMonthTextField?.placeholder = DateTools.getStringComponent(.month, fromDate: User.current?.birthDate) ?? "mm"
+        ageYearTextField?.placeholder = DateTools.getStringComponent(.year, fromDate: User.current?.birthDate) ?? "yyyy"
         
     }
     private func setUpKeyboard() {
@@ -91,7 +89,7 @@ class EditUserViewController: UIViewController {
     func delete(action: UIAlertAction) {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Deleting")
         self.present(loadingSpinner, animated: false, completion: nil)
-        user.delete { (success, error) in
+        User.current?.delete { (success, error) in
             loadingSpinner.dismissLoadingScreen {
                 if success {
                     User.logOut()
@@ -109,7 +107,7 @@ class EditUserViewController: UIViewController {
     func save() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
         self.present(loadingSpinner, animated: false, completion: nil)
-        self.user.save { (success, error) in
+        User.current?.save { (success, error) in
             loadingSpinner.dismissLoadingScreen() {
                 if success == false  {
                     if let description = error?.localizedDescription {
@@ -147,8 +145,9 @@ class EditUserViewController: UIViewController {
     }
     
     func updateUser() {
-        if let textCount = self.usernameTextField?.text?.count, textCount > 0 { self.user.username = self.usernameTextField?.text } else { self.user.username = self.usernameTextField?.placeholder}
-        if let textCount = self.emailTextField?.text?.count, textCount > 0 { self.user.email = self.emailTextField?.text } else { self.user.email = self.emailTextField?.placeholder}
+        guard let user = User.current else { return }
+        if let textCount = self.usernameTextField?.text?.count, textCount > 0 { user.username = self.usernameTextField?.text } else { user.username = self.usernameTextField?.placeholder}
+        if let textCount = self.emailTextField?.text?.count, textCount > 0 { user.email = self.emailTextField?.text } else { user.email = self.emailTextField?.placeholder}
         if ageDayTextField?.text?.isEmpty == false , ageYearTextField?.text?.isEmpty == false, ageMonthTextField?.text?.isEmpty == false {
             user.birthDate = DateTools.getDateFromStringComponents(day: ageDayTextField?.text, month: ageMonthTextField?.text, year: ageYearTextField?.text)
             user.age = DateTools.getAgeFromDate(date: user.birthDate)

@@ -25,8 +25,7 @@ class SolvedTasksViewController: UIViewController {
     }
     
     private func reloadTasks() {
-        guard let user = User.current else { return }
-        Task.fetchSolvedTasks(objectIds: user.tasksOwned.map {$0.key}) { (tasks, error) in
+        User.current?.fetchSolvedTasks() { (tasks, error) in
             if let tasks = tasks {
                 self.tasks = tasks
                 self.tasksTableView?.reloadData()
