@@ -11,11 +11,14 @@ import Parse
 
 class LaunchLogoViewController: BaseViewController {
     
+    static private(set) var current: LaunchLogoViewController?
+    
     @IBOutlet private var logoView: UIView?
     @IBOutlet private var topConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        LaunchLogoViewController.current = self
         self.logoView?.alpha = 0
         topConstraint?.isActive = false
         logoView?.center = self.view.center
@@ -24,6 +27,12 @@ class LaunchLogoViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fadeInAndMoveToTopAnimation()
+    }
+    
+    func dismissToRoot() {
+        while presentedViewController != nil {
+            dismiss(animated: false, completion: nil)
+        }
     }
     
     func fadeInAndMoveToTopAnimation() {
@@ -43,7 +52,7 @@ class LaunchLogoViewController: BaseViewController {
     }
     
     private func goToFirstScreen() {
-        if let _ = PFUser.current() {
+        if let _ = User.current {
             goToTabBarViewController()
         } else {
             goToLogInOrRegisterViewController()

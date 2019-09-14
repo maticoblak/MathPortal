@@ -11,8 +11,6 @@ import Parse
 
 class UserViewController: BaseViewController {
     
-    let user = User()
-
     @IBOutlet private var tasksLabel: UILabel?
     @IBOutlet private var usernameLabel: UILabel?
     @IBOutlet private var imageView: UIView?
@@ -26,6 +24,7 @@ class UserViewController: BaseViewController {
     @IBOutlet private var ageLabel: UILabel?
     @IBOutlet private var roleLabel: UILabel?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
@@ -34,6 +33,7 @@ class UserViewController: BaseViewController {
     }
     
     @objc private func editProfile() {
+        guard let user = User.current else { return }
         let controller = R.storyboard.userViewController.editUserViewController()!
         controller.user = user
         navigationController?.pushViewController(controller, animated: true)
@@ -42,10 +42,11 @@ class UserViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.user.updateUser()
         self.refreshUserProfile()
     }
     func refreshUserProfile() {
+        guard let user = User.current else { return }
+        
         tasksLabel?.text = String(describing: user.tasks?.count ?? 0) 
         usernameLabel?.text = user.username
         memberSinceLabel?.text = user.dateCreated
@@ -59,8 +60,9 @@ class UserViewController: BaseViewController {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         
-        PFUser.logOutInBackground { (error: Error?) in
-            loadingSpinner.dismissLoadingScreen() {
+        loadingSpinner.dismissLoadingScreen() {
+            User.logOut { (error: Error?) in
+            
                 if error == nil {
                     let controller = R.storyboard.main.loginOrRegisterViewController()!
                     let navigationController = UINavigationController.init(rootViewController: controller)

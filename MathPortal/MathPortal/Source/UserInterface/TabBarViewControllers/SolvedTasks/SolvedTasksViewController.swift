@@ -10,24 +10,22 @@ import UIKit
 
 class SolvedTasksViewController: UIViewController {
     
-    let user = User()
     private var tasks: [Task] = [Task]()
     @IBOutlet private var tasksTableView: UITableView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
-        user.updateUser()
         reloadTasks()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        user.updateUser()
         reloadTasks()
     }
     
     private func reloadTasks() {
+        guard let user = User.current else { return }
         Task.fetchSolvedTasks(objectIds: user.tasksOwned.map {$0.key}) { (tasks, error) in
             if let tasks = tasks {
                 self.tasks = tasks
@@ -56,7 +54,6 @@ extension SolvedTasksViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = R.storyboard.solvedTasksViewController.solveTaskViewController()!
-        controller.user = user
         controller.task = tasks[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
     }

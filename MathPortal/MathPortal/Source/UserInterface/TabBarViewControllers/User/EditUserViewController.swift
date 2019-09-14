@@ -94,9 +94,7 @@ class EditUserViewController: UIViewController {
         user.delete { (success, error) in
             loadingSpinner.dismissLoadingScreen {
                 if success {
-                    self.user.logOut()
-                    let logInController = R.storyboard.main.logInViewController()!
-                    self.present(logInController, animated: true)
+                    User.logOut()
                 } else {
                     if let description = error?.localizedDescription {
                         ErrorMessage.displayErrorMessage(controller: self, message: description)

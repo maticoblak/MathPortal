@@ -15,8 +15,6 @@ class CreatedTasksViewController: BaseViewController {
     
     private var tasks: [Task] = [Task]()
     
-    var user: User = User()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tasksTableView?.tableFooterView = UIView()
@@ -27,20 +25,17 @@ class CreatedTasksViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        user.updateUser()
         reloadTasks()
     }
     
     private func reloadTasks() {
-        guard let userId = user.userId else { return  }
-        Task.fetchUserTasks(userId: userId, completion: { (tasks, error) in
+        guard let user = User.current else { return  }
+        user.fetchTasks(completion: { (tasks, error) in
             if let error = error {
                 print(error.localizedDescription)
             } else if let tasks = tasks {
                 self.tasks = tasks
                 self.tasksTableView?.reloadData()
-                self.user.tasks = tasks.compactMap { $0.name }
-                self.user.save(completion: nil)
             }
         })
     }

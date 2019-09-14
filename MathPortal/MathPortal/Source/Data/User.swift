@@ -11,10 +11,34 @@ import Parse
 
 class User: ParseObject {
     
+    private static var currentLoadedUser: User? {
+        didSet {
+            if currentLoadedUser == nil && oldValue != nil {
+                LaunchLogoViewController.current?.dismissToRoot()
+            }
+        }
+    }
+    
     static var current: User? {
-        guard let _ = PFUser.current() else { return nil }
-        let user = User()
-        user.updateUser()
+        guard let currentUser = PFUser.current() else {
+            currentLoadedUser = nil
+            return nil
+        }
+        
+        if let currentLoadedUser = currentLoadedUser, currentLoadedUser.userId == currentUser.objectId {
+            return currentLoadedUser
+        } else {
+            let user = User(user: currentUser)
+            currentLoadedUser = user
+            return user
+        }
+    }
+    
+    static func fetchCurrent() -> User {
+        guard let user = User.current else {
+            
+            return User()
+        }
         return user
     }
     
@@ -32,18 +56,10 @@ class User: ParseObject {
     override class var entityName: String { return "User" }
     override init() {
         super.init()
-        username = PFUser.current()?.username
-        userId = PFUser.current()?.objectId
-        tasks = PFUser.current()?[Object.tasks.rawValue] as? [String]
-        dateCreated = DateTools.stringFromDate(date: PFUser.current()?.createdAt)
-        role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
-        age = PFUser.current()?[Object.age.rawValue] as? Int
-        email = PFUser.current()?.email
-        birthDate = PFUser.current()?[Object.birthDate.rawValue] as? Date
-        if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
-            profileImage = UIImage(data:imageData)
-        }
-        tasksOwned = PFUser.current()?[Object.tasksOwned.rawValue] as? [String : Bool] ?? [String : Bool]()
+    }
+    convenience init(user: PFUser) {
+        self.init()
+        updateUser(user: user)
     }
     
     override init?(pfObject: PFObject?) {
@@ -80,10 +96,8 @@ class User: ParseObject {
         self.tasksOwned = object[Object.tasksOwned.rawValue] as? [String : Bool] ?? [String : Bool]()
     }
     
-    func updateUser() {
-        if let currentUser = PFUser.current() {
-            try? self.updateWithPFObject(currentUser)
-        }
+    func updateUser(user: PFUser) {
+        try? self.updateWithPFObject(user)
     }
     
     static func generateQueryWithEmail(_ email: String ) -> PFQuery<PFObject>? {
@@ -115,9 +129,27 @@ class User: ParseObject {
             completion(!objects.isEmpty, nil)
         }
     }
-    func logOut() {
-        PFUser.logOut()
+    
+    static func logOut(_ completion: ((_ error: Error?) -> Void)? = nil) {
+        PFUser.logOutInBackground { error in
+            currentLoadedUser = nil
+            completion?(error)
+        }
     }
+    
+    
+    func fetchTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+        guard let id = userId else {
+            completion?(nil, NSError(domain: "Internal - User", code: 404, userInfo: ["dev_info": "No logged in user"]))
+            return
+        }
+        Task.fetchUserTasks(userId: id) { (tasks, error) in
+            self.tasks = tasks?.compactMap { $0.name }
+            completion?(tasks, error)
+        }
+        
+    }
+    
 }
 
 extension User {

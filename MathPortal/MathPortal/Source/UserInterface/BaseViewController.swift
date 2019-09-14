@@ -18,7 +18,7 @@ class BaseViewController: UIViewController {
         guard let statusBarView = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView else {
             return
         }
-        statusBarView.backgroundColor = UIColor.mathDarkBlue
+        statusBarView.backgroundColor = UIColor.mathDarkGrey
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

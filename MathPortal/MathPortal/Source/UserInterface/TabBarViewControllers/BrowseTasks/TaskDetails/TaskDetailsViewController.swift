@@ -11,7 +11,6 @@ import UIKit
 class TaskDetailsViewController: UIViewController {
 
     var task: Task!
-    var user: User!
     @IBOutlet private var equationsTableView: UITableView?
     
     private var equations: [Equation] = [Equation]()
@@ -25,7 +24,7 @@ class TaskDetailsViewController: UIViewController {
     }
     
     @objc private func goToSolveScreen() {
-        
+        guard let user = User.current else { return }
         user.tasksOwned[task.objectId] = false
         user.save { (success, error) in
             if success {

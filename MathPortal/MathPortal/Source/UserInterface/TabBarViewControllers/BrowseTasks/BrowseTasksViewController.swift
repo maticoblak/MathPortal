@@ -14,7 +14,6 @@ class BrowseTasksViewController: UIViewController {
     @IBOutlet private var tasksTableView: UITableView?
     
     var tasks: [Task] = [Task]()
-    var user = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +27,7 @@ class BrowseTasksViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        user.updateUser()
+        relodeAllTasks()
     }
     
     
@@ -62,7 +61,6 @@ extension BrowseTasksViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let controller = R.storyboard.browseTasksViewController.taskDetailsViewController()!
         controller.task = tasks[indexPath.row]
-        controller.user = user
         navigationController?.pushViewController(controller, animated: true)
     }
 }

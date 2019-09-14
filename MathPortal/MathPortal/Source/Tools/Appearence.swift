@@ -48,7 +48,7 @@ class Appearence {
     }
     
     
-    static func setUpNavigationController(controller: UIViewController, titleColor: UIColor = UIColor.white, barColor: UIColor = UIColor.mathDarkBlue, font: String = "System", titleFontSize: CGFloat = UIFont.systemFontSize, title: String? = nil ) {
+    static func setUpNavigationController(controller: UIViewController, titleColor: UIColor = UIColor.white, barColor: UIColor = UIColor.mathDarkGrey, font: String = "System", titleFontSize: CGFloat = UIFont.systemFontSize, title: String? = nil ) {
         if let title = title {
             controller.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor :  titleColor, NSAttributedString.Key.font: UIFont(name: font, size: 22) ?? UIFont.systemFontSize]
             controller.title = title

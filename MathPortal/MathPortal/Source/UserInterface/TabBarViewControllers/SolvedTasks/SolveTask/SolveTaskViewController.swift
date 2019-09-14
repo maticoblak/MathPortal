@@ -13,7 +13,6 @@ class SolveTaskViewController: UIViewController {
     @IBOutlet private var taskContentController: ContentControllerView?
     @IBOutlet private var equationsTableView: CustomTableView?
     
-    var user: User!
     var task: Task!
     var solution: TaskSolution = TaskSolution()
     
@@ -24,7 +23,6 @@ class SolveTaskViewController: UIViewController {
 
         taskContentController?.setViewController(controller: {
             let controller = R.storyboard.browseTasksViewController.taskDetailsViewController()
-            controller?.user = user
             controller?.task = task
             return controller
         }(), animationStyle: .fade)
@@ -60,7 +58,7 @@ class SolveTaskViewController: UIViewController {
     func saveSolution() {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
         self.present(loadingSpinner, animated: false, completion: nil)
-        solution.ownerId = user.userId
+        solution.ownerId = User.current?.userId
         solution.taskId = task.objectId
         solution.equations = equations
         solution.save(completion: { (success, error) in
@@ -75,7 +73,7 @@ class SolveTaskViewController: UIViewController {
     }
     
     private func reloadSolution() {
-        guard let userId = user.userId else { return }
+        guard let userId = User.current?.userId else { return }
         TaskSolution.fechUsersTaskSolution(task.objectId, userId: userId) { (solution, error) in
             if let error = error {
                 print(error)

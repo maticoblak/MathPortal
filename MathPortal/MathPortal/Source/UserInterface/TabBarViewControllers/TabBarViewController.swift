@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabBarViewController: UIViewController {
+class TabBarViewController: BaseViewController {
 
     
     @IBOutlet private var contentController: ContentControllerView?
