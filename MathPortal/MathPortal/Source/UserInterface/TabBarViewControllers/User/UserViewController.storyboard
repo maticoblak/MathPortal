@@ -270,13 +270,25 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tasks created:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcQ-5w-WVb">
-                                                                <rect key="frame" x="40" y="60" width="111" height="240"/>
+                                                                <rect key="frame" x="20" y="60" width="111" height="199.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5Y-wS-oyp">
-                                                                <rect key="frame" x="171" y="279.5" width="35" height="20.5"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5Y-wS-oyp">
+                                                                <rect key="frame" x="151" y="259.5" width="0.0" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Solved tasks:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1it-GJ-4Jo">
+                                                                <rect key="frame" x="20" y="279.5" width="101.5" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Isu-cN-t9V">
+                                                                <rect key="frame" x="141.5" y="279.5" width="42" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -285,12 +297,16 @@
                                                         <color key="backgroundColor" red="0.54115432500839233" green="0.59229612350463867" blue="0.72062164545059204" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstItem="PXs-g9-5A4" firstAttribute="top" secondItem="uq2-Uz-1nB" secondAttribute="top" constant="20" id="1vA-qH-WUt"/>
-                                                            <constraint firstAttribute="bottom" secondItem="h5Y-wS-oyp" secondAttribute="bottom" constant="20" id="AXz-uc-nC9"/>
+                                                            <constraint firstItem="Isu-cN-t9V" firstAttribute="bottom" secondItem="1it-GJ-4Jo" secondAttribute="bottom" id="BJd-df-Cpf"/>
                                                             <constraint firstItem="h5Y-wS-oyp" firstAttribute="bottom" secondItem="hcQ-5w-WVb" secondAttribute="bottom" id="Ckz-3C-ryv"/>
                                                             <constraint firstItem="h5Y-wS-oyp" firstAttribute="leading" secondItem="hcQ-5w-WVb" secondAttribute="trailing" constant="20" id="JpI-bt-mz9"/>
-                                                            <constraint firstItem="hcQ-5w-WVb" firstAttribute="leading" secondItem="uq2-Uz-1nB" secondAttribute="leading" constant="40" id="L9U-Y2-Zyd"/>
+                                                            <constraint firstItem="hcQ-5w-WVb" firstAttribute="leading" secondItem="uq2-Uz-1nB" secondAttribute="leading" constant="20" id="L9U-Y2-Zyd"/>
                                                             <constraint firstItem="hcQ-5w-WVb" firstAttribute="top" secondItem="PXs-g9-5A4" secondAttribute="top" constant="40" id="bxX-qV-Gv1"/>
                                                             <constraint firstItem="PXs-g9-5A4" firstAttribute="centerX" secondItem="uq2-Uz-1nB" secondAttribute="centerX" id="haT-0a-VM7"/>
+                                                            <constraint firstItem="Isu-cN-t9V" firstAttribute="leading" secondItem="1it-GJ-4Jo" secondAttribute="trailing" constant="20" id="if2-Ho-EwO"/>
+                                                            <constraint firstItem="1it-GJ-4Jo" firstAttribute="top" secondItem="h5Y-wS-oyp" secondAttribute="bottom" constant="20" id="lhp-0D-CVd"/>
+                                                            <constraint firstItem="1it-GJ-4Jo" firstAttribute="leading" secondItem="hcQ-5w-WVb" secondAttribute="leading" id="ql9-xE-QVs"/>
+                                                            <constraint firstAttribute="bottom" secondItem="1it-GJ-4Jo" secondAttribute="bottom" constant="20" id="zHv-Fw-CKV"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -337,6 +353,7 @@
                         <outlet property="memberSinceLabel" destination="oW1-aI-dRr" id="11X-tI-owA"/>
                         <outlet property="profileImage" destination="7bb-Wd-JPl" id="zOv-g3-3Rg"/>
                         <outlet property="roleLabel" destination="Qwl-d5-qek" id="jqI-Ha-oaC"/>
+                        <outlet property="solvedTasksLabel" destination="Isu-cN-t9V" id="TD0-ZY-dfc"/>
                         <outlet property="tasksLabel" destination="h5Y-wS-oyp" id="83e-o7-oIm"/>
                         <outlet property="usernameLabel" destination="mn4-Sh-bGk" id="M3b-RS-Fba"/>
                     </connections>
@@ -566,7 +583,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.033974476160000003" green="0.1178456023" blue="0.25907284019999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.058823529409999999" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="jpT-Mr-p1r" firstAttribute="trailing" secondItem="U0w-3e-tEh" secondAttribute="trailing" id="3RA-x5-wAC"/>
                             <constraint firstItem="jpT-Mr-p1r" firstAttribute="bottom" secondItem="U0w-3e-tEh" secondAttribute="bottom" id="DVq-Vd-wad"/>

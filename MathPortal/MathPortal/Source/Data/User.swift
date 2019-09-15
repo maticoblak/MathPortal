@@ -16,7 +16,6 @@ class User: ParseObject {
     var tasks: [String]?
     var dateCreated: String?
     var role: [Role] = [.undefined]
-    var age: Int?
     var email: String?
     var profileImage: UIImage?
     var birthDate: Date?
@@ -34,12 +33,10 @@ class User: ParseObject {
     override init?(pfObject: PFObject?) {
         super.init(pfObject: pfObject)
     }
-    // TODO: Fix : Warning: A long-running operation is being executed on the main thread. - It happenes when saving images
     override func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFUser.current()
         object?[Object.tasks.rawValue] = tasks == nil ? NSNull() : tasks
         object?[Object.role.rawValue] = role.compactMap { $0.string }
-        object?[Object.age.rawValue] = age == nil ? NSNull() : age
         object?[Object.username.rawValue] = username
         object?[Object.email.rawValue] = email
         object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : birthDate
@@ -58,12 +55,16 @@ class User: ParseObject {
         self.tasks = object[Object.tasks.rawValue] as? [String]
         self.dateCreated = DateTools.stringFromDate(date: dateCreated)
         self.role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
-        self.age = object[Object.age.rawValue] as? Int
         self.email = email
-        self.birthDate = object[Object.birthDate.rawValue] as? Date        
-        if let imageData = PFUser.current()?[Object.profileImage.rawValue] as? Data { profileImage = UIImage(data:imageData )}
+        self.birthDate = object[Object.birthDate.rawValue] as? Date
+        // TODO: Fix : Warning: A long-running operation is being executed on the main thread. - It happenes when saving images )the problem is image.getdata
+        if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
+            profileImage = UIImage(data:imageData)
+        }
         self.tasksOwned = object[Object.tasksOwned.rawValue] as? [String : Bool] ?? [String : Bool]()
     }
+    
+    
     
     func updateUser(user: PFUser) {
         try? self.updateWithPFObject(user)
@@ -128,7 +129,7 @@ class User: ParseObject {
             completion?(nil, NSError(domain: "Internal - User", code: 404, userInfo: ["dev_info": "No logged in user"]))
             return
         }
-        Task.fetchUserTasks(userId: id) { (tasks, error) in
+        Task.fetchTasksWith(userId: id) { (tasks, error) in
             self.tasks = tasks?.compactMap { $0.name }
             completion?(tasks, error)
         }
@@ -137,7 +138,7 @@ class User: ParseObject {
     
     func fetchSolvedTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         let objectIds = tasksOwned.map {$0.key}
-        Task.fetchSolvedTasks(objectIds: objectIds) { (tasks, error) in
+        Task.fetchTasksWith(objectIds: objectIds) { (tasks, error) in
             completion?(tasks, error)
         }
     }
@@ -206,7 +207,6 @@ extension User {
     enum Object: String {
         case tasks = "tasks"
         case role = "role"
-        case age = "age"
         case profileImage  = "profileImage"
         case birthDate = "birthDate"
         case username = "username"

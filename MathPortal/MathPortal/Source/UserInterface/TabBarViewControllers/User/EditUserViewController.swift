@@ -150,7 +150,6 @@ class EditUserViewController: UIViewController {
         if let textCount = self.emailTextField?.text?.count, textCount > 0 { user.email = self.emailTextField?.text } else { user.email = self.emailTextField?.placeholder}
         if ageDayTextField?.text?.isEmpty == false , ageYearTextField?.text?.isEmpty == false, ageMonthTextField?.text?.isEmpty == false {
             user.birthDate = DateTools.getDateFromStringComponents(day: ageDayTextField?.text, month: ageMonthTextField?.text, year: ageYearTextField?.text)
-            user.age = DateTools.getAgeFromDate(date: user.birthDate)
         }
         var newRoles: [User.Role] {
             var roles = [User.Role]()

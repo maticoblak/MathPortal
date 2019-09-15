@@ -47,7 +47,6 @@ class Task: ParseObject {
         self.objectId = objectId
     }
     
-    // TODO: Move all funcs related to user to user
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
         query.whereKey(Object.userId.rawValue, equalTo: userId)
@@ -60,13 +59,13 @@ class Task: ParseObject {
         return query
     }
     
-    static func fetchUserTasks(userId: String, completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+    static func fetchTasksWith(userId: String, completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0) }, error)
         }
     }
     
-    static func fetchSolvedTasks(objectIds: [String], completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+    static func fetchTasksWith(objectIds: [String], completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         generateQueryContainingObjectIds(objectIds)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0) }, error)
         }
@@ -78,6 +77,7 @@ class Task: ParseObject {
             completion?(objects?.compactMap {Task(pfObject: $0)}, error)
         }
     }
+    
 }
 
 extension Task {

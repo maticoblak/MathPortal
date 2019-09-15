@@ -12,6 +12,7 @@ import Parse
 class UserViewController: BaseViewController {
     
     @IBOutlet private var tasksLabel: UILabel?
+    @IBOutlet private var solvedTasksLabel: UILabel?
     @IBOutlet private var usernameLabel: UILabel?
     @IBOutlet private var imageView: UIView?
     
@@ -51,6 +52,7 @@ class UserViewController: BaseViewController {
         ageLabel?.text = String(DateTools.getAgeFromDate(date: user.birthDate) ?? 0)
         emailLabel?.text = user.email
         profileImage?.image = user.profileImage ?? R.image.profile()
+        solvedTasksLabel?.text = String(user.tasksOwned.count)
     }
     
     @objc func logoutOfApp() {
