@@ -28,7 +28,7 @@ class EditUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.isNavigationBarHidden = false
         setUpKeyboard()
         refresh()
     }

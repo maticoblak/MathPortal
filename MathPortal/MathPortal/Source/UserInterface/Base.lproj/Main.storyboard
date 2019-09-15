@@ -529,7 +529,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hau-ex-Ia6" userLabel="SuperviewOffset">
                                 <rect key="frame" x="0.0" y="802" width="414" height="94"/>
-                                <color key="backgroundColor" red="0.033974476158618927" green="0.11784560233354568" blue="0.25907284021377563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.11692642420530319" green="0.19289737939834595" blue="0.32891589403152466" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3iy-lc-YEK">
                                 <rect key="frame" x="0.0" y="802" width="414" height="60"/>
@@ -539,35 +539,37 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Arg-UK-lom" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="103.5" height="57"/>
-                                                <color key="backgroundColor" red="0.036123309284448624" green="0.11618173867464066" blue="0.25952804088592529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.11764705882352941" green="0.19215686274509802" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
-                                                        <color key="value" red="0.005673704668879509" green="0.055538661777973175" blue="0.16783544421195984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
                                                         <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="User"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="profileIcon"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpd-11-qiz" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
                                                 <rect key="frame" x="103.5" y="0.0" width="103.5" height="57"/>
-                                                <color key="backgroundColor" red="0.036123309284448624" green="0.11618173867464066" blue="0.25952804088592529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.11692642420530319" green="0.19289737939834595" blue="0.32891589403152466" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
-                                                        <color key="value" red="0.005673704668879509" green="0.055538661777973175" blue="0.16783544421195984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="value" red="0.0039215686274509803" green="0.055538661777973175" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="normalColor">
                                                         <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Created"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="edit"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fii-Ub-8hx" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
                                                 <rect key="frame" x="207" y="0.0" width="103.5" height="57"/>
-                                                <color key="backgroundColor" red="0.036123309284448624" green="0.11618173867464066" blue="0.25952804088592529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.11692642420530319" green="0.19289737939834595" blue="0.32891589403152466" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
@@ -577,11 +579,12 @@
                                                         <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Solved"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="solve"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="miE-Hh-wot" customClass="TabBarButtonView" customModule="MathPortal" customModuleProvider="target">
                                                 <rect key="frame" x="310.5" y="0.0" width="103.5" height="57"/>
-                                                <color key="backgroundColor" red="0.033974476158618927" green="0.11784560233354568" blue="0.25907284021377563" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.11692642420530319" green="0.19289737939834595" blue="0.32891589403152466" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="text" value="Browse"/>
                                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
@@ -591,6 +594,7 @@
                                                         <color key="value" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="selected" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="image" value="search"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
@@ -638,5 +642,9 @@
     </scenes>
     <resources>
         <image name="BackIcon" width="28.5" height="28.5"/>
+        <image name="edit" width="48" height="48"/>
+        <image name="profileIcon" width="48" height="48"/>
+        <image name="search" width="50" height="50"/>
+        <image name="solve" width="50" height="50"/>
     </resources>
 </document>

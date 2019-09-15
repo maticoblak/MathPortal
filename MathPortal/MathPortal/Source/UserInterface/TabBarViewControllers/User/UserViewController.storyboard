@@ -22,11 +22,22 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="8aJ-PY-Owc">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1187"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1295"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cp3-iP-Zmb">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="180"/>
                                                 <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkd-aV-OgO">
+                                                        <rect key="frame" x="369" y="20" width="25" height="25"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="lkd-aV-OgO" secondAttribute="height" multiplier="1:1" id="8IA-Oy-cfd"/>
+                                                            <constraint firstAttribute="width" constant="25" id="Ft5-gf-fNi"/>
+                                                        </constraints>
+                                                        <state key="normal" image="editProfile"/>
+                                                        <connections>
+                                                            <action selector="goToEditProfile:" destination="acc-WW-bAy" eventType="touchUpInside" id="ZE3-dx-t5Z"/>
+                                                        </connections>
+                                                    </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Plq-Ni-xYt">
                                                         <rect key="frame" x="20" y="20" width="160" height="160"/>
                                                         <subviews>
@@ -106,6 +117,8 @@
                                                     <constraint firstAttribute="bottom" secondItem="Plq-Ni-xYt" secondAttribute="bottom" id="3sF-IB-L82"/>
                                                     <constraint firstItem="mJW-MG-OM2" firstAttribute="centerY" secondItem="Plq-Ni-xYt" secondAttribute="centerY" id="9kn-bL-ReE"/>
                                                     <constraint firstItem="Plq-Ni-xYt" firstAttribute="leading" secondItem="Cp3-iP-Zmb" secondAttribute="leading" constant="20" id="GaK-vP-z3g"/>
+                                                    <constraint firstItem="lkd-aV-OgO" firstAttribute="top" secondItem="Plq-Ni-xYt" secondAttribute="top" id="HVm-9z-iwh"/>
+                                                    <constraint firstAttribute="trailing" secondItem="lkd-aV-OgO" secondAttribute="trailing" constant="20" id="dOn-da-oxT"/>
                                                     <constraint firstItem="mJW-MG-OM2" firstAttribute="leading" secondItem="Plq-Ni-xYt" secondAttribute="trailing" constant="15" id="wmp-Ct-ugw"/>
                                                 </constraints>
                                             </view>
@@ -323,6 +336,31 @@
                                                     <constraint firstItem="uq2-Uz-1nB" firstAttribute="leading" secondItem="5M8-2F-yeV" secondAttribute="leading" constant="20" id="ePe-0X-7cz"/>
                                                 </constraints>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u6Y-dq-qfh">
+                                                <rect key="frame" x="0.0" y="1205" width="414" height="90"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mLW-l9-l07" customClass="CustomButton" customModule="MathPortal" customModuleProvider="target">
+                                                        <rect key="frame" x="132" y="20" width="150" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="150" id="BhS-FS-LaL"/>
+                                                            <constraint firstAttribute="height" constant="50" id="SjU-nG-6Fp"/>
+                                                        </constraints>
+                                                        <state key="normal" title="LOG OUT"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="stringType" value="Custom"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="logOut:" destination="acc-WW-bAy" eventType="touchUpInside" id="nWf-wF-lhu"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="mLW-l9-l07" firstAttribute="top" secondItem="u6Y-dq-qfh" secondAttribute="top" constant="20" id="L78-ba-dz9"/>
+                                                    <constraint firstAttribute="bottom" secondItem="mLW-l9-l07" secondAttribute="bottom" constant="20" id="gSw-Ie-sTw"/>
+                                                    <constraint firstItem="mLW-l9-l07" firstAttribute="centerX" secondItem="u6Y-dq-qfh" secondAttribute="centerX" id="jEL-NH-eeS"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" red="0.10980392156862745" green="0.12156862745098039" blue="0.17254901960784313" alpha="1" colorSpace="calibratedRGB"/>
                                     </stackView>
@@ -348,6 +386,7 @@
                     </view>
                     <connections>
                         <outlet property="ageLabel" destination="ZXC-ng-jhe" id="3Ag-yE-CRm"/>
+                        <outlet property="editButton" destination="lkd-aV-OgO" id="tlN-mK-gKl"/>
                         <outlet property="emailLabel" destination="AH5-6v-heo" id="TLa-bE-XJc"/>
                         <outlet property="imageView" destination="Plq-Ni-xYt" id="Bz5-yU-l4h"/>
                         <outlet property="memberSinceLabel" destination="oW1-aI-dRr" id="11X-tI-owA"/>
@@ -678,6 +717,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="editProfile" width="32" height="32"/>
         <image name="einsteinBlack" width="50" height="50"/>
     </resources>
 </document>

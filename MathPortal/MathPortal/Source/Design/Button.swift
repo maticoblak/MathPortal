@@ -65,7 +65,7 @@ class CustomButton: UIButton {
         case .back:
             setupAsBackButton()
         case .custom:
-            return
+            setupAsCustom()
         }
     }
     
@@ -79,5 +79,12 @@ class CustomButton: UIButton {
         self.setImage(image, for: .normal)
         self.imageView?.tintColor = UIColor.mathLightGrey
         
+    }
+    
+    private func setupAsCustom() {
+        self.titleLabel?.textColor = UIColor.mathPink
+        self.layer.borderWidth = 1.5
+        self.layer.borderColor = UIColor.mathPink.cgColor
+        self.layoutIfNeeded()
     }
 }

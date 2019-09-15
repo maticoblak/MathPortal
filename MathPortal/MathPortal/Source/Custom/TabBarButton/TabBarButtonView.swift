@@ -12,6 +12,7 @@ class TabBarButtonView: CustomView {
 
     @IBOutlet private var buttonTitle: UILabel?
     @IBOutlet private var button: UIButton?
+    @IBOutlet private var buttonImage: UIImageView?
     
 
     @IBInspectable var selected: Bool = false {
@@ -37,6 +38,12 @@ class TabBarButtonView: CustomView {
         }
     }
     
+    @IBInspectable var image: UIImage? {
+        didSet {
+            refresh()
+        }
+    }
+    
     override func setup() {
         super.setup()
         refresh()
@@ -44,6 +51,8 @@ class TabBarButtonView: CustomView {
     func refresh() {
         buttonTitle?.text = text
         buttonTitle?.textColor = selected ? selectedColor : normalColor
+        buttonImage?.image = image
+        buttonImage?.tintColor = selected ? selectedColor : normalColor
     }
     
     

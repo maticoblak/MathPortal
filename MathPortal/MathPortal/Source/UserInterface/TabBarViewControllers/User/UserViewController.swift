@@ -24,16 +24,17 @@ class UserViewController: BaseViewController {
     
     @IBOutlet private var ageLabel: UILabel?
     @IBOutlet private var roleLabel: UILabel?
+    @IBOutlet private var editButton: UIButton?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
-        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "Log out", leftBarButtonAction: #selector(logoutOfApp), rightBarButtonTitle: "Edit Profile", rightBarButtonAction: #selector(editProfile))
+        editButton?.imageView?.tintColor = UIColor.mathDarkGrey
         refreshUserProfile()
     }
     
-    @objc private func editProfile() {
+    @IBAction private func goToEditProfile(_ sender: Any) {
         let controller = R.storyboard.userViewController.editUserViewController()!
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -42,7 +43,14 @@ class UserViewController: BaseViewController {
         super.viewDidAppear(animated)
         self.refreshUserProfile()
     }
-    func refreshUserProfile() {
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+
+    
+    private func refreshUserProfile() {
         guard let user = User.current else { return }
         
         tasksLabel?.text = String(describing: user.tasks?.count ?? 0) 
@@ -55,7 +63,7 @@ class UserViewController: BaseViewController {
         solvedTasksLabel?.text = String(user.tasksOwned.count)
     }
     
-    @objc func logoutOfApp() {
+    @IBAction private func logOut(_ sender: Any) {
         let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
         self.present(loadingSpinner, animated: false, completion: nil)
         
