@@ -48,11 +48,9 @@ class RegisterViewController: BaseViewController {
     private func signUpNewUser() {
         guard let username = usernameTextFieeld?.text, let password = passwordTextField?.text, let email = emailTextField?.text else { return }
     
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-        self.present(loadingSpinner, animated: false, completion: nil)
-        
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Loading")
         User.signUpUser(username: username, password: password, email: email) { (success, error) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if success == false {
                     if let description = error?.localizedDescription {
                         ErrorMessage.displayErrorMessage(controller: self, message: description)

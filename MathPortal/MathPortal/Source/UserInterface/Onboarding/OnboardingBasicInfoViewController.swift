@@ -36,11 +36,10 @@ class OnboardingBasicInfoViewController: BaseViewController {
         guard let user = User.current, let date = selectedDate else { return }
         user.birthDate = date
         
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-        self.present(loadingSpinner, animated: false, completion: nil)
-            
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Loading")
+        
         user.save { (succcess, error) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if succcess {
                     self.goToMainMenuViewController()
                 } else {

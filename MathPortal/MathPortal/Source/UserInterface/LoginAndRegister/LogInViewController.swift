@@ -60,11 +60,10 @@ class LogInViewController: BaseViewController {
     }
     
     private func logInUser() {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-        self.present(loadingSpinner, animated: false, completion: nil)
-        guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else { loadingSpinner.dismissLoadingScreen() { return }; return }
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Loading")
+        guard let username = logInUsernameTextField?.text, let password = logInPasswordTextField?.text  else { loadingSpinner.dismissFromCurrentWindow(); return }
         User.logIn(username: username, password: password) { (user, error) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if user != nil {
                     self.goToMainMenuViewController()
                 } else {

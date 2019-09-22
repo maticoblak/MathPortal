@@ -64,12 +64,10 @@ class UserViewController: BaseViewController {
     }
     
     @IBAction private func logOut(_ sender: Any) {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Loading")
-        self.present(loadingSpinner, animated: false, completion: nil)
-        
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Loading")
         
         User.logOut { (error: Error?) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if error == nil {
                     let controller = R.storyboard.main.loginOrRegisterViewController()!
                     let navigationController = UINavigationController.init(rootViewController: controller)

@@ -56,13 +56,12 @@ class SolveTaskViewController: UIViewController {
     }
     
     func saveSolution() {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
-        self.present(loadingSpinner, animated: false, completion: nil)
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
         solution.ownerId = User.current?.userId
         solution.taskId = task.objectId
         solution.equations = equations
         solution.save(completion: { (success, error) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if success {
                     self.goBack()
                 } else if let error = error {

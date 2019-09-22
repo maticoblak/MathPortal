@@ -87,10 +87,9 @@ class EditUserViewController: UIViewController {
     
     
     func delete(action: UIAlertAction) {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Deleting")
-        self.present(loadingSpinner, animated: false, completion: nil)
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Deleting")
         User.current?.delete { (success, error) in
-            loadingSpinner.dismissLoadingScreen {
+            loadingSpinner.dismissFromCurrentWindow {
                 if success {
                     User.logOut()
                 } else {
@@ -105,10 +104,10 @@ class EditUserViewController: UIViewController {
     }
     
     func save() {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
-        self.present(loadingSpinner, animated: false, completion: nil)
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
+        
         User.current?.save { (success, error) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if success == false  {
                     if let description = error?.localizedDescription {
                         ErrorMessage.displayErrorMessage(controller: self, message: description)

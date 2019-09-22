@@ -82,14 +82,13 @@ class TaskViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     func saveTask() {
-        let loadingSpinner = LoadingViewController.activateIndicator(text: "Saving")
-        self.present(loadingSpinner, animated: false, completion: nil)
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
         
         task.name = titleTextField?.text
         task.equations = equationsAndTexts
         
         task.save(completion: { (success, error) in
-            loadingSpinner.dismissLoadingScreen() {
+            loadingSpinner.dismissFromCurrentWindow() {
                 if success {
                     self.goToCreatedTasksViewController()
                 } else {
