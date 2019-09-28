@@ -19,7 +19,7 @@ class User: ParseObject {
     var email: String?
     var profileImage: UIImage?
     var birthDate: Date?
-    var tasksOwned: [String : Bool] = [String : Bool]()
+    //var tasksOwned: [String : Bool] = [String : Bool]()
     
     override class var entityName: String { return "User" }
     override init() {
@@ -41,7 +41,6 @@ class User: ParseObject {
         object?[Object.email.rawValue] = email
         object?[Object.birthDate.rawValue] = birthDate == nil ? NSNull() : birthDate
         if let profileImageData = profileImage?.jpegData(compressionQuality: 0.5) { object?[Object.profileImage.rawValue] = PFFileObject(data: profileImageData)}
-        object?[Object.tasksOwned.rawValue] = tasksOwned
         return object
     }
     
@@ -61,11 +60,8 @@ class User: ParseObject {
         if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
             profileImage = UIImage(data:imageData)
         }
-        self.tasksOwned = object[Object.tasksOwned.rawValue] as? [String : Bool] ?? [String : Bool]()
     }
-    
-    
-    
+
     func updateUser(user: PFUser) {
         try? self.updateWithPFObject(user)
     }
@@ -135,14 +131,24 @@ class User: ParseObject {
         }
         
     }
+// MARK: - Relation to Task
     
-    func fetchSolvedTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
-        let objectIds = tasksOwned.map {$0.key}
-        Task.fetchTasksWith(objectIds: objectIds) { (tasks, error) in
-            completion?(tasks, error)
+    func fetchSavedTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
+        let currentUser = PFUser.current()
+        let relation = currentUser?.relation(forKey: "savedTasks")
+        let query = relation?.query()
+        query?.findObjectsInBackground(block: { (items, error) in
+            completion?(items?.compactMap { Task(pfObject: $0)}, error)
+        })
+    }
+
+    func addToSavedTasks(_ task: Task) {
+        let relation = PFUser.current()?.relation(forKey: "savedTasks")
+        let taskObject = task.generetePFObject()
+        if let taskObject = taskObject {
+            relation?.add(taskObject)
         }
     }
-    
 }
 
 // MARK: - Current User

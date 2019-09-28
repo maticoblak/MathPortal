@@ -25,7 +25,7 @@ class TaskDetailsViewController: UIViewController {
     
     @objc private func goToSolveScreen() {
         guard let user = User.current else { return }
-        user.tasksOwned[task.objectId] = false
+        user.addToSavedTasks(task)
         user.save { (success, error) in
             if success {
                 //TODO: go to solve task screen

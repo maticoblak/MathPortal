@@ -60,7 +60,6 @@ class UserViewController: BaseViewController {
         ageLabel?.text = String(DateTools.getAgeFromDate(date: user.birthDate) ?? 0)
         emailLabel?.text = user.email
         profileImage?.image = user.profileImage ?? R.image.profile()
-        solvedTasksLabel?.text = String(user.tasksOwned.count)
     }
     
     @IBAction private func logOut(_ sender: Any) {

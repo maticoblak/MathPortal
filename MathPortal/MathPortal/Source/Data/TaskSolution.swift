@@ -20,7 +20,11 @@ class TaskSolution: ParseObject {
     
     override init() {
         super.init()
-        ownerId = PFUser.current()?.objectId
+    }
+    
+    convenience init(taskSolution: PFObject) {
+        self.init()
+        updateTaskSolution(solution: taskSolution)
     }
     
     override init?(pfObject: PFObject?) {
@@ -32,6 +36,7 @@ class TaskSolution: ParseObject {
         item?[Object.ownerId.rawValue] = ownerId
         item?[Object.taskId.rawValue] = taskId
         item?[Object.equations.rawValue] = equations?.map { Equation.equationToJson(equation: $0.expression) }
+        item?[Object.owner.rawValue] = PFUser.current()
         return item
     }
     
@@ -44,6 +49,10 @@ class TaskSolution: ParseObject {
         self.taskId = taskId
         self.equations = (object[Object.equations.rawValue] as? [[String : Any]])?.map { Equation(expression: Equation.JSONToEquation(json: $0))}
         self.objectId = objectId
+    }
+    
+    func updateTaskSolution(solution: PFObject) {
+        try? self.updateWithPFObject(solution)
     }
     
     static func generateQueryWithUserId(_ ownerId: String) -> PFQuery<PFObject>? {
@@ -77,5 +86,6 @@ extension TaskSolution {
         case taskId = "taskId"
         case ownerId = "ownerId"
         case equations = "equations"
+        case owner = "owner"
     }
 }

@@ -15,9 +15,9 @@ class BaseViewController: UIViewController {
         self.view.backgroundColor = UIColor.mathDarkBlue
         self.navigationController?.navigationBar.backgroundColor = UIColor.mathDarkBlue
         
-        if let statusBarView = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView {
-            statusBarView.backgroundColor = UIColor.mathDarkBlue
-        }
+//        if let statusBarView = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView {
+//            statusBarView.backgroundColor = UIColor.mathDarkBlue
+//        }
         
     }
     
