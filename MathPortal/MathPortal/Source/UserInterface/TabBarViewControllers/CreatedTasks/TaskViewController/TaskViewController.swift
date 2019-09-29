@@ -84,6 +84,7 @@ class TaskViewController: UIViewController {
     func saveTask() {
         let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
         
+    
         task.name = titleTextField?.text
         task.equations = equationsAndTexts
         

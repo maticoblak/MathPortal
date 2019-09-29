@@ -25,8 +25,10 @@ class TaskDetailsViewController: UIViewController {
     
     @objc private func goToSolveScreen() {
         guard let user = User.current else { return }
+        let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
         user.addToSavedTasks(task)
         user.save { (success, error) in
+            loadingSpinner.dismissFromCurrentWindow()
             if success {
                 //TODO: go to solve task screen
             } else if let error = error {

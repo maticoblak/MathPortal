@@ -81,6 +81,7 @@ class RegisterViewController: BaseViewController {
     private func goToOnboarding() {
         let controller = R.storyboard.onboarding.onboardingRoleViewController()!
         let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true)
     }
 }
