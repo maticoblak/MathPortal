@@ -11,6 +11,7 @@ import UIKit
 class SolvedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskTitleLabel: UILabel?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -183,10 +183,12 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.nib` struct is generated, and contains static references to 2 nibs.
+  /// This `R.nib` struct is generated, and contains static references to 3 nibs.
   struct nib {
     /// Nib `TabBarButtonView`.
     static let tabBarButtonView = _R.nib._TabBarButtonView()
+    /// Nib `TaskDetailsViewControllerSolutionCell`.
+    static let taskDetailsViewControllerSolutionCell = _R.nib._TaskDetailsViewControllerSolutionCell()
     /// Nib `TaskViewControllerTableViewCell`.
     static let taskViewControllerTableViewCell = _R.nib._TaskViewControllerTableViewCell()
     
@@ -194,6 +196,12 @@ struct R: Rswift.Validatable {
     @available(*, deprecated, message: "Use UINib(resource: R.nib.tabBarButtonView) instead")
     static func tabBarButtonView(_: Void = ()) -> UIKit.UINib {
       return UIKit.UINib(resource: R.nib.tabBarButtonView)
+    }
+    
+    /// `UINib(name: "TaskDetailsViewControllerSolutionCell", in: bundle)`
+    @available(*, deprecated, message: "Use UINib(resource: R.nib.taskDetailsViewControllerSolutionCell) instead")
+    static func taskDetailsViewControllerSolutionCell(_: Void = ()) -> UIKit.UINib {
+      return UIKit.UINib(resource: R.nib.taskDetailsViewControllerSolutionCell)
     }
     
     /// `UINib(name: "TaskViewControllerTableViewCell", in: bundle)`
@@ -206,6 +214,10 @@ struct R: Rswift.Validatable {
       return R.nib.tabBarButtonView.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
     }
     
+    static func taskDetailsViewControllerSolutionCell(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskDetailsViewControllerSolutionCell? {
+      return R.nib.taskDetailsViewControllerSolutionCell.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskDetailsViewControllerSolutionCell
+    }
+    
     static func taskViewControllerTableViewCell(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskViewControllerTableViewCell? {
       return R.nib.taskViewControllerTableViewCell.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskViewControllerTableViewCell
     }
@@ -213,7 +225,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 7 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 8 reuse identifiers.
   struct reuseIdentifier {
     /// Reuse identifier `BrowseViewControllerTableViewCell`.
     static let browseViewControllerTableViewCell: Rswift.ReuseIdentifier<BrowseViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "BrowseViewControllerTableViewCell")
@@ -223,6 +235,8 @@ struct R: Rswift.Validatable {
     static let keyboardCell: Rswift.ReuseIdentifier<CustomKeyboardCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "KeyboardCell")
     /// Reuse identifier `SolvedTasksViewControllerTableViewCell`.
     static let solvedTasksViewControllerTableViewCell: Rswift.ReuseIdentifier<SolvedTasksViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "SolvedTasksViewControllerTableViewCell")
+    /// Reuse identifier `TaskDetailsViewControllerSolutionCell`.
+    static let taskDetailsViewControllerSolutionCell: Rswift.ReuseIdentifier<TaskDetailsViewControllerSolutionCell> = Rswift.ReuseIdentifier(identifier: "TaskDetailsViewControllerSolutionCell")
     /// Reuse identifier `TaskDetailsViewControllerTableViewCell`.
     static let taskDetailsViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskDetailsViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskDetailsViewControllerTableViewCell")
     /// Reuse identifier `TaskViewControllerTableViewCell`.
@@ -233,7 +247,7 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.storyboard` struct is generated, and contains static references to 9 storyboards.
+  /// This `R.storyboard` struct is generated, and contains static references to 10 storyboards.
   struct storyboard {
     /// Storyboard `BrowseTasksViewController`.
     static let browseTasksViewController = _R.storyboard.browseTasksViewController()
@@ -251,6 +265,8 @@ struct R: Rswift.Validatable {
     static let onboarding = _R.storyboard.onboarding()
     /// Storyboard `SolvedTasksViewController`.
     static let solvedTasksViewController = _R.storyboard.solvedTasksViewController()
+    /// Storyboard `TaskDetailsViewController`.
+    static let taskDetailsViewController = _R.storyboard.taskDetailsViewController()
     /// Storyboard `UserViewController`.
     static let userViewController = _R.storyboard.userViewController()
     
@@ -294,6 +310,11 @@ struct R: Rswift.Validatable {
       return UIKit.UIStoryboard(resource: R.storyboard.solvedTasksViewController)
     }
     
+    /// `UIStoryboard(name: "TaskDetailsViewController", bundle: ...)`
+    static func taskDetailsViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.taskDetailsViewController)
+    }
+    
     /// `UIStoryboard(name: "UserViewController", bundle: ...)`
     static func userViewController(_: Void = ()) -> UIKit.UIStoryboard {
       return UIKit.UIStoryboard(resource: R.storyboard.userViewController)
@@ -332,6 +353,20 @@ struct _R: Rswift.Validatable {
       fileprivate init() {}
     }
     
+    struct _TaskDetailsViewControllerSolutionCell: Rswift.NibResourceType, Rswift.ReuseIdentifierType {
+      typealias ReusableType = TaskDetailsViewControllerSolutionCell
+      
+      let bundle = R.hostingBundle
+      let identifier = "TaskDetailsViewControllerSolutionCell"
+      let name = "TaskDetailsViewControllerSolutionCell"
+      
+      func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskDetailsViewControllerSolutionCell? {
+        return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskDetailsViewControllerSolutionCell
+      }
+      
+      fileprivate init() {}
+    }
+    
     struct _TaskViewControllerTableViewCell: Rswift.NibResourceType, Rswift.ReuseIdentifierType {
       typealias ReusableType = TaskViewControllerTableViewCell
       
@@ -359,28 +394,29 @@ struct _R: Rswift.Validatable {
       try main.validate()
       try onboarding.validate()
       try solvedTasksViewController.validate()
+      try taskDetailsViewController.validate()
       try userViewController.validate()
     }
     
     struct browseTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
+      let browseSelectedTaskViewController = StoryboardViewControllerResource<BrowseSelectedTaskViewController>(identifier: "BrowseSelectedTaskViewController")
       let browseTasksViewController = StoryboardViewControllerResource<BrowseTasksViewController>(identifier: "BrowseTasksViewController")
       let bundle = R.hostingBundle
       let name = "BrowseTasksViewController"
-      let taskDetailsViewController = StoryboardViewControllerResource<TaskDetailsViewController>(identifier: "TaskDetailsViewController")
+      
+      func browseSelectedTaskViewController(_: Void = ()) -> BrowseSelectedTaskViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: browseSelectedTaskViewController)
+      }
       
       func browseTasksViewController(_: Void = ()) -> BrowseTasksViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: browseTasksViewController)
       }
       
-      func taskDetailsViewController(_: Void = ()) -> TaskDetailsViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskDetailsViewController)
-      }
-      
       static func validate() throws {
         if #available(iOS 11.0, *) {
         }
+        if _R.storyboard.browseTasksViewController().browseSelectedTaskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseSelectedTaskViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseSelectedTaskViewController'.") }
         if _R.storyboard.browseTasksViewController().browseTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseTasksViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseTasksViewController'.") }
-        if _R.storyboard.browseTasksViewController().taskDetailsViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskDetailsViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'TaskDetailsViewController'.") }
       }
       
       fileprivate init() {}
@@ -556,6 +592,24 @@ struct _R: Rswift.Validatable {
         }
         if _R.storyboard.solvedTasksViewController().solveTaskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solveTaskViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolveTaskViewController'.") }
         if _R.storyboard.solvedTasksViewController().solvedTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solvedTasksViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolvedTasksViewController'.") }
+      }
+      
+      fileprivate init() {}
+    }
+    
+    struct taskDetailsViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
+      let bundle = R.hostingBundle
+      let name = "TaskDetailsViewController"
+      let taskDetailsViewController = StoryboardViewControllerResource<TaskDetailsViewController>(identifier: "TaskDetailsViewController")
+      
+      func taskDetailsViewController(_: Void = ()) -> TaskDetailsViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskDetailsViewController)
+      }
+      
+      static func validate() throws {
+        if #available(iOS 11.0, *) {
+        }
+        if _R.storyboard.taskDetailsViewController().taskDetailsViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskDetailsViewController' could not be loaded from storyboard 'TaskDetailsViewController' as 'TaskDetailsViewController'.") }
       }
       
       fileprivate init() {}

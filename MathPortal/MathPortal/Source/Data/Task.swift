@@ -15,12 +15,12 @@ class Task: ParseObject {
     var userId: String?
     var equations: [Equation]?
     var objectId: String = ""
+    var updatedAt: Date?
     
     // MARK: Sync
     
     override init() {
         super.init()
-        userId = PFUser.current()?.objectId
     }
     override init?(pfObject: PFObject?) {
         super.init(pfObject: pfObject)
@@ -45,6 +45,7 @@ class Task: ParseObject {
         self.userId = userId
         self.equations = (object[Object.equations.rawValue] as? [[String : Any]])?.map { Equation(expression: Equation.JSONToEquation(json: $0 )) }
         self.objectId = objectId
+        self.updatedAt = object.updatedAt
     }
     
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
@@ -75,6 +76,12 @@ class Task: ParseObject {
         let query = generatePFQuery()
         query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0)}, error)
+        }
+    }
+    
+    func fetchSolutions(completion:  ((_ objects: [TaskSolution]?, _ Error: Error?) -> Void)?) {
+        TaskSolution.fechTaskSolutions(self.objectId) { (solutions, error) in
+            completion?(solutions,error)
         }
     }
     

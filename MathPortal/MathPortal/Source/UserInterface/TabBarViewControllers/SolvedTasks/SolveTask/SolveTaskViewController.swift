@@ -22,7 +22,7 @@ class SolveTaskViewController: UIViewController {
         super.viewDidLoad()
 
         taskContentController?.setViewController(controller: {
-            let controller = R.storyboard.browseTasksViewController.taskDetailsViewController()
+            let controller = R.storyboard.taskDetailsViewController.taskDetailsViewController()
             controller?.task = task
             return controller
         }(), animationStyle: .fade)

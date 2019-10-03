@@ -13,7 +13,8 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     
     
     @IBOutlet private var taskLabel: UILabel?
-
+    @IBOutlet private var updatedAtLabel: UILabel!
+    
     var task: Task? {
         didSet {
             refresh()
@@ -23,6 +24,7 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     func refresh() {
         if let task = task {
             self.taskLabel?.text = task.name
+            self.updatedAtLabel.text = DateTools.stringFromDate(date: task.updatedAt)
         }
     }
     

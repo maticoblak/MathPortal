@@ -59,7 +59,7 @@ extension BrowseTasksViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = R.storyboard.browseTasksViewController.taskDetailsViewController()!
+        let controller = R.storyboard.browseTasksViewController.browseSelectedTaskViewController()!
         controller.task = tasks[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
     }

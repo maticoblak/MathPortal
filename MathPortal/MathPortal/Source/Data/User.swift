@@ -19,7 +19,7 @@ class User: ParseObject {
     var email: String?
     var profileImage: UIImage?
     var birthDate: Date?
-    //var tasksOwned: [String : Bool] = [String : Bool]()
+    
     
     override class var entityName: String { return "User" }
     override init() {
@@ -46,7 +46,7 @@ class User: ParseObject {
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let username = object[Object.username.rawValue] as? String, let userId = object.objectId, let dateCreated = object.createdAt, let email = object[Object.email.rawValue] as? String else {
+        guard let username = object[Object.username.rawValue] as? String, let userId = object.objectId, let dateCreated = object.createdAt else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse User data from PFObject"])
         }
         self.username = username
@@ -54,7 +54,8 @@ class User: ParseObject {
         self.tasks = object[Object.tasks.rawValue] as? [String]
         self.dateCreated = DateTools.stringFromDate(date: dateCreated)
         self.role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
-        self.email = email
+        //NOTE: Can't guard email since the return value is nil if the user fetching that user is not the same or admin.
+        self.email = object[Object.email.rawValue] as? String
         self.birthDate = object[Object.birthDate.rawValue] as? Date
         // TODO: Fix : Warning: A long-running operation is being executed on the main thread. - It happenes when saving images )the problem is image.getdata
         if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
@@ -74,8 +75,19 @@ class User: ParseObject {
     
     static func generateQueryWithUsername(_ username: String ) -> PFQuery<PFObject>? {
         let query = PFUser.query()
-        query?.whereKey(Object.username.rawValue, equalTo: username)
+        query?.whereKey(Object.username.rawValue, equalTo: username) 
         return query
+    }
+    
+    static func generateUserQuery() -> PFQuery<PFObject>? {
+        let query = PFUser.query()
+        return query
+    }
+    
+    static func fetchUserWithUserId(_ userId: String, completion: ((_ object: User?, _ error: Error?) -> Void)?)  {
+        generateUserQuery()?.getObjectInBackground(withId: userId, block: { (_ object: PFObject?, _ error: Error?) in
+            completion?(User(pfObject: object), error)
+        })
     }
     
     static func usernameIsAlreadyTaken(username: String?, completion: @escaping ((_ state: Bool?, _ error: Error? ) -> Void)) {

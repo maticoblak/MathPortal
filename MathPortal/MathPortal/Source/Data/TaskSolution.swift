@@ -67,6 +67,12 @@ class TaskSolution: ParseObject {
         query.whereKey(Object.taskId.rawValue, equalTo: taskId)
         return query
     }
+    
+    static func generateQueryWithTaskId(_ taskId: String) -> PFQuery<PFObject>? {
+        let query = generatePFQuery()
+        query.whereKey(Object.taskId.rawValue, equalTo: taskId)
+        return query
+    }
 
     static func fechUsersTaskSolutions(userId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
         generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
@@ -79,6 +85,25 @@ class TaskSolution: ParseObject {
             completion?(TaskSolution(pfObject: objects?.first), error)
         })
     }
+    
+    static func fechTaskSolutions(_ taskId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
+        generateQueryWithTaskId(taskId)?.findObjectsInBackground(block: { (_ objects: [PFObject]?, error: Error?) in
+            completion?(objects?.compactMap { TaskSolution(pfObject: $0) }, error)
+        })
+    }
+    
+    func fetchSolutionOwner(completion: ((_ user: User?, _ Error: Error?) -> Void)?) {
+        guard let ownerId = ownerId else { completion?(nil, nil); return }
+        User.fetchUserWithUserId(ownerId) { (user, error) in
+            completion?(user, error)
+        }
+    }
+    
+    func getSolutionViewHeight() -> CGFloat {
+        var height: CGFloat = 0
+        equations?.forEach { height += $0.expression.generateView().view?.frame.height ?? 0 }
+        return height
+    }
 }
 
 extension TaskSolution {
@@ -87,5 +112,6 @@ extension TaskSolution {
         case ownerId = "ownerId"
         case equations = "equations"
         case owner = "owner"
+        case objectId
     }
 }

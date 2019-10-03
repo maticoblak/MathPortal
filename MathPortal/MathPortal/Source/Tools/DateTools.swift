@@ -12,6 +12,11 @@ import Foundation
 class DateTools {
     
     
+static func stringFromDate(_ date: Date) -> String {
+        let dateFormater = fullDateFormatter
+        return dateFormater.string(from: date)
+    }
+    
     static let hourMinuteDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = NSCalendar.autoupdatingCurrent
@@ -98,3 +103,5 @@ class DateTools {
     }
 
 }
+
+

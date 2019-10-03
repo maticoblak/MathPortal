@@ -11,7 +11,7 @@ import UIKit
 class BrowseViewControllerTableViewCell: UITableViewCell {
 
     @IBOutlet private var taskTitleLabel: UILabel?
- 
+    
     func setupCell(taskTitle: String?) {
         taskTitleLabel?.text = taskTitle
     }

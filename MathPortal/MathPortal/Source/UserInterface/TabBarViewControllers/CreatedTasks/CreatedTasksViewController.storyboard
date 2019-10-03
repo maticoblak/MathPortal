@@ -23,40 +23,37 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="818"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserCell" id="753-Fs-MkU" customClass="CreatedTasksViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="414" height="0.5"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserCell" rowHeight="60" id="753-Fs-MkU" customClass="CreatedTasksViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="753-Fs-MkU" id="gc5-cz-ans">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qrJ-Gc-u2h">
-                                                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5Q-hL-g0T">
-                                                                    <rect key="frame" x="10" y="0.0" width="404" height="0.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                            <constraints>
-                                                                <constraint firstItem="H5Q-hL-g0T" firstAttribute="leading" secondItem="qrJ-Gc-u2h" secondAttribute="leading" constant="10" id="OyL-67-2Ba"/>
-                                                                <constraint firstAttribute="bottom" secondItem="H5Q-hL-g0T" secondAttribute="bottom" id="dYJ-Kx-4rh"/>
-                                                                <constraint firstItem="H5Q-hL-g0T" firstAttribute="top" secondItem="qrJ-Gc-u2h" secondAttribute="top" id="hdi-pH-bA9"/>
-                                                                <constraint firstAttribute="trailing" secondItem="H5Q-hL-g0T" secondAttribute="trailing" id="ioK-gy-LRJ"/>
-                                                            </constraints>
-                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xdg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5Q-hL-g0T">
+                                                            <rect key="frame" x="10" y="0.0" width="28.5" height="60"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ji-Su-s2q">
+                                                            <rect key="frame" x="371" y="44" width="33" height="16"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="qrJ-Gc-u2h" secondAttribute="bottom" id="7WI-1U-EBw"/>
-                                                        <constraint firstItem="qrJ-Gc-u2h" firstAttribute="leading" secondItem="gc5-cz-ans" secondAttribute="leading" id="YfE-Mq-fag"/>
-                                                        <constraint firstAttribute="trailing" secondItem="qrJ-Gc-u2h" secondAttribute="trailing" id="hl6-mv-Ydj"/>
-                                                        <constraint firstItem="qrJ-Gc-u2h" firstAttribute="top" secondItem="gc5-cz-ans" secondAttribute="top" id="qbg-h1-YYG"/>
+                                                        <constraint firstItem="0ji-Su-s2q" firstAttribute="bottom" secondItem="H5Q-hL-g0T" secondAttribute="bottom" id="67P-Ef-PoJ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="H5Q-hL-g0T" secondAttribute="bottom" id="RN1-NR-zKg"/>
+                                                        <constraint firstAttribute="trailing" secondItem="0ji-Su-s2q" secondAttribute="trailing" constant="10" id="Tb3-p1-aye"/>
+                                                        <constraint firstItem="H5Q-hL-g0T" firstAttribute="leading" secondItem="gc5-cz-ans" secondAttribute="leading" constant="10" id="ii9-9q-VFK"/>
+                                                        <constraint firstItem="H5Q-hL-g0T" firstAttribute="top" secondItem="gc5-cz-ans" secondAttribute="top" id="rNz-su-zuL"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="taskLabel" destination="H5Q-hL-g0T" id="vQH-Bh-UpD"/>
+                                                    <outlet property="updatedAtLabel" destination="0ji-Su-s2q" id="Uzu-NZ-odY"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -90,7 +87,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ahw-YX-Kdm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2223" y="129"/>
+            <point key="canvasLocation" x="2221.739130434783" y="128.57142857142856"/>
         </scene>
         <!--Parent View Controller-->
         <scene sceneID="GRX-td-EBn">
