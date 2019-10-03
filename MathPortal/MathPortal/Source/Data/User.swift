@@ -58,7 +58,7 @@ class User: ParseObject {
         self.email = object[Object.email.rawValue] as? String
         self.birthDate = object[Object.birthDate.rawValue] as? Date
         // TODO: Fix : Warning: A long-running operation is being executed on the main thread. - It happenes when saving images )the problem is image.getdata
-        if let image = PFUser.current()?[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
+        if let image = object[Object.profileImage.rawValue] as? PFFileObject, let imageData = try? image.getData() {
             profileImage = UIImage(data:imageData)
         }
     }
