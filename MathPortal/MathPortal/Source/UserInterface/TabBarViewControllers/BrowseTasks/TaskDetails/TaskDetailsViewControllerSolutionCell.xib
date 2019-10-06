@@ -16,20 +16,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="548" height="185"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfh-Qc-ogv">
-                        <rect key="frame" x="0.0" y="0.0" width="548" height="185"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfh-Qc-ogv" customClass="SolutionView" customModule="MathPortal" customModuleProvider="target">
+                        <rect key="frame" x="5" y="5" width="538" height="175"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </subviews>
+                <color key="backgroundColor" red="0.0039215686269999999" green="0.054901960780000002" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="wfh-Qc-ogv" secondAttribute="trailing" id="ECw-8W-KxC"/>
-                    <constraint firstItem="wfh-Qc-ogv" firstAttribute="leading" secondItem="6Ek-vc-7ch" secondAttribute="leading" id="NDU-0o-R6I"/>
-                    <constraint firstItem="wfh-Qc-ogv" firstAttribute="top" secondItem="6Ek-vc-7ch" secondAttribute="top" id="XpD-oj-uWa"/>
-                    <constraint firstAttribute="bottom" secondItem="wfh-Qc-ogv" secondAttribute="bottom" id="c2j-Jz-ibf"/>
+                    <constraint firstAttribute="trailing" secondItem="wfh-Qc-ogv" secondAttribute="trailing" constant="5" id="ECw-8W-KxC"/>
+                    <constraint firstItem="wfh-Qc-ogv" firstAttribute="leading" secondItem="6Ek-vc-7ch" secondAttribute="leading" constant="5" id="NDU-0o-R6I"/>
+                    <constraint firstItem="wfh-Qc-ogv" firstAttribute="top" secondItem="6Ek-vc-7ch" secondAttribute="top" constant="5" id="XpD-oj-uWa"/>
+                    <constraint firstAttribute="bottom" secondItem="wfh-Qc-ogv" secondAttribute="bottom" constant="5" id="c2j-Jz-ibf"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="solutionView" destination="wfh-Qc-ogv" id="ikv-JU-JVm"/>
+                <outlet property="solutionView" destination="wfh-Qc-ogv" id="oug-HW-eZc"/>
             </connections>
             <point key="canvasLocation" x="-113.04347826086958" y="129.57589285714286"/>
         </tableViewCell>

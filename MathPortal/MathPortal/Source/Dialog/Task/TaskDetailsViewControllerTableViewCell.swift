@@ -13,12 +13,18 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
     @IBOutlet private var titleLabel: UILabel?
     @IBOutlet private var equationView: UIView?
     
-    func setupCell(title: String? = nil, equation: Equation? = nil) {
+    func setupCell(title: String? = nil, expressionView: UIView? = nil) {
         titleLabel?.text = title
         titleLabel?.backgroundColor = .clear
-        if let equation = equation, let view = equation.expression.generateView().view {
-            equationView?.addSubview(view)
-            view.frame.origin = CGPoint(x: 10, y: 5)
+        
+        if let expressionView = expressionView {
+            equationView?.addSubview(expressionView)
+            expressionView.frame.origin = CGPoint(x: 10, y: 5)
         }
+        
+//        if let equation = equation, let view = equation.expression.generateView().view {
+//            equationView?.addSubview(view)
+//            view.frame.origin = CGPoint(x: 10, y: 5)
+//        }
     }
 }

@@ -13,12 +13,12 @@ class BrowseSelectedTaskViewController: UIViewController {
     var task: Task!
     var solutions: [TaskSolution]?
     
-    @IBOutlet private var taskContentController: ContentControllerView?
+    @IBOutlet private var taskContentControllerView: ContentControllerView?
     @IBOutlet private var solutionsTableView: UITableView?
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        taskContentController?.setViewController(controller: {
+        taskContentControllerView?.setViewController(controller: {
             let controller = R.storyboard.taskDetailsViewController.taskDetailsViewController()
             controller?.task = task
             return controller
@@ -27,12 +27,14 @@ class BrowseSelectedTaskViewController: UIViewController {
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Solve", rightBarButtonAction: #selector(goToSolveScreen))
         
         solutionsTableView?.register(R.nib.taskDetailsViewControllerSolutionCell)
+        // NOTE: Also works without setting rowHeight to UITableView.automaticDimension
+        solutionsTableView?.rowHeight = UITableView.automaticDimension
         fechTaskSolutions()
 
     }
     
     @objc private func goBack() {
-           navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func goToSolveScreen() {
@@ -72,9 +74,5 @@ extension BrowseSelectedTaskViewController: UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.taskDetailsViewControllerSolutionCell, for: indexPath)!
         cell.setupCell(solution: solutions?[indexPath.row])
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (solutions?[indexPath.row].getSolutionViewHeight() ?? 0) + 60
     }
 }

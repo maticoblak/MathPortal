@@ -70,8 +70,7 @@ class UserViewController: BaseViewController {
                 if error == nil {
                     let controller = R.storyboard.main.loginOrRegisterViewController()!
                     let navigationController = UINavigationController.init(rootViewController: controller)
-                    navigationController.modalPresentationStyle = .fullScreen
-                    self.present(navigationController, animated: true, completion: nil)
+                    self.presentAsFullScreen(navigationController, animated: true)
                 } else {
                     if let descrip = error?.localizedDescription{
                         ErrorMessage.displayErrorMessage(controller: self, message: descrip)

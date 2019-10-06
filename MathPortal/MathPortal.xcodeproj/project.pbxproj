@@ -48,6 +48,7 @@
 		C08174202341DA1D00768A6E /* TaskDetailsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C081741F2341DA1D00768A6E /* TaskDetailsViewController.storyboard */; };
 		C08174222341DC2600768A6E /* BrowseSelectedTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08174212341DC2600768A6E /* BrowseSelectedTaskViewController.swift */; };
 		C08174772346214C00768A6E /* SolutionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08174762346214C00768A6E /* SolutionView.swift */; };
+		C081747B234A18C300768A6E /* PresentationStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C081747A234A18C300768A6E /* PresentationStyles.swift */; };
 		C0875E5422AE4F55008C73A9 /* TabBarButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0875E5322AE4F55008C73A9 /* TabBarButtonView.xib */; };
 		C0875E5622AE50CA008C73A9 /* TabBarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0875E5522AE50CA008C73A9 /* TabBarButtonView.swift */; };
 		C0875E5822AE63C5008C73A9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */; };
@@ -158,6 +159,7 @@
 		C081741F2341DA1D00768A6E /* TaskDetailsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TaskDetailsViewController.storyboard; sourceTree = "<group>"; };
 		C08174212341DC2600768A6E /* BrowseSelectedTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseSelectedTaskViewController.swift; sourceTree = "<group>"; };
 		C08174762346214C00768A6E /* SolutionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionView.swift; sourceTree = "<group>"; };
+		C081747A234A18C300768A6E /* PresentationStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationStyles.swift; sourceTree = "<group>"; };
 		C0875E5322AE4F55008C73A9 /* TabBarButtonView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TabBarButtonView.xib; sourceTree = "<group>"; };
 		C0875E5522AE50CA008C73A9 /* TabBarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButtonView.swift; sourceTree = "<group>"; };
 		C0875E5722AE63C5008C73A9 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 				C0BD61D22263895E00E48081 /* ErrorMessage.swift */,
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
 				C01A65A322B37BE7008F4B07 /* DateTools.swift */,
+				C081747A234A18C300768A6E /* PresentationStyles.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -906,6 +909,7 @@
 				C08E63902271B27C00416D19 /* ExtrasUIView+ApplyText.swift in Sources */,
 				C0662E152323F0FC0088AD15 /* Button.swift in Sources */,
 				C00C922622DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift in Sources */,
+				C081747B234A18C300768A6E /* PresentationStyles.swift in Sources */,
 				C008B82A22AFADB800707D71 /* SolvedTasksViewController.swift in Sources */,
 				C0875E5622AE50CA008C73A9 /* TabBarButtonView.swift in Sources */,
 				C0BD61CD22637FCA00E48081 /* LoadingViewController.swift in Sources */,

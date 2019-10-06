@@ -79,8 +79,7 @@ class LogInViewController: BaseViewController {
    
     private func goToMainMenuViewController() {
         let controller = R.storyboard.main.tabBarViewController()!
-        controller.modalPresentationStyle = .fullScreen
-        self.present(controller, animated: true)
+        self.presentAsFullScreen(controller, animated: true)
     }
 }
 

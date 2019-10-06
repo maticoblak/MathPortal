@@ -9,66 +9,71 @@
 import UIKit
 
 class SolutionView: UIView {
-
-    private var ownersUsername: UILabel = UILabel()
-    private var ownersProfileImageView: UIImageView = UIImageView()
-    private var equationViewsHeight: CGFloat = 0
     
-    var owner: User?
     var solution: TaskSolution?
-    var viewWidth: CGFloat?
+    private var equationViewsHeight: CGFloat = 0
+    private var ownerInfoViewHeight: CGFloat = 60
+    // NOTE: 2 is just a placeholder since cell already has width
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 2, height: equationViewsHeight + ownerInfoViewHeight)
+    }
     
-    init(owner: User?, solution: TaskSolution?, width: CGFloat) {
-        super.init(frame: .zero)
-        self.owner = owner
+    func setupView(solution: TaskSolution) {
         self.solution = solution
-        self.viewWidth = width
-        refresh()
+        removeSubviews()
+        addViews()
+        setupFrame()
+        fetchSolutionOwner(solution: solution)
+        self.invalidateIntrinsicContentSize()
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
-    func refresh() {
-        for view in self.subviews {
+    private func removeSubviews() {
+        for view in subviews {
             view.removeFromSuperview()
         }
-        addViews()
-        addProfileInfo()
-        setupFrame()
+    }
+    
+    private func fetchSolutionOwner(solution: TaskSolution) {
+        solution.fetchSolutionOwner { (owner, error) in
+            guard self.solution?.objectId == solution.objectId else { return }
+            if let owner = owner {
+                self.addProfileInfo(owner)
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
     }
     
     private func addViews() {
-        var yPosition: CGFloat = 0
+        var yPosition: CGFloat = 10
         let xPosition: CGFloat = 10
         solution?.equations?.forEach { equation in
             guard let equationView = equation.expression.generateView().view else { return }
             equationView.frame.origin = CGPoint(x: xPosition, y: yPosition)
-            yPosition += equationView.bounds.height
+            yPosition += equationView.bounds.height + 10
             self.addSubview(equationView)
         }
         equationViewsHeight = yPosition
     }
     
-    private func addProfileInfo() {
-        ownersProfileImageView.frame = CGRect(x: 0, y: equationViewsHeight, width: 60, height: 60)
-        ownersProfileImageView.image = owner?.profileImage
+    private func addProfileInfo(_ owner: User) {
         
-        ownersUsername.text = owner?.username
-        ownersUsername.textColor = .black
-        ownersUsername.sizeToFit()
-        ownersUsername.center = CGPoint(x: ownersProfileImageView.bounds.width + 20, y: equationViewsHeight + ownersProfileImageView.bounds.height/2)
+        let profileImageView: UIImageView = UIImageView()
+        profileImageView.frame = CGRect(x: 0, y: equationViewsHeight, width: ownerInfoViewHeight, height: ownerInfoViewHeight)
+        profileImageView.image = owner.profileImage
         
+        let usernameLabel: UILabel = UILabel()
+        usernameLabel.text = owner.username
+        usernameLabel.textColor = .black
+        usernameLabel.sizeToFit()
+        usernameLabel.center = CGPoint(x: profileImageView.frame.maxX + 20, y: profileImageView.frame.origin.y + profileImageView.bounds.height/2)
         
-        self.addSubview(ownersUsername)
-        self.addSubview(ownersProfileImageView)
+        self.addSubview(usernameLabel)
+        self.addSubview(profileImageView)
         
     }
     
     private func setupFrame() {
-        self.frame.size = CGSize(width: viewWidth ?? 0, height:  equationViewsHeight + ownersProfileImageView.bounds.height)
-        self.backgroundColor = .white
-        self.setNeedsLayout()
+        self.layer.cornerRadius = 5
     }
 }

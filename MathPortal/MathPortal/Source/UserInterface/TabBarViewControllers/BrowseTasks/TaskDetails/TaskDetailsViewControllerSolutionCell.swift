@@ -10,32 +10,10 @@ import UIKit
 
 class TaskDetailsViewControllerSolutionCell: UITableViewCell {
 
-    @IBOutlet private var solutionView: UIView?
-    
-    private var solution: TaskSolution?
-    private var owner: User?
-    
-    private func fetchAndSetSolutionOwner() {
-        solution?.fetchSolutionOwner { (owner, error) in
-            if let owner = owner {
-                self.owner = owner
-            } else {
-                print(error?.localizedDescription)
-            }
-            self.setupEquationView()
-        }
-    }
+    @IBOutlet private var solutionView: SolutionView?
     
     func setupCell(solution: TaskSolution?) {
-        self.solution = solution
-        fetchAndSetSolutionOwner()
-    }
-    
-    func setupEquationView() {
-        let equationView = SolutionView(owner: owner, solution: solution, width: self.bounds.width)
-        solutionView?.addSubview(equationView)
-        solutionView?.frame.size = equationView.frame.size
-        self.setNeedsLayout()
-        self.setNeedsDisplay()
+        guard let solution = solution else { return }
+        solutionView?.setupView(solution: solution)
     }
 }

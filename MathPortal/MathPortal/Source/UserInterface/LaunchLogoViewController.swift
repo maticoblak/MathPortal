@@ -61,25 +61,20 @@ class LaunchLogoViewController: BaseViewController {
     
     private func goToTabBarViewController() {
         let controller = R.storyboard.main.tabBarViewController()!
-        controller.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-        controller.modalPresentationStyle = .fullScreen
-        self.present(controller, animated: true)
+        self.presentAsFullScreen(controller, animated: true, transitionStyle: .crossDissolve)
     }
     
     private func goToLogInOrRegisterViewController() {
         let controller = R.storyboard.main.loginOrRegisterViewController()!
         let navigationController = UINavigationController.init(rootViewController: controller)
-        navigationController.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        self.presentAsFullScreen(navigationController, animated: true, transitionStyle:  .crossDissolve)
     }
     
     // NOTE: For testing
     private func testNavigation() {
         let controller = R.storyboard.onboarding.onboardingRoleViewController()!
         let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        self.presentAsFullScreen(navigationController, animated: true)
     }
 }
 

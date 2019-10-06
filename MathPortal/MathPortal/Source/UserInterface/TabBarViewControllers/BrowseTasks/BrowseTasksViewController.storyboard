@@ -21,14 +21,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BrowseViewControllerTableViewCell" id="pfg-K8-lFN" customClass="BrowseViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="21.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="414" height="21"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfg-K8-lFN" id="C7f-N6-QhW">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="21.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qst-O8-Sz6">
-                                                    <rect key="frame" x="20" y="0.0" width="42" height="21.5"/>
+                                                    <rect key="frame" x="20" y="0.0" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -83,34 +83,34 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U0n-q8-yNL" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <rect key="frame" x="5" y="5" width="404" height="399"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="parentViewController" destination="ieK-HW-HUu" id="Z17-AC-P2d"/>
                                                 </connections>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" red="1" green="0.4431372549" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="top" secondItem="Eqq-Oq-oYn" secondAttribute="top" id="JQd-jL-bcM"/>
-                                            <constraint firstAttribute="trailing" secondItem="U0n-q8-yNL" secondAttribute="trailing" id="hNz-pi-HcU"/>
-                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="leading" secondItem="Eqq-Oq-oYn" secondAttribute="leading" id="hOJ-dB-F0a"/>
-                                            <constraint firstAttribute="bottom" secondItem="U0n-q8-yNL" secondAttribute="bottom" id="xRr-nm-hfA"/>
+                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="top" secondItem="Eqq-Oq-oYn" secondAttribute="top" constant="5" id="JQd-jL-bcM"/>
+                                            <constraint firstAttribute="trailing" secondItem="U0n-q8-yNL" secondAttribute="trailing" constant="5" id="hNz-pi-HcU"/>
+                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="leading" secondItem="Eqq-Oq-oYn" secondAttribute="leading" constant="5" id="hOJ-dB-F0a"/>
+                                            <constraint firstAttribute="bottom" secondItem="U0n-q8-yNL" secondAttribute="bottom" constant="5" id="xRr-nm-hfA"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QmV-BP-6Me">
                                         <rect key="frame" x="0.0" y="409" width="414" height="409"/>
                                         <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kdt-vl-ksl">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kdt-vl-ksl">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="dataSource" destination="ieK-HW-HUu" id="o7w-kl-Tpp"/>
                                                     <outlet property="delegate" destination="ieK-HW-HUu" id="SGq-cN-rmB"/>
                                                 </connections>
                                             </tableView>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" red="0.0039215686274509803" green="0.054901960784313725" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="kdt-vl-ksl" firstAttribute="leading" secondItem="QmV-BP-6Me" secondAttribute="leading" id="MvU-OI-xvf"/>
                                             <constraint firstAttribute="trailing" secondItem="kdt-vl-ksl" secondAttribute="trailing" id="SYa-m0-8aK"/>
@@ -137,7 +137,7 @@
                     </view>
                     <connections>
                         <outlet property="solutionsTableView" destination="kdt-vl-ksl" id="38U-Uj-PFj"/>
-                        <outlet property="taskContentController" destination="U0n-q8-yNL" id="uRb-bU-gDY"/>
+                        <outlet property="taskContentControllerView" destination="U0n-q8-yNL" id="6eF-wv-33I"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oUD-El-eiH" userLabel="First Responder" sceneMemberID="firstResponder"/>

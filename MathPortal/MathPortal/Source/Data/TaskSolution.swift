@@ -101,7 +101,7 @@ class TaskSolution: ParseObject {
     
     func getSolutionViewHeight() -> CGFloat {
         var height: CGFloat = 0
-        equations?.forEach { height += $0.expression.generateView().view?.frame.height ?? 0 }
+        equations?.forEach { height += ($0.expression.generateView().view?.frame.height ?? 0) + 5 }
         return height
     }
 }
