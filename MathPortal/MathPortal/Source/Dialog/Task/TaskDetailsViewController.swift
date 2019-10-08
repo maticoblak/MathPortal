@@ -16,13 +16,12 @@ class TaskDetailsViewController: UIViewController {
     private var cells: [CellType] = [CellType]()
     
     private enum CellType {
-         case title(taskTitle: String)
+        case title(taskTitle: String)
         case equation(expressionView: UIView?)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        equationsTableView?.allowsSelection = false
         reloadData()
     }
     
@@ -31,6 +30,7 @@ class TaskDetailsViewController: UIViewController {
         if let taskTitle = task.name { cells.append(.title(taskTitle: taskTitle)) }
         task.equations?.forEach { cells.append(.equation(expressionView: $0.expression.generateView().view) ) }
         self.cells = cells
+        equationsTableView?.reloadData()
     }
 }
 
@@ -45,9 +45,9 @@ extension TaskDetailsViewController: UITableViewDataSource, UITableViewDelegate 
         let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.taskDetailsViewControllerTableViewCell, for: indexPath)!
         switch cells[indexPath.row] {
         case .title(let taskTitle):
-            cell.setupCell(title: taskTitle)
+            cell.setupTitle(taskTitle)
         case .equation(let expressionView):
-            cell.setupCell(expressionView: expressionView)
+            cell.setupEquationView(expressionView)
         }
         return cell
     }

@@ -61,13 +61,21 @@ class Task: ParseObject {
     }
     
     static func fetchTasksWith(userId: String, completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
-        generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+        guard let query = generateQueryWithUserId(userId) else {
+            completion?(nil, NSError())
+            return
+        }
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0) }, error)
         }
     }
     
     static func fetchTasksWith(objectIds: [String], completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
-        generateQueryContainingObjectIds(objectIds)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+        guard let query = generateQueryContainingObjectIds(objectIds) else {
+            completion?(nil, NSError())
+            return
+        }
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap {Task(pfObject: $0) }, error)
         }
     }

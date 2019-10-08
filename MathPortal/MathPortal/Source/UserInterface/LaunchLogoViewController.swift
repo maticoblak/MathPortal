@@ -30,9 +30,11 @@ class LaunchLogoViewController: BaseViewController {
     }
     
     func dismissToRoot() {
-        while presentedViewController != nil {
-            dismiss(animated: false, completion: nil)
-        }
+        view.window?.rootViewController = R.storyboard.main.launchLogoViewController()!
+    }
+    
+    static func current(forView view: UIView) -> LaunchLogoViewController? {
+        return view.window?.rootViewController as? LaunchLogoViewController
     }
     
     func fadeInAndMoveToTopAnimation() {

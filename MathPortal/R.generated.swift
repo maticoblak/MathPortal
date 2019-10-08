@@ -506,11 +506,16 @@ struct _R: Rswift.Validatable {
       typealias InitialController = LaunchLogoViewController
       
       let bundle = R.hostingBundle
+      let launchLogoViewController = StoryboardViewControllerResource<LaunchLogoViewController>(identifier: "LaunchLogoViewController")
       let logInViewController = StoryboardViewControllerResource<LogInViewController>(identifier: "LogInViewController")
       let loginOrRegisterViewController = StoryboardViewControllerResource<LoginOrRegisterViewController>(identifier: "LoginOrRegisterViewController")
       let name = "Main"
       let registerViewController = StoryboardViewControllerResource<RegisterViewController>(identifier: "RegisterViewController")
       let tabBarViewController = StoryboardViewControllerResource<TabBarViewController>(identifier: "TabBarViewController")
+      
+      func launchLogoViewController(_: Void = ()) -> LaunchLogoViewController? {
+        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: launchLogoViewController)
+      }
       
       func logInViewController(_: Void = ()) -> LogInViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: logInViewController)
@@ -536,6 +541,7 @@ struct _R: Rswift.Validatable {
         if UIKit.UIImage(named: "solve", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'solve' is used in storyboard 'Main', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {
         }
+        if _R.storyboard.main().launchLogoViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'launchLogoViewController' could not be loaded from storyboard 'Main' as 'LaunchLogoViewController'.") }
         if _R.storyboard.main().logInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'logInViewController' could not be loaded from storyboard 'Main' as 'LogInViewController'.") }
         if _R.storyboard.main().loginOrRegisterViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loginOrRegisterViewController' could not be loaded from storyboard 'Main' as 'LoginOrRegisterViewController'.") }
         if _R.storyboard.main().registerViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'registerViewController' could not be loaded from storyboard 'Main' as 'RegisterViewController'.") }

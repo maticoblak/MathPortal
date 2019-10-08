@@ -75,19 +75,31 @@ class TaskSolution: ParseObject {
     }
 
     static func fechUsersTaskSolutions(userId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
-        generateQueryWithUserId(userId)?.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+        guard let query = generateQueryWithUserId(userId) else {
+            completion?(nil, NSError())
+            return
+        }
+        query.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap { TaskSolution(pfObject: $0) }, error)
         }
     }
     
     static func fechUsersTaskSolution(_ taskId: String, userId: String, completion: ((_ objects: TaskSolution?, _ error: Error?) -> Void)?) {
-        generateQueryWithTaskIdAndUserId(taskId, userId: userId)?.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?)  in
+        guard let query = generateQueryWithTaskIdAndUserId(taskId, userId: userId) else {
+            completion?(nil, NSError())
+            return
+        }
+        query.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?)  in
             completion?(TaskSolution(pfObject: objects?.first), error)
         })
     }
     
     static func fechTaskSolutions(_ taskId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
-        generateQueryWithTaskId(taskId)?.findObjectsInBackground(block: { (_ objects: [PFObject]?, error: Error?) in
+        guard let query = generateQueryWithTaskId(taskId) else {
+            completion?(nil, NSError())
+            return
+        }
+        query.findObjectsInBackground(block: { (_ objects: [PFObject]?, error: Error?) in
             completion?(objects?.compactMap { TaskSolution(pfObject: $0) }, error)
         })
     }

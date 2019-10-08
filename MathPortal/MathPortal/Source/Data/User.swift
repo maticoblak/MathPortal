@@ -85,7 +85,11 @@ class User: ParseObject {
     }
     
     static func fetchUserWithUserId(_ userId: String, completion: ((_ object: User?, _ error: Error?) -> Void)?)  {
-        generateUserQuery()?.getObjectInBackground(withId: userId, block: { (_ object: PFObject?, _ error: Error?) in
+        guard let query = generateUserQuery() else {
+            completion?(nil, NSError())
+            return
+        }
+        query.getObjectInBackground(withId: userId, block: { (_ object: PFObject?, _ error: Error?) in
             completion?(User(pfObject: object), error)
         })
     }
@@ -101,7 +105,10 @@ class User: ParseObject {
     }
     
     static func emailIsAlreadyTaken(email: String?, completion: @escaping ((_ state: Bool?, _ error: Error? ) -> Void)) {
-        guard let email = email else { completion(nil,NSError()); return }
+        guard let email = email else {
+            completion(nil,NSError())
+            return
+        }
         generateQueryWithEmail(email)?.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
             guard let objects = objects else { completion(false,  nil); return }
             completion(!objects.isEmpty, nil)
@@ -148,8 +155,11 @@ class User: ParseObject {
     func fetchSavedTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
         let currentUser = PFUser.current()
         let relation = currentUser?.relation(forKey: "savedTasks")
-        let query = relation?.query()
-        query?.findObjectsInBackground(block: { (items, error) in
+        guard let query = relation?.query() else {
+            completion?(nil, NSError())
+            return
+        }
+        query.findObjectsInBackground(block: { (items, error) in
             completion?(items?.compactMap { Task(pfObject: $0)}, error)
         })
     }

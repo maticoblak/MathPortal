@@ -13,18 +13,26 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
     @IBOutlet private var titleLabel: UILabel?
     @IBOutlet private var equationView: UIView?
     
-    func setupCell(title: String? = nil, expressionView: UIView? = nil) {
+    private var currentExpressionView: UIView?
+    
+    func setupTitle(_ title: String?) {
+        guard let title = title else { return }
         titleLabel?.text = title
         titleLabel?.backgroundColor = .clear
+    }
+    
+    func setupEquationView(_ expressionView: UIView?) {
+        currentExpressionView?.removeFromSuperview()
+        currentExpressionView = nil
+        guard let equationView = equationView, let expressionView = expressionView else { return }
         
-        if let expressionView = expressionView {
-            equationView?.addSubview(expressionView)
-            expressionView.frame.origin = CGPoint(x: 10, y: 5)
-        }
+        equationView.addSubview(expressionView)
+        expressionView.translatesAutoresizingMaskIntoConstraints = false
+        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .leading, relatedBy: .equal, toItem: equationView, attribute: .leading, multiplier: 1.0, constant: 10))
+        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .trailing, relatedBy: .equal, toItem: equationView, attribute: .trailing, multiplier: 1.0, constant: 10))
+        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .top, relatedBy: .equal, toItem: equationView, attribute: .top, multiplier: 1.0, constant: 5))
+        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .bottom, relatedBy: .equal, toItem: equationView, attribute: .bottom, multiplier: 1.0, constant: 5))
         
-//        if let equation = equation, let view = equation.expression.generateView().view {
-//            equationView?.addSubview(view)
-//            view.frame.origin = CGPoint(x: 10, y: 5)
-//        }
+         currentExpressionView = expressionView
     }
 }
