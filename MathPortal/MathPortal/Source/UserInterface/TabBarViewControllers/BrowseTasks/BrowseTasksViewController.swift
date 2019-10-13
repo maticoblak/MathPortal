@@ -20,6 +20,7 @@ class BrowseTasksViewController: UIViewController {
         
         self.tasksTableView?.tableFooterView = UIView()
         Appearence.setUpNavigationController(controller: self)
+        tasksTableView?.backgroundColor = UIColor.mathDarkGrey
         relodeAllTasks()
 
         // Do any additional setup after loading the view.
@@ -62,5 +63,9 @@ extension BrowseTasksViewController: UITableViewDelegate, UITableViewDataSource 
         let controller = R.storyboard.browseTasksViewController.browseSelectedTaskViewController()!
         controller.task = tasks[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
     }
 }

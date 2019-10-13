@@ -17,6 +17,7 @@ class CreatedTasksViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tasksTableView?.backgroundColor = UIColor.mathDarkGrey
         self.tasksTableView?.tableFooterView = UIView()
         Appearence.setUpNavigationController(controller: self)
         Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Add task", rightBarButtonAction: #selector(addTask))
@@ -43,6 +44,9 @@ class CreatedTasksViewController: BaseViewController {
         let controller = R.storyboard.createdTasksViewController.taskViewController()!
         controller.task = Task()
         navigationController?.pushViewController(controller, animated: true)
+    }
+    static func createFromStoryboard() -> CreatedTasksViewController {
+        return UIStoryboard(name: "CreatedTasksViewController", bundle: nil).instantiateViewController(withIdentifier: "CreatedTasksViewController") as! CreatedTasksViewController
     }
 }
 
@@ -72,10 +76,8 @@ extension CreatedTasksViewController: UITableViewDelegate, UITableViewDataSource
             }) 
         }
     }
-    
-    
-    static func createFromStoryboard() -> CreatedTasksViewController {
-        return UIStoryboard(name: "CreatedTasksViewController", bundle: nil).instantiateViewController(withIdentifier: "CreatedTasksViewController") as! CreatedTasksViewController
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
     }
 }
 

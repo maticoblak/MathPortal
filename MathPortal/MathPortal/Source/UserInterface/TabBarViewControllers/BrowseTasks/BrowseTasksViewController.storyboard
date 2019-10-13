@@ -20,27 +20,43 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BrowseViewControllerTableViewCell" id="pfg-K8-lFN" customClass="BrowseViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="21"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BrowseViewControllerTableViewCell" rowHeight="90" id="pfg-K8-lFN" customClass="BrowseViewControllerTableViewCell" customModule="MathPortal" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfg-K8-lFN" id="C7f-N6-QhW">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="21"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qst-O8-Sz6">
-                                                    <rect key="frame" x="20" y="0.0" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iv8-bR-Gh8">
+                                                    <rect key="frame" x="10" y="10" width="394" height="70"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qst-O8-Sz6">
+                                                            <rect key="frame" x="10" y="0.0" width="374" height="70"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="Qst-O8-Sz6" secondAttribute="trailing" constant="10" id="W9Q-tZ-qUv"/>
+                                                        <constraint firstItem="Qst-O8-Sz6" firstAttribute="top" secondItem="iv8-bR-Gh8" secondAttribute="top" id="bWt-Eh-FuO"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Qst-O8-Sz6" secondAttribute="bottom" id="jD2-g0-3uH"/>
+                                                        <constraint firstItem="Qst-O8-Sz6" firstAttribute="leading" secondItem="iv8-bR-Gh8" secondAttribute="leading" constant="10" id="pCt-hN-kvP"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Qst-O8-Sz6" secondAttribute="bottom" id="AQE-fg-9TI"/>
-                                                <constraint firstItem="Qst-O8-Sz6" firstAttribute="top" secondItem="C7f-N6-QhW" secondAttribute="top" id="YWe-My-IDM"/>
-                                                <constraint firstItem="Qst-O8-Sz6" firstAttribute="leading" secondItem="C7f-N6-QhW" secondAttribute="leading" constant="20" id="mTN-L6-uoL"/>
+                                                <constraint firstItem="iv8-bR-Gh8" firstAttribute="top" secondItem="C7f-N6-QhW" secondAttribute="top" constant="10" id="13R-QC-drB"/>
+                                                <constraint firstItem="iv8-bR-Gh8" firstAttribute="leading" secondItem="C7f-N6-QhW" secondAttribute="leading" constant="10" id="mvb-OE-6Om"/>
+                                                <constraint firstAttribute="trailing" secondItem="iv8-bR-Gh8" secondAttribute="trailing" constant="10" id="sIC-yQ-WjU"/>
+                                                <constraint firstAttribute="bottom" secondItem="iv8-bR-Gh8" secondAttribute="bottom" constant="10" id="zyH-HN-bK4"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
+                                            <outlet property="cellView" destination="iv8-bR-Gh8" id="f3R-Xm-6mc"/>
                                             <outlet property="taskTitleLabel" destination="Qst-O8-Sz6" id="9f8-72-lPk"/>
                                         </connections>
                                     </tableViewCell>

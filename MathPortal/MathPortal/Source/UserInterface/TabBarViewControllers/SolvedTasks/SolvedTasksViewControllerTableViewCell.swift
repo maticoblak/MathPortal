@@ -12,9 +12,28 @@ class SolvedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskTitleLabel: UILabel?
     
+    @IBOutlet private var cellView: UIView?
+    private var gradientLayer: CAGradientLayer?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        taskTitleLabel?.textColor = UIColor.mathPink
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addGradient()
+    }
+    
+    var previousFrame: CGRect = .zero
+    private func addGradient() {
+        guard previousFrame != cellView?.frame else { return }
+        gradientLayer?.removeFromSuperlayer()
+        gradientLayer = Appearence.getGradientLayerFor(cellView, colors: [.black])
+        if let gradientLayer = gradientLayer {
+            cellView?.layer.addSublayer(gradientLayer)
+        }
+        previousFrame = cellView?.frame ?? .zero
     }
     
     func setUpCell(taskName: String?) {

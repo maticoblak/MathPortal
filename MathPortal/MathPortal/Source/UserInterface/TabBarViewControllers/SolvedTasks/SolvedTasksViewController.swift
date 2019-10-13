@@ -16,6 +16,7 @@ class SolvedTasksViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
+        tasksTableView?.backgroundColor = UIColor.mathDarkGrey
         reloadTasks()
     }
     
@@ -63,6 +64,9 @@ extension SolvedTasksViewController: UITableViewDataSource, UITableViewDelegate 
                 self.reloadTasks()
             })
         }
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
     }
     
 }
