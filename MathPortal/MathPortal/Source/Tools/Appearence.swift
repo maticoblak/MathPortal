@@ -10,11 +10,11 @@ import UIKit
 
 class Appearence {
     
-    static func getGradientLayerFor(_ myView: UIView?, colors: [UIColor]) -> CAGradientLayer? {
+    static func getGradientLayerFor(_ myView: UIView?, colors: [CGColor]) -> CAGradientLayer? {
         guard let myView = myView else { return nil }
         let gradient = CAGradientLayer()
         gradient.frame =  CGRect(origin: CGPoint.zero, size: myView.frame.size)
-        gradient.colors = [UIColor.mathLightGrey.cgColor,UIColor.mathDarkBlue.cgColor]
+        gradient.colors = colors
         gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
         gradient.locations = [0.0, 1]

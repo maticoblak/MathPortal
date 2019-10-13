@@ -65,6 +65,14 @@ extension SolvedTasksViewController: UITableViewDataSource, UITableViewDelegate 
             })
         }
     }
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! SolvedTasksViewControllerTableViewCell
+        cell.cellIsSelected = true
+    }
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! SolvedTasksViewControllerTableViewCell
+        cell.cellIsSelected = false
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }

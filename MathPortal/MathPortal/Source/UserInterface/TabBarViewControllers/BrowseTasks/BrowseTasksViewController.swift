@@ -65,6 +65,15 @@ extension BrowseTasksViewController: UITableViewDelegate, UITableViewDataSource 
         navigationController?.pushViewController(controller, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! BrowseViewControllerTableViewCell
+        cell.cellIsSelected = true
+    }
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! BrowseViewControllerTableViewCell
+        cell.cellIsSelected = false
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }

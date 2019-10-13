@@ -15,16 +15,32 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     @IBOutlet private var updatedAtLabel: UILabel?
     @IBOutlet private var taskView: UIView?
     private var gradientLayer: CAGradientLayer?
+    private var fontSize: CGFloat { return cellIsSelected ? 18*0.8 : 18 }
+    var cellIsSelected: Bool = false {
+        didSet {
+            gradientLayer?.isHidden = cellIsSelected
+            taskLabel?.font =  taskLabel?.font.withSize(fontSize)
+            updatedAtLabel?.font = updatedAtLabel?.font.withSize(fontSize*0.8)
+        }
+    }
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         taskLabel?.textColor = UIColor.mathOrange
+        taskLabel?.font =  taskLabel?.font.withSize(fontSize)
+        updatedAtLabel?.font = updatedAtLabel?.font.withSize(fontSize*0.8)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         addGradient()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        guard cellIsSelected != selected else { return }
+        cellIsSelected = selected
     }
     
     var task: Task? {
@@ -36,7 +52,7 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     private func addGradient() {
         guard previousFrame != taskView?.frame else { return }
         gradientLayer?.removeFromSuperlayer()
-        gradientLayer = Appearence.getGradientLayerFor(taskView, colors: [.black])
+        gradientLayer = Appearence.getGradientLayerFor(taskView, colors: [UIColor.mathLightGrey.cgColor,UIColor.mathDarkBlue.cgColor])
         if let gradientLayer = gradientLayer {
             taskView?.layer.addSublayer(gradientLayer)
         }

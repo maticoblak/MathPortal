@@ -66,6 +66,14 @@ extension CreatedTasksViewController: UITableViewDelegate, UITableViewDataSource
         navigationController?.pushViewController(controller, animated: true)
     
     }
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CreatedTasksViewControllerTableViewCell
+        cell.cellIsSelected = true
+    }
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CreatedTasksViewControllerTableViewCell
+        cell.cellIsSelected = false
+    }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
