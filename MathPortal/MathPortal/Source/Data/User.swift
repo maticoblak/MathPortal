@@ -95,21 +95,21 @@ class User: ParseObject {
     }
     
     static func usernameIsAlreadyTaken(username: String?, completion: @escaping ((_ state: Bool?, _ error: Error? ) -> Void)) {
-        guard let username = username else {
+        guard let username = username, let query = generateQueryWithUsername(username) else {
             completion(nil, NSError())
             return }
-        generateQueryWithUsername(username)?.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
+        query.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
             guard let objects = objects else { completion(false, nil); return }
             completion(!objects.isEmpty, nil)
         }
     }
     
     static func emailIsAlreadyTaken(email: String?, completion: @escaping ((_ state: Bool?, _ error: Error? ) -> Void)) {
-        guard let email = email else {
-            completion(nil,NSError())
+        guard let email = email, let query = generateQueryWithEmail(email) else {
+            completion(nil, NSError())
             return
         }
-        generateQueryWithEmail(email)?.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
+        query.findObjectsInBackground {(objects: [PFObject]?, error: Error?) in
             guard let objects = objects else { completion(false,  nil); return }
             completion(!objects.isEmpty, nil)
         }
