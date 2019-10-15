@@ -12,8 +12,8 @@ class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.mathDarkBlue
-        self.navigationController?.navigationBar.backgroundColor = UIColor.mathDarkBlue
+        self.view.backgroundColor = Color.darkBlue
+        self.navigationController?.navigationBar.backgroundColor = Color.darkBlue
         
 //        if let statusBarView = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView {
 //            statusBarView.backgroundColor = UIColor.mathDarkBlue

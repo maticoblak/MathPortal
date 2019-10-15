@@ -103,6 +103,7 @@
 		C0BD61EB226720ED00E48081 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EA226720ED00E48081 /* Task.swift */; };
 		C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EC2267213800E48081 /* ParseObject.swift */; };
 		C0BD61EF226735ED00E48081 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EE226735ED00E48081 /* User.swift */; };
+		C0E606FC23544C320050EA80 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E606FB23544C320050EA80 /* GradientView.swift */; };
 		F93D774708A2C343CD454B9F /* Pods_MathPortal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA3067A6E73B798E2BC9266 /* Pods_MathPortal.framework */; };
 /* End PBXBuildFile section */
 
@@ -216,6 +217,7 @@
 		C0BD61EA226720ED00E48081 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C0BD61EC2267213800E48081 /* ParseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseObject.swift; sourceTree = "<group>"; };
 		C0BD61EE226735ED00E48081 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C0E606FB23544C320050EA80 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D2D4A61069A935A2A9FAC989 /* Pods-MathPortal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MathPortal.debug.xcconfig"; path = "Target Support Files/Pods-MathPortal/Pods-MathPortal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -587,6 +589,7 @@
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
 				C01A65A322B37BE7008F4B07 /* DateTools.swift */,
 				C081747A234A18C300768A6E /* PresentationStyles.swift */,
+				C0E606FB23544C320050EA80 /* GradientView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -899,6 +902,7 @@
 				C08174222341DC2600768A6E /* BrowseSelectedTaskViewController.swift in Sources */,
 				C0BD61D32263895E00E48081 /* ErrorMessage.swift in Sources */,
 				C00C922422DB98990068A3EE /* ProfileImagesViewController.swift in Sources */,
+				C0E606FC23544C320050EA80 /* GradientView.swift in Sources */,
 				C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */,
 				C08E63612271822800416D19 /* KeyboardManager.swift in Sources */,
 				C0662E132323EF800088AD15 /* OnboardingRoleViewController.swift in Sources */,

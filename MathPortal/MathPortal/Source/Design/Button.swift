@@ -72,19 +72,19 @@ class CustomButton: UIButton {
     private func setupAsNextButton() {
         let image = R.image.nextArrow()
         self.setBackgroundImage(image, for: .normal)
-        self.tintColor = UIColor.mathLightGrey
+        self.tintColor = Color.lightGrey
     }
     private func setupAsBackButton() {
         let image = R.image.backIcon()
         self.setImage(image, for: .normal)
-        self.imageView?.tintColor = UIColor.mathLightGrey
+        self.imageView?.tintColor = Color.lightGrey
         
     }
     
     private func setupAsCustom() {
-        self.titleLabel?.textColor = UIColor.mathPink
+        self.titleLabel?.textColor = Color.pink
         self.layer.borderWidth = 1.5
-        self.layer.borderColor = UIColor.mathPink.cgColor
+        self.layer.borderColor = Color.pink.cgColor
         self.layoutIfNeeded()
     }
 }

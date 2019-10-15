@@ -13,28 +13,24 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskLabel: UILabel?
     @IBOutlet private var updatedAtLabel: UILabel?
-    @IBOutlet private var taskView: UIView?
-    private var gradientLayer: CAGradientLayer?
+    @IBOutlet private var taskView: VerticalGradientFrameView?
     private var fontSize: CGFloat { return cellIsSelected ? 18*0.8 : 18 }
+    
     var cellIsSelected: Bool = false {
         didSet {
-            gradientLayer?.isHidden = cellIsSelected
             taskLabel?.font =  taskLabel?.font.withSize(fontSize)
             updatedAtLabel?.font = updatedAtLabel?.font.withSize(fontSize*0.8)
+            taskView?.lineWidth = cellIsSelected ? 0 : 3.5
         }
     }
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        taskLabel?.textColor = UIColor.mathOrange
+        taskLabel?.textColor = Color.orange
         taskLabel?.font =  taskLabel?.font.withSize(fontSize)
         updatedAtLabel?.font = updatedAtLabel?.font.withSize(fontSize*0.8)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        addGradient()
+        taskView?.bottomColor = Color.darkBlue
+        taskView?.topColor = Color.lightGrey
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -48,19 +44,8 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
             refresh()
         }
     }
-    var previousFrame: CGRect = .zero
-    private func addGradient() {
-        guard previousFrame != taskView?.frame else { return }
-        gradientLayer?.removeFromSuperlayer()
-        gradientLayer = Appearence.getGradientLayerFor(taskView, colors: [UIColor.mathLightGrey.cgColor,UIColor.mathDarkBlue.cgColor])
-        if let gradientLayer = gradientLayer {
-            taskView?.layer.addSublayer(gradientLayer)
-        }
-        previousFrame = taskView?.frame ?? .zero
-    }
     
     func refresh() {
-        
         if let task = task {
             self.taskLabel?.text = task.name
             self.updatedAtLabel?.text = DateTools.stringFromDate(date: task.updatedAt)

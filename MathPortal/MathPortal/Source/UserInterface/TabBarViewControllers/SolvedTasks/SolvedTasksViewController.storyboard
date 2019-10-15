@@ -27,7 +27,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8J-Kl-niO">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8J-Kl-niO" customClass="VerticalGradientFrameView" customModule="MathPortal" customModuleProvider="target">
                                                     <rect key="frame" x="10" y="5" width="394" height="80"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W8B-Q6-gcK">
@@ -44,6 +44,17 @@
                                                         <constraint firstItem="W8B-Q6-gcK" firstAttribute="top" secondItem="S8J-Kl-niO" secondAttribute="top" id="XOe-Rb-SDh"/>
                                                         <constraint firstAttribute="trailing" secondItem="W8B-Q6-gcK" secondAttribute="trailing" constant="10" id="nrc-Ov-flo"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="topColor">
+                                                            <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="bottomColor">
+                                                            <color key="value" red="0.0039215686269999999" green="0.054901960780000002" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                            <real key="value" value="3.5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -56,7 +67,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="cellView" destination="S8J-Kl-niO" id="sOu-VG-vjT"/>
+                                            <outlet property="cellView" destination="S8J-Kl-niO" id="gi7-IQ-iBQ"/>
                                             <outlet property="taskTitleLabel" destination="W8B-Q6-gcK" id="75C-Xg-z9g"/>
                                         </connections>
                                     </tableViewCell>

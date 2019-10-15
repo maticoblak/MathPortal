@@ -12,42 +12,28 @@ class SolvedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskTitleLabel: UILabel?
     
-    @IBOutlet private var cellView: UIView?
-    private var gradientLayer: CAGradientLayer?
+    @IBOutlet private var cellView: VerticalGradientFrameView?
+    
     private var fontSize: CGFloat { return cellIsSelected ? 18*0.8 : 18 }
     var cellIsSelected: Bool = false {
         didSet {
-            gradientLayer?.isHidden = cellIsSelected
+            cellView?.lineWidth  = cellIsSelected ? 0 : 3.5
             taskTitleLabel?.font =  taskTitleLabel?.font.withSize(fontSize)
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        taskTitleLabel?.textColor = UIColor.mathPink
+        cellView?.bottomColor = Color.darkBlue
+        cellView?.topColor = Color.lightGrey
+        taskTitleLabel?.textColor = Color.pink
         taskTitleLabel?.font =  taskTitleLabel?.font.withSize(fontSize)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        addGradient()
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         guard cellIsSelected != selected else { return }
         cellIsSelected = selected
-    }
-    
-    var previousFrame: CGRect = .zero
-    private func addGradient() {
-        guard previousFrame != cellView?.frame else { return }
-        gradientLayer?.removeFromSuperlayer()
-        gradientLayer = Appearence.getGradientLayerFor(cellView, colors: [UIColor.mathLightGrey.cgColor,UIColor.mathDarkBlue.cgColor])
-        if let gradientLayer = gradientLayer {
-            cellView?.layer.addSublayer(gradientLayer)
-        }
-        previousFrame = cellView?.frame ?? .zero
     }
     
     func setUpCell(taskName: String?) {

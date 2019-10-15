@@ -18,7 +18,7 @@ class OnboardingBasicInfoViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         birthdayLabel?.textColor = UIColor.white
-        datePicker?.setValue(UIColor.mathLightGrey, forKey: "textColor")
+        datePicker?.setValue(Color.lightGrey, forKey: "textColor")
         datePicker?.addTarget(self, action: #selector(getSelectedDate), for: .valueChanged)
         selectedDate = datePicker?.date
 

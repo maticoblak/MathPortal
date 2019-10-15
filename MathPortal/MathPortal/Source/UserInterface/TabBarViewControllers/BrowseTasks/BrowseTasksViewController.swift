@@ -20,7 +20,7 @@ class BrowseTasksViewController: UIViewController {
         
         self.tasksTableView?.tableFooterView = UIView()
         Appearence.setUpNavigationController(controller: self)
-        tasksTableView?.backgroundColor = UIColor.mathDarkGrey
+        tasksTableView?.backgroundColor = Color.darkGrey
         relodeAllTasks()
 
         // Do any additional setup after loading the view.

@@ -30,7 +30,7 @@ class UserViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
-        editButton?.imageView?.tintColor = UIColor.mathDarkGrey
+        editButton?.imageView?.tintColor = Color.darkGrey
         refreshUserProfile()
     }
     

@@ -17,7 +17,7 @@ class CreatedTasksViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tasksTableView?.backgroundColor = UIColor.mathDarkGrey
+        tasksTableView?.backgroundColor = Color.darkGrey
         self.tasksTableView?.tableFooterView = UIView()
         Appearence.setUpNavigationController(controller: self)
         Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Add task", rightBarButtonAction: #selector(addTask))

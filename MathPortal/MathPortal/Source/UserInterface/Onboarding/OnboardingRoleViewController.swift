@@ -62,14 +62,8 @@ class OnboardingRoleViewController: BaseViewController {
 
     private func setup() {
         nextButton?.isUserInteractionEnabled = false
-        
-        teacherButtonView?.backgroundColor = UIColor.mathDarkGrey
-        studentButtonView?.backgroundColor = UIColor.mathDarkGrey
-        einsteinButtonView?.backgroundColor = UIColor.mathDarkGrey
-        
-        teacherShadowView.backgroundColor = UIColor.mathLightGrey
-        studentShadowView.backgroundColor = UIColor.mathLightGrey
-        einsteinShadowView.backgroundColor = UIColor.mathLightGrey
+        [teacherButtonView, studentButtonView, einsteinButtonView].forEach { $0?.backgroundColor = Color.darkGrey }
+        [teacherShadowView, studentShadowView, einsteinShadowView].forEach { $0?.backgroundColor = Color.lightGrey }
     }
     
     @IBAction private func teacherSelected(_ sender: Any) {

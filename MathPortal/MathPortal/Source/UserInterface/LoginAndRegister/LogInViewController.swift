@@ -38,9 +38,9 @@ class LogInViewController: BaseViewController {
     private func setup() {
         logInButton?.backgroundColor = .clear
         logInButton?.layer.borderWidth = 1.5
-        logInButton?.layer.borderColor = UIColor.mathPink.cgColor
+        logInButton?.layer.borderColor = Color.pink.cgColor
         
-        backButton?.imageView?.tintColor = UIColor.mathLightGrey
+        backButton?.imageView?.tintColor = Color.lightGrey
     }
     
     private func keyboardSetup() {

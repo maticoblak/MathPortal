@@ -16,7 +16,7 @@ class SolvedTasksViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.setUpNavigationController(controller: self)
-        tasksTableView?.backgroundColor = UIColor.mathDarkGrey
+        tasksTableView?.backgroundColor = Color.darkGrey
         reloadTasks()
     }
     

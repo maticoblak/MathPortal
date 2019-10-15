@@ -42,7 +42,7 @@ class RegisterViewController: BaseViewController {
     private func setup() {
         signUpButton?.backgroundColor = .clear
         signUpButton?.layer.borderWidth = 1.5
-        signUpButton?.layer.borderColor = UIColor.mathPink.cgColor
+        signUpButton?.layer.borderColor = Color.pink.cgColor
     }
     
     private func signUpNewUser() {

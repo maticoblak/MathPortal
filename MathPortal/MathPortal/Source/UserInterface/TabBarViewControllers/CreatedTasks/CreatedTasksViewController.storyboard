@@ -30,7 +30,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="90"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7JM-ha-fxh">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7JM-ha-fxh" customClass="VerticalGradientFrameView" customModule="MathPortal" customModuleProvider="target">
                                                             <rect key="frame" x="10" y="5" width="394" height="80"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xdg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5Q-hL-g0T">
@@ -54,6 +54,17 @@
                                                                 <constraint firstItem="H5Q-hL-g0T" firstAttribute="leading" secondItem="7JM-ha-fxh" secondAttribute="leading" constant="10" id="u3D-5Y-hVF"/>
                                                                 <constraint firstAttribute="bottom" secondItem="H5Q-hL-g0T" secondAttribute="bottom" id="yqz-7j-Te5"/>
                                                             </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="topColor">
+                                                                    <color key="value" red="0.0" green="0.61960784310000006" blue="0.73333333329999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="bottomColor">
+                                                                    <color key="value" red="0.27869998354618075" green="0.26223670016029704" blue="0.44880234771573602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                                    <real key="value" value="3.5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -67,7 +78,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="taskLabel" destination="H5Q-hL-g0T" id="vQH-Bh-UpD"/>
-                                                    <outlet property="taskView" destination="7JM-ha-fxh" id="cxR-4Z-5UZ"/>
+                                                    <outlet property="taskView" destination="7JM-ha-fxh" id="Ty6-F6-iym"/>
                                                     <outlet property="updatedAtLabel" destination="0ji-Su-s2q" id="Uzu-NZ-odY"/>
                                                 </connections>
                                             </tableViewCell>
