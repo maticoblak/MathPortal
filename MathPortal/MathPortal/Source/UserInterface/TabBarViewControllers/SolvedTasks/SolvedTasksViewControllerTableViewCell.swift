@@ -12,20 +12,20 @@ class SolvedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskTitleLabel: UILabel?
     
-    @IBOutlet private var cellView: VerticalGradientFrameView?
+    @IBOutlet private var cellBackgroundView: VerticalGradientFrameView?
     
     private var fontSize: CGFloat { return cellIsSelected ? 18*0.8 : 18 }
     var cellIsSelected: Bool = false {
         didSet {
-            cellView?.lineWidth  = cellIsSelected ? 0 : 3.5
+            cellBackgroundView?.lineWidth  = cellIsSelected ? 0 : 3.5
             taskTitleLabel?.font =  taskTitleLabel?.font.withSize(fontSize)
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        cellView?.bottomColor = Color.darkBlue
-        cellView?.topColor = Color.lightGrey
+        cellBackgroundView?.bottomColor = Color.darkBlue
+        cellBackgroundView?.topColor = Color.lightGrey
         taskTitleLabel?.textColor = Color.pink
         taskTitleLabel?.font =  taskTitleLabel?.font.withSize(fontSize)
     }

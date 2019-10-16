@@ -29,21 +29,7 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8J-Kl-niO" customClass="VerticalGradientFrameView" customModule="MathPortal" customModuleProvider="target">
                                                     <rect key="frame" x="10" y="5" width="394" height="80"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W8B-Q6-gcK">
-                                                            <rect key="frame" x="10" y="0.0" width="374" height="80"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="W8B-Q6-gcK" secondAttribute="bottom" id="CXn-5S-890"/>
-                                                        <constraint firstItem="W8B-Q6-gcK" firstAttribute="leading" secondItem="S8J-Kl-niO" secondAttribute="leading" constant="10" id="RAB-3Q-AhF"/>
-                                                        <constraint firstItem="W8B-Q6-gcK" firstAttribute="top" secondItem="S8J-Kl-niO" secondAttribute="top" id="XOe-Rb-SDh"/>
-                                                        <constraint firstAttribute="trailing" secondItem="W8B-Q6-gcK" secondAttribute="trailing" constant="10" id="nrc-Ov-flo"/>
-                                                    </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="topColor">
                                                             <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -56,18 +42,40 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpA-UG-NBK">
+                                                    <rect key="frame" x="10" y="5" width="394" height="80"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W8B-Q6-gcK">
+                                                            <rect key="frame" x="10" y="0.0" width="374" height="80"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="W8B-Q6-gcK" secondAttribute="bottom" id="37o-fe-QC5"/>
+                                                        <constraint firstItem="W8B-Q6-gcK" firstAttribute="leading" secondItem="cpA-UG-NBK" secondAttribute="leading" constant="10" id="Dar-1P-swf"/>
+                                                        <constraint firstAttribute="trailing" secondItem="W8B-Q6-gcK" secondAttribute="trailing" constant="10" id="gjH-a3-1gy"/>
+                                                        <constraint firstItem="W8B-Q6-gcK" firstAttribute="top" secondItem="cpA-UG-NBK" secondAttribute="top" id="xv7-yL-Uqm"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="S8J-Kl-niO" secondAttribute="bottom" constant="5" id="1rj-ON-0vu"/>
+                                                <constraint firstAttribute="bottom" secondItem="cpA-UG-NBK" secondAttribute="bottom" constant="5" id="Kc0-EG-L4J"/>
                                                 <constraint firstAttribute="trailing" secondItem="S8J-Kl-niO" secondAttribute="trailing" constant="10" id="LgO-mb-ov6"/>
+                                                <constraint firstAttribute="trailing" secondItem="cpA-UG-NBK" secondAttribute="trailing" constant="10" id="TDH-mW-LbD"/>
                                                 <constraint firstItem="S8J-Kl-niO" firstAttribute="top" secondItem="7ZX-AR-8ES" secondAttribute="top" constant="5" id="gC6-xu-u7W"/>
+                                                <constraint firstItem="cpA-UG-NBK" firstAttribute="top" secondItem="7ZX-AR-8ES" secondAttribute="top" constant="5" id="hZR-8J-af4"/>
                                                 <constraint firstItem="S8J-Kl-niO" firstAttribute="leading" secondItem="7ZX-AR-8ES" secondAttribute="leading" constant="10" id="vBM-zT-H8H"/>
+                                                <constraint firstItem="cpA-UG-NBK" firstAttribute="leading" secondItem="7ZX-AR-8ES" secondAttribute="leading" constant="10" id="vde-DA-EEE"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="cellView" destination="S8J-Kl-niO" id="gi7-IQ-iBQ"/>
+                                            <outlet property="cellBackgroundView" destination="S8J-Kl-niO" id="ltd-SF-rXA"/>
                                             <outlet property="taskTitleLabel" destination="W8B-Q6-gcK" id="75C-Xg-z9g"/>
                                         </connections>
                                     </tableViewCell>

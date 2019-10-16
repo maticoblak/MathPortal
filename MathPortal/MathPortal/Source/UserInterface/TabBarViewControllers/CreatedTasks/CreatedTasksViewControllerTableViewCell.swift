@@ -13,14 +13,14 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskLabel: UILabel?
     @IBOutlet private var updatedAtLabel: UILabel?
-    @IBOutlet private var taskView: VerticalGradientFrameView?
+    @IBOutlet private var taskBackgroundView: VerticalGradientFrameView?
     private var fontSize: CGFloat { return cellIsSelected ? 18*0.8 : 18 }
     
     var cellIsSelected: Bool = false {
         didSet {
             taskLabel?.font =  taskLabel?.font.withSize(fontSize)
             updatedAtLabel?.font = updatedAtLabel?.font.withSize(fontSize*0.8)
-            taskView?.lineWidth = cellIsSelected ? 0 : 3.5
+            taskBackgroundView?.lineWidth = cellIsSelected ? 0 : 3.5
         }
     }
     
@@ -29,8 +29,8 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
         taskLabel?.textColor = Color.orange
         taskLabel?.font =  taskLabel?.font.withSize(fontSize)
         updatedAtLabel?.font = updatedAtLabel?.font.withSize(fontSize*0.8)
-        taskView?.bottomColor = Color.darkBlue
-        taskView?.topColor = Color.lightGrey
+        taskBackgroundView?.bottomColor = Color.darkBlue
+        taskBackgroundView?.topColor = Color.lightGrey
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
