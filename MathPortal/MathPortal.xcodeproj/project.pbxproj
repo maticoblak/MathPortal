@@ -103,6 +103,7 @@
 		C0BD61EB226720ED00E48081 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EA226720ED00E48081 /* Task.swift */; };
 		C0BD61ED2267213800E48081 /* ParseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EC2267213800E48081 /* ParseObject.swift */; };
 		C0BD61EF226735ED00E48081 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD61EE226735ED00E48081 /* User.swift */; };
+		C0BDF7FE23598B6C006D9954 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BDF7FD23598B6C006D9954 /* CustomTextField.swift */; };
 		C0E606FC23544C320050EA80 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E606FB23544C320050EA80 /* GradientView.swift */; };
 		F93D774708A2C343CD454B9F /* Pods_MathPortal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA3067A6E73B798E2BC9266 /* Pods_MathPortal.framework */; };
 /* End PBXBuildFile section */
@@ -217,6 +218,7 @@
 		C0BD61EA226720ED00E48081 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C0BD61EC2267213800E48081 /* ParseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseObject.swift; sourceTree = "<group>"; };
 		C0BD61EE226735ED00E48081 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C0BDF7FD23598B6C006D9954 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		C0E606FB23544C320050EA80 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		D2D4A61069A935A2A9FAC989 /* Pods-MathPortal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MathPortal.debug.xcconfig"; path = "Target Support Files/Pods-MathPortal/Pods-MathPortal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -264,6 +266,7 @@
 				C006E62922A5014F0017EC6F /* RootView.swift */,
 				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
 				C08174762346214C00768A6E /* SolutionView.swift */,
+				C0E606FB23544C320050EA80 /* GradientView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				C006E62D22A78F140017EC6F /* Custom Views */,
 				C0875E5222AE4EED008C73A9 /* TabBarButton */,
 				C0668F752312D3E6008B69FC /* CustomTableView.swift */,
+				C0BDF7FD23598B6C006D9954 /* CustomTextField.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -589,7 +593,6 @@
 				C08E63602271822800416D19 /* KeyboardManager.swift */,
 				C01A65A322B37BE7008F4B07 /* DateTools.swift */,
 				C081747A234A18C300768A6E /* PresentationStyles.swift */,
-				C0E606FB23544C320050EA80 /* GradientView.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -918,6 +921,7 @@
 				C0875E5622AE50CA008C73A9 /* TabBarButtonView.swift in Sources */,
 				C0BD61CD22637FCA00E48081 /* LoadingViewController.swift in Sources */,
 				C08E63592269EE4000416D19 /* CustomKeyboardCollectionViewCell.swift in Sources */,
+				C0BDF7FE23598B6C006D9954 /* CustomTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,7 +1044,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1095,7 +1099,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

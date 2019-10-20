@@ -641,6 +641,7 @@ struct _R: Rswift.Validatable {
       }
       
       static func validate() throws {
+        if UIKit.UIImage(named: "edit", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'edit' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "editProfile", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'editProfile' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "einsteinBlack", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'einsteinBlack' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {

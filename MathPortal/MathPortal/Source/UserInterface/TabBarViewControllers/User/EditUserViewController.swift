@@ -14,22 +14,25 @@ class EditUserViewController: UIViewController {
     
     @IBOutlet private var editProfileImageButton: UIButton?
     @IBOutlet private var profileImage: UIImageView?
-    @IBOutlet private var usernameTextField: UITextField?
-    @IBOutlet private var emailTextField: UITextField?
-    @IBOutlet private var teacherButton: UIButton?
-    @IBOutlet private var ageDayTextField: UITextField?
-    @IBOutlet private var ageMonthTextField: UITextField?
-    @IBOutlet private var ageYearTextField: UITextField?
+    @IBOutlet private var profileImageFrameView: UIView?
+    
+    @IBOutlet private var usernameTextField: CustomTextField?
+    @IBOutlet private var emailTextField: CustomTextField?
+    @IBOutlet private var ageDayTextField: CustomTextField?
+    @IBOutlet private var ageMonthTextField: CustomTextField?
+    @IBOutlet private var ageYearTextField: CustomTextField?
     @IBOutlet private var studentButton: UIButton?
+    @IBOutlet private var teacherButton: UIButton?
     
     
-    @IBOutlet private var saveButton: UIButton?
-    @IBOutlet private var deleteAccountButton: UIButton?
+    @IBOutlet private var saveButton: CustomButton?
+    @IBOutlet private var deleteAccountButton: CustomButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = false
         setUpKeyboard()
+        setupView()
         refresh()
     }
     
@@ -45,6 +48,21 @@ class EditUserViewController: UIViewController {
         ageYearTextField?.placeholder = DateTools.getStringComponent(.year, fromDate: User.current?.birthDate) ?? "yyyy"
         
     }
+    
+    private func setupView() {
+        profileImageFrameView?.layer.cornerRadius = (profileImageFrameView?.bounds.height ?? 0)/2
+        profileImageFrameView?.backgroundColor = Color.darkGrey
+        editProfileImageButton?.imageView?.tintColor = Color.lightGrey
+        profileImage?.layer.cornerRadius = (profileImage?.bounds.height ?? 0)/2
+        
+        saveButton?.color = Color.lightGrey
+        saveButton?.backgroundColor = Color.darkGrey
+        
+        studentButton?.layer.cornerRadius = 10
+        teacherButton?.layer.cornerRadius = 10
+        
+    }
+    
     private func setUpKeyboard() {
         usernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         emailTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
@@ -55,13 +73,15 @@ class EditUserViewController: UIViewController {
     }
     private var studentRoleSelected: Bool = false {
         didSet {
-            studentButton?.backgroundColor = studentRoleSelected ? UIColor.lightGray : UIColor.clear
+            studentButton?.backgroundColor = studentRoleSelected ? Color.orange : Color.darkGrey
+            studentButton?.setTitleColor(studentRoleSelected ? Color.darkGrey : Color.lightGrey, for: .normal)
         }
     }
     
     private var teacherRoleSelected: Bool = false {
         didSet {
-            teacherButton?.backgroundColor = teacherRoleSelected ? UIColor.lightGray : UIColor.clear
+            teacherButton?.backgroundColor = teacherRoleSelected ? Color.orange : Color.darkGrey
+            teacherButton?.setTitleColor(teacherRoleSelected ? Color.darkGrey : Color.lightGrey, for: .normal)
         }
     }
     

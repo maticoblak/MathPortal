@@ -23,7 +23,7 @@ class CustomButton: UIButton {
         }
     }
     
-    @IBInspectable var color: UIColor? {
+    @IBInspectable var color: UIColor? = Color.pink {
         didSet {
             setupButton()
         }
@@ -82,9 +82,9 @@ class CustomButton: UIButton {
     }
     
     private func setupAsCustom() {
-        self.titleLabel?.textColor = Color.pink
+        self.setTitleColor(color, for: .normal)
         self.layer.borderWidth = 1.5
-        self.layer.borderColor = Color.pink.cgColor
+        self.layer.borderColor = color?.cgColor
         self.layoutIfNeeded()
     }
 }

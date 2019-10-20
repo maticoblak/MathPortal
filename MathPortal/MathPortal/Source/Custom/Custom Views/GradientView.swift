@@ -52,3 +52,38 @@ import UIKit
         context.restoreGState()
     }
 }
+
+@IBDesignable class HorizontalGradientView: UIView {
+    
+    @IBInspectable var leftColor: UIColor? = UIColor.red {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable var rightColor: UIColor? = UIColor.green {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setNeedsDisplay()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        guard let context = UIGraphicsGetCurrentContext(), let leftColor = leftColor, let rightColor = rightColor else { return }
+        
+        context.saveGState()
+
+        let locations: [CGFloat] = [0.0, 1.0]
+        let colors = [leftColor.cgColor, rightColor.cgColor]
+        if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: locations) {
+            context.drawLinearGradient(gradient, start: .zero, end: CGPoint( x: frame.size.width, y: 0.0), options: CGGradientDrawingOptions(rawValue: 0))
+        }
+        context.restoreGState()
+    }
+}
+
