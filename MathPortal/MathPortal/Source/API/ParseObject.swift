@@ -45,6 +45,11 @@ class ParseObject {
         return PFQuery(className: entityName)
     }
     
+    static func pfObjectId(objectId: String?) -> PFObject? {
+        guard let objectId = objectId else { return nil }
+        return PFObject(withoutDataWithClassName: entityName, objectId: objectId)
+    }
+    
     func save(completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
         guard let object = generetePFObject() else {
             completion?(false, NSError())

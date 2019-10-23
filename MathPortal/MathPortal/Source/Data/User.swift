@@ -19,9 +19,12 @@ class User: ParseObject {
     var email: String?
     var profileImage: UIImage?
     var birthDate: Date?
+    // TODO: figure out what is the right way: As it is now or storing the array of savedSolutions and when saving them converting them to pfobject.
+    //var savedTasksIDs: [String] = [String]()
+    //private var savedTaskIdsObjects: [PFObject] { return savedTasksIDs.flatMap { TaskSolution.pfObjectId(objectId: $0) }}
     
-    
-    override class var entityName: String { return "User" }
+    // The _ in User is an exception for creating PFObject with just an object id. For some reason it does not work without _ .
+    override class var entityName: String { return "_User" }
     override init() {
         super.init()
     }
@@ -65,6 +68,10 @@ class User: ParseObject {
 
     func updateUser(user: PFUser) {
         try? self.updateWithPFObject(user)
+    }
+    
+    static func generateIdPfObject(objectId: String) -> PFObject {
+        return PFObject(withoutDataWithClassName: "_" + entityName, objectId: objectId)
     }
     
     static func generateQueryWithEmail(_ email: String ) -> PFQuery<PFObject>? {
@@ -153,7 +160,7 @@ class User: ParseObject {
 // MARK: - Relation to Task
     
     func fetchSavedTasks(completion: ((_ objects: [Task]?, _ error: Error?) -> Void)?) {
-        let currentUser = PFUser.current()
+        let currentUser = self.generetePFObject()
         let relation = currentUser?.relation(forKey: "savedTasks")
         guard let query = relation?.query() else {
             completion?(nil, NSError())
@@ -165,7 +172,7 @@ class User: ParseObject {
     }
 
     func addToSavedTasks(_ task: Task) {
-        let relation = PFUser.current()?.relation(forKey: "savedTasks")
+        let relation = self.generetePFObject()?.relation(forKey: "savedTasks")
         let taskObject = task.generetePFObject()
         if let taskObject = taskObject {
             relation?.add(taskObject)
@@ -239,7 +246,6 @@ extension User {
         case birthDate = "birthDate"
         case username = "username"
         case email = "email"
-        case tasksOwned = "tasksOwned"
         case userId = "userId"
     }
 }

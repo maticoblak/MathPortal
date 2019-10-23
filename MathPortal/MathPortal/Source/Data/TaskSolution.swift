@@ -16,6 +16,9 @@ class TaskSolution: ParseObject {
     var objectId: String?
     var equations: [Equation]?
     
+    private var ownerObject: PFObject? { return User.pfObjectId(objectId: ownerId)}
+    private var taskObject: PFObject? { return Task.pfObjectId(objectId: taskId)}
+    
     override class var entityName: String { return "Solution" }
     
     override init() {
@@ -33,20 +36,21 @@ class TaskSolution: ParseObject {
     
     override func generetePFObject() -> PFObject? {
         let item = super.generetePFObject()
-        item?[Object.ownerId.rawValue] = ownerId
-        item?[Object.taskId.rawValue] = taskId
+        //item?[Object.ownerId.rawValue] = ownerId
+        //item?[Object.taskId.rawValue] = taskId
         item?[Object.equations.rawValue] = equations?.map { Equation.equationToJson(equation: $0.expression) }
-        item?[Object.owner.rawValue] = PFUser.current()
+        item?[Object.owner.rawValue] = ownerObject
+        item?[Object.task.rawValue] = taskObject
         return item
     }
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let taskId = object[Object.taskId.rawValue] as? String, let ownerId = object[Object.ownerId.rawValue] as? String, let objectId = object.objectId else {
+        guard let objectId = object.objectId else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse TaskSolution data from PFObject"])
         }
-        self.ownerId = ownerId
-        self.taskId = taskId
+        self.ownerId = (object[Object.owner.rawValue] as? PFObject)?.objectId
+        self.taskId = (object[Object.task.rawValue] as? PFObject)?.objectId
         self.equations = (object[Object.equations.rawValue] as? [[String : Any]])?.map { Equation(expression: Equation.JSONToEquation(json: $0))}
         self.objectId = objectId
     }
@@ -57,20 +61,25 @@ class TaskSolution: ParseObject {
     
     static func generateQueryWithUserId(_ ownerId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        query.whereKey(Object.ownerId.rawValue, equalTo: ownerId)
+        guard let pfObjectId = User.pfObjectId(objectId: ownerId) else { return nil }
+        query.whereKey(Object.owner.rawValue, equalTo: pfObjectId)
+        
         return query
     }
     
+    
     static func generateQueryWithTaskIdAndUserId(_ taskId: String, userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        query.whereKey(Object.ownerId.rawValue, equalTo: userId)
-        query.whereKey(Object.taskId.rawValue, equalTo: taskId)
+        guard let userObjectId = User.pfObjectId(objectId: userId), let taskObjectId = Task.pfObjectId(objectId: taskId) else { return nil}
+        query.whereKey(Object.owner.rawValue, equalTo: userObjectId)
+        query.whereKey(Object.task.rawValue, equalTo: taskObjectId)
         return query
     }
     
     static func generateQueryWithTaskId(_ taskId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        query.whereKey(Object.taskId.rawValue, equalTo: taskId)
+        guard let pfObjectId = Task.pfObjectId(objectId: taskId) else { return nil }
+        query.whereKey(Object.task.rawValue, equalTo: pfObjectId)
         return query
     }
 
@@ -119,9 +128,10 @@ class TaskSolution: ParseObject {
 extension TaskSolution {
     enum Object: String {
         case taskId = "taskId"
-        case ownerId = "ownerId"
+        //case ownerId = "ownerId"
         case equations = "equations"
         case owner = "owner"
         case objectId
+        case task
     }
 }
