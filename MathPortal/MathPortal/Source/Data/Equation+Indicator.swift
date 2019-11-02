@@ -161,7 +161,7 @@ extension Equation {
             }
         }
 
-        func addInteger(value: String?) {
+        func addString(value: String?) {
             guard let value = value else { return }
             let textValue: Text = {
                 let newExpression = Text(value)

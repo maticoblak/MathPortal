@@ -91,6 +91,7 @@ extension EquationView {
         label.backgroundColor = backgroundColor
         label.textColor = color
         label.font = label.font.withSize(17*scale)
+        label.textAlignment = .center
         label.sizeToFit()
         label.layer.masksToBounds = true
         label.layer.cornerRadius = 5

@@ -218,15 +218,25 @@
                                     <outlet property="parentViewController" destination="rWc-P8-qm0" id="fp1-Cm-Ly2"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lsk-d4-OHb" customClass="KeyboardView" customModule="MathPortal" customModuleProvider="target">
+                                <rect key="frame" x="10" y="144" width="394" height="188"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="188" id="NbS-jz-7i1"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="j6P-FQ-Gcf" secondAttribute="trailing" id="NiN-mY-wFS"/>
+                            <constraint firstItem="Lsk-d4-OHb" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" constant="10" id="Sre-Cu-XMM"/>
                             <constraint firstItem="j6P-FQ-Gcf" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" id="VCq-n3-qKx"/>
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" id="X0u-mu-doS"/>
+                            <constraint firstItem="Lsk-d4-OHb" firstAttribute="top" secondItem="KXu-Gy-Qxj" secondAttribute="top" constant="100" id="aOb-J3-u8x"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="eeS-JY-Ftq" secondAttribute="trailing" id="cwP-GW-KBz"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="eeS-JY-Ftq" secondAttribute="bottom" id="jUJ-Au-qud"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="j6P-FQ-Gcf" secondAttribute="bottom" id="n1c-Dx-0jO"/>
+                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="Lsk-d4-OHb" secondAttribute="trailing" constant="10" id="ofp-2p-BBs"/>
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="top" secondItem="KXu-Gy-Qxj" secondAttribute="top" id="qTx-Y6-Y2o"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KXu-Gy-Qxj"/>
@@ -235,6 +245,7 @@
                         <outlet property="equationView" destination="eeS-JY-Ftq" id="JcN-Sv-WzY"/>
                         <outlet property="keyboardContentControllerView" destination="j6P-FQ-Gcf" id="7LT-Gb-5Xc"/>
                         <outlet property="keyboardHightConstraint" destination="ImY-wy-Bjy" id="QvO-le-5ZO"/>
+                        <outlet property="keyboardView" destination="Lsk-d4-OHb" id="xQB-u2-oZh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnQ-hv-App" userLabel="First Responder" sceneMemberID="firstResponder"/>

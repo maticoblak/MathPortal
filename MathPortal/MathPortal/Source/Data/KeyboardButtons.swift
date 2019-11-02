@@ -19,6 +19,7 @@ class Button {
 extension Button {
     enum ButtonType {
         case integer(value: Int)
+        case letter(value: String)
         case plus
         case minus
         case back
@@ -37,6 +38,7 @@ extension Button {
         case logarithm
 
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
+        static var letters: [ButtonType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
         
         var componentView: UIView? {
             switch self {
@@ -90,6 +92,9 @@ extension Button {
                 return levelOut
             case .indicator:
                 break
+            case .letter(let value):
+                guard let letter: UIView = EquationView.generateText(value: value, color:  UIColor.gray).view else { return EquationView.Nil.view}
+                return letter
             }
             return nil
         }

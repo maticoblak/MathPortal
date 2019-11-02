@@ -183,14 +183,22 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.nib` struct is generated, and contains static references to 3 nibs.
+  /// This `R.nib` struct is generated, and contains static references to 4 nibs.
   struct nib {
+    /// Nib `KeyboardView`.
+    static let keyboardView = _R.nib._KeyboardView()
     /// Nib `TabBarButtonView`.
     static let tabBarButtonView = _R.nib._TabBarButtonView()
     /// Nib `TaskDetailsViewControllerSolutionCell`.
     static let taskDetailsViewControllerSolutionCell = _R.nib._TaskDetailsViewControllerSolutionCell()
     /// Nib `TaskViewControllerTableViewCell`.
     static let taskViewControllerTableViewCell = _R.nib._TaskViewControllerTableViewCell()
+    
+    /// `UINib(name: "KeyboardView", in: bundle)`
+    @available(*, deprecated, message: "Use UINib(resource: R.nib.keyboardView) instead")
+    static func keyboardView(_: Void = ()) -> UIKit.UINib {
+      return UIKit.UINib(resource: R.nib.keyboardView)
+    }
     
     /// `UINib(name: "TabBarButtonView", in: bundle)`
     @available(*, deprecated, message: "Use UINib(resource: R.nib.tabBarButtonView) instead")
@@ -208,6 +216,10 @@ struct R: Rswift.Validatable {
     @available(*, deprecated, message: "Use UINib(resource: R.nib.taskViewControllerTableViewCell) instead")
     static func taskViewControllerTableViewCell(_: Void = ()) -> UIKit.UINib {
       return UIKit.UINib(resource: R.nib.taskViewControllerTableViewCell)
+    }
+    
+    static func keyboardView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
+      return R.nib.keyboardView.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
     }
     
     static func tabBarButtonView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
@@ -342,6 +354,29 @@ struct _R: Rswift.Validatable {
   }
   
   struct nib {
+    struct _KeyboardView: Rswift.NibResourceType {
+      let bundle = R.hostingBundle
+      let name = "KeyboardView"
+      
+      func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
+        return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
+      }
+      
+      func fourthView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
+        return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[3] as? UIKit.UIView
+      }
+      
+      func secondView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
+        return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[1] as? UIKit.UIView
+      }
+      
+      func thirdView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
+        return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[2] as? UIKit.UIView
+      }
+      
+      fileprivate init() {}
+    }
+    
     struct _TabBarButtonView: Rswift.NibResourceType {
       let bundle = R.hostingBundle
       let name = "TabBarButtonView"

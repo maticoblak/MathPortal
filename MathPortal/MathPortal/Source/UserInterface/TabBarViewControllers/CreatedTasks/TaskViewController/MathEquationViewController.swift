@@ -18,6 +18,7 @@ class MathEquationViewController: UIViewController {
     @IBOutlet private var keyboardContentControllerView: ContentControllerView?
     @IBOutlet private var keyboardHightConstraint: NSLayoutConstraint?
     @IBOutlet private var equationView: UIView?
+    @IBOutlet var keyboardView: KeyboardView!
     
     weak var delegate: MathEquationViewControllerDelegate?
     
@@ -66,7 +67,7 @@ extension MathEquationViewController: CustomKeyboardViewControllerDelegate {
         switch key {
         case .done:
             keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm:
+        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter:
             equation.handelMathKeyboardButtonsPressed(button: key)
         }
         refreshEquation()

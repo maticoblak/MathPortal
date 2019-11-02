@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="diL-1k-8H7">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="718"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="ARv-Jq-zuX">
                                     <size key="itemSize" width="70" height="50"/>
@@ -80,7 +78,7 @@
                         <constraints>
                             <constraint firstItem="vTc-yM-mrj" firstAttribute="trailing" secondItem="diL-1k-8H7" secondAttribute="trailing" id="ANc-Yj-foy"/>
                             <constraint firstItem="diL-1k-8H7" firstAttribute="leading" secondItem="vTc-yM-mrj" secondAttribute="leading" id="FN3-lq-ocv"/>
-                            <constraint firstItem="vTc-yM-mrj" firstAttribute="bottom" secondItem="diL-1k-8H7" secondAttribute="bottom" id="fs2-if-MxV"/>
+                            <constraint firstItem="vTc-yM-mrj" firstAttribute="bottom" secondItem="diL-1k-8H7" secondAttribute="bottom" constant="100" id="fs2-if-MxV"/>
                             <constraint firstItem="diL-1k-8H7" firstAttribute="top" secondItem="vTc-yM-mrj" secondAttribute="top" id="njK-9H-hWR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vTc-yM-mrj"/>
@@ -91,7 +89,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mb9-rO-rIu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="54" y="-94"/>
+            <point key="canvasLocation" x="-52" y="-81"/>
         </scene>
     </scenes>
 </document>
