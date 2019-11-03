@@ -17,7 +17,7 @@ class CustomKeyboardCollectionViewCell: UICollectionViewCell {
     
     func setKey(key: Button.ButtonType) {
         switch key {
-        case .back, .brackets, .delete, .done, .exponent, .forward, .fraction, .index, .root, .plus, .minus, .logarithm, .levelOut, .levelIn, .integer, .letter, .indexAndExponent, .multiplication, .division, .comma, .equal:
+        case .back, .brackets, .delete, .done, .exponent, .forward, .fraction, .index, .root, .plus, .minus, .logarithm, .levelOut, .levelIn, .integer, .letter, .indexAndExponent, .multiplication, .division, .comma, .equal, .space, .enter:
             guard let newView = key.componentView else { return }
             guard let cellView = keyboardCellView else { return }
             newView.center = CGPoint(x: cellView.frame.width / 2, y: cellView.frame.height / 2)

@@ -43,7 +43,7 @@ class Equation {
         }
     }
     
-    static let selectedColor = UIColor.lightGray
+    static let selectedColor = Color.orange
     static let defaultColor = UIColor.clear
 
     var expression: Component = Component()
@@ -99,7 +99,8 @@ class Equation {
             break
         case .done:
             break
-        case .indicator:
+        case .indicator, .space, .enter:
+            // TODO: add actions for those
             break
         case .fraction:
             currentIndicator.addComponent(Fraction(), brackets: false)

@@ -26,11 +26,21 @@ class KeyboardView: UIView {
     
     @IBOutlet private var keyboardView: UIView?
     @IBOutlet private var navigationView: UIView?
+    @IBOutlet private var deleteButton: KeyboardButton?
+    @IBOutlet private var leftRightStackView: UIStackView?
+    @IBOutlet private var spaceButton: KeyboardButton?
+    @IBOutlet private var enterButton: KeyboardButton?
+    @IBOutlet private var inOutStackView: UIStackView?
+    
+    
     
     @IBOutlet private var changeKeyboardView: UIView?
-    @IBOutlet private var numbersKeyboardButton: UIButton?
-    @IBOutlet private var functionsKeyboardButton: UIButton?
-    @IBOutlet private var lettersKeyboardButton: UIButton?
+    @IBOutlet private var numbersKeyboardButtonView: UIView?
+    @IBOutlet private var numbersKeyboardButton: CustomButton?
+    @IBOutlet private var functionsKeyboardButtonView: UIView?
+    @IBOutlet private var functionsKeyboardButton: CustomButton?
+    @IBOutlet private var lettersKeyboardButtonView: UIView?
+    @IBOutlet private var lettersKeyboardButton: CustomButton?
     
     // MARK: Keyboard with numbers
     @IBOutlet private var numberKeyboard: UIView?
@@ -56,7 +66,7 @@ class KeyboardView: UIView {
     
     weak var delegate: KeyboardViewDelegate?
     
-    var type: LayoutType = .letters {
+    var type: LayoutType = .numbers {
         didSet {
             changeKeyboard()
         }
@@ -67,6 +77,14 @@ class KeyboardView: UIView {
         case .letters: return lettersKeyboard
         case .functions: return functionsKeyboard
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView?.backgroundColor = Color.darkBlue
+        type = .numbers
+        setupKeyboardNavigationButtons()
+        setupDifferentKeyboardButtons()
     }
     
     override init(frame: CGRect) {
@@ -112,12 +130,20 @@ class KeyboardView: UIView {
         default: return
         }
     }
+    
     private func changeKeyboard() {
-        [functionsKeyboard, numberKeyboard, lettersKeyboard].forEach { $0?.isHidden = true}
+        [functionsKeyboard, numberKeyboard, lettersKeyboard].forEach { $0?.isHidden = true }
+        [functionsKeyboardButtonView, numbersKeyboardButtonView, lettersKeyboardButtonView].forEach { $0?.backgroundColor = .white }
         switch type {
-        case .numbers: numberKeyboard?.isHidden = false
-        case .letters: lettersKeyboard?.isHidden = false
-        case .functions: functionsKeyboard.isHidden = false
+        case .numbers:
+            numberKeyboard?.isHidden = false
+            numbersKeyboardButtonView?.backgroundColor = Color.darkBlue
+        case .letters:
+            lettersKeyboard?.isHidden = false
+            lettersKeyboardButtonView?.backgroundColor = Color.darkBlue
+        case .functions:
+            functionsKeyboard.isHidden = false
+            functionsKeyboardButtonView?.backgroundColor = Color.darkBlue
         }
     }
     private func fromNib() {
@@ -145,12 +171,11 @@ class KeyboardView: UIView {
     
     @objc private func buttonClicked(sender: KeyboardButton) {
         guard let buttonType = sender.contentType else { return }
-        print(sender.contentType)
         delegate?.keyboardView(self, didChoose: buttonType)
     }
 }
 
-// MARK -  layout setup
+// MARK - custom layout setup
 
 extension KeyboardView {
     private func setupLettersKeyboard() {
@@ -184,9 +209,9 @@ extension KeyboardView {
         leftFirstRow.forEach { self.numbersLeftFirstRow?.addArrangedSubview($0)}
         leftSecondRow.forEach { self.numbersLeftSecondRow?.addArrangedSubview($0)}
         leftThirdRow.forEach { self.numbersLeftThirdRow?.addArrangedSubview($0)}
-        Array(numbers[1..<4]).forEach { self.numbersRightFirstRow?.addArrangedSubview($0)}
+        Array(numbers[1..<4]).forEach { self.numbersRightThirdRow?.addArrangedSubview($0)}
         Array(numbers[4..<7]).forEach { self.numbersRightSecondRow?.addArrangedSubview($0)}
-        Array(numbers[7..<numbers.count]).forEach { self.numbersRightThirdRow?.addArrangedSubview($0)}
+        Array(numbers[7..<numbers.count]).forEach { self.numbersRightFirstRow?.addArrangedSubview($0)}
         rightFourthRow.forEach { self.numbersRightFourthRow?.addArrangedSubview($0)}
         
         [numbersLeftFirstRow, numbersLeftSecondRow, numbersLeftThirdRow, numbersRightFirstRow, numbersRightSecondRow, numbersRightThirdRow, numbersRightFourthRow].forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
@@ -196,5 +221,41 @@ extension KeyboardView {
     
     private func setupFunctionsKeyboard() {
         // TODO: setup keyboard with functions
+    }
+    
+    private func setupKeyboardNavigationButtons() {
+        spaceButton?.contentType = .space
+        enterButton?.contentType = .enter
+        deleteButton?.contentType = .delete
+        
+        let navigationButtonsLeftRight: [KeyboardButton] = [Button.ButtonType.back, Button.ButtonType.forward].map { KeyboardButton(type: $0)}
+        
+        let navigationButtonsInOut: [KeyboardButton] = [Button.ButtonType.levelIn, Button.ButtonType.levelOut].map { KeyboardButton(type: $0)}
+        
+        navigationButtonsLeftRight.forEach { button in
+            button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+            self.leftRightStackView?.addArrangedSubview(button)
+        }
+        navigationButtonsInOut.forEach { button in
+            button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+            self.inOutStackView?.addArrangedSubview(button)
+        }
+        if let spaceButton = spaceButton, let enterButton = enterButton, let deleteButton = deleteButton {
+            [spaceButton, enterButton, deleteButton].forEach {$0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside) }
+        }
+        
+        [leftRightStackView, inOutStackView].forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
+        
+    }
+    
+    private func setupDifferentKeyboardButtons() {
+        [functionsKeyboardButtonView, numbersKeyboardButtonView, lettersKeyboardButtonView].forEach { view in
+            view?.clipsToBounds = true
+            view?.layer.cornerRadius = 2
+            view?.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner] // Top right corner, Top left corner respectively
+        }
+        functionsKeyboardButton?.setTitle("f(x)", for: .normal)
+        numbersKeyboardButton?.setTitle("123", for: .normal)
+        lettersKeyboardButton?.setTitle("ABc", for: .normal)
     }
 }

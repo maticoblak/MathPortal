@@ -10,14 +10,18 @@ import UIKit
 
 class KeyboardButton: UIButton {
     
-    var contentType: Button.ButtonType?
-    var buttonView: UIView?
+    var contentType: Button.ButtonType? {
+        didSet {
+            setup()
+        }
+    }
+    private var buttonView: UIView?
+    private var contentView: UIView = UIView()
 
     
     init(type: Button.ButtonType) {
         super.init(frame: .zero)
         self.contentType = type
-        self.buttonView = type.componentView
         setup()
     }
     
@@ -27,23 +31,26 @@ class KeyboardButton: UIButton {
     }
     
     private func setup() {
+        contentView.removeFromSuperview()
+        buttonView?.removeFromSuperview()
+        self.buttonView = contentType?.componentView
+        
         guard let buttonView = buttonView else { return }
         buttonView.isUserInteractionEnabled = false
         
-        let view = UIView()
-        view.layer.cornerRadius = 5
-        view.isUserInteractionEnabled = false
-        self.insertSubview(view, at: 0)
-        buttonView.backgroundColor = .green
-        addConstraints(parenView: self, childView: view)
+        contentView.layer.cornerRadius = 5
+        contentView.isUserInteractionEnabled = false
+        contentView.backgroundColor = Color.lightGrey
         
-        view.addSubview(buttonView)
-        view.backgroundColor = .blue
+        self.addSubview(contentView)
+        addConstraints(parenView: self, childView: contentView)
+        
+        contentView.addSubview(buttonView)
         buttonView.translatesAutoresizingMaskIntoConstraints = false
-        view.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0))
-        self.backgroundColor = .yellow
-        
+        contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
+        self.backgroundColor = .clear
+        print(contentType, buttonView.center, contentView.frame)
     }
     
     private func addConstraints(parenView: UIView, childView: UIView) {

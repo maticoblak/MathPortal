@@ -28,7 +28,6 @@ class MathEquationViewController: UIViewController {
             keyboardBottomConstraint?.constant = keyboardOpened ? 0 : -280
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
-                //self.keyboardContentView?.alpha = self.keyboardOpened ? 1 : 0
             }
         }
     }
@@ -64,7 +63,7 @@ extension MathEquationViewController: KeyboardViewDelegate {
         switch key {
         case .done:
             keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal:
+        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal, .space, .enter:
             equation.handelMathKeyboardButtonsPressed(button: key)
         }
         refreshEquation()
