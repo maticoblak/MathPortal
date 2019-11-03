@@ -15,19 +15,20 @@ protocol MathEquationViewControllerDelegate: class {
 class MathEquationViewController: UIViewController {
     
     var equation: Equation = Equation()
-    @IBOutlet private var keyboardContentControllerView: ContentControllerView?
+    @IBOutlet private var keyboardContentView: KeyboardView?
     @IBOutlet private var keyboardHightConstraint: NSLayoutConstraint?
+    @IBOutlet private var keyboardBottomConstraint: NSLayoutConstraint?
     @IBOutlet private var equationView: UIView?
-    @IBOutlet var keyboardView: KeyboardView!
     
     weak var delegate: MathEquationViewControllerDelegate?
-    //weak var
     
     private var keyboardOpened: Bool = false {
         didSet {
-            keyboardHightConstraint?.constant = keyboardOpened ? 280 : 0
+            //keyboardHightConstraint?.constant = keyboardOpened ? 280 : 0
+            keyboardBottomConstraint?.constant = keyboardOpened ? 0 : -280
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
+                //self.keyboardContentView?.alpha = self.keyboardOpened ? 1 : 0
             }
         }
     }
@@ -35,14 +36,9 @@ class MathEquationViewController: UIViewController {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
         equationView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard)))
-        keyboardHightConstraint?.constant = 0
-
-        keyboardContentControllerView?.setViewController(controller: {
-            let controller = R.storyboard.customKeyboard.customKeyboardViewController()!
-            controller.delegate = self
-            return controller
-        }(), animationStyle: .fade)
+        keyboardOpened = true
         refreshEquation()
+        keyboardContentView?.delegate = self
     }
     @objc func goToTaskViewController() {
         delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)
@@ -63,18 +59,6 @@ class MathEquationViewController: UIViewController {
     }
 }
 
-extension MathEquationViewController: CustomKeyboardViewControllerDelegate {
-    func customKeyboardViewController(sender: CustomKeyboardViewController, didChoseKey key: Button.ButtonType) {
-        switch key {
-        case .done:
-            keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal:
-            equation.handelMathKeyboardButtonsPressed(button: key)
-        }
-        refreshEquation()
-    }
-}
-
 extension MathEquationViewController: KeyboardViewDelegate {
     func keyboardView(_ sender: KeyboardView, didChoose key: Button.ButtonType) {
         switch key {
@@ -85,6 +69,4 @@ extension MathEquationViewController: KeyboardViewDelegate {
         }
         refreshEquation()
     }
-    
-    
 }
