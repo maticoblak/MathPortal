@@ -22,6 +22,8 @@ extension Button {
         case letter(value: String)
         case plus
         case minus
+        case equal
+        case comma
         case back
         case forward
         case delete
@@ -36,6 +38,8 @@ extension Button {
         case index
         case indexAndExponent
         case logarithm
+        case multiplication
+        case division
 
         static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
         static var letters: [ButtonType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
@@ -95,6 +99,18 @@ extension Button {
             case .letter(let value):
                 guard let letter: UIView = EquationView.generateText(value: value, color:  UIColor.gray).view else { return EquationView.Nil.view}
                 return letter
+            case .multiplication:
+                guard let multiplication: UIView = EquationView.generateText(value: "·", color:  UIColor.gray).view else { return EquationView.Nil.view}
+                return multiplication
+            case .division:
+                guard let division: UIView = EquationView.generateText(value: ":", color:  UIColor.gray).view else { return EquationView.Nil.view}
+                return division
+            case .comma:
+                guard let comma: UIView = EquationView.generateText(value: ",", color:  UIColor.gray).view else { return EquationView.Nil.view}
+                return comma
+            case .equal:
+                guard let equal: UIView = EquationView.generateText(value: "=", color:  UIColor.gray).view else { return EquationView.Nil.view}
+                return equal
             }
             return nil
         }

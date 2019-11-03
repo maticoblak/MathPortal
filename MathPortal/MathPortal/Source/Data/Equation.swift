@@ -68,10 +68,18 @@ class Equation {
             currentIndicator.addString(value: String(value))
         case .letter(let letter):
             currentIndicator.addString(value: letter)
+        case .comma:
+            currentIndicator.addString(value: ",")
         case .plus:
             currentIndicator.addOperator(.plus)
         case .minus:
             currentIndicator.addOperator(.minus)
+        case .multiplication:
+            currentIndicator.addOperator(.multiplication)
+        case .division:
+            currentIndicator.addOperator(.division)
+        case .equal:
+            currentIndicator.addOperator(.equal)
         case .brackets:
             currentIndicator.addComponent(brackets: true)
             break
@@ -109,6 +117,7 @@ class Equation {
             break
         case .logarithm:
             currentIndicator.addComponent(Logarithm(), brackets: false)
+
         }
         
         
@@ -137,11 +146,17 @@ extension Equation {
         enum OperatorType: CaseIterable {
             case plus
             case minus
+            case multiplication
+            case division
+            case equal
             
             var string: String {
                 switch self {
                 case .minus: return "-"
                 case .plus: return "+"
+                case .multiplication: return "·"
+                case .division: return ":"
+                case .equal: return "="
                 }
             }
             static func fromParseString(_ string: String) -> OperatorType { return OperatorType.allCases.first(where: { $0.string == string }) ?? .plus }
@@ -699,6 +714,9 @@ extension Equation {
                         switch operant.type {
                         case .plus: value += result
                         case .minus: value -= result
+                        case .multiplication: return value
+                        case .division: return value
+                        case .equal: return value
                         }
                     } else {
                         return nil

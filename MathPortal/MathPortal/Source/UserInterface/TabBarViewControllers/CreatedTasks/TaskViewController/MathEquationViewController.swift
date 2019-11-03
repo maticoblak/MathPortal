@@ -21,6 +21,7 @@ class MathEquationViewController: UIViewController {
     @IBOutlet var keyboardView: KeyboardView!
     
     weak var delegate: MathEquationViewControllerDelegate?
+    //weak var
     
     private var keyboardOpened: Bool = false {
         didSet {
@@ -67,9 +68,23 @@ extension MathEquationViewController: CustomKeyboardViewControllerDelegate {
         switch key {
         case .done:
             keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter:
+        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal:
             equation.handelMathKeyboardButtonsPressed(button: key)
         }
         refreshEquation()
     }
+}
+
+extension MathEquationViewController: KeyboardViewDelegate {
+    func keyboardView(_ sender: KeyboardView, didChoose key: Button.ButtonType) {
+        switch key {
+        case .done:
+            keyboardOpened = false
+        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal:
+            equation.handelMathKeyboardButtonsPressed(button: key)
+        }
+        refreshEquation()
+    }
+    
+    
 }

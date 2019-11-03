@@ -219,10 +219,10 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lsk-d4-OHb" customClass="KeyboardView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="10" y="144" width="394" height="188"/>
+                                <rect key="frame" x="10" y="144" width="394" height="230"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="188" id="NbS-jz-7i1"/>
+                                    <constraint firstAttribute="height" constant="230" id="NbS-jz-7i1"/>
                                 </constraints>
                             </view>
                         </subviews>
