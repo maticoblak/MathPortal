@@ -65,11 +65,11 @@ class Equation {
     func handelMathKeyboardButtonsPressed(button: Button.ButtonType) {
         switch button {
         case .integer(let value):
-            currentIndicator.addString(value: String(value))
+            currentIndicator.addString(String(value))
         case .letter(let letter):
-            currentIndicator.addString(value: letter)
+            currentIndicator.addString(letter)
         case .comma:
-            currentIndicator.addString(value: ",")
+            currentIndicator.addString(",")
         case .plus:
             currentIndicator.addOperator(.plus)
         case .minus:

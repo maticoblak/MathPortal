@@ -16,8 +16,8 @@ class TaskSolution: ParseObject {
     var objectId: String?
     var equations: [Equation]?
     
-    private var ownerObject: PFObject? { return User.pfObjectId(objectId: ownerId)}
-    private var taskObject: PFObject? { return Task.pfObjectId(objectId: taskId)}
+    private var ownerObject: PFObject? { return User.withId(ownerId)}
+    private var taskObject: PFObject? { return Task.withId(taskId)}
     
     override class var entityName: String { return "Solution" }
     
@@ -61,7 +61,7 @@ class TaskSolution: ParseObject {
     
     static func generateQueryWithUserId(_ ownerId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        guard let pfObjectId = User.pfObjectId(objectId: ownerId) else { return nil }
+        guard let pfObjectId = User.withId(ownerId) else { return nil }
         query.whereKey(Object.owner.rawValue, equalTo: pfObjectId)
         
         return query
@@ -70,7 +70,7 @@ class TaskSolution: ParseObject {
     
     static func generateQueryWithTaskIdAndUserId(_ taskId: String, userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        guard let userObjectId = User.pfObjectId(objectId: userId), let taskObjectId = Task.pfObjectId(objectId: taskId) else { return nil}
+        guard let userObjectId = User.withId(userId), let taskObjectId = Task.withId(taskId) else { return nil}
         query.whereKey(Object.owner.rawValue, equalTo: userObjectId)
         query.whereKey(Object.task.rawValue, equalTo: taskObjectId)
         return query
@@ -78,7 +78,7 @@ class TaskSolution: ParseObject {
     
     static func generateQueryWithTaskId(_ taskId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        guard let pfObjectId = Task.pfObjectId(objectId: taskId) else { return nil }
+        guard let pfObjectId = Task.withId(taskId) else { return nil }
         query.whereKey(Object.task.rawValue, equalTo: pfObjectId)
         return query
     }

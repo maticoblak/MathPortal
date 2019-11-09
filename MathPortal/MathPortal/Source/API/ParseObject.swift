@@ -45,7 +45,7 @@ class ParseObject {
         return PFQuery(className: entityName)
     }
     
-    static func pfObjectId(objectId: String?) -> PFObject? {
+    static func withId(_ objectId: String?) -> PFObject? {
         guard let objectId = objectId else { return nil }
         return PFObject(withoutDataWithClassName: entityName, objectId: objectId)
     }
