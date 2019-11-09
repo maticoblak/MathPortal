@@ -13,7 +13,6 @@ class User: ParseObject {
     
     var username: String?
     var userId: String?
-    var tasks: [String]?
     var dateCreated: String?
     var role: [Role] = [.undefined]
     var email: String?
@@ -38,7 +37,6 @@ class User: ParseObject {
     }
     override func generetePFObject() -> PFObject? {
         let object = pfObject ?? PFUser.current()
-        object?[Object.tasks.rawValue] = tasks == nil ? NSNull() : tasks
         object?[Object.role.rawValue] = role.compactMap { $0.string }
         object?[Object.username.rawValue] = username
         object?[Object.email.rawValue] = email
@@ -54,7 +52,6 @@ class User: ParseObject {
         }
         self.username = username
         self.userId = userId
-        self.tasks = object[Object.tasks.rawValue] as? [String]
         self.dateCreated = DateTools.stringFromDate(date: dateCreated)
         self.role = (PFUser.current()?[Object.role.rawValue] as? [String])?.map({ Role.fromParseString($0) }) ?? [.undefined]
         //NOTE: Can't guard email since the return value is nil if the user fetching that user is not the same or admin.
@@ -152,7 +149,6 @@ class User: ParseObject {
             return
         }
         Task.fetchTasksWith(userId: id) { (tasks, error) in
-            self.tasks = tasks?.compactMap { $0.name }
             completion?(tasks, error)
         }
         
@@ -171,13 +167,27 @@ class User: ParseObject {
         })
     }
 
-    func addToSavedTasks(_ task: Task) {
+    func addToSavedTasks(_ task: Task, completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
         let relation = self.generetePFObject()?.relation(forKey: "savedTasks")
         let taskObject = task.generetePFObject()
         if let taskObject = taskObject {
             relation?.add(taskObject)
         }
+        self.save { (success, error) in
+            completion?(success, error)
+        }
     }
+    func removeFromSavedTasks(_ task: Task, completion: ((_ success: Bool, _ error: Error?) -> Void)?) {
+        let relation = self.generetePFObject()?.relation(forKey: "savedTasks")
+        let taskObject = task.generetePFObject()
+        if let taskObject = taskObject {
+            relation?.remove(taskObject)
+        }
+        self.save { (success, error) in
+            completion?(success, error)
+        }
+    }
+    
 }
 
 // MARK: - Current User
@@ -240,7 +250,7 @@ extension User {
 
 extension User {
     enum Object: String {
-        case tasks = "tasks"
+        //case tasks = "tasks"
         case role = "role"
         case profileImage  = "profileImage"
         case birthDate = "birthDate"

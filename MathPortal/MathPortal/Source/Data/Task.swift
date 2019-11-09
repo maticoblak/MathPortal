@@ -12,10 +12,13 @@ import Parse
 class Task: ParseObject {
 
     var name: String?
-    var userId: String?
+    var ownerId: String?
     var equations: [Equation]?
     var objectId: String = ""
     var updatedAt: Date?
+    
+    private var ownerObject: PFObject? { return User.withId(ownerId)}
+
     
     // MARK: Sync
     
@@ -31,26 +34,28 @@ class Task: ParseObject {
     override func generetePFObject() -> PFObject? {
         let item = super.generetePFObject()
         item?[Object.name.rawValue] = name
-        item?[Object.userId.rawValue] = userId
+        item?[Object.owner.rawValue] = ownerObject
         item?[Object.equations.rawValue] = equations?.map { Equation.equationToJson(equation: $0.expression) }
         return item
     }
     
     override func updateWithPFObject(_ object: PFObject) throws {
         try super.updateWithPFObject(object)
-        guard let name = object[Object.name.rawValue] as? String, let userId = object[Object.userId.rawValue] as? String, let objectId = object.objectId else {
+        guard let name = object[Object.name.rawValue] as? String, let objectId = object.objectId else {
             throw NSError(domain: "ParseObject", code: 400, userInfo: ["dev_message": "Could not parse Task data from PFObject"])
         }
         self.name = name
-        self.userId = userId
+        self.ownerId = (object[Object.owner.rawValue] as? PFObject)?.objectId
         self.equations = (object[Object.equations.rawValue] as? [[String : Any]])?.map { Equation(expression: Equation.JSONToEquation(json: $0 )) }
         self.objectId = objectId
         self.updatedAt = object.updatedAt
+        
     }
     
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        query.whereKey(Object.userId.rawValue, equalTo: userId)
+        guard let userPfObjectId = User.withId(userId) else { return nil}
+        query.whereKey(Object.owner.rawValue, equalTo: userPfObjectId)
         return query
     }
     
@@ -88,7 +93,7 @@ class Task: ParseObject {
     }
     
     func fetchSolutions(completion:  ((_ objects: [TaskSolution]?, _ Error: Error?) -> Void)?) {
-        TaskSolution.fechTaskSolutions(self.objectId) { (solutions, error) in
+        TaskSolution.fetchTaskSolutions(self.objectId) { (solutions, error) in
             completion?(solutions,error)
         }
     }
@@ -98,8 +103,8 @@ class Task: ParseObject {
 extension Task {
     enum Object: String {
         case name = "taskName"
-        case userId = "userId"
         case equations = "equations"
         case objectId = "objectId"
+        case owner
     }
 }

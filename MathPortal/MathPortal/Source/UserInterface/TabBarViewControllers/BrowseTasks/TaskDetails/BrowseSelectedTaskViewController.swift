@@ -40,8 +40,7 @@ class BrowseSelectedTaskViewController: UIViewController {
     @objc private func goToSolveScreen() {
         guard let user = User.current else { return }
         let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
-        user.addToSavedTasks(task)
-        user.save { (success, error) in
+        user.addToSavedTasks(task) { (success, error) in
             loadingSpinner.dismissFromCurrentWindow()
             if success {
                 //TODO: go to solve task screen

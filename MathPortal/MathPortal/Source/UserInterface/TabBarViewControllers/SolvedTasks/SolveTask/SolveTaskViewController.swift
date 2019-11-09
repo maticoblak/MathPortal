@@ -73,7 +73,7 @@ class SolveTaskViewController: UIViewController {
     
     private func reloadSolution() {
         guard let userId = User.current?.userId else { return }
-        TaskSolution.fechUsersTaskSolution(task.objectId, userId: userId) { (solution, error) in
+        TaskSolution.fetchUsersTaskSolution(task.objectId, userId: userId) { (solution, error) in
             if let error = error {
                 print(error)
             } else if let solution = solution, let equations = solution.equations {

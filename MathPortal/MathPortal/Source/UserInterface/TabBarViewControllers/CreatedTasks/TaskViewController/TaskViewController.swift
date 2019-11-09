@@ -86,7 +86,7 @@ class TaskViewController: UIViewController {
         
         task.name = titleTextField?.text
         task.equations = equationsAndTexts
-        task.userId = User.current?.userId
+        task.ownerId = User.current?.userId
         
         task.save(completion: { (success, error) in
             loadingSpinner.dismissFromCurrentWindow() {

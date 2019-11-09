@@ -36,8 +36,6 @@ class TaskSolution: ParseObject {
     
     override func generetePFObject() -> PFObject? {
         let item = super.generetePFObject()
-        //item?[Object.ownerId.rawValue] = ownerId
-        //item?[Object.taskId.rawValue] = taskId
         item?[Object.equations.rawValue] = equations?.map { Equation.equationToJson(equation: $0.expression) }
         item?[Object.owner.rawValue] = ownerObject
         item?[Object.task.rawValue] = taskObject
@@ -83,7 +81,7 @@ class TaskSolution: ParseObject {
         return query
     }
 
-    static func fechUsersTaskSolutions(userId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
+    static func fetchUsersTaskSolutions(userId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
         guard let query = generateQueryWithUserId(userId) else {
             completion?(nil, NSError())
             return
@@ -93,7 +91,7 @@ class TaskSolution: ParseObject {
         }
     }
     
-    static func fechUsersTaskSolution(_ taskId: String, userId: String, completion: ((_ objects: TaskSolution?, _ error: Error?) -> Void)?) {
+    static func fetchUsersTaskSolution(_ taskId: String, userId: String, completion: ((_ objects: TaskSolution?, _ error: Error?) -> Void)?) {
         guard let query = generateQueryWithTaskIdAndUserId(taskId, userId: userId) else {
             completion?(nil, NSError())
             return
@@ -103,7 +101,7 @@ class TaskSolution: ParseObject {
         })
     }
     
-    static func fechTaskSolutions(_ taskId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
+    static func fetchTaskSolutions(_ taskId: String, completion: ((_ objects: [TaskSolution]?, _ error: Error?) -> Void)?) {
         guard let query = generateQueryWithTaskId(taskId) else {
             completion?(nil, NSError())
             return
@@ -127,8 +125,6 @@ class TaskSolution: ParseObject {
 
 extension TaskSolution {
     enum Object: String {
-        case taskId = "taskId"
-        //case ownerId = "ownerId"
         case equations = "equations"
         case owner = "owner"
         case objectId

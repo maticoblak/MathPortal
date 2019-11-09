@@ -53,13 +53,32 @@ class UserViewController: BaseViewController {
     private func refreshUserProfile() {
         guard let user = User.current else { return }
         
-        tasksLabel?.text = String(describing: user.tasks?.count ?? 0) 
         usernameLabel?.text = user.username
         memberSinceLabel?.text = user.dateCreated
         roleLabel?.text = user.role.map { $0.string }.joined(separator: ", ")
         ageLabel?.text = String(DateTools.getAgeFromDate(date: user.birthDate) ?? 0)
         emailLabel?.text = user.email
         profileImage?.image = user.profileImage ?? R.image.profile()
+        getData(user: user)
+    }
+    
+    private func getData(user: User) {
+        guard let currentUserId = user.userId else { return }
+        Task.fetchTasksWith(userId: currentUserId) { (tasks, error) in
+            if let tasks = tasks {
+                self.tasksLabel?.text = String(tasks.count)
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+        
+        TaskSolution.fetchUsersTaskSolutions(userId: currentUserId) { (solutions, error) in
+            if let solutions = solutions {
+                self.solvedTasksLabel?.text = String(solutions.count)
+            } else if let error = error {
+                print(error.localizedDescription)
+            }
+        }
     }
     
     @IBAction private func logOut(_ sender: Any) {
