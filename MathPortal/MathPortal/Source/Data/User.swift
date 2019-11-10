@@ -18,10 +18,7 @@ class User: ParseObject {
     var email: String?
     var profileImage: UIImage?
     var birthDate: Date?
-    // TODO: figure out what is the right way: As it is now or storing the array of savedSolutions and when saving them converting them to pfobject.
-    //var savedTasksIDs: [String] = [String]()
-    //private var savedTaskIdsObjects: [PFObject] { return savedTasksIDs.flatMap { TaskSolution.pfObjectId(objectId: $0) }}
-    
+   
     // The _ in User is an exception for creating PFObject with just an object id. For some reason it does not work without _ .
     override class var entityName: String { return "_User" }
     override init() {
@@ -214,16 +211,7 @@ extension User {
             currentLoadedUser = user
             return user
         }
-    }
-    
-    static func fetchCurrent() -> User {
-        guard let user = User.current else {
-            
-            return User()
-        }
-        return user
-    }
-    
+    }    
 }
 
 // MARK: - Role
@@ -250,7 +238,7 @@ extension User {
 
 extension User {
     enum Object: String {
-        //case tasks = "tasks"
+    
         case role = "role"
         case profileImage  = "profileImage"
         case birthDate = "birthDate"

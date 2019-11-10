@@ -13,9 +13,9 @@ class RegisterViewController: BaseViewController {
 
     @IBOutlet private var scrollView: UIScrollView?
     @IBOutlet private var backButton: UIButton?
-    @IBOutlet private var usernameTextFieeld: UITextField?
-    @IBOutlet private var emailTextField: UITextField?
-    @IBOutlet private var passwordTextField: UITextField?
+    @IBOutlet private var usernameTextField: CustomTextField?
+    @IBOutlet private var emailTextField: CustomTextField?
+    @IBOutlet private var passwordTextField: CustomTextField?
     @IBOutlet private var signUpButton: UIButton?
     
     @IBOutlet private var botomConstraint: NSLayoutConstraint?
@@ -46,7 +46,7 @@ class RegisterViewController: BaseViewController {
     }
     
     private func signUpNewUser() {
-        guard let username = usernameTextFieeld?.text, let password = passwordTextField?.text, let email = emailTextField?.text else { return }
+        guard let username = usernameTextField?.text, let password = passwordTextField?.text, let email = emailTextField?.text else { return }
     
         let loadingSpinner = LoadingViewController.showInNewWindow(text: "Loading")
         User.signUpUser(username: username, password: password, email: email) { (success, error) in
@@ -67,7 +67,7 @@ class RegisterViewController: BaseViewController {
     }
     
     private func validateAndSignUp() {
-        FieldValidator.init(validate: [.username, .email], username: usernameTextFieeld?.text, email: emailTextField?.text, age: nil).validate { result in
+        FieldValidator.init(validate: [.username, .email], username: usernameTextField?.text, email: emailTextField?.text, age: nil).validate { result in
             switch result {
             case .OK:
                 self.signUpNewUser()
@@ -87,7 +87,7 @@ class RegisterViewController: BaseViewController {
 
 extension RegisterViewController: KeyboardManagerWillChangeFrameDelegate {
     private func keyboardSetup() {
-        usernameTextFieeld?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
+        usernameTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         passwordTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         emailTextField?.extras.addToolbar(doneButton: (selector: #selector(dismissKeyboard), target: self))
         
@@ -102,8 +102,8 @@ extension RegisterViewController: KeyboardManagerWillChangeFrameDelegate {
         botomConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, from: nil).minY
         self.view.layoutIfNeeded()
         
-        if self.usernameTextFieeld?.isFirstResponder == true || self.passwordTextField?.isFirstResponder == true {
-            scrollView?.extras.scrollToViews([passwordTextField, usernameTextFieeld, signUpButton])
+        if self.usernameTextField?.isFirstResponder == true || self.passwordTextField?.isFirstResponder == true || self.emailTextField?.isFirstResponder == true {
+            scrollView?.extras.scrollToViews([passwordTextField, usernameTextField, signUpButton, emailTextField])
         }
     }
 }

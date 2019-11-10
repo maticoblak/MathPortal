@@ -13,8 +13,8 @@ class LogInViewController: BaseViewController {
 
     @IBOutlet private var scrollView: UIScrollView?
     
-    @IBOutlet private var logInUsernameTextField: UITextField?
-    @IBOutlet private var logInPasswordTextField: UITextField?
+    @IBOutlet private var logInUsernameTextField: CustomTextField?
+    @IBOutlet private var logInPasswordTextField: CustomTextField?
     @IBOutlet private var logInButton: UIButton?
     @IBOutlet private var backButton: UIButton?
     
@@ -86,9 +86,13 @@ class LogInViewController: BaseViewController {
 extension LogInViewController: KeyboardManagerWillChangeFrameDelegate {
     func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
         
+        
         bottomLayoutConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, from: nil).minY
         self.view.layoutIfNeeded()
-        scrollView?.extras.scrollToViews([logInPasswordTextField, logInUsernameTextField, logInButton])
+        
+        if self.logInUsernameTextField?.isFirstResponder == true || self.logInPasswordTextField?.isFirstResponder == true {
+            scrollView?.extras.scrollToViews([logInPasswordTextField, logInUsernameTextField, logInButton])
+        }
     }
 }
 

@@ -10,25 +10,6 @@ import UIKit
 
 class Appearence {
     
-    static func getGradientLayerFor(_ myView: UIView?, colors: [CGColor]) -> CAGradientLayer? {
-        guard let myView = myView else { return nil }
-        let gradient = CAGradientLayer()
-        gradient.frame =  CGRect(origin: CGPoint.zero, size: myView.frame.size)
-        gradient.colors = colors
-        gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
-        gradient.locations = [0.0, 1]
-
-        let shape = CAShapeLayer()
-        shape.lineWidth = 7
-        shape.path = UIBezierPath(rect: myView.bounds).cgPath
-        shape.strokeColor = UIColor.black.cgColor
-        shape.fillColor = UIColor.clear.cgColor
-        gradient.mask = shape
-
-        return gradient
-    }
-    
     static func shadows(view: UIView, color: CGColor) {
         view.layer.masksToBounds = false
         view.layer.shadowColor = color

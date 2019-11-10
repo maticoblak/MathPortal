@@ -71,11 +71,13 @@ class CustomButton: UIButton {
     
     private func setupAsNextButton() {
         let image = R.image.nextArrow()
+        self.layer.borderWidth = 0
         self.setBackgroundImage(image, for: .normal)
         self.tintColor = Color.lightGrey
     }
     private func setupAsBackButton() {
         let image = R.image.backIcon()
+        self.layer.borderWidth = 0
         self.setImage(image, for: .normal)
         self.imageView?.tintColor = Color.lightGrey
         

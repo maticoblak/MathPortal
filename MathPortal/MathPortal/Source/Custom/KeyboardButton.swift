@@ -50,7 +50,6 @@ class KeyboardButton: UIButton {
         contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
         contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
         self.backgroundColor = .clear
-        print(contentType, buttonView.center, contentView.frame)
     }
     
     private func addConstraints(parenView: UIView, childView: UIView) {
