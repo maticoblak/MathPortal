@@ -42,6 +42,7 @@ class KeyboardButton: UIButton {
         contentView.isUserInteractionEnabled = false
         contentView.backgroundColor = Color.lightGrey
         
+        print(contentView)
         self.addSubview(contentView)
         addConstraints(parenView: self, childView: contentView)
         
@@ -49,6 +50,8 @@ class KeyboardButton: UIButton {
         buttonView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerX, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1, constant: 0))
         contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))
+        contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: buttonView.bounds.width))
+        contentView.addConstraint(NSLayoutConstraint(item: buttonView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: buttonView.bounds.height))
         self.backgroundColor = .clear
         print(contentType, buttonView.center, contentView.frame)
     }
