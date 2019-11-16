@@ -556,6 +556,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3iy-lc-YEK">
                                 <rect key="frame" x="0.0" y="802" width="414" height="60"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NBv-Fe-XVY">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                                        <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Qbx-le-bwm"/>
+                                        </constraints>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="L23-nO-T60">
                                         <rect key="frame" x="0.0" y="1" width="414" height="59"/>
                                         <subviews>
@@ -620,16 +627,19 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.2297140221" green="0.3334615917" blue="0.56325695610000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="0.44431170819999999" blue="0.34917443990000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="NBv-Fe-XVY" secondAttribute="trailing" id="8Su-sD-XL7"/>
                                     <constraint firstAttribute="bottom" secondItem="L23-nO-T60" secondAttribute="bottom" id="HBW-Jz-9YJ"/>
+                                    <constraint firstItem="L23-nO-T60" firstAttribute="top" secondItem="NBv-Fe-XVY" secondAttribute="bottom" id="VKt-dl-8gf"/>
                                     <constraint firstAttribute="trailing" secondItem="L23-nO-T60" secondAttribute="trailing" id="dsd-qf-JgC"/>
                                     <constraint firstAttribute="height" constant="60" id="f52-U6-qFJ"/>
+                                    <constraint firstItem="NBv-Fe-XVY" firstAttribute="leading" secondItem="3iy-lc-YEK" secondAttribute="leading" id="hle-0u-dec"/>
+                                    <constraint firstItem="NBv-Fe-XVY" firstAttribute="top" secondItem="3iy-lc-YEK" secondAttribute="top" id="lsC-o2-VCR"/>
                                     <constraint firstItem="L23-nO-T60" firstAttribute="leading" secondItem="3iy-lc-YEK" secondAttribute="leading" id="tCM-jf-jGO"/>
-                                    <constraint firstItem="L23-nO-T60" firstAttribute="top" secondItem="3iy-lc-YEK" secondAttribute="top" constant="1" id="uue-YZ-Iev"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -653,7 +663,9 @@
                         <outlet property="browseButtonView" destination="miE-Hh-wot" id="B7w-r0-488"/>
                         <outlet property="contentController" destination="1PN-Ye-uaI" id="MfJ-P2-8I7"/>
                         <outlet property="createdTasksButtonView" destination="Fpd-11-qiz" id="W5v-WN-4I9"/>
+                        <outlet property="separatorLine" destination="NBv-Fe-XVY" id="zSm-gB-NWv"/>
                         <outlet property="solvedTasksButtonView" destination="Fii-Ub-8hx" id="ymQ-sL-iWa"/>
+                        <outlet property="superViewOffset" destination="Hau-ex-Ia6" id="DzW-fA-quo"/>
                         <outlet property="userButtonView" destination="Arg-UK-lom" id="z8s-5X-RvU"/>
                     </connections>
                 </viewController>

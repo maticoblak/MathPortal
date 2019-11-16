@@ -17,6 +17,8 @@ class TabBarViewController: BaseViewController {
     @IBOutlet private var userButtonView: TabBarButtonView?
     @IBOutlet private var solvedTasksButtonView: TabBarButtonView?
     @IBOutlet private var browseButtonView: TabBarButtonView?
+    @IBOutlet private var superViewOffset: UIView?
+    @IBOutlet private var separatorLine: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,13 @@ class TabBarViewController: BaseViewController {
         solvedTasksButtonView?.addTarget(self, action: #selector(solvedTaskPressed), for: .touchUpInside)
         browseButtonView?.addTarget(self, action: #selector(browseButtonPressed), for: .touchUpInside)
         navigateTo(tab: .userTab)
+        allButtons.forEach { button in
+            button?.selectedColor = Color.lightGrey
+            button?.normalColor = Color.darkGrey
+            button?.backgroundColor = Color.darkBlue
+        }
+        superViewOffset?.backgroundColor = Color.darkBlue
+        separatorLine?.backgroundColor = Color.orange
     }
     
     private var allButtons: [TabBarButtonView?] { return [createdTasksButtonView, userButtonView, solvedTasksButtonView, browseButtonView] }
@@ -99,13 +108,13 @@ class TabBarViewController: BaseViewController {
     func navigateTo(tab: Tab) {
         switch tab {
         case .userTab:
-            contentController?.setViewController(controller: userViewController.navigationController, animationStyle: .fade)
+            contentController?.setViewController(controller: userViewController.navigationController)
         case .createdTaskTab:
-            contentController?.setViewController(controller: createdTasksViewController.navigationController, animationStyle:  .fade)
+            contentController?.setViewController(controller: createdTasksViewController.navigationController)
         case .solvedTaskTab:
-            contentController?.setViewController(controller: solvedTasksViewController.navigationController, animationStyle: .fade)
+            contentController?.setViewController(controller: solvedTasksViewController.navigationController)
         case .browseTab:
-            contentController?.setViewController(controller: browseTasksViewController.navigationController, animationStyle: .fade)
+            contentController?.setViewController(controller: browseTasksViewController.navigationController)
         }
         currentTab = tab
     }

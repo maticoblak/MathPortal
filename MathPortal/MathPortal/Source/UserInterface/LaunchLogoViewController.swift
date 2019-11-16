@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 
 class LaunchLogoViewController: BaseViewController {
     
@@ -22,6 +21,7 @@ class LaunchLogoViewController: BaseViewController {
         self.logoView?.alpha = 0
         topConstraint?.isActive = false
         logoView?.center = self.view.center
+        self.view.backgroundColor = Color.darkBlue
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -14,9 +14,6 @@ class TaskViewController: UIViewController {
     @IBOutlet private var titleTextField: UITextField?
     @IBOutlet private var saveButton: UIButton?
     
-    @IBOutlet private var keyboardHeightConstraint: NSLayoutConstraint?
-    @IBOutlet private var keyboardContentControllerView: ContentControllerView?
-    
     @IBOutlet var equationsTableView: CustomTableView?
     
     private var equationsAndTexts: [Equation] = [Equation]()
@@ -33,27 +30,19 @@ class TaskViewController: UIViewController {
     var mathKeyboardOpened: Bool = false {
         didSet {
             saveButtonHidden = !saveButtonHidden
-            let height: CGFloat = mathKeyboardOpened ? 280 : 0
-            keyboardHeightConstraint?.constant = height
-            //scrollViewBottomConstraint?.constant = height
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             }
-            //scrollView?.extras.scrollToViews([equationLabel])
         }
     }
-        
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //KeyboardManager.sharedInstance.willChangeFrameDelegate = self
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        keyboardHeightConstraint?.constant = 0
+
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
     
         equationsAndTexts = task.equations ?? [Equation]()
-        titleTextField?.text = task.name ?? "Title"
+        titleTextField?.text = task.name
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         setUpDefaultKeyboard()
         
@@ -61,7 +50,6 @@ class TaskViewController: UIViewController {
     }
     private func setUpDefaultKeyboard() {
         titleTextField?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
-        //textView?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
     }
     
     @objc func dismissDefaultKeyboard() {
@@ -78,9 +66,11 @@ class TaskViewController: UIViewController {
     @IBAction func saveTask(_ sender: Any) {
         saveTask()
     }
+    
     @objc func goToCreatedTasksViewController() {
         navigationController?.popViewController(animated: true)
     }
+    
     func saveTask() {
         let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
         
@@ -92,28 +82,15 @@ class TaskViewController: UIViewController {
             loadingSpinner.dismissFromCurrentWindow() {
                 if success {
                     self.goToCreatedTasksViewController()
+                } else if let error = error {
+                    print(error.localizedDescription)
                 } else {
-                    print(error?.localizedDescription)
+                    print("Something went wrong while saving task.")
                 }
             }
         })
     }
 }
-
-//extension TaskViewController: KeyboardManagerWillChangeFrameDelegate {
-//    func keyboardManagerWillChangeKeyboardFrame(sender: KeyboardManager, from startFrame: CGRect, to endFrame: CGRect) {
-//        mathKeyboardOpened = false
-//        saveButtonHidden = false
-//        //scrollViewBottomConstraint?.constant = self.view.bounds.height - self.view.convert(endFrame, to: nil).minY
-//        self.view.layoutIfNeeded()
-//        if titleTextField?.isFirstResponder == true {
-//            //scrollView?.extras.scrollToViews([titleTextField])
-//        } else if textView?.isFirstResponder == true {
-//            //scrollView?.extras.scrollToViews([textView])
-//        }
-//
-//    }
-//}
 
 extension TaskViewController: MathEquationViewControllerDelegate {
     func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
@@ -139,7 +116,7 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = equationsAndTexts[indexPath.row].expression.generateView().view?.frame.height ?? 44
+        let height = equationsAndTexts[indexPath.row].viewBounds().height ?? 44
         return height + 10
     }
 }

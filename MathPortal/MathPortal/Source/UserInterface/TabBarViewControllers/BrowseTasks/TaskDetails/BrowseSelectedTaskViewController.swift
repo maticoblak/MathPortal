@@ -11,7 +11,7 @@ import UIKit
 class BrowseSelectedTaskViewController: UIViewController {
 
     var task: Task!
-    var solutions: [TaskSolution]?
+    private var solutions: [TaskSolution]?
     
     @IBOutlet private var taskContentControllerView: ContentControllerView?
     @IBOutlet private var solutionsTableView: UITableView?
@@ -27,10 +27,7 @@ class BrowseSelectedTaskViewController: UIViewController {
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Solve", rightBarButtonAction: #selector(goToSolveScreen))
         
         solutionsTableView?.register(R.nib.taskDetailsViewControllerSolutionCell)
-        // NOTE: Also works without setting rowHeight to UITableView.automaticDimension
-        solutionsTableView?.rowHeight = UITableView.automaticDimension
-        fechTaskSolutions()
-
+        fetchTaskSolutions()
     }
     
     @objc private func goBack() {
@@ -50,13 +47,15 @@ class BrowseSelectedTaskViewController: UIViewController {
         }
     }
     
-    private func fechTaskSolutions() {
+    private func fetchTaskSolutions() {
         task.fetchSolutions { (solutions, error) in
             if let solutions = solutions {
                 self.solutions = solutions
                 self.solutionsTableView?.reloadData()
+            } else if let error = error {
+                print(error.localizedDescription)
             } else {
-                print(error?.localizedDescription)
+                print("Something went wrong while fetching solutions")
             }
         }
     }

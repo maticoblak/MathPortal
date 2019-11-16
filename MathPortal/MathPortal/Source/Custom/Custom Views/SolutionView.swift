@@ -58,8 +58,10 @@ class SolutionView: UIView {
             guard self.solution?.objectId == solution.objectId else { return }
             if let owner = owner {
                 self.addProfileInfo(owner)
+            } else if let error = error {
+                print(error.localizedDescription)
             } else {
-                print(error?.localizedDescription)
+                print("Something went wrong while fetching owner")
             }
         }
     }

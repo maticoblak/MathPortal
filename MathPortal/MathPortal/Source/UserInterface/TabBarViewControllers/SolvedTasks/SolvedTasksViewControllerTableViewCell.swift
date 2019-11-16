@@ -11,7 +11,6 @@ import UIKit
 class SolvedTasksViewControllerTableViewCell: UITableViewCell {
     
     @IBOutlet private var taskTitleLabel: UILabel?
-    
     @IBOutlet private var cellBackgroundView: VerticalGradientFrameView?
     
     private var fontSize: CGFloat { return cellIsSelected ? 18*0.8 : 18 }

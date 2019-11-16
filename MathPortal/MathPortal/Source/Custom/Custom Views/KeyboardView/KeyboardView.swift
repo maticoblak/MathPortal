@@ -9,7 +9,7 @@
 import UIKit
 
 protocol KeyboardViewDelegate: class {
-    func keyboardView(_ sender: KeyboardView, didChoose key: Button.ButtonType)
+    func keyboardView(_ sender: KeyboardView, didChoose key: MathSymbol.SymbolType)
 }
 
 class KeyboardView: UIView {
@@ -179,7 +179,7 @@ class KeyboardView: UIView {
 
 extension KeyboardView {
     private func setupLettersKeyboard() {
-        let letters = Button.ButtonType.letters
+        let letters = MathSymbol.SymbolType.letters
         Array(letters).forEach { buttonsLetters.append( KeyboardButton(type: $0)) }
         buttonsLetters.forEach { $0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)}
     
@@ -198,11 +198,11 @@ extension KeyboardView {
     }
     
     private func setupNumbersKeyboard() {
-        let numbers: [KeyboardButton] = Button.ButtonType.integers.map { KeyboardButton(type: $0)}
-        let leftFirstRow: [KeyboardButton] = [Button.ButtonType.exponent, Button.ButtonType.index, Button.ButtonType.brackets].map { KeyboardButton(type: $0)}
-        let leftSecondRow: [KeyboardButton] = [Button.ButtonType.fraction, Button.ButtonType.multiplication, Button.ButtonType.division].map { KeyboardButton(type: $0)}
-        let leftThirdRow: [KeyboardButton] = [Button.ButtonType.root, Button.ButtonType.plus, Button.ButtonType.minus].map { KeyboardButton(type: $0)}
-        let rightFourthRow: [KeyboardButton] = [Button.ButtonType.integer(value: 0), Button.ButtonType.comma, Button.ButtonType.equal].map { KeyboardButton(type: $0)}
+        let numbers: [KeyboardButton] = MathSymbol.SymbolType.integers.map { KeyboardButton(type: $0)}
+        let leftFirstRow: [KeyboardButton] = [MathSymbol.SymbolType.exponent, MathSymbol.SymbolType.index, MathSymbol.SymbolType.brackets].map { KeyboardButton(type: $0)}
+        let leftSecondRow: [KeyboardButton] = [MathSymbol.SymbolType.fraction, MathSymbol.SymbolType.multiplication, MathSymbol.SymbolType.division].map { KeyboardButton(type: $0)}
+        let leftThirdRow: [KeyboardButton] = [MathSymbol.SymbolType.root, MathSymbol.SymbolType.plus, MathSymbol.SymbolType.minus].map { KeyboardButton(type: $0)}
+        let rightFourthRow: [KeyboardButton] = [MathSymbol.SymbolType.integer(value: 0), MathSymbol.SymbolType.comma, MathSymbol.SymbolType.equal].map { KeyboardButton(type: $0)}
         
         [numbers, leftFirstRow, leftSecondRow, leftThirdRow, rightFourthRow].forEach {  $0.forEach {$0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside) } }
         
@@ -228,9 +228,9 @@ extension KeyboardView {
         enterButton?.contentType = .enter
         deleteButton?.contentType = .delete
         
-        let navigationButtonsLeftRight: [KeyboardButton] = [Button.ButtonType.back, Button.ButtonType.forward].map { KeyboardButton(type: $0)}
+        let navigationButtonsLeftRight: [KeyboardButton] = [MathSymbol.SymbolType.back, MathSymbol.SymbolType.forward].map { KeyboardButton(type: $0)}
         
-        let navigationButtonsInOut: [KeyboardButton] = [Button.ButtonType.levelIn, Button.ButtonType.levelOut].map { KeyboardButton(type: $0)}
+        let navigationButtonsInOut: [KeyboardButton] = [MathSymbol.SymbolType.levelIn, MathSymbol.SymbolType.levelOut].map { KeyboardButton(type: $0)}
         
         navigationButtonsLeftRight.forEach { button in
             button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)

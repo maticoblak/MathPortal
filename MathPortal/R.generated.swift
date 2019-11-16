@@ -237,14 +237,12 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.reuseIdentifier` struct is generated, and contains static references to 8 reuse identifiers.
+  /// This `R.reuseIdentifier` struct is generated, and contains static references to 7 reuse identifiers.
   struct reuseIdentifier {
     /// Reuse identifier `BrowseViewControllerTableViewCell`.
     static let browseViewControllerTableViewCell: Rswift.ReuseIdentifier<BrowseViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "BrowseViewControllerTableViewCell")
     /// Reuse identifier `ImageCell`.
     static let imageCell: Rswift.ReuseIdentifier<ProfileImagesCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "ImageCell")
-    /// Reuse identifier `KeyboardCell`.
-    static let keyboardCell: Rswift.ReuseIdentifier<CustomKeyboardCollectionViewCell> = Rswift.ReuseIdentifier(identifier: "KeyboardCell")
     /// Reuse identifier `SolvedTasksViewControllerTableViewCell`.
     static let solvedTasksViewControllerTableViewCell: Rswift.ReuseIdentifier<SolvedTasksViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "SolvedTasksViewControllerTableViewCell")
     /// Reuse identifier `TaskDetailsViewControllerSolutionCell`.
@@ -259,14 +257,12 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
   
-  /// This `R.storyboard` struct is generated, and contains static references to 10 storyboards.
+  /// This `R.storyboard` struct is generated, and contains static references to 9 storyboards.
   struct storyboard {
     /// Storyboard `BrowseTasksViewController`.
     static let browseTasksViewController = _R.storyboard.browseTasksViewController()
     /// Storyboard `CreatedTasksViewController`.
     static let createdTasksViewController = _R.storyboard.createdTasksViewController()
-    /// Storyboard `CustomKeyboard`.
-    static let customKeyboard = _R.storyboard.customKeyboard()
     /// Storyboard `LaunchScreen`.
     static let launchScreen = _R.storyboard.launchScreen()
     /// Storyboard `Loading`.
@@ -290,11 +286,6 @@ struct R: Rswift.Validatable {
     /// `UIStoryboard(name: "CreatedTasksViewController", bundle: ...)`
     static func createdTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
       return UIKit.UIStoryboard(resource: R.storyboard.createdTasksViewController)
-    }
-    
-    /// `UIStoryboard(name: "CustomKeyboard", bundle: ...)`
-    static func customKeyboard(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.customKeyboard)
     }
     
     /// `UIStoryboard(name: "LaunchScreen", bundle: ...)`
@@ -423,7 +414,6 @@ struct _R: Rswift.Validatable {
     static func validate() throws {
       try browseTasksViewController.validate()
       try createdTasksViewController.validate()
-      try customKeyboard.validate()
       try launchScreen.validate()
       try loading.validate()
       try main.validate()
@@ -482,24 +472,6 @@ struct _R: Rswift.Validatable {
         if _R.storyboard.createdTasksViewController().createdTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'createdTasksViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'CreatedTasksViewController'.") }
         if _R.storyboard.createdTasksViewController().mathEquationViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'mathEquationViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'MathEquationViewController'.") }
         if _R.storyboard.createdTasksViewController().taskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'MathPortal.TaskViewController'.") }
-      }
-      
-      fileprivate init() {}
-    }
-    
-    struct customKeyboard: Rswift.StoryboardResourceType, Rswift.Validatable {
-      let bundle = R.hostingBundle
-      let customKeyboardViewController = StoryboardViewControllerResource<CustomKeyboardViewController>(identifier: "CustomKeyboardViewController")
-      let name = "CustomKeyboard"
-      
-      func customKeyboardViewController(_: Void = ()) -> CustomKeyboardViewController? {
-        return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: customKeyboardViewController)
-      }
-      
-      static func validate() throws {
-        if #available(iOS 11.0, *) {
-        }
-        if _R.storyboard.customKeyboard().customKeyboardViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'customKeyboardViewController' could not be loaded from storyboard 'CustomKeyboard' as 'CustomKeyboardViewController'.") }
       }
       
       fileprivate init() {}

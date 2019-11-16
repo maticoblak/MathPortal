@@ -45,7 +45,7 @@ class CreatedTasksViewControllerTableViewCell: UITableViewCell {
         }
     }
     
-    func refresh() {
+    private func refresh() {
         if let task = task {
             self.taskLabel?.text = task.name
             self.updatedAtLabel?.text = DateTools.stringFromDate(date: task.updatedAt)

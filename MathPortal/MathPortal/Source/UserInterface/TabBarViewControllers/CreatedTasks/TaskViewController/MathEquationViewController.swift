@@ -24,7 +24,6 @@ class MathEquationViewController: UIViewController {
     
     private var keyboardOpened: Bool = false {
         didSet {
-            //keyboardHightConstraint?.constant = keyboardOpened ? 280 : 0
             keyboardBottomConstraint?.constant = keyboardOpened ? 0 : -280
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
@@ -35,14 +34,20 @@ class MathEquationViewController: UIViewController {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
         equationView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard)))
-        keyboardOpened = true
         refreshEquation()
         keyboardContentView?.delegate = self
     }
-    @objc func goToTaskViewController() {
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        keyboardOpened = true
+    }
+    
+    @objc private func goToTaskViewController() {
         delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)
         navigationController?.popViewController(animated: true)
     }
+    
     @objc private func openCloseKeyboard() {
         keyboardOpened = !keyboardOpened
     }
@@ -59,12 +64,12 @@ class MathEquationViewController: UIViewController {
 }
 
 extension MathEquationViewController: KeyboardViewDelegate {
-    func keyboardView(_ sender: KeyboardView, didChoose key: Button.ButtonType) {
+    func keyboardView(_ sender: KeyboardView, didChoose key: MathSymbol.SymbolType) {
         switch key {
         case .done:
             keyboardOpened = false
         case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal, .space, .enter:
-            equation.handelMathKeyboardButtonsPressed(button: key)
+            equation.handleMathKeyboardButtonsPressed(button: key)
         }
         refreshEquation()
     }

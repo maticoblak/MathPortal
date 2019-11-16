@@ -57,24 +57,28 @@ extension SolvedTasksViewController: UITableViewDataSource, UITableViewDelegate 
         controller.task = tasks[indexPath.row]
         navigationController?.pushViewController(controller, animated: true)
     }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            // TODO: Figure out what to delete
             guard let currentUser = User.current else { return }
             currentUser.removeFromSavedTasks(tasks[indexPath.row]) { (success, error) in
                 self.reloadTasks()
             }
         }
     }
+    
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SolvedTasksViewControllerTableViewCell
         cell.cellIsSelected = true
     }
+    
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SolvedTasksViewControllerTableViewCell
         cell.cellIsSelected = false
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }
-    
 }

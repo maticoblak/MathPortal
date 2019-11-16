@@ -62,7 +62,7 @@ class Equation {
         self.expression = expression
     }
     
-    func handelMathKeyboardButtonsPressed(button: Button.ButtonType) {
+    func handleMathKeyboardButtonsPressed(button: MathSymbol.SymbolType) {
         switch button {
         case .integer(let value):
             currentIndicator.addString(String(value))
@@ -142,6 +142,12 @@ extension Equation {
         
         func generateView() -> EquationView { return .Nil }
     }
+    
+    func viewBounds() -> (width: CGFloat?, height: CGFloat?) {
+        let view = self.expression.generateView().view?.frame
+        return (view?.width, view?.height)
+    }
+    
     // MARK: - Operator
     class Operator: Expression {
         enum OperatorType: CaseIterable {

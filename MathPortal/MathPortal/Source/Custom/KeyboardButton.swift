@@ -10,7 +10,7 @@ import UIKit
 
 class KeyboardButton: UIButton {
     
-    var contentType: Button.ButtonType? {
+    var contentType: MathSymbol.SymbolType? {
         didSet {
             setup()
         }
@@ -19,7 +19,7 @@ class KeyboardButton: UIButton {
     private var contentView: UIView = UIView()
 
     
-    init(type: Button.ButtonType) {
+    init(type: MathSymbol.SymbolType) {
         super.init(frame: .zero)
         self.contentType = type
         setup()

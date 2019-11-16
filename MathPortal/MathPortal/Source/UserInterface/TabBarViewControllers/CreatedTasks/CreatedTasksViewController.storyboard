@@ -124,7 +124,7 @@
             </objects>
             <point key="canvasLocation" x="2221.739130434783" y="128.57142857142856"/>
         </scene>
-        <!--Parent View Controller-->
+        <!--Task View Controller-->
         <scene sceneID="GRX-td-EBn">
             <objects>
                 <viewController storyboardIdentifier="TaskViewController" id="Oeg-KI-u3U" customClass="TaskViewController" customModule="MathPortal" sceneMemberID="viewController">
@@ -145,16 +145,6 @@
                                     <outlet property="delegate" destination="Oeg-KI-u3U" id="knT-RT-wPn"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HbZ-XK-Ehn" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="572" width="414" height="290"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="290" id="pmT-YV-5VG"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="parentViewController" destination="Oeg-KI-u3U" id="wm8-qy-e2q"/>
-                                </connections>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="peb-UO-A9V">
                                 <rect key="frame" x="0.0" y="812" width="414" height="50"/>
                                 <constraints>
@@ -174,20 +164,15 @@
                             <constraint firstItem="8pK-kZ-OS7" firstAttribute="trailing" secondItem="Vpf-yr-rCl" secondAttribute="trailing" id="Qu2-e0-qVj"/>
                             <constraint firstItem="Vpf-yr-rCl" firstAttribute="leading" secondItem="8pK-kZ-OS7" secondAttribute="leading" id="U1u-C1-QeQ"/>
                             <constraint firstItem="peb-UO-A9V" firstAttribute="leading" secondItem="8pK-kZ-OS7" secondAttribute="leading" id="XXz-CC-MAc"/>
-                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="bottom" secondItem="HbZ-XK-Ehn" secondAttribute="bottom" id="deH-Uv-ap9"/>
                             <constraint firstItem="8pK-kZ-OS7" firstAttribute="leading" secondItem="yOR-Qd-x1W" secondAttribute="leading" id="hMk-LT-ors"/>
                             <constraint firstItem="yOR-Qd-x1W" firstAttribute="trailing" secondItem="8pK-kZ-OS7" secondAttribute="trailing" id="lgU-Aq-miT"/>
                             <constraint firstItem="Vpf-yr-rCl" firstAttribute="top" secondItem="yOR-Qd-x1W" secondAttribute="bottom" id="o8t-c6-8jG"/>
-                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="trailing" secondItem="HbZ-XK-Ehn" secondAttribute="trailing" id="tdV-rF-C2E"/>
-                            <constraint firstItem="HbZ-XK-Ehn" firstAttribute="leading" secondItem="8pK-kZ-OS7" secondAttribute="leading" id="wbH-AQ-7DQ"/>
                             <constraint firstItem="yOR-Qd-x1W" firstAttribute="top" secondItem="8pK-kZ-OS7" secondAttribute="top" id="zid-9j-DKK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8pK-kZ-OS7"/>
                     </view>
                     <connections>
                         <outlet property="equationsTableView" destination="Vpf-yr-rCl" id="k5P-Sx-LvC"/>
-                        <outlet property="keyboardContentControllerView" destination="HbZ-XK-Ehn" id="AzP-6f-4tC"/>
-                        <outlet property="keyboardHeightConstraint" destination="pmT-YV-5VG" id="xjy-nW-p2p"/>
                         <outlet property="saveButton" destination="peb-UO-A9V" id="QUz-u6-UfL"/>
                         <outlet property="titleTextField" destination="yOR-Qd-x1W" id="vM7-ta-TQp"/>
                     </connections>
@@ -209,7 +194,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6P-FQ-Gcf" customClass="KeyboardView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="582" width="414" height="280"/>
+                                <rect key="frame" x="0.0" y="862" width="414" height="280"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="280" id="ImY-wy-Bjy"/>
@@ -223,7 +208,7 @@
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" id="X0u-mu-doS"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="eeS-JY-Ftq" secondAttribute="trailing" id="cwP-GW-KBz"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="eeS-JY-Ftq" secondAttribute="bottom" id="jUJ-Au-qud"/>
-                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="j6P-FQ-Gcf" secondAttribute="bottom" id="n1c-Dx-0jO"/>
+                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="j6P-FQ-Gcf" secondAttribute="bottom" constant="-280" id="n1c-Dx-0jO"/>
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="top" secondItem="KXu-Gy-Qxj" secondAttribute="top" id="qTx-Y6-Y2o"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KXu-Gy-Qxj"/>

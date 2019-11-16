@@ -14,10 +14,11 @@ class SolveTaskViewController: UIViewController {
     @IBOutlet private var equationsTableView: CustomTableView?
     
     var task: Task!
-    var solution: TaskSolution = TaskSolution()
+    private var solution: TaskSolution = TaskSolution()
     
     private var equations: [Equation] = [Equation]()
     private var currentSelectedEquationIndex: Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,6 +27,7 @@ class SolveTaskViewController: UIViewController {
             controller?.task = task
             return controller
         }(), animationStyle: .fade)
+        
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(save))
         taskContentController?.layer.cornerRadius = 10
         equationsTableView?.layer.cornerRadius = 10
@@ -96,12 +98,11 @@ extension SolveTaskViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = equations[indexPath.row].expression.generateView().view?.frame.height ?? 44
+        let height = equations[indexPath.row].viewBounds().height ?? 44
         return height + 10
     }
-    
-    
 }
+
 extension SolveTaskViewController: TaskViewControllerTableViewCellDelegate {
     func taskViewControllerTableViewCell(sender: TaskViewControllerTableViewCell, didDeleteCellAt location: CGPoint) {
         guard let indexPath = equationsTableView?.indexPathForRow(at: location) else { return }

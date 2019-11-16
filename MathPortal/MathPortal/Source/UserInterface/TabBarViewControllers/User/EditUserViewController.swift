@@ -9,7 +9,7 @@
 import UIKit
 
 
-class EditUserViewController: UIViewController {
+class EditUserViewController: BaseViewController {
     
     
     @IBOutlet private var editProfileImageButton: UIButton?

@@ -8,16 +8,16 @@
 
 import UIKit
 
-class Button {
+class MathSymbol {
     
-    let keyName: ButtonType
+    let keyName: SymbolType
     
-    init(key: ButtonType) {
+    init(key: SymbolType) {
         self.keyName = key
     }
 }
-extension Button {
-    enum ButtonType {
+extension MathSymbol {
+    enum SymbolType {
         case integer(value: Int)
         case letter(value: String)
         case plus
@@ -43,8 +43,8 @@ extension Button {
         case space
         case enter
 
-        static var integers: [ButtonType] = Array(0...9).map { .integer(value: $0) }
-        static var letters: [ButtonType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
+        static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
+        static var letters: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
         
         var componentView: UIView? {
             switch self {
