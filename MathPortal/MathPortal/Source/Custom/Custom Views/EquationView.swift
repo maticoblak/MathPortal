@@ -10,27 +10,30 @@ import UIKit
 
 class EquationView {
     
-    var view: UIView?
-    var horizontalOffset: CGFloat
-    var type: Equation.ExpressionType
+    private(set) var view: UIView?
+    private(set) var verticalOffset: CGFloat
+    private(set) var type: Equation.ExpressionType
     
     static let Nil = EquationView(view: nil, type: nil )
     
-    init(view: UIView?, horizontalOffset: CGFloat, type: Equation.ExpressionType) {
+    init(view: UIView?, verticalOffset: CGFloat, type: Equation.ExpressionType) {
         self.view = view
-        self.horizontalOffset = horizontalOffset
+        self.verticalOffset = verticalOffset
         self.type = type
     }
-    init(view: UIView?, type: Equation.ExpressionType?) {
-        if let view = view, let type = type {
-            self.view = view
-            self.horizontalOffset = view.bounds.height*0.5
-            self.type = type
-        } else {
-            self.horizontalOffset = 0.0
-            self.type = .other
-        }
+    convenience init(view: UIView?, type: Equation.ExpressionType?) {
+        let offset: CGFloat = {
+            guard let view = view else { return 0 }
+            return view.bounds.height*0.5
+        }()
+        self.init(view: view, verticalOffset: offset, type: type ?? .other)
     }
+    
+}
+
+// MARK: - Layout
+
+extension EquationView {
     
     static func linearlyLayoutViews(_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Bool, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let equationViews: [EquationView] = inputViews
@@ -38,7 +41,7 @@ class EquationView {
         let views: [UIView] = inputViews.compactMap { $0.view }
         guard views.count > 0 else { return .Nil }
         
-        let heightOffset = linearComponentHiightAndOffset(inputViews: equationViews)
+        let heightOffset = linearComponentHeightAndOffset(inputViews: equationViews)
         
         var newView = UIView(frame: .zero)
         var x: CGFloat = 0.0
@@ -46,7 +49,7 @@ class EquationView {
         equationViews.forEach { item in
             guard let view = item.view else { return }
             view.frame.origin.x = x
-            view.frame.origin.y = heightOffset.offset - item.horizontalOffset
+            view.frame.origin.y = heightOffset.offset - item.verticalOffset
             newView.addSubview(view)
             
             x += view.bounds.width
@@ -60,12 +63,14 @@ class EquationView {
         
         newView.backgroundColor = selectedColor
         newView.layer.cornerRadius = 5
-        return EquationView(view: newView, horizontalOffset: heightOffset.offset, type: currentType)
+        return EquationView(view: newView, verticalOffset: heightOffset.offset, type: currentType)
     }
+    
 }
 
 
-// MARK: - Expresson views
+// MARK: - Expression views
+
 extension EquationView {
     
     static func generateOperator(_ operatorType: Equation.Operator.OperatorType, backgroundColor: UIColor = Equation.defaultColor, scale: CGFloat = 1, color: UIColor = UIColor.black) -> EquationView {
@@ -83,11 +88,11 @@ extension EquationView {
     
     static func generateText(value: String, textRange: NSRange? = nil, backgroundColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1) -> EquationView {
         let label = UILabel(frame: .zero)
-        let atributedString = NSMutableAttributedString(string: value)
+        let attributed = NSMutableAttributedString(string: value)
         if let range = textRange  {
-            atributedString.addAttribute(NSAttributedString.Key.backgroundColor, value: Equation.selectedColor, range: range)
+            attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: Equation.selectedColor, range: range)
         }
-        label.attributedText = atributedString
+        label.attributedText = attributed
         label.backgroundColor = backgroundColor
         label.textColor = color
         label.font = label.font.withSize(17*scale)
@@ -101,12 +106,12 @@ extension EquationView {
     static func generateEmpty(backgroundColor: UIColor = Equation.defaultColor, squareColor: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let squareViewHeight = 20*scale
         let squareRectOffset = 2*scale
-        let squerRectHeight = squareViewHeight - 2*squareRectOffset
+        let squareRectHeight = squareViewHeight - 2*squareRectOffset
         
         let square = UIView(frame: .zero)
         square.frame.size = CGSize(width: squareViewHeight, height: squareViewHeight)
         let layer = CAShapeLayer()
-        layer.path = UIBezierPath(rect: CGRect(x: squareRectOffset, y: squareRectOffset, width: squerRectHeight, height: squerRectHeight)).cgPath
+        layer.path = UIBezierPath(rect: CGRect(x: squareRectOffset, y: squareRectOffset, width: squareRectHeight, height: squareRectHeight)).cgPath
         layer.lineWidth = layer.lineWidth*scale
         layer.fillColor = backgroundColor.cgColor
         layer.strokeColor = squareColor.cgColor
@@ -116,49 +121,44 @@ extension EquationView {
     }
     
     static func generateFraction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
-        guard inputViews.count == 2 else { return .Nil }
-        var fractionViews: [EquationView] = inputViews
-        let enumerator = inputViews[0]
-        let denominator = inputViews[1]
+        guard inputViews.count == 2 else { return .Nil } // Must have 2 views
         
-        guard let enumeratorView = enumerator.view, let denominatorView = denominator.view else { return .Nil}
-
-        var fractionLine: EquationView {
-            let line = UIView(frame: .zero)
-            let width = (max(enumeratorView.bounds.width, denominatorView.bounds.width) + 5) //* CGFloat(scale)
-            let height: CGFloat = 1.5 * scale
-            line.frame.size = CGSize(width: width, height: height  )
+        guard let enumeratorView = inputViews[0].view, let denominatorView = inputViews[1].view else { return .Nil }
+        
+        let itemsWidth = max(enumeratorView.bounds.width, denominatorView.bounds.width)
+        let lineWidth = itemsWidth + 5 // Add 5 pixels to line
+        let wholeWidth = lineWidth + 4 // Add 2 pixels offset on each side to self
+        
+        let fractionLineView: UIView = {
+            let line = UIView(frame: CGRect(x: 0.0, y: 0.0, width: lineWidth, height: 1.5 * scale))
             line.backgroundColor = color
-            return EquationView(view: line, type: .other)
-        }
-        fractionViews.insert(fractionLine, at: 1)
-        guard let fractionLineView = fractionLine.view else { return .Nil}
+            return line
+        }()
         
-        let width: CGFloat = fractionLineView.frame.width + 4
+        let allViews = [enumeratorView, fractionLineView, denominatorView]
         
-        let fraction: EquationView = EquationView(view: UIView(frame: .zero), type: .fraction)
-        var fractionView: UIView = UIView(frame: .zero)
-        
+        // Layout positions
         var y: CGFloat = 0.0
-
-        for index in 0...fractionViews.count-1 {
-            let item = fractionViews[index]
-            guard let view = item.view else { return .Nil }
-            
-            if index == 1 {
-                fraction.horizontalOffset = y
-            }
-            view.center.x = width / 2
+        allViews.forEach { view in
+            view.center.x = wholeWidth / 2
             view.frame.origin.y = y
-            fractionView.addSubview(view)
             y += view.bounds.height
         }
-        fractionView.frame = CGRect(x: 0, y: 0, width: width , height: y)
-        if brackets { fractionView = addBrackets(to: fractionView, withScale: scale, andColor: color) }
-        fractionView.backgroundColor = selectedColor
-        fractionView.layer.cornerRadius = 5
-        fraction.view = fractionView
-        return fraction
+        
+        let view: UIView = {
+            let fractionView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: wholeWidth, height: y))
+            allViews.forEach { fractionView.addSubview($0) }
+            if brackets {
+                return addBrackets(to: fractionView, withScale: scale, andColor: color)
+            } else {
+                return fractionView
+            }
+        }()
+        
+        view.backgroundColor = selectedColor
+        view.layer.cornerRadius = 5
+        
+        return EquationView(view: view, verticalOffset: fractionLineView.center.y, type: .fraction)
     }
     
     static func generateRoot(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
@@ -167,13 +167,13 @@ extension EquationView {
         let rootIndex = inputViews[0]
         guard let radicandView = radicand.view, let rootIndexView = rootIndex.view else { return .Nil}
         
-        let rootView = RootView(rootIndex: rootIndexView, theOtherView: radicandView, radicandHorizontalOffset: radicand.horizontalOffset, scale: scale, strokeColor: color)
+        let rootView = RootView(rootIndex: rootIndexView, theOtherView: radicandView, radicandHorizontalOffset: radicand.verticalOffset, scale: scale, strokeColor: color)
         
         if brackets {
-            return EquationView(view: addBrackets(to: rootView, withScale: scale, andColor: color), horizontalOffset: rootView.offset, type: .root)
+            return EquationView(view: addBrackets(to: rootView, withScale: scale, andColor: color), verticalOffset: rootView.offset, type: .root)
         } else {
             rootView.backgroundColor = selectedColor
-            return EquationView(view: rootView, horizontalOffset: rootView.offset, type: .root)
+            return EquationView(view: rootView, verticalOffset: rootView.offset, type: .root)
         }        
     }
     
@@ -187,7 +187,7 @@ extension EquationView {
         
         var frameHeight = baseView.frame.height
         var frameWidth = baseView.frame.width
-        var offset = base.horizontalOffset
+        var offset = base.verticalOffset
         
         let newView = UIView(frame: .zero)
         baseView.frame.origin = .zero
@@ -220,9 +220,9 @@ extension EquationView {
             viewWithBrackets.strokeColor = color
             viewWithBrackets.scale = scale
             viewWithBrackets.backgroundColor = selectedColor
-            return EquationView(view: viewWithBrackets, horizontalOffset: offset, type: type)
+            return EquationView(view: viewWithBrackets, verticalOffset: offset, type: type)
         } else {
-            return EquationView(view: newView, horizontalOffset: offset, type: type)
+            return EquationView(view: newView, verticalOffset: offset, type: type)
         }
     }
     
@@ -254,20 +254,20 @@ extension EquationView {
 // MARK: - Equation view tools
 extension EquationView {
     
-    static private func linearComponentHiightAndOffset(inputViews: [EquationView]) ->  (height: CGFloat, offset: CGFloat) {
+    static private func linearComponentHeightAndOffset(inputViews: [EquationView]) ->  (height: CGFloat, offset: CGFloat) {
         var offsetTop: CGFloat = 0
-        var offserBottom: CGFloat = 0
+        var offsetBottom: CGFloat = 0
         inputViews.forEach { item in
             guard let view = item.view else { return }
-            if item.horizontalOffset > offsetTop {
-                offsetTop = item.horizontalOffset
+            if item.verticalOffset > offsetTop {
+                offsetTop = item.verticalOffset
             }
             
-            if view.frame.height - item.horizontalOffset > offserBottom {
-                offserBottom = view.frame.height - item.horizontalOffset
+            if view.frame.height - item.verticalOffset > offsetBottom {
+                offsetBottom = view.frame.height - item.verticalOffset
             }
         }
-        return (height: offserBottom + offsetTop, offset: offsetTop)
+        return (height: offsetBottom + offsetTop, offset: offsetTop)
     }
     static private func addBrackets(to view: UIView, withScale scale: CGFloat, andColor color: UIColor) -> BracketsView {
         let viewWithBrackets = BracketsView(viewInBrackets: view)
