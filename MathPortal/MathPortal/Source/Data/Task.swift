@@ -54,7 +54,7 @@ class Task: ParseObject {
     
     static func generateQueryWithUserId(_ userId: String) -> PFQuery<PFObject>? {
         let query = generatePFQuery()
-        guard let userPfObjectId = User.withId(userId) else { return nil}
+        guard let userPfObjectId = User.withId(userId) else { return nil }
         query.whereKey(Object.owner.rawValue, equalTo: userPfObjectId)
         return query
     }
