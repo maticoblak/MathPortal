@@ -20,31 +20,54 @@ extension MathSymbol {
     enum SymbolType {
         case integer(value: Int)
         case letter(value: String)
-        case plus
-        case minus
-        case equal
-        case comma
+        case greekLetter(value: String)
+        
         case back
         case forward
         case delete
-        case brackets
         case indicator
         case done
         case levelOut
         case levelIn
+        case space
+        case enter
+        
+        case plus
+        case minus
+        case equal
+        case comma
+        case multiplication
+        case division
+        
+        case brackets
         case fraction
         case root
         case exponent
-        case index
-        case indexAndExponent
+        case percent
+        
+        
+        
+        case sin
+        case cos
+        case tan
+        case cot
+        case naturalLog
         case logarithm
-        case multiplication
-        case division
-        case space
-        case enter
+        case limit
+        
+        case integral
+        case indexAndExponent
+        case index
+        case lessThan
+        case greaterThan
+        case faculty
+        case degree
+        case absoluteValue
+        
 
         static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
         static var letters: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
+        static var greekLetters: [SymbolType] = Array("ΑαΒβΓγΔδΕεΖζΗηΘθΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσΤτΥυΦφΧχΨψΩω").map { .letter(value: String($0)) }
         
         var componentView: UIView? {
             switch self {
@@ -119,6 +142,39 @@ extension MathSymbol {
             case .enter:
                 guard let enter: UIView = EquationView.generateText(value: "enter", color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return enter
+            case .greekLetter(let value):
+                guard let greekLetter: UIView = EquationView.generateText(value: value, color:  Color.darkBlue).view else { return EquationView.Nil.view}
+                return greekLetter
+            case .percent:
+                guard let percent: UIView = EquationView.generateText(value: "%", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return percent
+            case .sin:
+                return EquationView.Nil.view
+            case .cos:
+                return EquationView.Nil.view
+            case .tan:
+                return EquationView.Nil.view
+            case .cot:
+                return EquationView.Nil.view
+            case .naturalLog:
+                return EquationView.Nil.view
+            case .limit:
+                return EquationView.Nil.view
+            case .integral:
+                return EquationView.Nil.view
+            case .lessThan:
+                guard let lessThan: UIView = EquationView.generateText(value: "<", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return lessThan
+            case .greaterThan:
+                guard let greaterThan: UIView = EquationView.generateText(value: ">", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return greaterThan
+            case .faculty:
+                guard let faculty: UIView = EquationView.generateText(value: "!", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return faculty
+            case .degree:
+                return EquationView.Nil.view
+            case .absoluteValue:
+                return EquationView.Nil.view
             }
             return nil
         }

@@ -244,7 +244,7 @@ extension EquationView {
             log = linearlyLayoutViews([log, base], type: .logarithm, brackets: brackets, scale: scale)
             log.view?.backgroundColor = selectedColor
             return log
-        }
+        } 
         
         return .Nil
     }

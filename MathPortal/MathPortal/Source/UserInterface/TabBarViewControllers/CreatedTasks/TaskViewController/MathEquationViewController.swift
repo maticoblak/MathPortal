@@ -24,7 +24,7 @@ class MathEquationViewController: UIViewController {
     
     private var keyboardOpened: Bool = false {
         didSet {
-            keyboardBottomConstraint?.constant = keyboardOpened ? 0 : -280
+            keyboardBottomConstraint?.constant = keyboardOpened ? 0 : -250
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }
@@ -65,12 +65,7 @@ class MathEquationViewController: UIViewController {
 
 extension MathEquationViewController: KeyboardViewDelegate {
     func keyboardView(_ sender: KeyboardView, didChoose key: MathSymbol.SymbolType) {
-        switch key {
-        case .done:
-            keyboardOpened = false
-        case .back, .brackets, .delete, .forward, .indicator, .integer, .plus, .minus, .levelIn, .levelOut, .fraction, .root, .exponent, .index, .indexAndExponent, .logarithm, .letter, .multiplication, .division, .comma, .equal, .space, .enter:
-            equation.handleMathKeyboardButtonsPressed(button: key)
-        }
+        equation.handleMathKeyboardButtonsPressed(button: key)
         refreshEquation()
     }
 }

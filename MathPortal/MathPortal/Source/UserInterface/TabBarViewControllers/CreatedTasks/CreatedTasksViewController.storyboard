@@ -194,10 +194,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6P-FQ-Gcf" customClass="KeyboardView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="862" width="414" height="280"/>
+                                <rect key="frame" x="0.0" y="862" width="414" height="250"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="280" id="ImY-wy-Bjy"/>
+                                    <constraint firstAttribute="height" constant="250" id="ImY-wy-Bjy"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -208,7 +208,7 @@
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" id="X0u-mu-doS"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="eeS-JY-Ftq" secondAttribute="trailing" id="cwP-GW-KBz"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="eeS-JY-Ftq" secondAttribute="bottom" id="jUJ-Au-qud"/>
-                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="j6P-FQ-Gcf" secondAttribute="bottom" constant="-280" id="n1c-Dx-0jO"/>
+                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="j6P-FQ-Gcf" secondAttribute="bottom" constant="-250" id="n1c-Dx-0jO"/>
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="top" secondItem="KXu-Gy-Qxj" secondAttribute="top" id="qTx-Y6-Y2o"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KXu-Gy-Qxj"/>

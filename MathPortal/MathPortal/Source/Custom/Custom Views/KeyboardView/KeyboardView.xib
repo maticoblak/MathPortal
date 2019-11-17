@@ -15,9 +15,13 @@
                 <outlet property="deleteButton" destination="n3b-Mi-Buq" id="ik9-KT-YzV"/>
                 <outlet property="enterButton" destination="dGI-5J-7CD" id="U4A-Eb-yqA"/>
                 <outlet property="firstRow" destination="0x8-3w-oNK" id="9xk-de-fig"/>
+                <outlet property="functionsFirstRow" destination="Lin-LH-nb5" id="9VG-Ni-OS0"/>
+                <outlet property="functionsFourthRow" destination="7iE-fX-EWS" id="UIP-oy-aFr"/>
                 <outlet property="functionsKeyboard" destination="YQz-Pb-bXD" id="ox2-mx-n50"/>
                 <outlet property="functionsKeyboardButton" destination="Rml-kF-6kB" id="nNa-Jj-3eM"/>
                 <outlet property="functionsKeyboardButtonView" destination="XLG-Kl-P5t" id="R44-GI-I8S"/>
+                <outlet property="functionsSecondRow" destination="ldM-Ak-KDo" id="Yqs-yg-iCx"/>
+                <outlet property="functionsThirdRow" destination="A33-BX-0Qv" id="Utc-Yk-Juc"/>
                 <outlet property="inOutStackView" destination="Uhq-vG-Ylv" id="vje-Ur-DYJ"/>
                 <outlet property="keyboardView" destination="mwd-Pu-T6t" id="ljN-te-1eW"/>
                 <outlet property="leftRightStackView" destination="P7s-yq-8dA" id="rJq-td-pPX"/>
@@ -351,12 +355,49 @@
             <point key="canvasLocation" x="1153" y="-250"/>
         </view>
         <view contentMode="scaleToFill" id="YQz-Pb-bXD">
-            <rect key="frame" x="0.0" y="0.0" width="463" height="310"/>
+            <rect key="frame" x="0.0" y="0.0" width="513" height="327"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wxT-Zs-23Y">
+                    <rect key="frame" x="5" y="49" width="503" height="239"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xLb-bk-3UQ">
+                            <rect key="frame" x="0.0" y="0.0" width="503" height="239"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Lin-LH-nb5">
+                                    <rect key="frame" x="0.0" y="0.0" width="503" height="56"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ldM-Ak-KDo">
+                                    <rect key="frame" x="0.0" y="61" width="503" height="56"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="A33-BX-0Qv">
+                                    <rect key="frame" x="0.0" y="122" width="503" height="56"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7iE-fX-EWS">
+                                    <rect key="frame" x="0.0" y="183" width="503" height="56"/>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="xLb-bk-3UQ" firstAttribute="top" secondItem="wxT-Zs-23Y" secondAttribute="top" id="IB0-RH-8as"/>
+                        <constraint firstItem="xLb-bk-3UQ" firstAttribute="leading" secondItem="wxT-Zs-23Y" secondAttribute="leading" id="LV2-Dm-299"/>
+                        <constraint firstAttribute="bottom" secondItem="xLb-bk-3UQ" secondAttribute="bottom" id="Vwe-fW-Vk8"/>
+                        <constraint firstAttribute="trailing" secondItem="xLb-bk-3UQ" secondAttribute="trailing" id="zry-kg-liW"/>
+                    </constraints>
+                </view>
+            </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="ECq-8K-ft8" firstAttribute="trailing" secondItem="wxT-Zs-23Y" secondAttribute="trailing" constant="5" id="JBG-tG-KAj"/>
+                <constraint firstItem="wxT-Zs-23Y" firstAttribute="top" secondItem="ECq-8K-ft8" secondAttribute="top" constant="5" id="cRV-z8-Lls"/>
+                <constraint firstItem="ECq-8K-ft8" firstAttribute="bottom" secondItem="wxT-Zs-23Y" secondAttribute="bottom" constant="5" id="vea-3X-G0C"/>
+                <constraint firstItem="wxT-Zs-23Y" firstAttribute="leading" secondItem="ECq-8K-ft8" secondAttribute="leading" constant="5" id="xHV-tC-S1B"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="ECq-8K-ft8"/>
-            <point key="canvasLocation" x="266" y="-250"/>
+            <point key="canvasLocation" x="302.17391304347831" y="-244.75446428571428"/>
         </view>
     </objects>
 </document>

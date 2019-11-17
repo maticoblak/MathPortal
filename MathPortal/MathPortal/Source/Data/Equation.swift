@@ -10,6 +10,7 @@ import UIKit
 
 class Equation {
     // MARK: - Equation
+    // For converting to JSON
     enum ExpressionType {
         case text
         case mathOperator
@@ -21,6 +22,7 @@ class Equation {
         case exponent
         case indexAndExponent
         case logarithm
+        case naturalLog
         case empty
         case other
         
@@ -38,8 +40,8 @@ class Equation {
             case .logarithm: return "logarithm"
             case .empty: return "empty"
             case .other: return "other"
+            case .naturalLog: return "naturalLog"
             }
-            
         }
     }
     
@@ -118,7 +120,36 @@ class Equation {
             break
         case .logarithm:
             currentIndicator.addComponent(Logarithm(), brackets: false)
-
+            break
+        case .greekLetter(let letter):
+            currentIndicator.addString(letter)
+            break
+        case .percent:
+            currentIndicator.addString("%")
+        case .sin:
+            break
+        case .cos:
+            break
+        case .tan:
+            break
+        case .cot:
+            break
+        case .naturalLog:
+            break
+        case .limit:
+            break
+        case .integral:
+            break
+        case .lessThan:
+            currentIndicator.addString("<")
+        case .greaterThan:
+            currentIndicator.addString(">")
+        case .faculty:
+            currentIndicator.addString("!")
+        case .degree:
+            break
+        case .absoluteValue:
+            break
         }
         
         
@@ -164,6 +195,7 @@ extension Equation {
                 case .multiplication: return "·"
                 case .division: return ":"
                 case .equal: return "="
+    
                 }
             }
             static func fromParseString(_ string: String) -> OperatorType { return OperatorType.allCases.first(where: { $0.string == string }) ?? .plus }
