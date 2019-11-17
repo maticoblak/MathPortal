@@ -25,6 +25,10 @@ class Equation {
         case naturalLog
         case empty
         case other
+        case sin
+        case cos
+        case tan
+        case cot
         
         var string: String {
             switch self {
@@ -41,6 +45,10 @@ class Equation {
             case .empty: return "empty"
             case .other: return "other"
             case .naturalLog: return "naturalLog"
+            case .sin: return "sin"
+            case .cos: return "cos"
+            case .tan: return "tan"
+            case .cot: return "cot"
             }
         }
     }
@@ -127,12 +135,16 @@ class Equation {
         case .percent:
             currentIndicator.addString("%")
         case .sin:
+            currentIndicator.addComponent(TrigonometricFunc(type: .sin), brackets: false)
             break
         case .cos:
+            currentIndicator.addComponent(TrigonometricFunc(type: .cos), brackets: false)
             break
         case .tan:
+            currentIndicator.addComponent(TrigonometricFunc(type: .tan), brackets: false)
             break
         case .cot:
+            currentIndicator.addComponent(TrigonometricFunc(type: .cot), brackets: false)
             break
         case .naturalLog:
             break
@@ -631,58 +643,59 @@ extension Equation {
         }
         
         var base: Expression {
-            get { return items[1]}
+            get { return items[0]}
             set {
                 newValue.parent = self
-                if items.count < 2 {
+                if items.isEmpty {
                     guard newValue is Empty else { return }
                     newValue.scale = self.scale
                     items.append(newValue)
-                } else if items[1] is Empty {
+                } else if items[0] is Empty {
                     if let newValue = newValue as? Component {
                         newValue.showBrackets = true
-                        items[1] = newValue
+                        items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
                         newComponent.scale = self.scale
                         newValue.parent = newComponent
-                        items[1] = newComponent
+                        items[0] = newComponent
                     }
                 } else {
-                    let newComponent = Component(items: [items[1], newValue])
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }}
+        }
+        
+        var index: Expression {
+            get { return items[1]}
+            set {
+                newValue.parent = self
+                if items.count < 2 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale * 0.7
+                    items.append(newValue)
+                } else if items[1] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[2], newValue])
                     newComponent.parent = self
                     newValue.parent = newComponent
                     items[1] = newComponent
                 }}
         }
         
-        var index: Expression {
-            get { return items[0]}
-            set {
-                newValue.parent = self
-                if items.isEmpty {
-                    guard newValue is Empty else { return }
-                    newValue.scale = self.scale * 0.7
-                    items.append(newValue)
-                } else if items[0] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[0] = newComponent
-                } else {
-                    let newComponent = Component(items: [items[2], newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[0] = newComponent
-                }}
-        }
-        
         init(base: Expression, exponent: Expression ) {
             super.init()
-            self.index = exponent
             self.base = base
+            self.index = exponent
+            
         }
         override convenience init() {
             self.init(base: Empty(), exponent: Empty())
@@ -691,13 +704,124 @@ extension Equation {
             guard let offset = offset, offset <= 2 else { return }
             guard let expression = expression else { return }
             if offset == 0 {
-                index = expression
-            } else if offset == 1 {
                 base = expression
+            } else if offset == 1 {
+                index = expression
             }
         }
         override func generateView() -> EquationView {
             return EquationView.generateFunction(items.map { $0.generateView()}, selectedColor: color, scale: scale, type: .logarithm, brackets: showBrackets)
+        }
+    }
+    
+    // MARK: - Trigonometric func
+    class TrigonometricFunc: Component {
+        enum FunctionType: String {
+            case sin, cos, tan, cot
+            
+            // TODO: Stupid solution for noe....
+            var expressionType: Equation.ExpressionType {
+                switch self {
+                case .sin: return Equation.ExpressionType.sin
+                case .cos: return Equation.ExpressionType.cos
+                case .tan: return Equation.ExpressionType.tan
+                case .cot: return Equation.ExpressionType.cot
+                }
+            }
+        }
+        
+        var functionType: FunctionType = .sin
+        
+        override var scale: CGFloat {
+            didSet {
+                refresh()
+            }
+        }
+        override func refresh() {
+            guard scale >= 0.5 else { scale = 0.5; return}
+            if angle is Empty {
+                angle.scale = self.scale
+            }
+//            if index is Empty {
+//                index.scale = self.scale * 0.7
+//            }
+        }
+        
+        var angle: Expression {
+            get { return items[0]}
+            set {
+                newValue.parent = self
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[0] is Empty {
+                    if let newValue = newValue as? Component {
+                        newValue.showBrackets = true
+                        items[0] = newValue
+                    } else {
+                        let newComponent = Component(items: [newValue])
+                        newComponent.parent = self
+                        newComponent.scale = self.scale
+                        newValue.parent = newComponent
+                        items[0] = newComponent
+                    }
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.showBrackets = true
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                }
+                
+            }
+        }
+        
+        // TODO: Figure out a better way to have index in a component in general
+//        var index: Expression {
+//            get { return items[1]}
+//            set {
+//                newValue.parent = self
+//                if items.isEmpty {
+//                    guard newValue is Empty else { return }
+//                    newValue.scale = self.scale * 0.7
+//                    items.append(newValue)
+//                } else if items[1] is Empty {
+//                    let newComponent = Component(items: [newValue])
+//                    newComponent.parent = self
+//                    newComponent.scale = self.scale * 0.7
+//                    newValue.parent = newComponent
+//                    items[1] = newComponent
+//                } else {
+//                    let newComponent = Component(items: [items[2], newValue])
+//                    newComponent.parent = self
+//                    newValue.parent = newComponent
+//                    items[1] = newComponent
+//                }}
+//        }
+        
+        init(type: FunctionType, angle: Expression, index: Expression? ) {
+            super.init()
+            self.angle = angle
+            //if let index = index { self.index = index }
+            functionType = type
+            
+        }
+        convenience init(type: FunctionType) {
+            self.init(type: type, angle: Empty(), index: nil)
+        }
+        
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
+            guard let offset = offset, offset <= 1 else { return }
+            guard let expression = expression else { return }
+            if offset == 0 {
+                angle = expression
+            } else if offset == 1 {
+                //index = expression
+            }
+        }
+        override func generateView() -> EquationView {
+            return EquationView.generateFunction(items.map { $0.generateView()}, selectedColor: color, scale: scale, type: functionType.expressionType, brackets: showBrackets)
         }
     }
     // MARK: - Empty

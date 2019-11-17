@@ -90,7 +90,7 @@ extension MathSymbol {
                 guard let indexAndExponent: UIView = EquationView.generateExponentAndIndex([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7) , EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7) ], type: .indexAndExponent, color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return indexAndExponent
             case .logarithm:
-                guard let log: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .logarithm).view else { return EquationView.Nil.view}
+                guard let log: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7)], color: Color.darkBlue, type: .logarithm).view else { return EquationView.Nil.view}
                 return log
             case .plus:
                 guard let plus: UIView = EquationView.generateOperator( .plus, color: Color.darkBlue).view else { return EquationView.Nil.view}
@@ -149,13 +149,17 @@ extension MathSymbol {
                 guard let percent: UIView = EquationView.generateText(value: "%", color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return percent
             case .sin:
-                return EquationView.Nil.view
+                guard let sin: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .sin).view else { return EquationView.Nil.view }
+                return sin
             case .cos:
-                return EquationView.Nil.view
+                guard let cos: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .cos).view else { return EquationView.Nil.view }
+                return cos
             case .tan:
-                return EquationView.Nil.view
+                guard let tan: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .tan).view else { return EquationView.Nil.view }
+                return tan
             case .cot:
-                return EquationView.Nil.view
+                guard let cot: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .cot).view else { return EquationView.Nil.view }
+                return cot
             case .naturalLog:
                 return EquationView.Nil.view
             case .limit:

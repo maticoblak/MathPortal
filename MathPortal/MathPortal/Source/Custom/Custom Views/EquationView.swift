@@ -228,25 +228,40 @@ extension EquationView {
     
     static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Bool = false) -> EquationView {
         guard inputViews.count > 0 else { return .Nil }
+        var text: String?
         if type == .logarithm {
-            guard inputViews.count == 2 else { return .Nil }
-            let base = inputViews[1]
-            let index = inputViews[0]
-            var logView: EquationView {
-                let label = UILabel(frame: .zero)
-                label.text = "log"
-                label.font = label.font.withSize(17*scale)
-                label.textColor = color
-                label.sizeToFit()
-                return EquationView(view: label, type: .other)
-            }
-            var log: EquationView = generateExponentAndIndex([logView, index], type: .index, scale: scale)
-            log = linearlyLayoutViews([log, base], type: .logarithm, brackets: brackets, scale: scale)
-            log.view?.backgroundColor = selectedColor
-            return log
-        } 
+            text = "log"
+        } else if type == .sin {
+            text = "sin"
+        } else if type == .cos {
+            text = "cos"
+        } else if type == .tan {
+            text = "tan"
+        } else if type == .cot {
+            text = "cot"
+        }
         
-        return .Nil
+        var textView: EquationView {
+            let label = UILabel(frame: .zero)
+            label.text = text
+            label.font = label.font.withSize(17*scale)
+            label.textColor = color
+            label.sizeToFit()
+            return EquationView(view: label, type: .other)
+        }
+        
+        
+        let functionView: EquationView = {
+            var view: EquationView
+            if inputViews.count == 2 {
+                view = generateExponentAndIndex([textView, inputViews[1]], type: .index, scale: scale)
+            } else {
+                view = textView
+            }
+            return linearlyLayoutViews([view, inputViews[0]], type: type, brackets: brackets, scale: scale)
+        }()
+        functionView.view?.backgroundColor = selectedColor
+        return functionView
     }
 }
 
