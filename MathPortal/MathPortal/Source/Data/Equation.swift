@@ -807,8 +807,13 @@ extension Equation {
             functionType = type
             
         }
-        convenience init(type: FunctionType) {
+        
+        convenience init(type: FunctionType, items: [Expression]? = nil) {
             self.init(type: type, angle: Empty(), index: nil)
+            if let items = items {
+                items.forEach { $0.parent = self; $0.scale = self.scale }
+                self.items = items
+            }
         }
         
         override func addValue(expression: Equation.Expression?, offset: Int?) {
@@ -921,6 +926,19 @@ extension Equation {
             return [Equation.ExpressionType.indexAndExponent.string : indexAndExponent.items.map { equationToJson(equation: $0) }]
         } else if let logarithm = equation as? Equation.Logarithm {
             return [Equation.ExpressionType.logarithm.string : logarithm.items.map { equationToJson(equation: $0) }]
+        } else if let trigonometricFunc = equation as? Equation.TrigonometricFunc {
+            let key: String
+            switch trigonometricFunc.functionType {
+            case .sin:
+                key = Equation.ExpressionType.sin.string
+            case .cos:
+                key = Equation.ExpressionType.cos.string
+            case .tan:
+                key = Equation.ExpressionType.tan.string
+            case .cot:
+                key = Equation.ExpressionType.cot.string
+            }
+            return [key : trigonometricFunc.items.map { equationToJson(equation: $0) }]
         } else if let mathOperator = equation as? Equation.Operator {
             return [Equation.ExpressionType.mathOperator.string: mathOperator.type.string ]
         } else if let text = equation as? Equation.Text {
@@ -964,6 +982,14 @@ extension Equation {
         } else if let logarithm = json[Equation.ExpressionType.logarithm.string] as? [[String : Any]] {
             guard logarithm.count == 2 else { return Equation.Logarithm() }
             return Equation.Logarithm(items: logarithm.map { JSONToEquation(json: $0)})
+        } else if let sin = json[Equation.ExpressionType.sin.string] as? [[String : Any]] {
+            return Equation.TrigonometricFunc(type: .sin, items: sin.map { JSONToEquation(json: $0)})
+        } else if let cos = json[Equation.ExpressionType.cos.string] as? [[String : Any]] {
+            return Equation.TrigonometricFunc(type: .cos, items: cos.map { JSONToEquation(json: $0)})
+        } else if let tan = json[Equation.ExpressionType.tan.string] as? [[String : Any]] {
+            return Equation.TrigonometricFunc(type: .tan, items: tan.map { JSONToEquation(json: $0)})
+        } else if let cot = json[Equation.ExpressionType.cot.string] as? [[String : Any]] {
+            return Equation.TrigonometricFunc(type: .cot, items: cot.map { JSONToEquation(json: $0)})
         } else if let componentBrackets = json[Equation.ExpressionType.brackets.string] as? [[String : Any]] {
             let brackets = Equation.Component(items: componentBrackets.map { JSONToEquation(json: $0)})
             brackets.showBrackets = true
