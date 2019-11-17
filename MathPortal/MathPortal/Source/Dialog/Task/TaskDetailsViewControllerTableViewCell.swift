@@ -19,10 +19,14 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
         guard let title = title else { return }
         titleLabel?.text = title
         titleLabel?.backgroundColor = .clear
+        currentExpressionView?.removeFromSuperview()
+        currentExpressionView = nil
     }
     
     func setupEquationView(_ expressionView: UIView?) {
         currentExpressionView?.removeFromSuperview()
+        titleLabel?.text = nil
+        
         currentExpressionView = nil
         guard let equationView = equationView, let expressionView = expressionView else { return }
         
