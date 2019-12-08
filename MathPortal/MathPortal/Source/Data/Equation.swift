@@ -65,7 +65,6 @@ class Equation {
             default: return nil
             }
         }
-        
     }
     
     static let selectedColor = Color.orange
@@ -259,11 +258,11 @@ extension Equation {
         // TODO: Maybe it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
         override var scale: CGFloat  {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
         
-        override func refresh() {
+        override func refreshScalesInComponent() {
             guard scale >= 0.5 else { scale = 0.5; return}
             if enumerator is Empty {
                 enumerator.scale = self.scale
@@ -332,6 +331,7 @@ extension Equation {
             return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: showBrackets)
         }
 
+        // NOTE: When adding the enumerator and the denominator the order of setting them has to be correct since we are adding components in array at the specific index
         init(enumerator: Expression?, denomenator: Expression?) {
             super.init()
             self.enumerator = enumerator ?? Empty()
@@ -347,10 +347,10 @@ extension Equation {
     class Root: Component {
         override var scale: CGFloat {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
-        override func refresh() {
+        override func refreshScalesInComponent() {
             guard scale >= 0.5 else { scale = 0.5; return}
             if rootIndex is Empty {
                 rootIndex.scale = self.scale / 2
@@ -437,10 +437,10 @@ extension Equation {
     class Index: Component {
         override var scale: CGFloat {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
-        override func refresh() {
+        override func refreshScalesInComponent() {
             guard scale >= 0.5 else { scale = 0.5; return}
             if base is Empty {
                 base.scale = self.scale
@@ -526,11 +526,12 @@ extension Equation {
     class IndexAndExponent: Component {
         override var scale: CGFloat {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
-        override func refresh() {
-            guard scale >= 0.5 else { scale = 0.5; return}
+        
+        override func refreshScalesInComponent() {
+            guard scale >= 0.5 else { scale = 0.5; return }
             if base is Empty {
                 base.scale = self.scale
             }
@@ -644,11 +645,11 @@ extension Equation {
         
         override var scale: CGFloat {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
-        override func refresh() {
-            guard scale >= 0.5 else { scale = 0.5; return}
+        override func refreshScalesInComponent() {
+            guard scale >= 0.5 else { scale = 0.5; return }
             if base is Empty {
                 base.scale = self.scale
             }
@@ -749,11 +750,11 @@ extension Equation {
         
         override var scale: CGFloat {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
         // TODO: Check/set scale in scale's didSet
-        override func refresh() {
+        override func refreshScalesInComponent() {
             guard scale >= 0.5 else { scale = 0.5; return}
             if angle is Empty {
                 angle.scale = self.scale
@@ -855,7 +856,7 @@ extension Equation {
         var items: [Expression] = [Expression]()
         override var scale: CGFloat {
             didSet {
-                refresh()
+                refreshScalesInComponent()
             }
         }
         
@@ -864,7 +865,8 @@ extension Equation {
             items.forEach { $0.parent = self; $0.scale = self.scale }
             self.items = items
         }
-        func refresh() {
+        
+        func refreshScalesInComponent() {
             if items.count == 1 {
                 items[0].scale = self.scale
             }
