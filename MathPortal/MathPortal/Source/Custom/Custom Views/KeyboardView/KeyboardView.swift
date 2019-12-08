@@ -209,9 +209,9 @@ extension KeyboardView {
         let leftSecondRow: [KeyboardButton] = [MathSymbol.SymbolType.fraction, MathSymbol.SymbolType.multiplication, MathSymbol.SymbolType.division].map { KeyboardButton(type: $0)}
         let leftThirdRow: [KeyboardButton] = [MathSymbol.SymbolType.root, MathSymbol.SymbolType.plus, MathSymbol.SymbolType.minus].map { KeyboardButton(type: $0)}
         let rightFourthRow: [KeyboardButton] = [MathSymbol.SymbolType.integer(value: 0), MathSymbol.SymbolType.comma, MathSymbol.SymbolType.equal].map { KeyboardButton(type: $0)}
-        
+
         [numbers, leftFirstRow, leftSecondRow, leftThirdRow, rightFourthRow].forEach {  $0.forEach {$0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside) } }
-        
+
         leftFirstRow.forEach { self.numbersLeftFirstRow?.addArrangedSubview($0)}
         leftSecondRow.forEach { self.numbersLeftSecondRow?.addArrangedSubview($0)}
         leftThirdRow.forEach { self.numbersLeftThirdRow?.addArrangedSubview($0)}
@@ -219,28 +219,30 @@ extension KeyboardView {
         Array(numbers[4..<7]).forEach { self.numbersRightSecondRow?.addArrangedSubview($0)}
         Array(numbers[7..<numbers.count]).forEach { self.numbersRightFirstRow?.addArrangedSubview($0)}
         rightFourthRow.forEach { self.numbersRightFourthRow?.addArrangedSubview($0)}
-        
+
         [numbersLeftFirstRow, numbersLeftSecondRow, numbersLeftThirdRow, numbersRightFirstRow, numbersRightSecondRow, numbersRightThirdRow, numbersRightFourthRow].forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
+
         
+        
+        
+     
     }
     
     
-    private func setupFunctionsKeyboard() {
-        let firstRow: [KeyboardButton] = [MathSymbol.SymbolType.sin, MathSymbol.SymbolType.cos, MathSymbol.SymbolType.tan, MathSymbol.SymbolType.cot].map { KeyboardButton(type: $0)}
-        let secondRow: [KeyboardButton] = [MathSymbol.SymbolType.logarithm, MathSymbol.SymbolType.limit, MathSymbol.SymbolType.naturalLog, MathSymbol.SymbolType.integral].map { KeyboardButton(type: $0)}
-        let thirdRow: [KeyboardButton] = [MathSymbol.SymbolType.index, MathSymbol.SymbolType.exponent, MathSymbol.SymbolType.indexAndExponent, MathSymbol.SymbolType.absoluteValue].map { KeyboardButton(type: $0)}
-        let fourthRow: [KeyboardButton] = [MathSymbol.SymbolType.lessThan, MathSymbol.SymbolType.greaterThan, MathSymbol.SymbolType.faculty,MathSymbol.SymbolType.degree].map { KeyboardButton(type: $0)}
+    private func setupFunctionsKeyboard() {    
+        let buttons: [[MathSymbol.SymbolType]] = [[.sin, .cos, .tan, .cot], [.logarithm, .limit, .naturalLog, .integral], [.index, .exponent, .indexAndExponent, .absoluteValue], [.lessThan, .greaterThan, .faculty, .degree]]
         
-        [firstRow, secondRow, thirdRow, fourthRow].forEach {  $0.forEach {$0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside) } }
+        let rows: [UIStackView?] = [functionsFirstRow, functionsSecondRow, functionsThirdRow, functionsFourthRow]
+        rows.forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
         
-        firstRow.forEach { self.functionsFirstRow?.addArrangedSubview($0)}
-        secondRow.forEach { self.functionsSecondRow?.addArrangedSubview($0)}
-        thirdRow.forEach { self.functionsThirdRow?.addArrangedSubview($0)}
-        fourthRow.forEach { self.functionsFourthRow?.addArrangedSubview($0)}
-    
-        
-        [functionsFirstRow, functionsSecondRow, functionsThirdRow, functionsFourthRow].forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
-        
+        for index in 0..<buttons.count {
+            let row = buttons[index]
+            row.forEach { buttonItem in
+                let button = KeyboardButton(type: buttonItem)
+                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                rows[index]?.addArrangedSubview(button)
+            }
+        }
     }
     
     private func setupKeyboardNavigationButtons() {

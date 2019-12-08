@@ -10,7 +10,7 @@ import UIKit
 
 class Equation {
     // MARK: - Equation
-    // For converting to JSON
+    
     enum ExpressionType {
         case text
         case mathOperator
@@ -30,6 +30,7 @@ class Equation {
         case tan
         case cot
         
+        // For converting to JSON
         var string: String {
             switch self {
             case .text: return "text"
@@ -51,6 +52,20 @@ class Equation {
             case .cot: return "cot"
             }
         }
+        
+        // For creating view
+        var symbol: String? {
+            switch self {
+            case .logarithm: return "log"
+            case .naturalLog: return "ln"
+            case .sin: return "sin"
+            case .cos: return "cos"
+            case .tan: return "tan"
+            case .cot: return "cot"
+            default: return nil
+            }
+        }
+        
     }
     
     static let selectedColor = Color.orange
@@ -737,14 +752,12 @@ extension Equation {
                 refresh()
             }
         }
+        // TODO: Check/set scale in scale's didSet
         override func refresh() {
             guard scale >= 0.5 else { scale = 0.5; return}
             if angle is Empty {
                 angle.scale = self.scale
             }
-//            if index is Empty {
-//                index.scale = self.scale * 0.7
-//            }
         }
         
         var angle: Expression {

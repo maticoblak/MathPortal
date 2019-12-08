@@ -228,28 +228,17 @@ extension EquationView {
     
     static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Bool = false) -> EquationView {
         guard inputViews.count > 0 else { return .Nil }
-        var text: String?
-        if type == .logarithm {
-            text = "log"
-        } else if type == .sin {
-            text = "sin"
-        } else if type == .cos {
-            text = "cos"
-        } else if type == .tan {
-            text = "tan"
-        } else if type == .cot {
-            text = "cot"
-        }
         
-        var textView: EquationView {
+        let text: String? = type.symbol
+        
+        var textView: EquationView = {
             let label = UILabel(frame: .zero)
             label.text = text
             label.font = label.font.withSize(17*scale)
             label.textColor = color
             label.sizeToFit()
             return EquationView(view: label, type: .other)
-        }
-        
+        }()
         
         let functionView: EquationView = {
             var view: EquationView
@@ -260,6 +249,7 @@ extension EquationView {
             }
             return linearlyLayoutViews([view, inputViews[0]], type: type, brackets: brackets, scale: scale)
         }()
+        
         functionView.view?.backgroundColor = selectedColor
         return functionView
     }
