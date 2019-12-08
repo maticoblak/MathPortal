@@ -25,15 +25,17 @@ class KeyboardView: UIView {
     @IBOutlet private var contentView: UIView?
     
     @IBOutlet private var keyboardView: UIView?
-    @IBOutlet private var navigationView: UIView?
+   
+    // MARK: Bottom navigation buttons
     @IBOutlet private var deleteButton: KeyboardButton?
-    @IBOutlet private var leftRightStackView: UIStackView?
     @IBOutlet private var spaceButton: KeyboardButton?
     @IBOutlet private var enterButton: KeyboardButton?
-    @IBOutlet private var inOutStackView: UIStackView?
+    @IBOutlet private var inButton: KeyboardButton?
+    @IBOutlet private var outButton: KeyboardButton?
+    @IBOutlet private var leftButton: KeyboardButton?
+    @IBOutlet private var rightButton: KeyboardButton?
     
-    
-    
+    // MARK: Keyboard navigation bar
     @IBOutlet private var changeKeyboardView: UIView?
     @IBOutlet private var numbersKeyboardButtonView: UIView?
     @IBOutlet private var numbersKeyboardButton: CustomButton?
@@ -58,7 +60,6 @@ class KeyboardView: UIView {
     @IBOutlet private var firstRow: UIStackView?
     @IBOutlet private var secondRow: UIStackView?
     @IBOutlet private var thirdRow: UIStackView?
-    private var buttonsLetters: [KeyboardButton] = []
     
     // MARK: Keyboard with functions
     @IBOutlet private var functionsKeyboard: UIView?
@@ -70,11 +71,12 @@ class KeyboardView: UIView {
     
     weak var delegate: KeyboardViewDelegate?
     
-    var type: LayoutType = .numbers {
+    private var type: LayoutType = .numbers {
         didSet {
             changeKeyboard()
         }
     }
+    
     private var currentKeyboard: UIView? {
         switch type {
         case .numbers: return numberKeyboard
@@ -85,34 +87,17 @@ class KeyboardView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        fromNib()
         contentView?.backgroundColor = Color.darkBlue
         type = .numbers
         setupKeyboardNavigationButtons()
         setupDifferentKeyboardButtons()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        fromNib()
         setupLettersKeyboard()
         setupNumbersKeyboard()
         setupFunctionsKeyboard()
-        addKeyboard(lettersKeyboard)
-        addKeyboard(numberKeyboard)
-        addKeyboard(functionsKeyboard)
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        fromNib()
-        setupLettersKeyboard()
-        setupNumbersKeyboard()
-        setupFunctionsKeyboard()
-        addKeyboard(lettersKeyboard)
-        addKeyboard(numberKeyboard)
-        addKeyboard(functionsKeyboard)
-    }
-    
+    // MARK: Content insets setup for letters keyboard
     var previousFrame: CGRect = .zero
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -152,6 +137,7 @@ class KeyboardView: UIView {
             functionsKeyboardButtonView?.backgroundColor = Color.darkBlue
         }
     }
+    
     private func fromNib() {
         Bundle.main.loadNibNamed(R.nib.keyboardView.name, owner: self, options: nil)
         guard let contentView = contentView else { return }
@@ -181,51 +167,64 @@ class KeyboardView: UIView {
     }
 }
 
-// MARK - custom layout setup
+// MARK: - custom layout setup
 
 extension KeyboardView {
-    private func setupLettersKeyboard() {
-        let letters = MathSymbol.SymbolType.letters
-        Array(letters).forEach { buttonsLetters.append( KeyboardButton(type: $0)) }
-        buttonsLetters.forEach { $0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)}
     
+    private func setupLettersKeyboard() {
+        let buttons: [[MathSymbol.SymbolType]] = {
+            let letters = MathSymbol.SymbolType.letters
+            return [ Array(letters[0..<10]),  Array(letters[10..<19]),  Array(letters[19..<letters.count])]
+        }()
         
-        Array(buttonsLetters[0..<10]).forEach { self.firstRow?.addArrangedSubview( $0) }
-        Array(buttonsLetters[10..<19]).forEach { self.secondRow?.addArrangedSubview( $0) }
-        Array(buttonsLetters[19..<buttonsLetters.count]).forEach { self.thirdRow?.addArrangedSubview( $0) }
-       
+        let rows: [UIStackView?] = [firstRow, secondRow, thirdRow]
+        rows.forEach { row in
+            row?.distribution = UIStackView.Distribution.fillEqually
+            row?.isLayoutMarginsRelativeArrangement = true
+        }
         
-        self.firstRow?.distribution  = UIStackView.Distribution.fillEqually
-        self.secondRow?.distribution  = UIStackView.Distribution.fillEqually
-        self.thirdRow?.distribution  = UIStackView.Distribution.fillEqually
+        for index in 0..<buttons.count {
+            let row = buttons[index]
+            row.forEach { buttonItem in
+                let button = KeyboardButton(type: buttonItem)
+                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                rows[index]?.addArrangedSubview(button)
+            }
+        }
         
-        secondRow?.isLayoutMarginsRelativeArrangement = true
-        thirdRow?.isLayoutMarginsRelativeArrangement = true
+        addKeyboard(lettersKeyboard)
     }
     
     private func setupNumbersKeyboard() {
-        let numbers: [KeyboardButton] = MathSymbol.SymbolType.integers.map { KeyboardButton(type: $0)}
-        let leftFirstRow: [KeyboardButton] = [MathSymbol.SymbolType.exponent, MathSymbol.SymbolType.brackets, MathSymbol.SymbolType.percent].map { KeyboardButton(type: $0)}
-        let leftSecondRow: [KeyboardButton] = [MathSymbol.SymbolType.fraction, MathSymbol.SymbolType.multiplication, MathSymbol.SymbolType.division].map { KeyboardButton(type: $0)}
-        let leftThirdRow: [KeyboardButton] = [MathSymbol.SymbolType.root, MathSymbol.SymbolType.plus, MathSymbol.SymbolType.minus].map { KeyboardButton(type: $0)}
-        let rightFourthRow: [KeyboardButton] = [MathSymbol.SymbolType.integer(value: 0), MathSymbol.SymbolType.comma, MathSymbol.SymbolType.equal].map { KeyboardButton(type: $0)}
-
-        [numbers, leftFirstRow, leftSecondRow, leftThirdRow, rightFourthRow].forEach {  $0.forEach {$0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside) } }
-
-        leftFirstRow.forEach { self.numbersLeftFirstRow?.addArrangedSubview($0)}
-        leftSecondRow.forEach { self.numbersLeftSecondRow?.addArrangedSubview($0)}
-        leftThirdRow.forEach { self.numbersLeftThirdRow?.addArrangedSubview($0)}
-        Array(numbers[1..<4]).forEach { self.numbersRightThirdRow?.addArrangedSubview($0)}
-        Array(numbers[4..<7]).forEach { self.numbersRightSecondRow?.addArrangedSubview($0)}
-        Array(numbers[7..<numbers.count]).forEach { self.numbersRightFirstRow?.addArrangedSubview($0)}
-        rightFourthRow.forEach { self.numbersRightFourthRow?.addArrangedSubview($0)}
-
-        [numbersLeftFirstRow, numbersLeftSecondRow, numbersLeftThirdRow, numbersRightFirstRow, numbersRightSecondRow, numbersRightThirdRow, numbersRightFourthRow].forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
-
         
+        let leftButtons: [[MathSymbol.SymbolType]] = [[.exponent, .brackets, .percent],  [.fraction, .multiplication, .division], [.root, .plus, .minus]]
         
+        let numbers: [MathSymbol.SymbolType] = MathSymbol.SymbolType.integers
+        let rightButtons: [[MathSymbol.SymbolType]] = [ Array(numbers[1..<4]), Array(numbers[4..<7]), Array(numbers[7..<numbers.count]), [.integer(value: 0), .comma, .equal]]
+         
+        let leftRows: [UIStackView?] = [numbersLeftFirstRow, numbersLeftSecondRow, numbersLeftThirdRow]
+        let rightRows: [UIStackView?] = [numbersRightFirstRow, numbersRightSecondRow, numbersRightThirdRow, numbersRightFourthRow]
+        [leftRows,rightRows ].forEach { $0.forEach { $0?.distribution = UIStackView.Distribution.fillEqually }}
         
-     
+        for index in 0..<leftButtons.count {
+            let row = leftButtons[index]
+            row.forEach { buttonItem in
+                let button = KeyboardButton(type: buttonItem)
+                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                leftRows[index]?.addArrangedSubview(button)
+            }
+        }
+         
+        for index in 0..<rightButtons.count {
+            let row = rightButtons[index]
+            row.forEach { buttonItem in
+                let button = KeyboardButton(type: buttonItem)
+                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                rightRows[index]?.addArrangedSubview(button)
+            }
+        }
+        
+        addKeyboard(numberKeyboard)
     }
     
     
@@ -243,31 +242,22 @@ extension KeyboardView {
                 rows[index]?.addArrangedSubview(button)
             }
         }
+        
+        addKeyboard(functionsKeyboard)
     }
     
     private func setupKeyboardNavigationButtons() {
         spaceButton?.contentType = .space
         enterButton?.contentType = .enter
         deleteButton?.contentType = .delete
+        inButton?.contentType = .levelIn
+        outButton?.contentType = .levelOut
+        leftButton?.contentType = .back
+        rightButton?.contentType = .forward
         
-        let navigationButtonsLeftRight: [KeyboardButton] = [MathSymbol.SymbolType.back, MathSymbol.SymbolType.forward].map { KeyboardButton(type: $0)}
-        
-        let navigationButtonsInOut: [KeyboardButton] = [MathSymbol.SymbolType.levelIn, MathSymbol.SymbolType.levelOut].map { KeyboardButton(type: $0)}
-        
-        navigationButtonsLeftRight.forEach { button in
-            button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
-            self.leftRightStackView?.addArrangedSubview(button)
+        [spaceButton ,enterButton, deleteButton, inButton, outButton, leftButton, rightButton].forEach { button in
+            button?.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
         }
-        navigationButtonsInOut.forEach { button in
-            button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
-            self.inOutStackView?.addArrangedSubview(button)
-        }
-        if let spaceButton = spaceButton, let enterButton = enterButton, let deleteButton = deleteButton {
-            [spaceButton, enterButton, deleteButton].forEach {$0.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside) }
-        }
-        
-        [leftRightStackView, inOutStackView].forEach { $0?.distribution = UIStackView.Distribution.fillEqually}
-        
     }
     
     private func setupDifferentKeyboardButtons() {

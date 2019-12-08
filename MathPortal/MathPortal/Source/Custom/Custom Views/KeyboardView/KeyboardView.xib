@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,13 +22,12 @@
                 <outlet property="functionsKeyboardButtonView" destination="XLG-Kl-P5t" id="R44-GI-I8S"/>
                 <outlet property="functionsSecondRow" destination="ldM-Ak-KDo" id="Yqs-yg-iCx"/>
                 <outlet property="functionsThirdRow" destination="A33-BX-0Qv" id="Utc-Yk-Juc"/>
-                <outlet property="inOutStackView" destination="Uhq-vG-Ylv" id="vje-Ur-DYJ"/>
+                <outlet property="inButton" destination="doh-Ta-glC" id="CHY-xq-0gP"/>
                 <outlet property="keyboardView" destination="mwd-Pu-T6t" id="ljN-te-1eW"/>
-                <outlet property="leftRightStackView" destination="P7s-yq-8dA" id="rJq-td-pPX"/>
+                <outlet property="leftButton" destination="30g-4Q-vRS" id="VqL-gn-g2m"/>
                 <outlet property="lettersKeyboard" destination="qpr-Mc-bN1" id="sSa-zD-A9h"/>
                 <outlet property="lettersKeyboardButton" destination="NUU-hR-ZsK" id="T5k-Ki-NJC"/>
                 <outlet property="lettersKeyboardButtonView" destination="4qu-V6-Mrn" id="EtJ-IA-kMf"/>
-                <outlet property="navigationView" destination="w3A-gc-377" id="kw2-DE-VXy"/>
                 <outlet property="numberKeyboard" destination="b34-qD-idS" id="8eC-jw-LE5"/>
                 <outlet property="numbersKeyboardButton" destination="tok-FP-TS4" id="5pS-KU-yQf"/>
                 <outlet property="numbersKeyboardButtonView" destination="Kzz-Wi-bbw" id="nPl-lO-JbL"/>
@@ -39,6 +38,8 @@
                 <outlet property="numbersRightFourthRow" destination="m08-PX-0t1" id="lsK-r7-YYt"/>
                 <outlet property="numbersRightSecondRow" destination="DDp-9g-bSn" id="eXf-YD-L3O"/>
                 <outlet property="numbersRightThirdRow" destination="uWl-gS-LHT" id="s4C-Bg-LGH"/>
+                <outlet property="outButton" destination="NUq-3A-HDF" id="cn7-br-Xsy"/>
+                <outlet property="rightButton" destination="glv-IA-iTE" id="yrW-hT-o8s"/>
                 <outlet property="rightSideNumbersWidthConstraint" destination="krx-xQ-Q09" id="v3e-0E-TaX"/>
                 <outlet property="secondRow" destination="dUf-WB-BGg" id="ytn-yf-FQJ"/>
                 <outlet property="spaceButton" destination="a8W-NX-yxg" id="aCm-gL-uYD"/>
@@ -141,8 +142,16 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dGI-5J-7CD" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="22.5"/>
                                         </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Uhq-vG-Ylv">
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Uhq-vG-Ylv">
                                             <rect key="frame" x="0.0" y="27.5" width="100" height="22.5"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="doh-Ta-glC" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="22.5"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NUq-3A-HDF" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                                    <rect key="frame" x="52.5" y="0.0" width="47.5" height="22.5"/>
+                                                </button>
+                                            </subviews>
                                         </stackView>
                                     </subviews>
                                     <constraints>
@@ -171,8 +180,16 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3b-Mi-Buq" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="22.5"/>
                                         </button>
-                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="P7s-yq-8dA">
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="P7s-yq-8dA">
                                             <rect key="frame" x="0.0" y="27.5" width="100" height="22.5"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="30g-4Q-vRS" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="22.5"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="glv-IA-iTE" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                                    <rect key="frame" x="52.5" y="0.0" width="47.5" height="22.5"/>
+                                                </button>
+                                            </subviews>
                                         </stackView>
                                     </subviews>
                                     <constraints>
@@ -192,7 +209,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.84530179794520544" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="mwd-Pu-T6t" firstAttribute="leading" secondItem="S6N-zP-xo7" secondAttribute="leading" id="IOw-lr-hdz"/>
                 <constraint firstItem="S6N-zP-xo7" firstAttribute="trailing" secondItem="zBg-Pl-w7W" secondAttribute="trailing" id="JYX-0C-tTY"/>
@@ -289,13 +306,13 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Eo9-yq-Syj">
-                    <rect key="frame" x="0.0" y="49" width="463" height="222"/>
+                    <rect key="frame" x="5" y="49" width="453" height="222"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPW-vY-nMM">
-                            <rect key="frame" x="0.0" y="0.0" width="463" height="70.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="453" height="70.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0x8-3w-oNK">
-                                    <rect key="frame" x="0.0" y="0.0" width="463" height="70.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="453" height="70.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </stackView>
                             </subviews>
@@ -308,10 +325,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2NY-CX-g9e">
-                            <rect key="frame" x="0.0" y="75.5" width="463" height="71"/>
+                            <rect key="frame" x="0.0" y="75.5" width="453" height="71"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dUf-WB-BGg">
-                                    <rect key="frame" x="0.0" y="0.0" width="463" height="71"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="453" height="71"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </stackView>
                             </subviews>
@@ -324,10 +341,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bgP-0s-8Gx">
-                            <rect key="frame" x="0.0" y="151.5" width="463" height="70.5"/>
+                            <rect key="frame" x="0.0" y="151.5" width="453" height="70.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qRz-Vw-TA8">
-                                    <rect key="frame" x="0.0" y="0.0" width="463" height="70.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="453" height="70.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </stackView>
                             </subviews>
@@ -345,9 +362,9 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="HO8-I9-GtD" firstAttribute="trailing" secondItem="Eo9-yq-Syj" secondAttribute="trailing" id="KuU-0E-I7b"/>
+                <constraint firstItem="HO8-I9-GtD" firstAttribute="trailing" secondItem="Eo9-yq-Syj" secondAttribute="trailing" constant="5" id="KuU-0E-I7b"/>
                 <constraint firstItem="Eo9-yq-Syj" firstAttribute="top" secondItem="HO8-I9-GtD" secondAttribute="top" constant="5" id="cBZ-BV-0IK"/>
-                <constraint firstItem="Eo9-yq-Syj" firstAttribute="leading" secondItem="HO8-I9-GtD" secondAttribute="leading" id="iRA-y9-UIg"/>
+                <constraint firstItem="Eo9-yq-Syj" firstAttribute="leading" secondItem="HO8-I9-GtD" secondAttribute="leading" constant="5" id="iRA-y9-UIg"/>
                 <constraint firstItem="HO8-I9-GtD" firstAttribute="bottom" secondItem="Eo9-yq-Syj" secondAttribute="bottom" constant="5" id="oa1-AG-nRr"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
