@@ -39,7 +39,7 @@ class IntegralView: UIView {
         self.baseView = base
         self.viewHeight = base.bounds.height + capHeight*2
         self.viewWidth = baseView.frame.width + integralWidth
-        self.verticalOffset = verticalOffset - capHeight
+        self.verticalOffset = verticalOffset + capHeight
         refresh()
     }
     

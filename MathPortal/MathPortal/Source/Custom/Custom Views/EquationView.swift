@@ -180,10 +180,11 @@ extension EquationView {
     static func generateIntegral(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         guard  inputViews.count == 1 else { return .Nil }
         let base = inputViews[0]
+        print(base.verticalOffset)
         guard let baseView = inputViews.first?.view else { return .Nil}
         
         let integralView = IntegralView(base: baseView, verticalOffset: base.verticalOffset)
-        
+        print(integralView.verticalOffset)
         // TODO: add offset
         if brackets {
             return EquationView(view: addBrackets(to: integralView, withScale: scale, andColor: color, backgroundColor: selectedColor), verticalOffset: integralView.verticalOffset, type: .integral)
