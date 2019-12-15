@@ -13,13 +13,14 @@ class IntegralView: UIView {
     // init values
     private(set) var baseView: UIView = UIView(frame: .zero)
     private(set) var viewHeight: CGFloat = 0
-
+    private(set) var viewWidth: CGFloat = 0
+    var verticalOffset: CGFloat = 0
 
    // computed
     private var path: UIBezierPath?
-    private var viewWidth: CGFloat = 0
-    private(set) var integralWidth: CGFloat = 10
-    private(set) var capHeight: CGFloat = 10
+    
+    private var integralWidth: CGFloat = 10
+    private var capHeight: CGFloat = 10
     
     // to set
     var strokeColor: UIColor = UIColor.black {
@@ -33,11 +34,12 @@ class IntegralView: UIView {
         }
     }
     
-    init(base: UIView) {
+    init(base: UIView, verticalOffset: CGFloat) {
         super.init(frame: .zero)
         self.baseView = base
         self.viewHeight = base.bounds.height + capHeight*2
-        viewWidth = baseView.frame.width + integralWidth
+        self.viewWidth = baseView.frame.width + integralWidth
+        self.verticalOffset = verticalOffset - capHeight
         refresh()
     }
     
@@ -68,6 +70,7 @@ class IntegralView: UIView {
         self.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
         self.clipsToBounds = true
         self.layer.cornerRadius = 5
+        self.backgroundColor = UIColor.clear
     }
     
     override func draw(_ rect: CGRect) {

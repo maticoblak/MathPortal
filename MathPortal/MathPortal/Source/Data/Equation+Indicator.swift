@@ -57,12 +57,13 @@ extension Equation {
             if let text = parent.items[index] as? Text {
                 text.textRange = nil
             } else if let component = parent.items[index] as? Component {
-                // if the indicator is in th middle of expression its colour has to be set to default
+                // if the indicator is in the middle of expression its colour has to be set to default
                 if currentOffset < component.items.count, currentOffset >= 0 {
                     component.items[currentOffset].color = defaultColor
                     
                     // if component has only one element and there are no brackets go out another level
-                    if component.items.count == 1, component.showBrackets == false, (component is Integral) == false {
+                    // Note: have no Idea when that case happens
+                    if component.items.count == 1, component.showBrackets == false, (component is Integral) == false, (component is TrigonometricFunc) == false {
                         levelOut()
                     }
                 }

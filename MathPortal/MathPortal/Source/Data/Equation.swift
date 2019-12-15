@@ -984,7 +984,7 @@ extension Equation {
 extension Equation {
     /* NOTE:
      - Exponent should always be checked before Index since exponent is subclass of Index
-     - Fraction, Root, Index, Exponent, IndexAndExponent, Logarithm should alyas be checked before Component, since they are subclasses of component
+     - Fraction, Root, Index, Exponent, IndexAndExponent, Logarithm, Integral, TrignometricFunc should always be checked before Component, since they are subclasses of component
      */
     static func equationToJson(equation: Equation.Expression) -> [String: Any] {
         if let fraction = equation as? Equation.Fraction {
@@ -1012,6 +1012,8 @@ extension Equation {
                 key = Equation.ExpressionType.cot.string
             }
             return [key : trigonometricFunc.items.map { equationToJson(equation: $0) }]
+        } else if let integral = equation as? Equation.Integral {
+            return [Equation.ExpressionType.integral.string : integral.items.map { equationToJson(equation: $0) }]
         } else if let mathOperator = equation as? Equation.Operator {
             return [Equation.ExpressionType.mathOperator.string: mathOperator.type.string ]
         } else if let text = equation as? Equation.Text {
@@ -1063,6 +1065,9 @@ extension Equation {
             return Equation.TrigonometricFunc(type: .tan, items: tan.map { JSONToEquation(json: $0)})
         } else if let cot = json[Equation.ExpressionType.cot.string] as? [[String : Any]] {
             return Equation.TrigonometricFunc(type: .cot, items: cot.map { JSONToEquation(json: $0)})
+        } else if let integral = json[Equation.ExpressionType.integral.string] as? [[String : Any]] {
+            guard integral.count == 1 else { return Equation.Integral() }
+            return Equation.Integral(items: integral.map { JSONToEquation(json: $0)})
         } else if let componentBrackets = json[Equation.ExpressionType.brackets.string] as? [[String : Any]] {
             let brackets = Equation.Component(items: componentBrackets.map { JSONToEquation(json: $0)})
             brackets.showBrackets = true

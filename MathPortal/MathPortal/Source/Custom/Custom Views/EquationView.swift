@@ -58,7 +58,7 @@ extension EquationView {
         var currentType: Equation.ExpressionType = type
         if brackets {
             currentType = .brackets
-            newView = addBrackets(to: newView, withScale: scale, andColor: color)
+            newView = addBrackets(to: newView, withScale: scale, andColor: color, backgroundColor: selectedColor)
         }
         
         newView.backgroundColor = selectedColor
@@ -149,7 +149,7 @@ extension EquationView {
             let fractionView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: wholeWidth, height: y))
             allViews.forEach { fractionView.addSubview($0) }
             if brackets {
-                return addBrackets(to: fractionView, withScale: scale, andColor: color)
+                return addBrackets(to: fractionView, withScale: scale, andColor: color, backgroundColor: selectedColor)
             } else {
                 return fractionView
             }
@@ -170,7 +170,7 @@ extension EquationView {
         let rootView = RootView(rootIndex: rootIndexView, theOtherView: radicandView, radicandHorizontalOffset: radicand.verticalOffset, scale: scale, strokeColor: color)
         
         if brackets {
-            return EquationView(view: addBrackets(to: rootView, withScale: scale, andColor: color), verticalOffset: rootView.offset, type: .root)
+            return EquationView(view: addBrackets(to: rootView, withScale: scale, andColor: color, backgroundColor: selectedColor), verticalOffset: rootView.offset, type: .root)
         } else {
             rootView.backgroundColor = selectedColor
             return EquationView(view: rootView, verticalOffset: rootView.offset, type: .root)
@@ -179,16 +179,17 @@ extension EquationView {
     
     static func generateIntegral(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         guard  inputViews.count == 1 else { return .Nil }
+        let base = inputViews[0]
         guard let baseView = inputViews.first?.view else { return .Nil}
         
-        let integralView = IntegralView(base: baseView)
+        let integralView = IntegralView(base: baseView, verticalOffset: base.verticalOffset)
         
         // TODO: add offset
         if brackets {
-            return EquationView(view: addBrackets(to: integralView, withScale: scale, andColor: color), verticalOffset: integralView.bounds.height/2, type: .integral)
+            return EquationView(view: addBrackets(to: integralView, withScale: scale, andColor: color, backgroundColor: selectedColor), verticalOffset: integralView.verticalOffset, type: .integral)
         } else {
             integralView.backgroundColor = selectedColor
-            return EquationView(view: integralView, verticalOffset: 0, type: .integral)
+            return EquationView(view: integralView, verticalOffset: integralView.verticalOffset, type: .integral)
         }
     }
     
@@ -289,10 +290,11 @@ extension EquationView {
         }
         return (height: offsetBottom + offsetTop, offset: offsetTop)
     }
-    static private func addBrackets(to view: UIView, withScale scale: CGFloat, andColor color: UIColor) -> BracketsView {
+    static private func addBrackets(to view: UIView, withScale scale: CGFloat, andColor strokeColor: UIColor, backgroundColor: UIColor) -> BracketsView {
         let viewWithBrackets = BracketsView(viewInBrackets: view)
-        viewWithBrackets.strokeColor = color
+        viewWithBrackets.strokeColor = strokeColor
         viewWithBrackets.scale = scale
+        viewWithBrackets.backgroundColor = backgroundColor
         return viewWithBrackets
     }
 }

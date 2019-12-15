@@ -14,6 +14,7 @@ class BracketsView: UIView {
     private(set) var viewInBrackets: UIView = UIView(frame: .zero)
     private(set) var viewHeight: CGFloat = 0
     
+    
     // computed
     private var path: UIBezierPath?
     private var viewWidth: CGFloat = 0
