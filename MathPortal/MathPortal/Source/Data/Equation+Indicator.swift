@@ -62,7 +62,6 @@ extension Equation {
                     component.items[currentOffset].color = defaultColor
                     
                     // if component has only one element and there are no brackets go out another level
-                    // Note: have no Idea when that case happens
                     if component.items.count == 1, component.showBrackets == false, (component is Integral) == false, (component is TrigonometricFunc) == false {
                         levelOut()
                     }
