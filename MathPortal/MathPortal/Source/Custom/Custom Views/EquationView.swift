@@ -177,6 +177,21 @@ extension EquationView {
         }        
     }
     
+    static func generateIntegral(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
+        guard  inputViews.count == 1 else { return .Nil }
+        guard let baseView = inputViews.first?.view else { return .Nil}
+        
+        let integralView = IntegralView(base: baseView)
+        
+        // TODO: add offset
+        if brackets {
+            return EquationView(view: addBrackets(to: integralView, withScale: scale, andColor: color), verticalOffset: integralView.bounds.height/2, type: .integral)
+        } else {
+            integralView.backgroundColor = selectedColor
+            return EquationView(view: integralView, verticalOffset: 0, type: .integral)
+        }
+    }
+    
     static func generateExponentAndIndex (_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         
         guard inputViews.count > 1 else { return .Nil }

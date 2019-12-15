@@ -29,6 +29,7 @@ class Equation {
         case cos
         case tan
         case cot
+        case integral
         
         // For converting to JSON
         var string: String {
@@ -50,6 +51,7 @@ class Equation {
             case .cos: return "cos"
             case .tan: return "tan"
             case .cot: return "cot"
+            case .integral: return "integral"
             }
         }
         
@@ -165,6 +167,7 @@ class Equation {
         case .limit:
             break
         case .integral:
+            currentIndicator.addComponent(Integral(), brackets: false)
             break
         case .lessThan:
             currentIndicator.addString("<")
@@ -342,7 +345,7 @@ extension Equation {
         }
     }
     
-    //Mark: - Root
+    // MARK: - Root
     
     class Root: Component {
         override var scale: CGFloat {
@@ -817,7 +820,6 @@ extension Equation {
         init(type: FunctionType, angle: Expression, index: Expression? ) {
             super.init()
             self.angle = angle
-            //if let index = index { self.index = index }
             functionType = type
             
         }
@@ -835,12 +837,60 @@ extension Equation {
             guard let expression = expression else { return }
             if offset == 0 {
                 angle = expression
-            } else if offset == 1 {
-                //index = expression
             }
         }
         override func generateView() -> EquationView {
             return EquationView.generateFunction(items.map { $0.generateView()}, selectedColor: color, scale: scale, type: functionType.expressionType, brackets: showBrackets)
+        }
+    }
+    
+    // MARK: - Integral
+    
+    class Integral: Component {
+        override var scale: CGFloat {
+            didSet {
+                refreshScalesInComponent()
+            }
+        }
+        override func refreshScalesInComponent() {
+            guard scale >= 0.5 else { scale = 0.5; return}
+            if base is Empty {
+                base.scale = self.scale
+            }
+        }
+        var base: Expression {
+            get { return items[0]}
+            set {
+                newValue.parent = self
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[0] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }
+            }
+        }
+        
+        init(base: Expression?) {
+            super.init()
+            self.base = base ?? Empty()
+        }
+       
+        override convenience init() {
+            self.init(base: Empty())
+        }
+        override func generateView() -> EquationView {
+            return EquationView.generateIntegral(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: showBrackets)
         }
     }
     // MARK: - Empty

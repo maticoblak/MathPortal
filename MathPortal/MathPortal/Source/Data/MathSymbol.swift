@@ -51,18 +51,18 @@ extension MathSymbol {
         case cos
         case tan
         case cot
-        case naturalLog
         case logarithm
-        case limit
-        
-        case integral
         case indexAndExponent
         case index
         case lessThan
         case greaterThan
         case faculty
+        
+        case limit
+        case integral
         case degree
         case absoluteValue
+        case naturalLog
         
 
         static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
@@ -165,7 +165,8 @@ extension MathSymbol {
             case .limit:
                 return EquationView.Nil.view
             case .integral:
-                return EquationView.Nil.view
+                guard let integral =  EquationView.generateIntegral([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return  EquationView.Nil.view }
+                return integral
             case .lessThan:
                 guard let lessThan: UIView = EquationView.generateText(value: "<", color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return lessThan
