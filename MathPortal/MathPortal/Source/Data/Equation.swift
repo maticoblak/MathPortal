@@ -462,14 +462,16 @@ extension Equation {
                     newValue.scale = self.scale
                     items.append(newValue)
                 } else if items[0] is Empty {
-                    if let newValue = newValue as? Component {
-                        newValue.showBrackets = true
+                   if let newValue = newValue as? Component, newValue.showBrackets == true {
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
                         newComponent.scale = self.scale
                         newValue.parent = newComponent
+                        if let newValue = newValue as? Component, newValue.showBrackets == false {
+                            newComponent.showBrackets = true
+                        }
                         items[0] = newComponent
                     }
                 } else {

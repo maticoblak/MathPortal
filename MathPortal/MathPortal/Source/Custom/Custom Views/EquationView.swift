@@ -35,6 +35,7 @@ class EquationView {
 
 extension EquationView {
     
+    // MARK: - Linear layout
     static func linearlyLayoutViews(_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Bool, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let equationViews: [EquationView] = inputViews
         
@@ -73,6 +74,7 @@ extension EquationView {
 
 extension EquationView {
     
+    // MARK: Operator view
     static func generateOperator(_ operatorType: Equation.Operator.OperatorType, backgroundColor: UIColor = Equation.defaultColor, scale: CGFloat = 1, color: UIColor = UIColor.black) -> EquationView {
         let label = UILabel(frame: .zero)
         label.text = operatorType.string
@@ -85,7 +87,7 @@ extension EquationView {
         return EquationView(view: label, type: .mathOperator)
     }
 
-    
+    // MARK: Text view
     static func generateText(value: String, textRange: NSRange? = nil, backgroundColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1) -> EquationView {
         let label = UILabel(frame: .zero)
         let attributed = NSMutableAttributedString(string: value)
@@ -103,6 +105,7 @@ extension EquationView {
         return EquationView(view: label, type: .text)
     }
     
+    // MARK: Empty view
     static func generateEmpty(backgroundColor: UIColor = Equation.defaultColor, squareColor: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let squareViewHeight = 20*scale
         let squareRectOffset = 2*scale
@@ -120,6 +123,7 @@ extension EquationView {
         return EquationView(view: square, type: .empty)
     }
     
+    // MARK: Fraction view
     static func generateFraction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         guard inputViews.count == 2 else { return .Nil } // Must have 2 views
         
@@ -161,6 +165,7 @@ extension EquationView {
         return EquationView(view: view, verticalOffset: fractionLineView.center.y, type: .fraction)
     }
     
+    // MARK: Root view
     static func generateRoot(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         guard inputViews.count == 2 else { return .Nil}
         let radicand = inputViews[1]
@@ -177,15 +182,15 @@ extension EquationView {
         }        
     }
     
+    // MARK: Integral view
     static func generateIntegral(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         guard  inputViews.count == 1 else { return .Nil }
         let base = inputViews[0]
-        print(base.verticalOffset)
         guard let baseView = inputViews.first?.view else { return .Nil}
         
         let integralView = IntegralView(base: baseView, verticalOffset: base.verticalOffset)
         print(integralView.verticalOffset)
-        // TODO: add offset
+        
         if brackets {
             return EquationView(view: addBrackets(to: integralView, withScale: scale, andColor: color, backgroundColor: selectedColor), verticalOffset: integralView.verticalOffset, type: .integral)
         } else {
@@ -194,6 +199,7 @@ extension EquationView {
         }
     }
     
+    // MARK: Exponent and Index view
     static func generateExponentAndIndex (_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
         
         guard inputViews.count > 1 else { return .Nil }
@@ -243,12 +249,13 @@ extension EquationView {
         }
     }
     
+    // MARK: Function view
     static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Bool = false) -> EquationView {
         guard inputViews.count > 0 else { return .Nil }
         
         let text: String? = type.symbol
         
-        var textView: EquationView = {
+        let textView: EquationView = {
             let label = UILabel(frame: .zero)
             label.text = text
             label.font = label.font.withSize(17*scale)
