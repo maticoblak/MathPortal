@@ -51,8 +51,6 @@ class IntegralView: UIView {
     }
     private func refreshPath() {
 
-        
-        
         path = {
             let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: integralWidth, y: capHeight), size: CGSize(width: 0, height: 0)))
             path.addQuadCurve(to: CGPoint(x: integralWidth/2, y: capHeight), controlPoint: CGPoint(x: integralWidth - integralWidth/4 - 2, y: 0))

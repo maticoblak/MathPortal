@@ -886,6 +886,14 @@ extension Equation {
             self.base = base ?? Empty()
         }
        
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
+            guard let offset = offset, offset < 1 else { return }
+            guard let expression = expression else { return }
+            if offset == 0 {
+                base = expression
+            }
+        }
+        
         override convenience init() {
             self.init(base: Empty())
         }
