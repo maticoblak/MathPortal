@@ -74,6 +74,7 @@ class IntegralView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
+        super.draw(rect)
         strokeColor.setStroke()
         path?.lineWidth = CGFloat(scale)
         path?.stroke()
