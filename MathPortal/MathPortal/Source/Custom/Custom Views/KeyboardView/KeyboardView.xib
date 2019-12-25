@@ -22,6 +22,8 @@
                 <outlet property="functionsKeyboardButtonView" destination="XLG-Kl-P5t" id="R44-GI-I8S"/>
                 <outlet property="functionsSecondRow" destination="ldM-Ak-KDo" id="Yqs-yg-iCx"/>
                 <outlet property="functionsThirdRow" destination="A33-BX-0Qv" id="Utc-Yk-Juc"/>
+                <outlet property="greekLettersButton" destination="mwt-B4-eoT" id="qoG-Qw-9zn"/>
+                <outlet property="greekLettersButtonWidth" destination="lnI-69-hl9" id="PkJ-Bw-VUU"/>
                 <outlet property="inButton" destination="doh-Ta-glC" id="CHY-xq-0gP"/>
                 <outlet property="keyboardView" destination="mwd-Pu-T6t" id="ljN-te-1eW"/>
                 <outlet property="leftButton" destination="30g-4Q-vRS" id="VqL-gn-g2m"/>
@@ -44,6 +46,8 @@
                 <outlet property="secondRow" destination="dUf-WB-BGg" id="ytn-yf-FQJ"/>
                 <outlet property="spaceButton" destination="a8W-NX-yxg" id="aCm-gL-uYD"/>
                 <outlet property="thirdRow" destination="qRz-Vw-TA8" id="z10-6W-zlJ"/>
+                <outlet property="upperLettersButton" destination="yak-Jj-Zsu" id="omO-db-bo3"/>
+                <outlet property="upperLettersButtonWidth" destination="piW-1P-kRp" id="kjl-Az-Pyw"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -343,17 +347,45 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bgP-0s-8Gx">
                             <rect key="frame" x="0.0" y="151.5" width="453" height="70.5"/>
                             <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yak-Jj-Zsu" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="46" height="70.5"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="46" id="piW-1P-kRp"/>
+                                    </constraints>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" image="capsLockOn"/>
+                                    <connections>
+                                        <action selector="switchUppercase:" destination="-1" eventType="touchUpInside" id="vav-gn-Rzx"/>
+                                    </connections>
+                                </button>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qRz-Vw-TA8">
-                                    <rect key="frame" x="0.0" y="0.0" width="453" height="70.5"/>
+                                    <rect key="frame" x="51" y="0.0" width="351" height="70.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mwt-B4-eoT" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                    <rect key="frame" x="407" y="0.0" width="46" height="70.5"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="46" id="lnI-69-hl9"/>
+                                    </constraints>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <state key="normal" title="Ααβ"/>
+                                    <connections>
+                                        <action selector="switchLettersKeyboard:" destination="-1" eventType="touchUpInside" id="4up-Q2-QWl"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="qRz-Vw-TA8" secondAttribute="trailing" id="UC3-an-4ID"/>
+                                <constraint firstItem="qRz-Vw-TA8" firstAttribute="leading" secondItem="yak-Jj-Zsu" secondAttribute="trailing" constant="5" id="0pV-9s-d74"/>
+                                <constraint firstAttribute="bottom" secondItem="yak-Jj-Zsu" secondAttribute="bottom" id="JgK-jm-coc"/>
+                                <constraint firstItem="yak-Jj-Zsu" firstAttribute="leading" secondItem="bgP-0s-8Gx" secondAttribute="leading" id="Ljc-UH-MLh"/>
+                                <constraint firstAttribute="trailing" secondItem="mwt-B4-eoT" secondAttribute="trailing" id="VLq-Fs-HwS"/>
+                                <constraint firstItem="mwt-B4-eoT" firstAttribute="top" secondItem="bgP-0s-8Gx" secondAttribute="top" id="Yv3-ED-awU"/>
                                 <constraint firstItem="qRz-Vw-TA8" firstAttribute="top" secondItem="bgP-0s-8Gx" secondAttribute="top" id="btX-CX-jYy"/>
+                                <constraint firstItem="yak-Jj-Zsu" firstAttribute="top" secondItem="bgP-0s-8Gx" secondAttribute="top" id="gO8-q0-vhQ"/>
                                 <constraint firstAttribute="bottom" secondItem="qRz-Vw-TA8" secondAttribute="bottom" id="voW-Ru-LAa"/>
-                                <constraint firstItem="qRz-Vw-TA8" firstAttribute="leading" secondItem="bgP-0s-8Gx" secondAttribute="leading" id="zKC-fj-PrA"/>
+                                <constraint firstAttribute="bottom" secondItem="mwt-B4-eoT" secondAttribute="bottom" id="wR8-Fr-1rL"/>
+                                <constraint firstItem="mwt-B4-eoT" firstAttribute="leading" secondItem="qRz-Vw-TA8" secondAttribute="trailing" constant="5" id="zZU-6C-R7N"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -417,4 +449,7 @@
             <point key="canvasLocation" x="302.17391304347831" y="-244.75446428571428"/>
         </view>
     </objects>
+    <resources>
+        <image name="capsLockOn" width="25" height="25"/>
+    </resources>
 </document>

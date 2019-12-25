@@ -32,6 +32,7 @@ extension MathSymbol {
         case space
         case enter
         
+        
         case plus
         case minus
         case equal
@@ -57,9 +58,9 @@ extension MathSymbol {
         case lessThan
         case greaterThan
         case faculty
+        case integral
         
         case limit
-        case integral
         case degree
         case absoluteValue
         case naturalLog
@@ -67,7 +68,9 @@ extension MathSymbol {
 
         static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
         static var letters: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
-        static var greekLetters: [SymbolType] = Array("ΑαΒβΓγΔδΕεΖζΗηΘθΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσΤτΥυΦφΧχΨψΩω").map { .letter(value: String($0)) }
+        static var lettersUppercase: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0).uppercased()) }
+        static var greekLetters: [SymbolType] = Array("αβγδεζηθικλμνξοπρστυφχψω").map { .letter(value: String($0)) }
+        static var greekLettersUppercase: [SymbolType] = Array("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ").map { .letter(value: String($0)) }
         
         var componentView: UIView? {
             switch self {

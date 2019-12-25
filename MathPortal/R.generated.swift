@@ -16,7 +16,7 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
   
-  /// This `R.image` struct is generated, and contains static references to 23 images.
+  /// This `R.image` struct is generated, and contains static references to 25 images.
   struct image {
     /// Image `BackIcon`.
     static let backIcon = Rswift.ImageResource(bundle: R.hostingBundle, name: "BackIcon")
@@ -30,6 +30,10 @@ struct R: Rswift.Validatable {
     static let boyColor = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyColor")
     /// Image `boyWhite`.
     static let boyWhite = Rswift.ImageResource(bundle: R.hostingBundle, name: "boyWhite")
+    /// Image `capsLockOff`.
+    static let capsLockOff = Rswift.ImageResource(bundle: R.hostingBundle, name: "capsLockOff")
+    /// Image `capsLockOn`.
+    static let capsLockOn = Rswift.ImageResource(bundle: R.hostingBundle, name: "capsLockOn")
     /// Image `editProfile`.
     static let editProfile = Rswift.ImageResource(bundle: R.hostingBundle, name: "editProfile")
     /// Image `edit`.
@@ -93,6 +97,16 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "boyWhite", bundle: ..., traitCollection: ...)`
     static func boyWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.boyWhite, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "capsLockOff", bundle: ..., traitCollection: ...)`
+    static func capsLockOff(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.capsLockOff, compatibleWith: traitCollection)
+    }
+    
+    /// `UIImage(named: "capsLockOn", bundle: ..., traitCollection: ...)`
+    static func capsLockOn(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.capsLockOn, compatibleWith: traitCollection)
     }
     
     /// `UIImage(named: "edit", bundle: ..., traitCollection: ...)`
@@ -342,10 +356,15 @@ struct R: Rswift.Validatable {
 struct _R: Rswift.Validatable {
   static func validate() throws {
     try storyboard.validate()
+    try nib.validate()
   }
   
-  struct nib {
-    struct _KeyboardView: Rswift.NibResourceType {
+  struct nib: Rswift.Validatable {
+    static func validate() throws {
+      try _KeyboardView.validate()
+    }
+    
+    struct _KeyboardView: Rswift.NibResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let name = "KeyboardView"
       
@@ -363,6 +382,12 @@ struct _R: Rswift.Validatable {
       
       func thirdView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[2] as? UIKit.UIView
+      }
+      
+      static func validate() throws {
+        if UIKit.UIImage(named: "capsLockOn", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'capsLockOn' is used in nib 'KeyboardView', but couldn't be loaded.") }
+        if #available(iOS 11.0, *) {
+        }
       }
       
       fileprivate init() {}

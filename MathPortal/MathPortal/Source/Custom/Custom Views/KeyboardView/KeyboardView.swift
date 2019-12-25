@@ -21,6 +21,15 @@ class KeyboardView: UIView {
         case functions
     }
     
+    enum LetterKeyboard {
+        case normal
+        case greek
+    }
+    
+    enum LetterKeyboardType {
+        case uppercase
+        case lowercase
+    }
     
     @IBOutlet private var contentView: UIView?
     
@@ -60,6 +69,22 @@ class KeyboardView: UIView {
     @IBOutlet private var firstRow: UIStackView?
     @IBOutlet private var secondRow: UIStackView?
     @IBOutlet private var thirdRow: UIStackView?
+    @IBOutlet private var upperLettersButton: KeyboardButton?
+    @IBOutlet private var greekLettersButton: KeyboardButton?
+    @IBOutlet private var upperLettersButtonWidth: NSLayoutConstraint?
+    @IBOutlet private var greekLettersButtonWidth: NSLayoutConstraint?
+    
+    private var letterKeyboard: LetterKeyboard = .normal {
+        didSet {
+            switchLetterKeyboard()
+        }
+    }
+    
+    private var letterKeyboardType: LetterKeyboardType = .lowercase {
+        didSet {
+            switchLetterKeyboard()
+        }
+    }
     
     // MARK: Keyboard with functions
     @IBOutlet private var functionsKeyboard: UIView?
@@ -105,7 +130,9 @@ class KeyboardView: UIView {
             guard let firstRow = firstRow else { return }
             let contentInset = (((self.bounds.width + firstRow.spacing) / CGFloat(firstRow.arrangedSubviews.count)) - firstRow.spacing)/2
             secondRow?.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: contentInset, bottom: 0, trailing:  contentInset)
-            thirdRow?.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 3*contentInset + firstRow.spacing, bottom: 0, trailing: 3*contentInset + firstRow.spacing)
+
+            greekLettersButtonWidth?.constant = 3*contentInset
+            upperLettersButtonWidth?.constant = 3*contentInset
             rightSideNumbersWidthConstraint?.constant = 2*self.bounds.width/5
             previousFrame = self.frame
         }
@@ -121,6 +148,17 @@ class KeyboardView: UIView {
         default: return
         }
     }
+    
+    
+    
+    @IBAction func switchUppercase(_ sender: Any) {
+        letterKeyboardType = letterKeyboardType == .lowercase ? .uppercase : .lowercase
+    }
+    
+    @IBAction func switchLettersKeyboard(_ sender: Any) {
+        letterKeyboard = letterKeyboard == .normal ? .greek : .normal
+    }
+    
     
     private func changeKeyboard() {
         [functionsKeyboard, numberKeyboard, lettersKeyboard].forEach { $0?.isHidden = true }
@@ -167,19 +205,41 @@ class KeyboardView: UIView {
     }
 }
 
-// MARK: - custom layout setup
+// MARK: - Custom layout setup
 
 extension KeyboardView {
     
     private func setupLettersKeyboard() {
+        
+        [greekLettersButton, upperLettersButton].forEach { button in
+            button?.backgroundColor = Color.lightGrey
+            button?.tintColor = Color.darkBlue
+            button?.layer.cornerRadius = 5
+        }
+        switchLetterKeyboard()
+        addKeyboard(lettersKeyboard)
+    }
+    
+    func switchLetterKeyboard() {
+        let rows: [UIStackView?] = [firstRow, secondRow, thirdRow]
+        rows.forEach { row in
+            row?.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        }
+        
         let buttons: [[MathSymbol.SymbolType]] = {
-            let letters = MathSymbol.SymbolType.letters
+            let letters: [MathSymbol.SymbolType]
+            switch letterKeyboard {
+            case .normal:
+                letters = letterKeyboardType == .lowercase ? MathSymbol.SymbolType.letters : MathSymbol.SymbolType.lettersUppercase
+            case.greek:
+                letters = letterKeyboardType == .lowercase ? MathSymbol.SymbolType.greekLetters : MathSymbol.SymbolType.greekLettersUppercase
+            }
+            
             return [ Array(letters[0..<10]),  Array(letters[10..<19]),  Array(letters[19..<letters.count])]
         }()
         
-        let rows: [UIStackView?] = [firstRow, secondRow, thirdRow]
         rows.forEach { row in
-            row?.distribution = UIStackView.Distribution.fillEqually
+            row?.distribution = .fillEqually
             row?.isLayoutMarginsRelativeArrangement = true
         }
         
@@ -192,7 +252,6 @@ extension KeyboardView {
             }
         }
         
-        addKeyboard(lettersKeyboard)
     }
     
     private func setupNumbersKeyboard() {
@@ -268,6 +327,6 @@ extension KeyboardView {
         }
         functionsKeyboardButton?.setTitle("f(x)", for: .normal)
         numbersKeyboardButton?.setTitle("123", for: .normal)
-        lettersKeyboardButton?.setTitle("ABc", for: .normal)
+        lettersKeyboardButton?.setTitle("Abγ", for: .normal)
     }
 }
