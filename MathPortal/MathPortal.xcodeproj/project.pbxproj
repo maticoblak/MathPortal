@@ -38,6 +38,7 @@
 		C06D3038236600BB0061CAE7 /* KeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06D3037236600BB0061CAE7 /* KeyboardButton.swift */; };
 		C06F562822EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06F562722EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift */; };
 		C06F562C22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C06F562B22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib */; };
+		C072FD3723B4C6240009750B /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C072FD3623B4C6240009750B /* ArrowView.swift */; };
 		C0744237231AB8E000B2F2AA /* TaskSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0744236231AB8E000B2F2AA /* TaskSolution.swift */; };
 		C074423A231BDEC500B2F2AA /* CreatedTasksViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0744239231BDEC500B2F2AA /* CreatedTasksViewController.storyboard */; };
 		C074423D231BE12C00B2F2AA /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074423C231BE12C00B2F2AA /* LoginOrRegisterViewController.swift */; };
@@ -153,6 +154,7 @@
 		C06D3037236600BB0061CAE7 /* KeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButton.swift; sourceTree = "<group>"; };
 		C06F562722EDDC7F008B19B9 /* TaskViewControllerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewControllerTableViewCell.swift; sourceTree = "<group>"; };
 		C06F562B22F466F9008B19B9 /* TaskViewControllerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskViewControllerTableViewCell.xib; sourceTree = "<group>"; };
+		C072FD3623B4C6240009750B /* ArrowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		C0744236231AB8E000B2F2AA /* TaskSolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSolution.swift; sourceTree = "<group>"; };
 		C0744239231BDEC500B2F2AA /* CreatedTasksViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreatedTasksViewController.storyboard; sourceTree = "<group>"; };
 		C074423C231BE12C00B2F2AA /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
 				C08174762346214C00768A6E /* SolutionView.swift */,
 				C0E606FB23544C320050EA80 /* GradientView.swift */,
+				C072FD3623B4C6240009750B /* ArrowView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -925,6 +928,7 @@
 				C08E638F2271B27C00416D19 /* ExtrasUIView+Frame.swift in Sources */,
 				C06D3038236600BB0061CAE7 /* KeyboardButton.swift in Sources */,
 				C0BD61E1226485E100E48081 /* TaskViewController.swift in Sources */,
+				C072FD3723B4C6240009750B /* ArrowView.swift in Sources */,
 				C08E63902271B27C00416D19 /* ExtrasUIView+ApplyText.swift in Sources */,
 				C0662E152323F0FC0088AD15 /* CustomButton.swift in Sources */,
 				C00C922622DB9D360068A3EE /* ProfileImagesCollectionViewCell.swift in Sources */,

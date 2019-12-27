@@ -18,6 +18,14 @@ extension Equation {
             self.expression = expression
         }
         
+        private func isFunction(_ component: Component) -> Bool {
+            if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit) {
+                return true
+            } else {
+                return false
+            }
+        }
+        
         func levelIn() {
             if let component = expression as? Component {
                 guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
@@ -72,7 +80,7 @@ extension Equation {
             if let component = expression as? Component {
                 
                 // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
-                if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral), offset == component.items.count - 1 {
+                if isFunction(component), offset == component.items.count - 1 {
                     levelOut()
                 // if component only has Empty expression in items - don't want to be in front or behinde it
                 } else if component.items.count == 1, component.items.first is Empty {
@@ -117,7 +125,7 @@ extension Equation {
         func back() {
             if let component = expression as? Component {
                 // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
-                if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral) , offset == 0 {
+                if isFunction(component), offset == 0 {
                     levelOut()
                 // if component only has Empty expression in items - don't want to be in front or behinde it
                 } else if component.items.count == 1, component.items.first is Empty {
@@ -191,7 +199,7 @@ extension Equation {
                 // the indicator is on empty field
                 } else if component.items[offset] is Empty {
                     // if the componet is special component
-                    if component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral {
+                    if isFunction(component) {
                         component.addValue(expression: textValue, offset: offset)
                         levelIn()
                         forward()
@@ -200,7 +208,7 @@ extension Equation {
                         forward()
                     }
                 } else {
-                    guard (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is Integral) == false else { return }
+                    guard isFunction(component) == false else { return }
                     // TODO: What happens if you want to add text in the middle
                 }
             } else if let text = expression as? Text {
@@ -236,7 +244,7 @@ extension Equation {
                     operatorAtIndex.type = operatorType
                 // if the indicator is on empty field
                 } else if component.items[offset] is Empty {
-                    if component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral {
+                    if isFunction(component) {
                         component.addValue(expression: newOperator, offset: offset)
                         levelIn()
                         forward()
@@ -248,7 +256,7 @@ extension Equation {
                 //right now if the expression before the indicator is not an operator the operator is added
                 } else if  offset > 0, (component.items[offset - 1] is Operator) == false {
                     // We dont want to add an item in the special component, because they have a specific number of components (fraction: enumerator, denominator)
-                    guard (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral) == false else { return }
+                    guard isFunction(component) == false else { return }
                     component.items.insert(newOperator, at: offset)
                     forward()
                 }
@@ -302,7 +310,7 @@ extension Equation {
                 } else if offset < 0 {
                     component.items.insert(newComponent, at: 0)
                 } else if component.items[offset] is Empty  {
-                    if component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral {
+                    if isFunction(component) {
                         component.addValue(expression: newComponent, offset: offset)
                         newComponent.scale = adjustScale(expression: newComponent)
                         levelIn()
@@ -311,7 +319,7 @@ extension Equation {
                         
                     }
                 } else {
-                    guard (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral) == false else { return }
+                    guard isFunction(component) == false else { return }
                     component.items[offset].color = defaultColor
                     component.items.insert(newComponent, at: offset)
                 }
@@ -337,7 +345,7 @@ extension Equation {
 
         func delete() {
             if let component = expression as? Component {
-                if component is Root || component is Fraction || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral {
+                if isFunction(component) {
                     component.delete(offset: offset)
                     component.items[offset].color = selectedColor
 

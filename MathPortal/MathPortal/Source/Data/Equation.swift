@@ -30,6 +30,7 @@ class Equation {
         case tan
         case cot
         case integral
+        case limit
         
         // For converting to JSON
         var string: String {
@@ -52,6 +53,7 @@ class Equation {
             case .tan: return "tan"
             case .cot: return "cot"
             case .integral: return "integral"
+            case .limit: return "limit"
             }
         }
         
@@ -59,7 +61,6 @@ class Equation {
         var symbol: String? {
             switch self {
             case .logarithm: return "log"
-            case .naturalLog: return "ln"
             case .sin: return "sin"
             case .cos: return "cos"
             case .tan: return "tan"
@@ -162,9 +163,8 @@ class Equation {
         case .cot:
             currentIndicator.addComponent(TrigonometricFunc(type: .cot), brackets: false)
             break
-        case .naturalLog:
-            break
         case .limit:
+            currentIndicator.addComponent(Limit(), brackets: false)
             break
         case .integral:
             currentIndicator.addComponent(Integral(), brackets: false)
@@ -735,6 +735,137 @@ extension Equation {
         }
     }
     
+    // MARK: - Limit
+    
+    class Limit: Component {
+        override var scale: CGFloat {
+            didSet {
+                refreshScalesInComponent()
+            }
+        }
+        // TODO: Check/set scale in scale's didSet
+        override func refreshScalesInComponent() {
+            guard scale >= 0.5 else { scale = 0.5; return}
+            if base is Empty {
+                base.scale = self.scale
+            }
+            
+            if variable is Empty {
+                variable.scale = self.scale * 0.7
+            }
+            
+            if limitValue is Empty {
+                limitValue.scale = self.scale * 0.7
+            }
+        }
+        
+        var variable: Expression {
+            get { return items[0]}
+            set {
+                newValue.parent = self
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale * 0.7
+                    items.append(newValue)
+                } else if items[0] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[0], newValue])
+                    newComponent.showBrackets = true
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[0] = newComponent
+                }
+                
+            }
+        }
+        
+        var limitValue: Expression {
+            get { return items[1]}
+            set {
+                newValue.parent = self
+                if items.count < 2 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale * 0.7
+                    items.append(newValue)
+                } else if items[1] is Empty {
+                    let newComponent = Component(items: [newValue])
+                    newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                } else {
+                    let newComponent = Component(items: [items[1], newValue])
+                    newComponent.showBrackets = true
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[1] = newComponent
+                }
+            }
+        }
+        
+        var base: Expression {
+            get { return items[2]}
+            set {
+                newValue.parent = self
+                if items.count < 3 {
+                    guard newValue is Empty else { return }
+                    newValue.scale = self.scale
+                    items.append(newValue)
+                } else if items[2] is Empty {
+                    if let newValue = newValue as? Component {
+                        newValue.showBrackets = true
+                        items[2] = newValue
+                    } else {
+                        let newComponent = Component(items: [newValue])
+                        newComponent.parent = self
+                        newComponent.scale = self.scale
+                        newValue.parent = newComponent
+                        items[2] = newComponent
+                    }
+                } else {
+                    let newComponent = Component(items: [items[2], newValue])
+                    newComponent.showBrackets = true
+                    newComponent.parent = self
+                    newValue.parent = newComponent
+                    items[2] = newComponent
+                }
+            }
+        }
+        
+        init(base: Expression, variable: Expression, limitValue: Expression) {
+            super.init()
+            self.variable = variable
+            self.limitValue = limitValue
+            self.base = base
+        
+        }
+        
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
+            guard let offset = offset, offset < 3 else { return }
+            guard let expression = expression else { return }
+            if offset == 0 {
+                variable = expression
+            } else if offset == 1 {
+                limitValue = expression
+            } else if offset == 2 {
+                base = expression
+            }
+        }
+        
+        override convenience init() {
+            self.init(base: Empty(), variable: Empty(), limitValue: Empty())
+        }
+        
+        override func generateView() -> EquationView {
+            return EquationView.generateLimit(items.map { $0.generateView()}, selectedColor: color, scale: scale, brackets: showBrackets)
+        }
+    }
+    
     // MARK: - Trigonometric func
     class TrigonometricFunc: Component {
         enum FunctionType: String {
@@ -1014,6 +1145,8 @@ extension Equation {
                 key = Equation.ExpressionType.cot.string
             }
             return [key : trigonometricFunc.items.map { equationToJson(equation: $0) }]
+        } else if let limit = equation as? Equation.Limit {
+            return [Equation.ExpressionType.limit.string : limit.items.map { equationToJson(equation: $0) }]
         } else if let integral = equation as? Equation.Integral {
             return [Equation.ExpressionType.integral.string : integral.items.map { equationToJson(equation: $0) }]
         } else if let mathOperator = equation as? Equation.Operator {
@@ -1067,6 +1200,8 @@ extension Equation {
             return Equation.TrigonometricFunc(type: .tan, items: tan.map { JSONToEquation(json: $0)})
         } else if let cot = json[Equation.ExpressionType.cot.string] as? [[String : Any]] {
             return Equation.TrigonometricFunc(type: .cot, items: cot.map { JSONToEquation(json: $0)})
+        } else if let limit = json[Equation.ExpressionType.limit.string] as? [[String : Any]] {
+            return Equation.Limit(items: limit.map { JSONToEquation(json: $0) })
         } else if let integral = json[Equation.ExpressionType.integral.string] as? [[String : Any]] {
             guard integral.count == 1 else { return Equation.Integral() }
             return Equation.Integral(items: integral.map { JSONToEquation(json: $0)})

@@ -63,7 +63,7 @@ extension MathSymbol {
         case limit
         case degree
         case absoluteValue
-        case naturalLog
+
         
 
         static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
@@ -163,10 +163,9 @@ extension MathSymbol {
             case .cot:
                 guard let cot: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .cot).view else { return EquationView.Nil.view }
                 return cot
-            case .naturalLog:
-                return EquationView.Nil.view
             case .limit:
-                return EquationView.Nil.view
+                guard let limit: UIView = EquationView.generateLimit([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7),EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7),EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return EquationView.Nil.view }
+                return limit
             case .integral:
                 guard let integral =  EquationView.generateIntegral([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return  EquationView.Nil.view }
                 return integral

@@ -277,6 +277,35 @@ extension EquationView {
         functionView.view?.backgroundColor = selectedColor
         return functionView
     }
+    
+    // MARK: Limit view
+    static func generateLimit(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
+        guard inputViews.count == 3 else { return .Nil }
+        let base = inputViews[2]
+        let variable = inputViews[0]
+        let limit = inputViews[1]
+        let text: UILabel = {
+            let label = UILabel()
+            label.text = "lim"
+            label.font = label.font.withSize(17*scale)
+            label.textColor = color
+            label.sizeToFit()
+            return label
+        }()
+        
+        let bottomView = ArrowView(from: variable, to: limit, scale: scale*0.7)
+        
+        let limView: EquationView = {
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: max(text.bounds.width, bottomView.bounds.width), height: text.bounds.height + bottomView.bounds
+                .height))
+            text.frame.origin = CGPoint(x: view.bounds.width/2 - text.bounds.width/2, y: 0)
+            bottomView.frame.origin = CGPoint(x: view.bounds.width/2 - bottomView.bounds.width/2, y: text.bounds.height)
+            [text, bottomView].forEach { view.addSubview($0)}
+            view.backgroundColor = .clear
+            return EquationView(view: view, verticalOffset: text.center.y, type: .other)
+        }()
+        return linearlyLayoutViews([limView, base], type: .limit, selectedColor: selectedColor ,brackets: brackets, scale: scale)
+    }
 }
 
 
