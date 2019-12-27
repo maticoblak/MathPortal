@@ -173,10 +173,16 @@ class Equation {
             currentIndicator.addString("<")
         case .greaterThan:
             currentIndicator.addString(">")
+        case .lessOrEqualThen:
+            currentIndicator.addString("≤")
+        case .greaterOrEqualThen:
+            currentIndicator.addString("≥")
         case .faculty:
             currentIndicator.addString("!")
         case .degree:
             break
+        case .infinity:
+            currentIndicator.addString("∞")
         case .absoluteValue:
             break
         }

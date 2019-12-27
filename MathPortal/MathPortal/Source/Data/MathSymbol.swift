@@ -57,10 +57,13 @@ extension MathSymbol {
         case index
         case lessThan
         case greaterThan
+        case greaterOrEqualThen
+        case lessOrEqualThen
         case faculty
         case integral
-        
         case limit
+        case infinity
+        
         case degree
         case absoluteValue
 
@@ -102,10 +105,10 @@ extension MathSymbol {
                 guard let minus: UIView = EquationView.generateOperator( .minus, color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return minus
             case .back:
-                guard let back: UIView = EquationView.generateText(value: "<", color: Color.darkBlue).view else { return EquationView.Nil.view }
+                guard let back: UIView = EquationView.generateText(value: "←", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return back
             case .forward:
-                guard let forward: UIView = EquationView.generateText(value: ">", color: Color.darkBlue).view else { return EquationView.Nil.view }
+                guard let forward: UIView = EquationView.generateText(value: "→", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return forward
             case .delete:
                 guard let delete: UIView = EquationView.generateText(value: "Delete", color: Color.darkBlue).view else { return EquationView.Nil.view }
@@ -117,10 +120,10 @@ extension MathSymbol {
                 guard let integer: UIView = EquationView.generateText(value: String(value), color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return integer
             case .levelIn:
-                guard let levelIn: UIView = EquationView.generateText(value: "In", color: Color.darkBlue).view else { return EquationView.Nil.view }
+                guard let levelIn: UIView = EquationView.generateText(value: "↧", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return levelIn
             case .levelOut:
-                guard let levelOut: UIView = EquationView.generateText(value: "Out", color: Color.darkBlue).view else { return EquationView.Nil.view }
+                guard let levelOut: UIView = EquationView.generateText(value: "↥", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return levelOut
             case .indicator:
                 break
@@ -175,11 +178,20 @@ extension MathSymbol {
             case .greaterThan:
                 guard let greaterThan: UIView = EquationView.generateText(value: ">", color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return greaterThan
+            case .lessOrEqualThen:
+                guard let lessThan: UIView = EquationView.generateText(value: "≤", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return lessThan
+            case .greaterOrEqualThen:
+                guard let greaterThan: UIView = EquationView.generateText(value: "≥", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return greaterThan
             case .faculty:
                 guard let faculty: UIView = EquationView.generateText(value: "!", color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return faculty
             case .degree:
                 return EquationView.Nil.view
+            case .infinity:
+                guard let infinity: UIView = EquationView.generateText(value: "∞", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                return infinity
             case .absoluteValue:
                 return EquationView.Nil.view
             }
