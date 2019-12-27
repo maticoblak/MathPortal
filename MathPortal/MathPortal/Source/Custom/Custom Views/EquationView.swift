@@ -36,7 +36,7 @@ class EquationView {
 extension EquationView {
     
     // MARK: - Linear layout
-    static func linearlyLayoutViews(_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Bool, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
+    static func linearlyLayoutViews(_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Bool, isAbsoluteValue: Bool, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let equationViews: [EquationView] = inputViews
         
         let views: [UIView] = inputViews.compactMap { $0.view }
@@ -60,6 +60,11 @@ extension EquationView {
         if brackets {
             currentType = .brackets
             newView = addBrackets(to: newView, withScale: scale, andColor: color, backgroundColor: selectedColor)
+        }
+        
+        if isAbsoluteValue {
+            currentType = .absoluteValue
+            newView = addBrackets(to: newView, withScale: scale, andColor: color, backgroundColor: selectedColor, type: .absolute)
         }
         
         newView.backgroundColor = selectedColor
@@ -250,7 +255,7 @@ extension EquationView {
     }
     
     // MARK: Function view
-    static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Bool = false) -> EquationView {
+    static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Bool = false, absoluteValue: Bool = false) -> EquationView {
         guard inputViews.count > 0 else { return .Nil }
         
         let text: String? = type.symbol
@@ -271,7 +276,7 @@ extension EquationView {
             } else {
                 view = textView
             }
-            return linearlyLayoutViews([view, inputViews[0]], type: type, brackets: brackets, scale: scale)
+            return linearlyLayoutViews([view, inputViews[0]], type: type, brackets: brackets, isAbsoluteValue: absoluteValue, scale: scale)
         }()
         
         functionView.view?.backgroundColor = selectedColor
@@ -279,7 +284,7 @@ extension EquationView {
     }
     
     // MARK: Limit view
-    static func generateLimit(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false) -> EquationView {
+    static func generateLimit(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Bool = false, absoluteValue: Bool = false) -> EquationView {
         guard inputViews.count == 3 else { return .Nil }
         let base = inputViews[2]
         let variable = inputViews[0]
@@ -304,7 +309,7 @@ extension EquationView {
             view.backgroundColor = .clear
             return EquationView(view: view, verticalOffset: text.center.y, type: .other)
         }()
-        return linearlyLayoutViews([limView, base], type: .limit, selectedColor: selectedColor ,brackets: brackets, scale: scale)
+        return linearlyLayoutViews([limView, base], type: .limit, selectedColor: selectedColor ,brackets: brackets, isAbsoluteValue: absoluteValue, scale: scale)
     }
 }
 
@@ -327,8 +332,8 @@ extension EquationView {
         }
         return (height: offsetBottom + offsetTop, offset: offsetTop)
     }
-    static private func addBrackets(to view: UIView, withScale scale: CGFloat, andColor strokeColor: UIColor, backgroundColor: UIColor) -> BracketsView {
-        let viewWithBrackets = BracketsView(viewInBrackets: view)
+    static private func addBrackets(to view: UIView, withScale scale: CGFloat, andColor strokeColor: UIColor, backgroundColor: UIColor, type: Equation.Component.BracketsType = .normal) -> BracketsView {
+        let viewWithBrackets: BracketsView = BracketsView(viewInBrackets: view, type: type)
         viewWithBrackets.strokeColor = strokeColor
         viewWithBrackets.scale = scale
         viewWithBrackets.backgroundColor = backgroundColor

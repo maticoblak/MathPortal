@@ -15,6 +15,7 @@ class Equation {
         case text
         case mathOperator
         case brackets
+        case absoluteValue
         case component
         case fraction
         case root
@@ -24,13 +25,14 @@ class Equation {
         case logarithm
         case naturalLog
         case empty
-        case other
         case sin
         case cos
         case tan
         case cot
         case integral
         case limit
+        
+        case other // For views that make one of the above
         
         // For converting to JSON
         var string: String {
@@ -54,6 +56,7 @@ class Equation {
             case .cot: return "cot"
             case .integral: return "integral"
             case .limit: return "limit"
+            case .absoluteValue: return "absoluteValue"
             }
         }
         
@@ -108,7 +111,7 @@ class Equation {
         case .equal:
             currentIndicator.addOperator(.equal)
         case .brackets:
-            currentIndicator.addComponent(brackets: true)
+            currentIndicator.addComponent(brackets: .normal)
             break
         case .back:
             currentIndicator.back()
@@ -130,44 +133,41 @@ class Equation {
             // TODO: add actions for those
             break
         case .fraction:
-            currentIndicator.addComponent(Fraction(), brackets: false)
+            currentIndicator.addComponent(Fraction())
             break
         case .root:
-            currentIndicator.addComponent(Root(), brackets: false)
+            currentIndicator.addComponent(Root())
             break
         case .indexAndExponent:
-            currentIndicator.addComponent(IndexAndExponent(), brackets: false)
+            currentIndicator.addComponent(IndexAndExponent())
             break
         case .exponent:
-            currentIndicator.addComponent(Exponent(), brackets: false)
+            currentIndicator.addComponent(Exponent())
         case .index:
-            currentIndicator.addComponent(Index(), brackets: false)
+            currentIndicator.addComponent(Index())
             break
         case .logarithm:
-            currentIndicator.addComponent(Logarithm(), brackets: false)
-            break
-        case .greekLetter(let letter):
-            currentIndicator.addString(letter)
+            currentIndicator.addComponent(Logarithm())
             break
         case .percent:
             currentIndicator.addString("%")
         case .sin:
-            currentIndicator.addComponent(TrigonometricFunc(type: .sin), brackets: false)
+            currentIndicator.addComponent(TrigonometricFunc(type: .sin))
             break
         case .cos:
-            currentIndicator.addComponent(TrigonometricFunc(type: .cos), brackets: false)
+            currentIndicator.addComponent(TrigonometricFunc(type: .cos))
             break
         case .tan:
-            currentIndicator.addComponent(TrigonometricFunc(type: .tan), brackets: false)
+            currentIndicator.addComponent(TrigonometricFunc(type: .tan))
             break
         case .cot:
-            currentIndicator.addComponent(TrigonometricFunc(type: .cot), brackets: false)
+            currentIndicator.addComponent(TrigonometricFunc(type: .cot))
             break
         case .limit:
-            currentIndicator.addComponent(Limit(), brackets: false)
+            currentIndicator.addComponent(Limit())
             break
         case .integral:
-            currentIndicator.addComponent(Integral(), brackets: false)
+            currentIndicator.addComponent(Integral())
             break
         case .lessThan:
             currentIndicator.addString("<")
@@ -184,6 +184,7 @@ class Equation {
         case .infinity:
             currentIndicator.addString("∞")
         case .absoluteValue:
+            currentIndicator.addComponent(brackets: .absolute)
             break
         }
         
@@ -468,14 +469,14 @@ extension Equation {
                     newValue.scale = self.scale
                     items.append(newValue)
                 } else if items[0] is Empty {
-                   if let newValue = newValue as? Component, newValue.showBrackets == true {
+                   if let newValue = newValue as? Component, newValue.hasBrackets() == true {
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
                         newComponent.scale = self.scale
                         newValue.parent = newComponent
-                        if let newValue = newValue as? Component, newValue.showBrackets == false {
+                        if let newValue = newValue as? Component, newValue.hasBrackets() == false {
                             newComponent.showBrackets = true
                         }
                         items[0] = newComponent
@@ -563,14 +564,14 @@ extension Equation {
                     newValue.scale = self.scale
                     items.append(newValue)
                 } else if items[0] is Empty {
-                    if let newValue = newValue as? Component, newValue.showBrackets == true {
+                    if let newValue = newValue as? Component, newValue.hasBrackets() == true {
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
                         newComponent.scale = self.scale
                         newValue.parent = newComponent
-                        if let newValue = newValue as? Component, newValue.showBrackets == false {
+                        if let newValue = newValue as? Component, newValue.hasBrackets() == false {
                             newComponent.showBrackets = true
                         }
                         items[0] = newComponent
@@ -679,7 +680,9 @@ extension Equation {
                     items.append(newValue)
                 } else if items[0] is Empty {
                     if let newValue = newValue as? Component {
-                        newValue.showBrackets = true
+                        if newValue.hasBrackets() == false {
+                            newValue.showBrackets = true
+                        }
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
@@ -824,7 +827,9 @@ extension Equation {
                     items.append(newValue)
                 } else if items[2] is Empty {
                     if let newValue = newValue as? Component {
-                        newValue.showBrackets = true
+                        if newValue.hasBrackets() == false {
+                            newValue.showBrackets = true
+                        }
                         items[2] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
@@ -913,7 +918,9 @@ extension Equation {
                     items.append(newValue)
                 } else if items[0] is Empty {
                     if let newValue = newValue as? Component {
-                        newValue.showBrackets = true
+                        if newValue.hasBrackets() == false {
+                            newValue.showBrackets = true
+                        }
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
@@ -1049,7 +1056,27 @@ extension Equation {
     }
     // MARK: - Component
     class Component: Expression {
+        
+        
+        enum BracketsType {
+            case none
+            case normal
+            case absolute
+        }
+
+        func hasBrackets() -> Bool {
+            if showBrackets == true || isAbsoluteValue == true {
+                return true
+            } else {
+                return false
+                
+            }
+        }
+        
+        // TODO: replace brackets with enum type
         var showBrackets: Bool = false
+        var isAbsoluteValue: Bool = false
+      
         var items: [Expression] = [Expression]()
         override var scale: CGFloat {
             didSet {
@@ -1114,7 +1141,7 @@ extension Equation {
             if items.isEmpty {
                 return .Nil
             } else {
-                return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: showBrackets, scale: scale)
+                return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: showBrackets, isAbsoluteValue: isAbsoluteValue, scale: scale)
             }
         }
     }
@@ -1164,6 +1191,8 @@ extension Equation {
         } else if let component =  equation as? Equation.Component {
             if component.showBrackets {
                 return [Equation.ExpressionType.brackets.string : component.items.map { equationToJson(equation: $0) }]
+            } else if component.isAbsoluteValue {
+                return [Equation.ExpressionType.absoluteValue.string : component.items.map { equationToJson(equation: $0) }]
             } else {
                 return [Equation.ExpressionType.component.string : component.items.map { equationToJson(equation: $0) }]
             }
@@ -1215,6 +1244,10 @@ extension Equation {
             let brackets = Equation.Component(items: componentBrackets.map { JSONToEquation(json: $0)})
             brackets.showBrackets = true
             return brackets
+        } else if let absoluteValue = json[Equation.ExpressionType.absoluteValue.string] as? [[String : Any]] {
+            let component = Equation.Component(items: absoluteValue.map { JSONToEquation(json: $0)})
+            component.isAbsoluteValue = true
+            return component
         } else if let component = json[Equation.ExpressionType.component.string] as? [[String : Any]] {
             return Equation.Component(items: component.map { JSONToEquation(json: $0) })
         } else {

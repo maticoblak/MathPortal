@@ -38,10 +38,10 @@ extension Equation {
                     text.textRange = NSRange(location: 0, length: 1)
                 } else if let component = expression as? Component {
                     // if component has only one element and that element is not empty go level in (don't konw if needed)
-                    if component.items.count == 1, let secondLevel = component.items[offset] as? Component, secondLevel.showBrackets == false {
+                    if component.items.count == 1, let secondLevel = component.items[offset] as? Component, secondLevel.hasBrackets() == false {
                         levelIn()
                     // if element that indicator is on is a component and it only has one element go in
-                    } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, secondLevel.showBrackets == false {
+                    } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, secondLevel.hasBrackets() == false {
                         levelIn()
                     } else if component.items.count > 0 {
                         component.items[0].color = selectedColor
@@ -70,7 +70,7 @@ extension Equation {
                     component.items[currentOffset].color = defaultColor
                     
                     // if component has only one element and there are no brackets go out another level
-                    if component.items.count == 1, component.showBrackets == false, (component is Integral) == false, (component is TrigonometricFunc) == false {
+                    if component.items.count == 1, component.hasBrackets() == false, (component is Integral) == false, (component is TrigonometricFunc) == false {
                         levelOut()
                     }
                 }
@@ -96,12 +96,12 @@ extension Equation {
                     if offset < component.items.count {
                         component.items[offset].color = selectedColor
                         // if the expression is a component without brackets and it has only one element go in another level
-                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.showBrackets == false {
+                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.hasBrackets() == false {
                             levelIn()
                         }
                     }
                 // if the indicator is at the end and component has only one element
-                } else if component.items.count == 1, component.showBrackets == false {
+                } else if component.items.count == 1, component.hasBrackets() == false {
                     levelOut()
                     if let component = expression as? Component, component.items.count > offset {
                         forward()
@@ -143,13 +143,13 @@ extension Equation {
                     if offset >= 0 {
                         component.items[offset].color = selectedColor
                         // if the expression is a component without brackets and it has only one element go in another level
-                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.showBrackets == false {
+                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.hasBrackets() == false {
                             levelIn()
                         }
                     }
                 
                 // if the indicator is at the beginning of component ant it has only one element
-                } else if component.items.count == 1, component.showBrackets == false {
+                } else if component.items.count == 1, component.hasBrackets() == false {
                     levelOut()
                     if offset >= 0 {
                         back()
@@ -298,8 +298,17 @@ extension Equation {
         }
         
         // component can be regular component or special cases like fraction
-        func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Bool ) {
-            newComponent.showBrackets = brackets
+        func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Component.BracketsType = .none) {
+            switch brackets {
+            case .normal:
+                newComponent.showBrackets = true
+            case .absolute:
+                newComponent.isAbsoluteValue = true
+            case .none:
+                newComponent.showBrackets = false
+                newComponent.isAbsoluteValue = false
+            }
+            
             if let component = expression as? Component {
                 newComponent.parent = component
                 newComponent.scale = adjustScale(expression: newComponent)
@@ -379,7 +388,7 @@ extension Equation {
                 // after the deletion check if component is empty
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
-                    if  component.showBrackets == true {
+                    if  component.hasBrackets() == true {
                         component.items.append({
                             let empty = Empty()
                             empty.color = selectedColor
@@ -415,7 +424,7 @@ extension Equation {
             if expression is Fraction {
                 if parentOfParet is Fraction {
                     return parentOfParet.scale * 0.8
-                } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, (parent.showBrackets == true /*|| parent is Root*/) {
+                } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, (parent.hasBrackets() == true /*|| parent is Root*/) {
                     return parentOfparentOfParet.scale * 0.8
                 } else if let root = parentOfParet as? Root, root.parent?.parent is Fraction, parent === root.radicand {
                     return root.scale * 0.8
