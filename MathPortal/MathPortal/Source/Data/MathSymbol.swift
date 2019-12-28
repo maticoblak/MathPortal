@@ -18,6 +18,7 @@ class MathSymbol {
 }
 extension MathSymbol {
     enum SymbolType {
+        
         case integer(value: Int)
         case letter(value: String)
         
@@ -45,8 +46,6 @@ extension MathSymbol {
         case exponent
         case percent
         
-        
-        
         case sin
         case cos
         case tan
@@ -62,12 +61,10 @@ extension MathSymbol {
         case integral
         case limit
         case infinity
+        case absoluteValue
         
         case degree
-        case absoluteValue
-
         
-
         static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
         static var letters: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
         static var lettersUppercase: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0).uppercased()) }
@@ -80,7 +77,7 @@ extension MathSymbol {
                 guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return fraction
             case .brackets:
-                guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: true, isAbsoluteValue: false, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
+                guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: .normal, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
                 return brackets
             case .root:
                 guard let root: UIView = EquationView.generateRoot([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.5), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return EquationView.Nil.view}
@@ -127,28 +124,28 @@ extension MathSymbol {
             case .indicator:
                 break
             case .letter(let value):
-                guard let letter: UIView = EquationView.generateText(value: value, color:  Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let letter: UIView = EquationView.generateText(value: value, color:  Color.darkBlue).view else { return EquationView.Nil.view }
                 return letter
             case .multiplication:
-                guard let multiplication: UIView = EquationView.generateText(value: "·", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let multiplication: UIView = EquationView.generateText(value: "·", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return multiplication
             case .division:
-                guard let division: UIView = EquationView.generateText(value: ":", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let division: UIView = EquationView.generateText(value: ":", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return division
             case .comma:
-                guard let comma: UIView = EquationView.generateText(value: ",", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let comma: UIView = EquationView.generateText(value: ",", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return comma
             case .equal:
-                guard let equal: UIView = EquationView.generateText(value: "=", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let equal: UIView = EquationView.generateText(value: "=", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return equal
             case .space:
-                guard let space: UIView = EquationView.generateText(value: "space", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let space: UIView = EquationView.generateText(value: "space", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return space
             case .enter:
-                guard let enter: UIView = EquationView.generateText(value: "enter", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let enter: UIView = EquationView.generateText(value: "enter", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return enter
             case .percent:
-                guard let percent: UIView = EquationView.generateText(value: "%", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let percent: UIView = EquationView.generateText(value: "%", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return percent
             case .sin:
                 guard let sin: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .sin).view else { return EquationView.Nil.view }
@@ -169,27 +166,27 @@ extension MathSymbol {
                 guard let integral =  EquationView.generateIntegral([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return  EquationView.Nil.view }
                 return integral
             case .lessThan:
-                guard let lessThan: UIView = EquationView.generateText(value: "<", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let lessThan: UIView = EquationView.generateText(value: "<", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return lessThan
             case .greaterThan:
-                guard let greaterThan: UIView = EquationView.generateText(value: ">", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let greaterThan: UIView = EquationView.generateText(value: ">", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return greaterThan
             case .lessOrEqualThen:
-                guard let lessThan: UIView = EquationView.generateText(value: "≤", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let lessThan: UIView = EquationView.generateText(value: "≤", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return lessThan
             case .greaterOrEqualThen:
-                guard let greaterThan: UIView = EquationView.generateText(value: "≥", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let greaterThan: UIView = EquationView.generateText(value: "≥", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return greaterThan
             case .faculty:
-                guard let faculty: UIView = EquationView.generateText(value: "!", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let faculty: UIView = EquationView.generateText(value: "!", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return faculty
             case .degree:
                 return EquationView.Nil.view
             case .infinity:
-                guard let infinity: UIView = EquationView.generateText(value: "∞", color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let infinity: UIView = EquationView.generateText(value: "∞", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return infinity
             case .absoluteValue:
-                guard let absoluteValue: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: false, isAbsoluteValue: true, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
+                guard let absoluteValue: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: .absolute, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
                 return absoluteValue
             }
             return nil

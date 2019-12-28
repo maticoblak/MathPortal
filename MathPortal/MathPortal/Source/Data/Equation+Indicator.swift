@@ -299,16 +299,7 @@ extension Equation {
         
         // component can be regular component or special cases like fraction
         func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Component.BracketsType = .none) {
-            switch brackets {
-            case .normal:
-                newComponent.showBrackets = true
-            case .absolute:
-                newComponent.isAbsoluteValue = true
-            case .none:
-                newComponent.showBrackets = false
-                newComponent.isAbsoluteValue = false
-            }
-            
+            newComponent.brackets = brackets
             if let component = expression as? Component {
                 newComponent.parent = component
                 newComponent.scale = adjustScale(expression: newComponent)
