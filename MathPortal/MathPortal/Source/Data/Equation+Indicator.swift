@@ -95,8 +95,8 @@ extension Equation {
                     // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
                     if offset < component.items.count {
                         component.items[offset].color = selectedColor
-                        // if the expression is a component without brackets and it has only one element go in another level
-                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.hasBrackets() == false {
+                        // if the expression is a component and not a function without brackets and it has only one element go in another level
+                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, isFunction(selectedComponent) == false , selectedComponent.hasBrackets() == false {
                             levelIn()
                         }
                     }
@@ -142,8 +142,8 @@ extension Equation {
                     // check if the indicator landed on expression (offset >= 0) and set it a colour
                     if offset >= 0 {
                         component.items[offset].color = selectedColor
-                        // if the expression is a component without brackets and it has only one element go in another level
-                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.hasBrackets() == false {
+                        // if the expression is a component without brackets and not a function and it has only one element go in another level
+                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count == 1, selectedComponent.hasBrackets() == false, isFunction(selectedComponent) == false {
                             levelIn()
                         }
                     }
