@@ -18,7 +18,7 @@ extension Equation {
             self.expression = expression
         }
         
-        private func isFunction(_ component: Component) -> Bool {
+        private func isFunction(_ component: Component?) -> Bool {
             if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit) {
                 return true
             } else {
@@ -131,7 +131,7 @@ extension Equation {
                 } else if component.items.count == 1, component.items.first is Empty {
                     levelOut()
                 // if indicator is somwheare in the middle of component
-                } else if offset  >= 0/*, component.items.isEmpty == false*/ {
+                } else if offset  >= 0, component.items.isEmpty == false {
                     offset -= 1
                     
                     // check if there exist a prvious expression (the indicator could have been at the end of component) and set its colour to default)
@@ -169,6 +169,56 @@ extension Equation {
             }
         }
 
+        func addSpace() {
+            let space = Space(direction: .horizontal)
+            if let component = expression as? Component {
+                space.parent = component
+                space.scale = component.scale
+                
+                if offset < 0 {
+                    component.items.insert(space, at: 0)
+                // the indicator is on empty field
+                } else if offset == component.items.count {
+                    component.items.insert(space, at: offset)
+                    forward()
+                } else if component.items[offset] is Empty {
+                    // if the componet is special component
+                    if isFunction(component) {
+                        component.addValue(expression: space, offset: offset)
+                        levelIn()
+                        forward()
+                    } else {
+                        component.items[offset] = space
+                        forward()
+                    }
+                } else {
+                    component.items.insert(space, at: offset)
+                    forward()
+                }
+                
+            } else if let text = expression as? Text {
+                // the space will be added before the character that indicator is on so we have to guard that we are not on first character
+                guard offset > 0 else { return }
+                space.parent = text.parent
+                space.scale = text.scale
+                
+                // separate the current text
+                let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent, scale: text.scale)
+                let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent, scale: text.scale)
+                
+                levelOut()
+                
+                // if the parent was a component replace the current text with separated text and space in between
+                if let component = expression as? Component {
+                    component.items[offset] = secondValue
+                    component.items.insert(space, at: offset)
+                    component.items.insert(firstValue, at: offset)
+                    forward()
+                    forward()
+                }
+            }
+        }
+        
         func addString(_ value: String?) {
             guard let value = value else { return }
             let textValue: Text = {
@@ -345,6 +395,7 @@ extension Equation {
 
         func delete() {
             if let component = expression as? Component {
+                // TODO: fix so that the whole component is not deleted when only one elemrnt is in the component (exe fraction has 5 in denominator ande we delete it)
                 if isFunction(component) {
                     component.delete(offset: offset)
                     component.items[offset].color = selectedColor

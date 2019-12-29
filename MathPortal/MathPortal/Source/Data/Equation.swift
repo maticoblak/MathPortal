@@ -31,6 +31,7 @@ class Equation {
         case cot
         case integral
         case limit
+        case horizontalSpace
         
         case other // For views that make one of the above
         
@@ -57,6 +58,7 @@ class Equation {
             case .integral: return "integral"
             case .limit: return "limit"
             case .absoluteValue: return "absoluteValue"
+            case .horizontalSpace: return "horizontalSpace"
             }
         }
         
@@ -129,9 +131,11 @@ class Equation {
             break
         case .done:
             break
-        case .indicator, .space, .enter:
+        case .indicator, .enter:
             // TODO: add actions for those
             break
+        case .space:
+            currentIndicator.addSpace()
         case .fraction:
             currentIndicator.addComponent(Fraction())
             break
@@ -253,6 +257,12 @@ extension Equation {
         var textRange: NSRange?
         init(_ value: String) {
             self.value = value
+        }
+        
+        convenience init(_ value: String, parent: Component?, scale: CGFloat?) {
+            self.init(value)
+            self.parent = parent
+            self.scale = scale ?? 1
         }
         
         override func computeResult() -> Double? {
@@ -1027,6 +1037,28 @@ extension Equation {
             return EquationView.generateEmpty(backgroundColor: color, scale: scale)
         }
     }
+    
+    // MARK: - Space
+    
+    class Space: Expression {
+        
+        enum Direction {
+            case vertical
+            case horizontal
+        }
+        
+        var direction: Direction = .vertical
+        
+        convenience init(direction: Direction) {
+            self.init()
+            self.direction = direction
+        }
+        
+        override func generateView() -> EquationView {
+            return EquationView.generateSpace(in: parent, scale: scale, selectedColor: color)
+        }
+    }
+    
     // MARK: - Component
     class Component: Expression {
         
@@ -1155,6 +1187,8 @@ extension Equation {
             return [Equation.ExpressionType.mathOperator.string: mathOperator.type.string ]
         } else if let text = equation as? Equation.Text {
             return [Equation.ExpressionType.text.string: text.value]
+        } else if let _ = equation as? Space {
+            return [Equation.ExpressionType.horizontalSpace.string: "hSpace"]
         } else if equation is Equation.Empty {
             return [Equation.ExpressionType.empty.string : "empty"]
         } else if let component =  equation as? Equation.Component {
@@ -1179,6 +1213,8 @@ extension Equation {
             return Equation.Operator(Equation.Operator.OperatorType.fromParseString(mathOperator))
         } else if let _ = json[Equation.ExpressionType.empty.string] as? String {
             return Equation.Empty()
+        } else if let _ = json[Equation.ExpressionType.horizontalSpace.string] as? String {
+            return Equation.Space(direction: .horizontal)
         } else if let fraction = json[Equation.ExpressionType.fraction.string] as? [[String:Any]] {
             guard fraction.count == 2 else { return Equation.Fraction() }
             return Equation.Fraction(items: fraction.map { JSONToEquation(json: $0)})

@@ -112,19 +112,26 @@ extension EquationView {
         return EquationView(view: label, type: .text)
     }
     
+    static func generateSpace(in parent: Equation.Component?, scale: CGFloat, selectedColor: UIColor = Equation.defaultColor) -> EquationView {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 10*scale, height:  20*scale))
+        view.layer.cornerRadius = 5
+        view.backgroundColor = selectedColor
+        return EquationView(view: view, type: .horizontalSpace)
+    }
+    
     // MARK: Empty view
     static func generateEmpty(backgroundColor: UIColor = Equation.defaultColor, squareColor: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
         let squareViewHeight = 20*scale
         let squareRectOffset = 2*scale
         let squareRectHeight = squareViewHeight - 2*squareRectOffset
         
-        let square = UIView(frame: .zero)
-        square.frame.size = CGSize(width: squareViewHeight, height: squareViewHeight)
         let layer = CAShapeLayer()
         layer.path = UIBezierPath(rect: CGRect(x: squareRectOffset, y: squareRectOffset, width: squareRectHeight, height: squareRectHeight)).cgPath
         layer.lineWidth = layer.lineWidth*scale
         layer.fillColor = backgroundColor.cgColor
         layer.strokeColor = squareColor.cgColor
+        
+        let square = UIView(frame: CGRect(x: 0, y: 0, width: squareViewHeight, height: squareViewHeight))
         square.layer.addSublayer(layer)
 
         return EquationView(view: square, type: .empty)
