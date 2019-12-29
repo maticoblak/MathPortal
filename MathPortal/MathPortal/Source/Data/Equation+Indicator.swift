@@ -124,6 +124,7 @@ extension Equation {
         
         func back() {
             if let component = expression as? Component {
+                guard component.items.isEmpty == false else { return }
                 // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
                 if isFunction(component), offset == 0 {
                     levelOut()
@@ -131,7 +132,7 @@ extension Equation {
                 } else if component.items.count == 1, component.items.first is Empty {
                     levelOut()
                 // if indicator is somwheare in the middle of component
-                } else if offset  >= 0, component.items.isEmpty == false {
+                } else if offset >= 0/*, component.items.isEmpty == false */ {
                     offset -= 1
                     
                     // check if there exist a prvious expression (the indicator could have been at the end of component) and set its colour to default)
