@@ -132,7 +132,7 @@ extension Equation {
                 } else if component.items.count == 1, component.items.first is Empty {
                     levelOut()
                 // if indicator is somwheare in the middle of component
-                } else if offset >= 0/*, component.items.isEmpty == false */ {
+                } else if offset >= 0 {
                     offset -= 1
                     
                     // check if there exist a prvious expression (the indicator could have been at the end of component) and set its colour to default)
@@ -175,15 +175,16 @@ extension Equation {
             if let component = expression as? Component {
                 space.parent = component
                 space.scale = component.scale
-                
+                //The indocat is at the beginning of equation
                 if offset < 0 {
                     component.items.insert(space, at: 0)
-                // the indicator is on empty field
+                // The indicator is at the end of equation
                 } else if offset == component.items.count {
                     component.items.insert(space, at: offset)
                     forward()
+                // the indicator is on empty field
                 } else if component.items[offset] is Empty {
-                    // if the componet is special component
+                    // if the component is special component
                     if isFunction(component) {
                         component.addValue(expression: space, offset: offset)
                         levelIn()
@@ -192,6 +193,7 @@ extension Equation {
                         component.items[offset] = space
                         forward()
                     }
+                // If the indicator is in the middle of equation (not on empty)
                 } else {
                     component.items.insert(space, at: offset)
                     forward()
@@ -199,24 +201,23 @@ extension Equation {
                 
             } else if let text = expression as? Text {
                 // the space will be added before the character that indicator is on so we have to guard that we are not on first character
-                guard offset > 0 else { return }
+                guard offset > 0, let component = expression as? Component else { return }
                 space.parent = text.parent
                 space.scale = text.scale
                 
-                // separate the current text
+                // separate the current text - has to be set before level out is called because of offset
                 let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent, scale: text.scale)
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent, scale: text.scale)
                 
                 levelOut()
+
+                // replace the current text with separated text and space in between
+                component.items[offset] = secondValue
+                component.items.insert(space, at: offset)
+                component.items.insert(firstValue, at: offset)
+                forward()
+                forward()
                 
-                // if the parent was a component replace the current text with separated text and space in between
-                if let component = expression as? Component {
-                    component.items[offset] = secondValue
-                    component.items.insert(space, at: offset)
-                    component.items.insert(firstValue, at: offset)
-                    forward()
-                    forward()
-                }
             }
         }
         
