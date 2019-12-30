@@ -404,7 +404,7 @@ extension Equation {
 
                 // if the indicator is at the end of the component
                 } else if offset == component.items.count {
-                    // if the last item is text delete each character separatly
+                    // if the last item is text delete each character separately
                     if let text = component.items.last as? Text {
                         text.value.removeLast()
                         // if the Text expression is empty delete it
@@ -433,12 +433,7 @@ extension Equation {
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
                     if  component.hasBrackets() == true {
-                        component.items.append({
-                            let empty = Empty()
-                            empty.color = selectedColor
-                            empty.parent = component
-                            return empty
-                            }())
+                        component.items.append(Empty(scale: component.scale, parent: component, selectedColor: selectedColor))
                         offset = 0
                     // if the component does not have brackets (components in fraction)
                     } else if component.parent != nil {

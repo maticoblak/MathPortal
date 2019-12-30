@@ -114,65 +114,50 @@ class Equation {
             currentIndicator.addOperator(.equal)
         case .brackets:
             currentIndicator.addComponent(brackets: .normal)
-            break
         case .back:
             currentIndicator.back()
-           break
         case .delete:
             currentIndicator.delete()
-            break
         case .forward:
             currentIndicator.forward()
         case .levelIn:
             currentIndicator.levelIn()
-            break
         case .levelOut:
             currentIndicator.levelOut()
-            break
         case .done:
+            // TODO: add actions for those
             break
-        case .indicator, .enter:
+        case .indicator, .enter, .degree:
             // TODO: add actions for those
             break
         case .space:
             currentIndicator.addSpace()
         case .fraction:
             currentIndicator.addComponent(Fraction())
-            break
         case .root:
             currentIndicator.addComponent(Root())
-            break
         case .indexAndExponent:
             currentIndicator.addComponent(IndexAndExponent())
-            break
         case .exponent:
             currentIndicator.addComponent(Exponent())
         case .index:
             currentIndicator.addComponent(Index())
-            break
         case .logarithm:
             currentIndicator.addComponent(Logarithm())
-            break
         case .percent:
             currentIndicator.addString("%")
         case .sin:
             currentIndicator.addComponent(TrigonometricFunc(type: .sin))
-            break
         case .cos:
             currentIndicator.addComponent(TrigonometricFunc(type: .cos))
-            break
         case .tan:
             currentIndicator.addComponent(TrigonometricFunc(type: .tan))
-            break
         case .cot:
             currentIndicator.addComponent(TrigonometricFunc(type: .cot))
-            break
         case .limit:
             currentIndicator.addComponent(Limit())
-            break
         case .integral:
             currentIndicator.addComponent(Integral())
-            break
         case .lessThan:
             currentIndicator.addString("<")
         case .greaterThan:
@@ -183,16 +168,11 @@ class Equation {
             currentIndicator.addString("≥")
         case .faculty:
             currentIndicator.addString("!")
-        case .degree:
-            break
         case .infinity:
             currentIndicator.addString("∞")
         case .absoluteValue:
             currentIndicator.addComponent(brackets: .absolute)
-            break
         }
-        
-        
     }
 }
 
@@ -371,7 +351,7 @@ extension Equation {
             }
         }
         override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return}
+            guard scale >= 0.5 else { scale = 0.5; return }
             if rootIndex is Empty {
                 rootIndex.scale = self.scale / 2
             }
@@ -1033,6 +1013,15 @@ extension Equation {
     // MARK: - Empty
     class Empty: Expression {
         
+        convenience init(scale: CGFloat, parent: Component, selectedColor: UIColor? = nil) {
+            self.init()
+            self.scale = scale
+            self.parent = parent
+            if let selectedColor = selectedColor {
+                self.color = selectedColor
+            }
+        }
+        
         override func generateView() -> EquationView {
             return EquationView.generateEmpty(backgroundColor: color, scale: scale)
         }
@@ -1101,9 +1090,7 @@ extension Equation {
         func delete(offset: Int) {
             guard offset < items.count else { return }
             guard self.items[offset] is Empty == false else { return }
-            let empty = Empty()
-            empty.parent = self
-            empty.scale = items[offset].scale
+            let empty = Empty(scale: items[offset].scale, parent: self)
             self.items[offset] = empty
         }
         
