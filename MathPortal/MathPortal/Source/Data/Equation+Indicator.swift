@@ -174,7 +174,6 @@ extension Equation {
             let space = Space(direction: .horizontal)
             if let component = expression as? Component {
                 space.parent = component
-                space.scale = component.scale
                 //The indocat is at the beginning of equation
                 if offset < 0 {
                     component.items.insert(space, at: 0)
@@ -203,11 +202,10 @@ extension Equation {
                 // the space will be added before the character that indicator is on so we have to guard that we are not on first character
                 guard offset > 0, let component = expression as? Component else { return }
                 space.parent = text.parent
-                space.scale = text.scale
-                
+        
                 // separate the current text - has to be set before level out is called because of offset
-                let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent, scale: text.scale)
-                let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent, scale: text.scale)
+                let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent)
+                let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent)
                 
                 levelOut()
 
@@ -229,7 +227,6 @@ extension Equation {
             }()
             if let component = expression as? Component {
                 textValue.parent = component
-                textValue.scale = adjustScale(expression: textValue)
                 
                 // the indicator is at the end of component
                 if offset == component.items.count {
@@ -271,11 +268,9 @@ extension Equation {
         
         func addOperator(_ operatorType: Operator.OperatorType) {
             
-            let newOperator = Operator(operatorType)
-            
             if let component = expression as? Component {
-                newOperator.parent = component
-                newOperator.scale = adjustScale(expression: newOperator)
+                let newOperator = Operator(operatorType, parent: component)
+                
                 // if we are at the end of component
                 if offset == component.items.count {
                     if let last = component.items.last as? Operator {
@@ -315,24 +310,18 @@ extension Equation {
                 
             } else if let text = expression as? Text {
                 // the operator will be added before the character that indicator is on so we gave to gard that we are not on first character
-                guard offset > 0 else { return }
-                newOperator.parent = text.parent
-                newOperator.scale = text.scale
+                guard offset > 0,  let component = expression as? Component else { return }
+                let newOperator = Operator(operatorType, parent: text.parent)
                 // separate the current text
-                let firstValue = Text(String(text.value.prefix(offset)))
-                firstValue.parent = text.parent
-                firstValue.scale = text.scale
-                let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
-                secondValue.parent = text.parent
-                secondValue.scale = text.scale
+                let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent)
+                let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent)
+            
                 levelOut()
-                // if the parent was a component replae the current text with separated txt and operator in between
-                if let component = expression as? Component {
-                    component.items[offset] = secondValue
-                    component.items.insert(newOperator, at: offset)
-                    component.items.insert(firstValue, at: offset)
-                    forward()
-                }
+                // replace the current text with separated txt and operator in between
+                component.items[offset] = secondValue
+                component.items.insert(newOperator, at: offset)
+                component.items.insert(firstValue, at: offset)
+                forward()
             }
         }
 
@@ -354,7 +343,6 @@ extension Equation {
             newComponent.brackets = brackets
             if let component = expression as? Component {
                 newComponent.parent = component
-                newComponent.scale = adjustScale(expression: newComponent)
                 // if the indicator is at the end of component
                 if offset == component.items.count {
                     component.items.append(newComponent)
@@ -364,11 +352,10 @@ extension Equation {
                 } else if component.items[offset] is Empty  {
                     if isFunction(component) {
                         component.addValue(expression: newComponent, offset: offset)
-                        newComponent.scale = adjustScale(expression: newComponent)
+                        // Probably not needed
                         levelIn()
                     } else {
                         component.items[offset] = newComponent
-                        
                     }
                 } else {
                     guard isFunction(component) == false else { return }
@@ -379,7 +366,6 @@ extension Equation {
             } else if let text = expression as? Text {
                 guard offset > 0 else { return }
                 newComponent.parent = text.parent
-                //newComponent.scale = adjustScale(expression: newComponent)
                 let firstValue = Text(String(text.value.prefix(offset)))
                 firstValue.parent = text.parent
                 let secondValue = Text(String(text.value.suffix(text.value.count - offset)))
@@ -433,7 +419,7 @@ extension Equation {
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
                     if  component.hasBrackets() == true {
-                        component.items.append(Empty(scale: component.scale, parent: component, selectedColor: selectedColor))
+                        component.items.append(Empty(parent: component, selectedColor: selectedColor))
                         offset = 0
                     // if the component does not have brackets (components in fraction)
                     } else if component.parent != nil {
@@ -455,20 +441,6 @@ extension Equation {
                 }
                 back()
             }
-        }
-        // TODO: adjust for all special components
-        func adjustScale(expression: Expression) -> CGFloat  {
-            guard let parent = expression.parent else { return 1 }
-            guard let parentOfParet = parent.parent else { return parent.scale }
-            if expression is Fraction {
-                if parentOfParet is Fraction {
-                    return parentOfParet.scale * 0.8
-                } else if let parentOfparentOfParet = parentOfParet.parent as? Fraction, (parent.hasBrackets() == true /*|| parent is Root*/) {
-                    return parentOfparentOfParet.scale * 0.8
-                } else if let root = parentOfParet as? Root, root.parent?.parent is Fraction, parent === root.radicand {
-                    return root.scale * 0.8
-                } else { return parent.scale }
-            }  else { return parent.scale }
         }
     }
 }

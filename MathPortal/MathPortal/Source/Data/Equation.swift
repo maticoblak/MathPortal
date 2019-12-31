@@ -84,6 +84,11 @@ class Equation {
         return expression.computeResult()
     }
     
+    func viewBounds() -> (width: CGFloat?, height: CGFloat?) {
+        let view = self.expression.generateView().view?.frame
+        return (view?.width, view?.height)
+    }
+    
     lazy private var currentIndicator: Indicator = {
         return Indicator(expression: expression)
     }()
@@ -181,8 +186,13 @@ class Equation {
 extension Equation {
     // MARK: - Expression
     class Expression {
-        weak var parent: Component?
+        weak var parent: Component? {
+            didSet {
+                adjustScale()
+            }
+        }
         var color: UIColor = defaultColor
+        /// Should not be overridden but n the case it is add the minimum scale 0.5
         var scale: CGFloat = 1.0 {
             didSet {
                 guard scale < 0.5 else { return }
@@ -192,13 +202,13 @@ extension Equation {
         func computeResult() -> Double? { return nil }
         
         func generateView() -> EquationView { return .Nil }
+        
+        /// When parent is set or changed the scale should be updated
+        func adjustScale() {
+            scale = parent?.scale ?? 1
+        }
     }
-    
-    func viewBounds() -> (width: CGFloat?, height: CGFloat?) {
-        let view = self.expression.generateView().view?.frame
-        return (view?.width, view?.height)
-    }
-    
+
     // MARK: - Operator
     class Operator: Expression {
         enum OperatorType: CaseIterable {
@@ -223,8 +233,10 @@ extension Equation {
 
         var type: OperatorType
         
-        init(_ type: OperatorType) {
+        init(_ type: OperatorType, parent: Component?) {
             self.type = type
+            super.init()
+            self.parent = parent
         }
         
         override func generateView() -> EquationView {
@@ -239,10 +251,9 @@ extension Equation {
             self.value = value
         }
         
-        convenience init(_ value: String, parent: Component?, scale: CGFloat?) {
+        convenience init(_ value: String, parent: Component?) {
             self.init(value)
             self.parent = parent
-            self.scale = scale ?? 1
         }
         
         override func computeResult() -> Double? {
@@ -256,63 +267,54 @@ extension Equation {
     // MARK: - Fraction
     class Fraction: Component {
         // TODO: Maybe it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
-        override var scale: CGFloat  {
-            didSet {
-                refreshScalesInComponent()
-            }
+        override func refreshScalesInComponent() {
+            enumerator.scale = self.scale * 0.9
+            denomenator.scale = self.scale * 0.9
         }
         
-        override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return}
-            if enumerator is Empty {
-                enumerator.scale = self.scale
-            }
-            if denomenator is Empty {
-                denomenator.scale = self.scale
-            }
-        }
-        var enumerator: Expression {
+        private var enumerator: Expression {
             get { return items[0] }
             set {
-                // don't need?
-                newValue.parent = self
                 if items.isEmpty {
                     //new value has to be empty if we are creating new fraction
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
+                    newValue.scale = self.scale * 0.9
                     items.append(newValue)
                 } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
-                    newComponent.scale = self.scale
+                    newComponent.scale = self.scale * 0.9
                     newValue.parent = newComponent
                     items[0] = newComponent
                 // Probably will need in the future or just a safety case
                 } else {
                     let newComponent = Component(items: [items[0], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.9
                     newValue.parent = newComponent
                     items[0] = newComponent
                 }
             }
         }
-        var denomenator: Expression {
+        private var denomenator: Expression {
             get { return items[1] }
             set {
-                newValue.parent = self
                 if items.count < 2 {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
+                    newValue.scale = self.scale * 0.9
                     items.append(newValue)
                 } else if items[1] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
-                    newComponent.scale = self.scale
+                    newComponent.scale = self.scale * 0.9
                     newValue.parent = newComponent
                     items[1] = newComponent
                 } else {
                     let newComponent = Component(items: [items[1], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.9
                     newValue.parent = newComponent
                     items[1] = newComponent
                 }
@@ -327,45 +329,39 @@ extension Equation {
                 self.denomenator = expression
             }
         }
-        override func generateView() -> EquationView {
-            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: brackets)
-        }
-
+        
         // NOTE: When adding the enumerator and the denominator the order of setting them has to be correct since we are adding components in array at the specific index
         init(enumerator: Expression?, denomenator: Expression?) {
             super.init()
             self.enumerator = enumerator ?? Empty()
             self.denomenator = denomenator ?? Empty()
         }
+        /// Init with empty fields
         override convenience init() {
             self.init(enumerator: Empty(), denomenator: Empty())
+        }
+        
+        override func generateView() -> EquationView {
+            return EquationView.generateFraction(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: brackets)
         }
     }
     
     // MARK: - Root
     
     class Root: Component {
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
+
         override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return }
-            if rootIndex is Empty {
-                rootIndex.scale = self.scale / 2
-            }
-            if radicand is Empty {
-                radicand.scale = self.scale
-            }
+            rootIndex.scale = self.scale / 2
+            radicand.scale = self.scale
         }
-        var rootIndex: Expression {
+        
+        private var rootIndex: Expression {
             get { return items[0]}
             set {
-                newValue.parent = self
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale / 2 /* newValue.scale*/
+                    newValue.parent = self
+                    newValue.scale = self.scale / 2
                     items.append(newValue)
                 } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])
@@ -376,23 +372,24 @@ extension Equation {
                 } else {
                     let newComponent = Component(items: [items[0], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale / 2
                     newValue.parent = newComponent
                     items[0] = newComponent
                 }
             }
         }
-        var radicand: Expression {
+        
+        private var radicand: Expression {
             get { return items[1] }
             set {
-                newValue.parent = self
+                
                 if items.count < 2 {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
                 } else if items[1] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
-                    newComponent.scale = self.scale
                     newValue.parent = newComponent
                     items[1] = newComponent
                 } else {
@@ -403,11 +400,18 @@ extension Equation {
                 }
             }
         }
+        
         init(index: Expression?, radicand: Expression?) {
             super.init()
             self.rootIndex = index ?? Empty()
             self.radicand = radicand ?? Empty()
         }
+        
+        /// Init with empty fields
+        override convenience init() {
+            self.init(index: Empty(), radicand: Empty())
+        }
+        
         override func addValue(expression: Expression?, offset: Int?) {
             guard let offset = offset else { return }
             guard let expression = expression else { return }
@@ -417,9 +421,7 @@ extension Equation {
                 self.radicand = expression
             }
         }
-        override convenience init() {
-            self.init(index: Empty(), radicand: Empty())
-        }
+        
         override func generateView() -> EquationView {
             return EquationView.generateRoot(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: brackets)
         }
@@ -433,38 +435,27 @@ extension Equation {
     }
     
     // MARK: - Index
-    
     class Index: Component {
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
+
         override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return}
-            if base is Empty {
-                base.scale = self.scale
-            }
-            if index is Empty {
-                index.scale = self.scale * 0.7
-            }
+            base.scale = self.scale
+            index.scale = self.scale * 0.7
         }
         
-        var base: Expression {
+        private var base: Expression {
             get { return items[0]}
             set {
-                newValue.parent = self
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
                 } else if items[0] is Empty {
-                   if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                    if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                        newValue.parent = self
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
-                        newComponent.scale = self.scale
                         newValue.parent = newComponent
                         if let newValue = newValue as? Component, newValue.hasBrackets() == false {
                             newComponent.brackets = .normal
@@ -476,15 +467,16 @@ extension Equation {
                     newComponent.parent = self
                     newValue.parent = newComponent
                     items[0] = newComponent
-                }}
+                }
+            }
         }
         
-        var index: Expression {
+        private var index: Expression {
             get { return items[1]}
             set {
-                newValue.parent = self
                 if items.count < 2 {
                     guard newValue is Empty else { return }
+                    newValue.parent = self
                     newValue.scale = self.scale * 0.7
                     items.append(newValue)
                 } else if items[1] is Empty {
@@ -496,6 +488,7 @@ extension Equation {
                 } else {
                     let newComponent = Component(items: [items[2], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
                     items[1] = newComponent
                 }}
@@ -526,40 +519,27 @@ extension Equation {
     // MARK: - Exponent & index
     
     class IndexAndExponent: Component {
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
-        
+
         override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return }
-            if base is Empty {
-                base.scale = self.scale
-            }
-            if index is Empty {
-                index.scale = self.scale * 0.7
-            }
-            if exponent is Empty {
-                exponent.scale = self.scale * 0.7
-            }
+            base.scale = self.scale
+            index.scale = self.scale * 0.7
+            exponent.scale = self.scale * 0.7
         }
         
-        var base: Expression {
+        private var base: Expression {
             get { return items[0]}
             set {
-                newValue.parent = self
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
                 } else if items[0] is Empty {
                     if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                        newValue.parent = self
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
-                        newComponent.scale = self.scale
                         newValue.parent = newComponent
                         if let newValue = newValue as? Component, newValue.hasBrackets() == false {
                             newComponent.brackets = .normal
@@ -573,12 +553,13 @@ extension Equation {
                     items[0] = newComponent
                 }}
         }
-        var index: Expression {
+        
+        private var index: Expression {
             get { return items[1]}
             set {
-                newValue.parent = self
                 if items.count < 2 {
                     guard newValue is Empty else { return }
+                    newValue.parent = self
                     newValue.scale = self.scale * 0.7
                     items.append(newValue)
                 } else if items[1] is Empty {
@@ -590,17 +571,19 @@ extension Equation {
                 } else {
                     let newComponent = Component(items: [items[1], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
                     items[1] = newComponent
-                }}
+                }
+            }
         }
         
-        var exponent: Expression {
+       private  var exponent: Expression {
             get { return items[2]}
             set {
-                newValue.parent = self
                 if items.count < 3 {
                     guard newValue is Empty else { return }
+                    newValue.parent = self
                     newValue.scale = self.scale * 0.7
                     items.append(newValue)
                 } else if items[2] is Empty {
@@ -612,9 +595,11 @@ extension Equation {
                 } else {
                     let newComponent = Component(items: [items[2], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
                     items[2] = newComponent
-                }}
+                }
+            }
         }
         
         init(base: Expression, index: Expression, exponent: Expression ) {
@@ -645,77 +630,68 @@ extension Equation {
     
     class Logarithm: Component {
         
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
         override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return }
-            if base is Empty {
-                base.scale = self.scale
-            }
-            if index is Empty {
-                index.scale = self.scale * 0.7
-            }
+            base.scale = self.scale
+            index.scale = self.scale * 0.7
         }
         
-        var base: Expression {
-            get { return items[0]}
+        private var base: Expression {
+            get { return items[1]}
             set {
-                newValue.parent = self
-                if items.isEmpty {
+                if items.count < 2 {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
-                } else if items[0] is Empty {
+                } else if items[1] is Empty {
                     if let newValue = newValue as? Component {
+                        newValue.parent = self
                         if newValue.hasBrackets() == false {
                             newValue.brackets = .normal
                         }
-                        items[0] = newValue
+                        items[1] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
-                        newComponent.scale = self.scale
                         newValue.parent = newComponent
-                        items[0] = newComponent
+                        items[1] = newComponent
                     }
                 } else {
-                    let newComponent = Component(items: [items[0], newValue])
+                    let newComponent = Component(items: [items[1], newValue])
                     newComponent.parent = self
                     newValue.parent = newComponent
-                    items[0] = newComponent
-                }}
+                    items[1] = newComponent
+                }
+            }
         }
         
-        var index: Expression {
-            get { return items[1]}
+        private var index: Expression {
+            get { return items[0]}
             set {
-                newValue.parent = self
-                if items.count < 2 {
+                if items.isEmpty {
                     guard newValue is Empty else { return }
+                    newValue.parent = self
                     newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[1] is Empty {
+                } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
                     newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
-                    items[1] = newComponent
+                    items[0] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[2], newValue])
+                    let newComponent = Component(items: [items[0], newValue])
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
-                    items[1] = newComponent
-                }}
+                    items[0] = newComponent
+                }
+            }
         }
         
         init(base: Expression, exponent: Expression ) {
             super.init()
-            self.base = base
             self.index = exponent
-            
+            self.base = base
         }
         override convenience init() {
             self.init(base: Empty(), exponent: Empty())
@@ -723,9 +699,9 @@ extension Equation {
         override func addValue(expression: Equation.Expression?, offset: Int?) {
             guard let offset = offset, offset <= 2 else { return }
             guard let expression = expression else { return }
-            if offset == 0 {
+            if offset == 1 {
                 base = expression
-            } else if offset == 1 {
+            } else if offset == 0 {
                 index = expression
             }
         }
@@ -737,33 +713,19 @@ extension Equation {
     // MARK: - Limit
     
     class Limit: Component {
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
-        // TODO: Check/set scale in scale's didSet
+        
         override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return}
-            if base is Empty {
-                base.scale = self.scale
-            }
-            
-            if variable is Empty {
-                variable.scale = self.scale * 0.7
-            }
-            
-            if limitValue is Empty {
-                limitValue.scale = self.scale * 0.7
-            }
+            base.scale = self.scale
+            variable.scale = self.scale * 0.7
+            limitValue.scale = self.scale * 0.7
         }
         
-        var variable: Expression {
+        private var variable: Expression {
             get { return items[0]}
             set {
-                newValue.parent = self
                 if items.isEmpty {
                     guard newValue is Empty else { return }
+                    newValue.parent = self
                     newValue.scale = self.scale * 0.7
                     items.append(newValue)
                 } else if items[0] is Empty {
@@ -775,19 +737,19 @@ extension Equation {
                 } else {
                     let newComponent = Component(items: [items[0], newValue], brackets: .normal)
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
                     items[0] = newComponent
                 }
-                
             }
         }
         
         var limitValue: Expression {
             get { return items[1]}
             set {
-                newValue.parent = self
                 if items.count < 2 {
                     guard newValue is Empty else { return }
+                    newValue.parent = self
                     newValue.scale = self.scale * 0.7
                     items.append(newValue)
                 } else if items[1] is Empty {
@@ -799,6 +761,7 @@ extension Equation {
                 } else {
                     let newComponent = Component(items: [items[1], newValue], brackets: .normal)
                     newComponent.parent = self
+                    newComponent.scale = self.scale * 0.7
                     newValue.parent = newComponent
                     items[1] = newComponent
                 }
@@ -808,13 +771,14 @@ extension Equation {
         var base: Expression {
             get { return items[2]}
             set {
-                newValue.parent = self
+                
                 if items.count < 3 {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
                 } else if items[2] is Empty {
                     if let newValue = newValue as? Component {
+                        newValue.parent = self
                         if newValue.hasBrackets() == false {
                             newValue.brackets = .normal
                         }
@@ -822,7 +786,6 @@ extension Equation {
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
-                        newComponent.scale = self.scale
                         newValue.parent = newComponent
                         items[2] = newComponent
                     }
@@ -882,29 +845,17 @@ extension Equation {
         
         var functionType: FunctionType = .sin
         
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
-        // TODO: Check/set scale in scale's didSet
-        override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return}
-            if angle is Empty {
-                angle.scale = self.scale
-            }
-        }
-        
         var angle: Expression {
             get { return items[0]}
             set {
-                newValue.parent = self
+                
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
                 } else if items[0] is Empty {
                     if let newValue = newValue as? Component {
+                        newValue.parent = self
                         if newValue.hasBrackets() == false {
                             newValue.brackets = .normal
                         }
@@ -912,7 +863,6 @@ extension Equation {
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
-                        newComponent.scale = self.scale
                         newValue.parent = newComponent
                         items[0] = newComponent
                     }
@@ -930,7 +880,6 @@ extension Equation {
             super.init()
             self.angle = angle
             functionType = type
-            
         }
         
         convenience init(type: FunctionType, items: [Expression]? = nil) {
@@ -956,29 +905,18 @@ extension Equation {
     // MARK: - Integral
     
     class Integral: Component {
-        override var scale: CGFloat {
-            didSet {
-                refreshScalesInComponent()
-            }
-        }
-        override func refreshScalesInComponent() {
-            guard scale >= 0.5 else { scale = 0.5; return}
-            if base is Empty {
-                base.scale = self.scale
-            }
-        }
+        
         var base: Expression {
             get { return items[0]}
             set {
-                newValue.parent = self
+                
                 if items.isEmpty {
                     guard newValue is Empty else { return }
-                    newValue.scale = self.scale
+                    newValue.parent = self
                     items.append(newValue)
                 } else if items[0] is Empty {
                     let newComponent = Component(items: [newValue])
                     newComponent.parent = self
-                    newComponent.scale = self.scale
                     newValue.parent = newComponent
                     items[0] = newComponent
                 } else {
@@ -1013,13 +951,12 @@ extension Equation {
     // MARK: - Empty
     class Empty: Expression {
         
-        convenience init(scale: CGFloat, parent: Component, selectedColor: UIColor? = nil) {
+        /// Needs scale because of deletion, also scale has to be set after parnt is set because of did set
+        convenience init(scale: CGFloat? = nil, parent: Component, selectedColor: UIColor? = nil) {
             self.init()
-            self.scale = scale
             self.parent = parent
-            if let selectedColor = selectedColor {
-                self.color = selectedColor
-            }
+            if let scale = scale { self.scale = scale }
+            if let selectedColor = selectedColor { self.color = selectedColor }
         }
         
         override func generateView() -> EquationView {
@@ -1067,8 +1004,14 @@ extension Equation {
         var brackets: BracketsType = .none
       
         var items: [Expression] = [Expression]()
+        
         override var scale: CGFloat {
             didSet {
+                // NOTE: Just for safety - Should never happen since all other exponents have guard set for 0.5 and Component is never the las one in equation
+                guard scale >= 0.5 else {
+                    scale = 0.5
+                    return
+                }
                 refreshScalesInComponent()
             }
         }
@@ -1080,10 +1023,9 @@ extension Equation {
             self.brackets = brackets
         }
         
+        /// Override only if the scale of items in component is not equal to their parent. If not overridden the scale of items will be the same as their parent
         func refreshScalesInComponent() {
-            if items.count == 1 {
-                items[0].scale = self.scale
-            }
+            items.forEach { $0.scale = self.scale }
         }
         
         func addValue(expression: Expression?, offset: Int?) { }
@@ -1197,7 +1139,7 @@ extension Equation {
         if let text = json[Equation.ExpressionType.text.string] as? String {
             return Equation.Text(text)
         } else if let mathOperator = json[Equation.ExpressionType.mathOperator.string] as? String {
-            return Equation.Operator(Equation.Operator.OperatorType.fromParseString(mathOperator))
+            return Equation.Operator(Equation.Operator.OperatorType.fromParseString(mathOperator), parent: nil)
         } else if let _ = json[Equation.ExpressionType.empty.string] as? String {
             return Equation.Empty()
         } else if let _ = json[Equation.ExpressionType.horizontalSpace.string] as? String {

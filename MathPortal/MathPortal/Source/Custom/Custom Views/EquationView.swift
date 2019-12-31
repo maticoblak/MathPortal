@@ -250,11 +250,9 @@ extension EquationView {
     static func generateFunction(_ inputViews: [EquationView], selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, type: Equation.ExpressionType, brackets: Equation.Component.BracketsType = .none) -> EquationView {
         guard inputViews.count > 0 else { return .Nil }
         
-        let text: String? = type.symbol
-        
         let textView: EquationView = {
             let label = UILabel(frame: .zero)
-            label.text = text
+            label.text = type.symbol
             label.font = label.font.withSize(17*scale)
             label.textColor = color
             label.sizeToFit()
@@ -262,16 +260,16 @@ extension EquationView {
         }()
         
         let functionView: EquationView = {
-            var view: EquationView
+            let view: EquationView
             if inputViews.count == 2 {
-                view = generateExponentAndIndex([textView, inputViews[1]], type: .index, scale: scale)
+                let log = generateExponentAndIndex([textView, inputViews[0]], type: .index, scale: scale)
+                view = linearlyLayoutViews([log, inputViews[1]], type: type, brackets: brackets, scale: scale)
             } else {
-                view = textView
+                view = linearlyLayoutViews([textView, inputViews[0]], type: type, brackets: brackets, scale: scale)
             }
-            return linearlyLayoutViews([view, inputViews[0]], type: type, brackets: brackets, scale: scale)
+            view.view?.backgroundColor = selectedColor
+            return view
         }()
-        
-        functionView.view?.backgroundColor = selectedColor
         return functionView
     }
     

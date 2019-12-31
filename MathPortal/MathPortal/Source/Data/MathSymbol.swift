@@ -66,15 +66,15 @@ extension MathSymbol {
         case degree
         
         static var integers: [SymbolType] = Array(0...9).map { .integer(value: $0) }
-        static var letters: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0)) }
-        static var lettersUppercase: [SymbolType] = Array("abcdefghijklmnopqrstuvwxyz").map { .letter(value: String($0).uppercased()) }
+        static var letters: [SymbolType] = Array("qwertyuiopasdfghjklzxcvbnm").map { .letter(value: String($0)) }
+        static var lettersUppercase: [SymbolType] = Array("qwertyuiopasdfghjklzxcvbnm").map { .letter(value: String($0).uppercased()) }
         static var greekLetters: [SymbolType] = Array("αβγδεζηθικλμνξοπρστυφχψω").map { .letter(value: String($0)) }
         static var greekLettersUppercase: [SymbolType] = Array("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ").map { .letter(value: String($0)) }
         
         var componentView: UIView? {
             switch self {
             case .fraction:
-                guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return EquationView.Nil.view}
+                guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.9), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.9)], color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return fraction
             case .brackets:
                 guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: .normal, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
@@ -92,7 +92,7 @@ extension MathSymbol {
                 guard let indexAndExponent: UIView = EquationView.generateExponentAndIndex([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7) , EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7) ], type: .indexAndExponent, color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return indexAndExponent
             case .logarithm:
-                guard let log: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7)], color: Color.darkBlue, type: .logarithm).view else { return EquationView.Nil.view}
+                guard let log: UIView = EquationView.generateFunction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue, type: .logarithm).view else { return EquationView.Nil.view}
                 return log
             case .plus:
                 guard let plus: UIView = EquationView.generateOperator( .plus, color: Color.darkBlue).view else { return EquationView.Nil.view}
