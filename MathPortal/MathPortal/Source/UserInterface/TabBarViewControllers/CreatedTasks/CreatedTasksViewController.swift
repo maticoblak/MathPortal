@@ -12,15 +12,16 @@ class CreatedTasksViewController: BaseViewController {
 
  
     @IBOutlet private var tasksTableView: UITableView?
+    @IBOutlet private var noTasksView: UIView!
     
     private var tasks: [Task] = [Task]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tasksTableView?.backgroundColor = Color.darkGrey
-        self.tasksTableView?.tableFooterView = UIView()
+        noTasksView.isHidden = true
         Appearence.setUpNavigationController(controller: self)
-        Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Add task", rightBarButtonAction: #selector(addTask))
+        Appearence.addRightBarButton(controller: self, rightBarButtonTitle: "Create task", rightBarButtonAction: #selector(addTask))
         reloadTasks()
     }
     
@@ -36,14 +37,19 @@ class CreatedTasksViewController: BaseViewController {
                 print(error.localizedDescription)
             } else if let tasks = tasks {
                 self.tasks = tasks
+                self.noTasksView.isHidden = !tasks.isEmpty
                 self.tasksTableView?.reloadData()
             }
         })
     }
+    
     @objc func addTask() {
         let controller = R.storyboard.createdTasksViewController.taskViewController()!
         controller.task = Task()
         navigationController?.pushViewController(controller, animated: true)
+    }
+    @IBAction private func createMyFirstTask(_ sender: Any) {
+        addTask()
     }
     static func createFromStoryboard() -> CreatedTasksViewController {
         return UIStoryboard(name: "CreatedTasksViewController", bundle: nil).instantiateViewController(withIdentifier: "CreatedTasksViewController") as! CreatedTasksViewController

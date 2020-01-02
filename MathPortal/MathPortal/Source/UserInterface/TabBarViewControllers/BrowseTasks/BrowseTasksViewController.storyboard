@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -118,7 +118,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U0n-q8-yNL" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="5" y="5" width="404" height="399"/>
+                                                <rect key="frame" x="10" y="10" width="394" height="394"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="parentViewController" destination="ieK-HW-HUu" id="Z17-AC-P2d"/>
@@ -127,9 +127,9 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="0.4431372549" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="top" secondItem="Eqq-Oq-oYn" secondAttribute="top" constant="5" id="JQd-jL-bcM"/>
-                                            <constraint firstAttribute="trailing" secondItem="U0n-q8-yNL" secondAttribute="trailing" constant="5" id="hNz-pi-HcU"/>
-                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="leading" secondItem="Eqq-Oq-oYn" secondAttribute="leading" constant="5" id="hOJ-dB-F0a"/>
+                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="top" secondItem="Eqq-Oq-oYn" secondAttribute="top" constant="10" id="JQd-jL-bcM"/>
+                                            <constraint firstAttribute="trailing" secondItem="U0n-q8-yNL" secondAttribute="trailing" constant="10" id="hNz-pi-HcU"/>
+                                            <constraint firstItem="U0n-q8-yNL" firstAttribute="leading" secondItem="Eqq-Oq-oYn" secondAttribute="leading" constant="10" id="hOJ-dB-F0a"/>
                                             <constraint firstAttribute="bottom" secondItem="U0n-q8-yNL" secondAttribute="bottom" constant="5" id="xRr-nm-hfA"/>
                                         </constraints>
                                     </view>
@@ -172,6 +172,7 @@
                     </view>
                     <connections>
                         <outlet property="solutionsTableView" destination="kdt-vl-ksl" id="38U-Uj-PFj"/>
+                        <outlet property="taskBackgroundView" destination="Eqq-Oq-oYn" id="jDZ-Pw-vl1"/>
                         <outlet property="taskContentControllerView" destination="U0n-q8-yNL" id="6eF-wv-33I"/>
                     </connections>
                 </viewController>

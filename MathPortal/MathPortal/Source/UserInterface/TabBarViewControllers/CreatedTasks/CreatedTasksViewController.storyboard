@@ -97,13 +97,47 @@
                                             <outlet property="delegate" destination="blc-dj-MtX" id="RSq-13-B21"/>
                                         </connections>
                                     </tableView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BsM-jY-qlL">
+                                        <rect key="frame" x="40" y="336" width="334" height="146.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have not created any tasks yet. Create your first task and share it with others." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yS-69-y8o">
+                                                <rect key="frame" x="0.0" y="0.0" width="334" height="68.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l7T-WK-pdY" customClass="CustomButton" customModule="MathPortal" customModuleProvider="target">
+                                                <rect key="frame" x="67" y="96.5" width="200" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="G2r-a3-KBr"/>
+                                                    <constraint firstAttribute="width" constant="200" id="fcD-U2-jRy"/>
+                                                </constraints>
+                                                <state key="normal" title="CREATE MY FIRST TASK"/>
+                                                <connections>
+                                                    <action selector="createMyFirstTask:" destination="blc-dj-MtX" eventType="touchUpInside" id="ejv-KI-Vp0"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="6yS-69-y8o" secondAttribute="trailing" id="7pc-9A-2E2"/>
+                                            <constraint firstAttribute="bottom" secondItem="l7T-WK-pdY" secondAttribute="bottom" id="BDo-s0-ear"/>
+                                            <constraint firstItem="6yS-69-y8o" firstAttribute="top" secondItem="BsM-jY-qlL" secondAttribute="top" id="W1S-Ts-0OZ"/>
+                                            <constraint firstItem="l7T-WK-pdY" firstAttribute="centerX" secondItem="BsM-jY-qlL" secondAttribute="centerX" id="flL-1m-0Ot"/>
+                                            <constraint firstItem="l7T-WK-pdY" firstAttribute="top" secondItem="6yS-69-y8o" secondAttribute="bottom" constant="28" id="mjV-bB-sZw"/>
+                                            <constraint firstItem="6yS-69-y8o" firstAttribute="leading" secondItem="BsM-jY-qlL" secondAttribute="leading" id="zgV-wu-Xhb"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="BsM-jY-qlL" firstAttribute="centerY" secondItem="Kb9-TZ-j91" secondAttribute="centerY" id="5TH-u7-WaK"/>
                                     <constraint firstItem="v0L-1F-vPg" firstAttribute="leading" secondItem="Kb9-TZ-j91" secondAttribute="leading" id="B85-iU-cnv"/>
                                     <constraint firstAttribute="trailing" secondItem="v0L-1F-vPg" secondAttribute="trailing" id="Be1-oE-pxq"/>
                                     <constraint firstAttribute="bottom" secondItem="v0L-1F-vPg" secondAttribute="bottom" id="D92-fG-R3L"/>
                                     <constraint firstItem="v0L-1F-vPg" firstAttribute="top" secondItem="Kb9-TZ-j91" secondAttribute="top" id="V81-NA-edo"/>
+                                    <constraint firstItem="BsM-jY-qlL" firstAttribute="leading" secondItem="Kb9-TZ-j91" secondAttribute="leading" constant="40" id="kc3-hV-KTa"/>
+                                    <constraint firstAttribute="trailing" secondItem="BsM-jY-qlL" secondAttribute="trailing" constant="40" id="kk7-ys-KCU"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -117,6 +151,7 @@
                         <viewLayoutGuide key="safeArea" id="FO0-AO-Tf7"/>
                     </view>
                     <connections>
+                        <outlet property="noTasksView" destination="BsM-jY-qlL" id="r4U-96-h2d"/>
                         <outlet property="tasksTableView" destination="v0L-1F-vPg" id="35Q-Xm-z8I"/>
                     </connections>
                 </viewController>
@@ -132,50 +167,78 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yOR-Qd-x1W">
-                                <rect key="frame" x="0.0" y="44" width="414" height="34"/>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Vpf-yr-rCl" customClass="CustomTableView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="78" width="414" height="734"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="Oeg-KI-u3U" id="SeB-oe-Z40"/>
-                                    <outlet property="delegate" destination="Oeg-KI-u3U" id="knT-RT-wPn"/>
-                                </connections>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="peb-UO-A9V">
-                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3B-yX-QWl">
+                                <rect key="frame" x="10" y="54" width="394" height="798"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yOR-Qd-x1W">
+                                        <rect key="frame" x="0.0" y="0.0" width="394" height="34"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="vCB-fj-5um"/>
+                                        </constraints>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zjb-aK-nt9">
+                                        <rect key="frame" x="0.0" y="34" width="394" height="1"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="SdI-IG-zb3"/>
+                                        </constraints>
+                                    </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Vpf-yr-rCl" customClass="CustomTableView" customModule="MathPortal" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="35" width="394" height="763"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Oeg-KI-u3U" id="SeB-oe-Z40"/>
+                                            <outlet property="delegate" destination="Oeg-KI-u3U" id="knT-RT-wPn"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="peb-UO-A9V">
+                                        <rect key="frame" x="324" y="728" width="50" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="XuF-FP-XLm"/>
+                                            <constraint firstAttribute="width" secondItem="peb-UO-A9V" secondAttribute="height" multiplier="1:1" id="lhc-Sc-PaH"/>
+                                        </constraints>
+                                        <state key="normal" image="plus" catalog="system"/>
+                                        <connections>
+                                            <action selector="goToEquationViewController" destination="Oeg-KI-u3U" eventType="touchUpInside" id="YY6-fG-L7e"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="XuF-FP-XLm"/>
+                                    <constraint firstAttribute="trailing" secondItem="peb-UO-A9V" secondAttribute="trailing" constant="20" id="8uw-25-Tt0"/>
+                                    <constraint firstItem="yOR-Qd-x1W" firstAttribute="leading" secondItem="A3B-yX-QWl" secondAttribute="leading" id="IEP-g2-P4D"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vpf-yr-rCl" secondAttribute="trailing" id="JPm-Jb-4mU"/>
+                                    <constraint firstAttribute="trailing" secondItem="yOR-Qd-x1W" secondAttribute="trailing" id="Juz-QH-YAW"/>
+                                    <constraint firstItem="zjb-aK-nt9" firstAttribute="top" secondItem="yOR-Qd-x1W" secondAttribute="bottom" id="UtT-0l-ChT"/>
+                                    <constraint firstAttribute="bottom" secondItem="Vpf-yr-rCl" secondAttribute="bottom" id="WaW-TM-MxW"/>
+                                    <constraint firstItem="zjb-aK-nt9" firstAttribute="leading" secondItem="A3B-yX-QWl" secondAttribute="leading" id="aZ3-Js-Weq"/>
+                                    <constraint firstItem="Vpf-yr-rCl" firstAttribute="top" secondItem="zjb-aK-nt9" secondAttribute="bottom" id="b9s-3H-YVG"/>
+                                    <constraint firstItem="yOR-Qd-x1W" firstAttribute="top" secondItem="A3B-yX-QWl" secondAttribute="top" id="buD-va-yBH"/>
+                                    <constraint firstItem="Vpf-yr-rCl" firstAttribute="leading" secondItem="A3B-yX-QWl" secondAttribute="leading" id="dbR-Br-EPL"/>
+                                    <constraint firstAttribute="bottom" secondItem="peb-UO-A9V" secondAttribute="bottom" constant="20" id="phN-Cl-cSx"/>
+                                    <constraint firstAttribute="trailing" secondItem="zjb-aK-nt9" secondAttribute="trailing" id="tks-eC-SQk"/>
                                 </constraints>
-                                <state key="normal" title="Save"/>
-                                <connections>
-                                    <action selector="saveTask:" destination="Oeg-KI-u3U" eventType="touchUpInside" id="wan-Fz-2Aa"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="trailing" secondItem="peb-UO-A9V" secondAttribute="trailing" id="CR5-Jl-JZU"/>
-                            <constraint firstItem="peb-UO-A9V" firstAttribute="top" secondItem="Vpf-yr-rCl" secondAttribute="bottom" id="NHE-Ow-c2h"/>
-                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="bottom" secondItem="peb-UO-A9V" secondAttribute="bottom" id="O9w-LY-4US"/>
-                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="trailing" secondItem="Vpf-yr-rCl" secondAttribute="trailing" id="Qu2-e0-qVj"/>
-                            <constraint firstItem="Vpf-yr-rCl" firstAttribute="leading" secondItem="8pK-kZ-OS7" secondAttribute="leading" id="U1u-C1-QeQ"/>
-                            <constraint firstItem="peb-UO-A9V" firstAttribute="leading" secondItem="8pK-kZ-OS7" secondAttribute="leading" id="XXz-CC-MAc"/>
-                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="leading" secondItem="yOR-Qd-x1W" secondAttribute="leading" id="hMk-LT-ors"/>
-                            <constraint firstItem="yOR-Qd-x1W" firstAttribute="trailing" secondItem="8pK-kZ-OS7" secondAttribute="trailing" id="lgU-Aq-miT"/>
-                            <constraint firstItem="Vpf-yr-rCl" firstAttribute="top" secondItem="yOR-Qd-x1W" secondAttribute="bottom" id="o8t-c6-8jG"/>
-                            <constraint firstItem="yOR-Qd-x1W" firstAttribute="top" secondItem="8pK-kZ-OS7" secondAttribute="top" id="zid-9j-DKK"/>
+                            <constraint firstItem="A3B-yX-QWl" firstAttribute="top" secondItem="8pK-kZ-OS7" secondAttribute="top" constant="10" id="1o3-yB-NYH"/>
+                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="bottom" secondItem="A3B-yX-QWl" secondAttribute="bottom" constant="10" id="4IA-Zh-6Ts"/>
+                            <constraint firstItem="A3B-yX-QWl" firstAttribute="leading" secondItem="8pK-kZ-OS7" secondAttribute="leading" constant="10" id="7tR-AD-0an"/>
+                            <constraint firstItem="8pK-kZ-OS7" firstAttribute="trailing" secondItem="A3B-yX-QWl" secondAttribute="trailing" constant="10" id="ad1-Iy-GwY"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8pK-kZ-OS7"/>
                     </view>
                     <connections>
+                        <outlet property="addEquationButton" destination="peb-UO-A9V" id="Jma-W2-2ta"/>
+                        <outlet property="backgroundContentView" destination="A3B-yX-QWl" id="tc8-iR-dwI"/>
                         <outlet property="equationsTableView" destination="Vpf-yr-rCl" id="k5P-Sx-LvC"/>
-                        <outlet property="saveButton" destination="peb-UO-A9V" id="QUz-u6-UfL"/>
                         <outlet property="titleTextField" destination="yOR-Qd-x1W" id="vM7-ta-TQp"/>
                     </connections>
                 </viewController>
@@ -227,4 +290,7 @@
             <point key="canvasLocation" x="3981" y="126"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="plus" catalog="system" width="64" height="56"/>
+    </resources>
 </document>

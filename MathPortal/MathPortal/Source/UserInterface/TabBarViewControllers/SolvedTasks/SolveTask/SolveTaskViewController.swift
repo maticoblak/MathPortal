@@ -10,8 +10,11 @@ import UIKit
 
 class SolveTaskViewController: UIViewController {
 
+    @IBOutlet private var taskBackgroundView: UIView?
+    @IBOutlet private var solutionBackgroundView: UIView?
     @IBOutlet private var taskContentController: ContentControllerView?
     @IBOutlet private var equationsTableView: CustomTableView?
+    @IBOutlet private var addEquationButton: UIButton?
     
     var task: Task!
     private var solution: TaskSolution = TaskSolution()
@@ -28,9 +31,21 @@ class SolveTaskViewController: UIViewController {
             return controller
         }(), animationStyle: .fade)
         
+        [taskBackgroundView, solutionBackgroundView].forEach { $0?.backgroundColor = Color.orange}
+        [taskContentController, equationsTableView].forEach { view in
+            view?.layer.borderColor = Color.darkBlue.cgColor
+            view?.layer.borderWidth = 2
+            view?.layer.cornerRadius = 10
+        }
+        
+        addEquationButton?.backgroundColor = Color.lightGrey
+        addEquationButton?.tintColor = Color.darkBlue
+        addEquationButton?.layer.borderWidth = 1
+        addEquationButton?.layer.borderColor = Color.darkBlue.cgColor
+        addEquationButton?.layer.cornerRadius = (addEquationButton?.bounds.height ?? 5)/2
+        
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(save))
-        taskContentController?.layer.cornerRadius = 10
-        equationsTableView?.layer.cornerRadius = 10
+        
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         equationsTableView?.customDelegate = self
         reloadSolution()

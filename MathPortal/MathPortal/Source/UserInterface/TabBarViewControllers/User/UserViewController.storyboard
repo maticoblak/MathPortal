@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -407,14 +407,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U0w-3e-tEh">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U0w-3e-tEh">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="Tm0-dj-F0l">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="836"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="914"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WdE-ko-rIa">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vz-tm-5RE">
+                                                        <rect key="frame" x="354" y="20" width="40" height="40"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="40" id="DFk-Da-nue"/>
+                                                            <constraint firstAttribute="width" secondItem="9vz-tm-5RE" secondAttribute="height" multiplier="1:1" id="o8f-tu-FYe"/>
+                                                        </constraints>
+                                                        <state key="normal" image="xmark.circle" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="closeView:" destination="VyE-Ao-9oU" eventType="touchUpInside" id="uFh-Gy-7Jg"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="9vz-tm-5RE" secondAttribute="trailing" constant="20" id="TH0-Xo-vmO"/>
+                                                    <constraint firstItem="9vz-tm-5RE" firstAttribute="top" secondItem="WdE-ko-rIa" secondAttribute="top" constant="20" id="ir4-7e-zkn"/>
+                                                    <constraint firstAttribute="bottom" secondItem="9vz-tm-5RE" secondAttribute="bottom" id="ujR-Sv-Htu"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Zy-pz-qOS">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="280"/>
+                                                <rect key="frame" x="0.0" y="78" width="414" height="280"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nQ1-wO-RNV">
                                                         <rect key="frame" x="87" y="20" width="240" height="240"/>
@@ -456,7 +479,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ch4-Tl-x7h">
-                                                <rect key="frame" x="0.0" y="298" width="414" height="320"/>
+                                                <rect key="frame" x="0.0" y="376" width="414" height="320"/>
                                                 <subviews>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WpS-v1-ofq" customClass="CustomTextField" customModule="MathPortal" customModuleProvider="target">
                                                         <rect key="frame" x="40" y="40" width="334" height="30"/>
@@ -628,7 +651,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Siu-5R-90j">
-                                                <rect key="frame" x="0.0" y="636" width="414" height="200"/>
+                                                <rect key="frame" x="0.0" y="714" width="414" height="200"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sxm-zv-3sr" customClass="CustomButton" customModule="MathPortal" customModuleProvider="target">
                                                         <rect key="frame" x="40" y="20" width="334" height="50"/>
@@ -694,6 +717,7 @@
                         <outlet property="ageDayTextField" destination="jFr-6N-q7A" id="3mL-w2-MiZ"/>
                         <outlet property="ageMonthTextField" destination="qse-bl-XOm" id="hrb-1g-UaZ"/>
                         <outlet property="ageYearTextField" destination="cKn-B5-fOT" id="w0B-kw-jw7"/>
+                        <outlet property="closeButton" destination="9vz-tm-5RE" id="KKt-h4-DXq"/>
                         <outlet property="deleteAccountButton" destination="KIX-ML-LCi" id="H5k-JV-DNH"/>
                         <outlet property="editProfileImageButton" destination="69a-bA-8pJ" id="Hfa-SW-M6d"/>
                         <outlet property="emailTextField" destination="gAb-tI-Rcy" id="8dW-8S-hSU"/>
@@ -779,5 +803,6 @@
         <image name="edit" width="48" height="48"/>
         <image name="editProfile" width="32" height="32"/>
         <image name="einsteinBlack" width="50" height="50"/>
+        <image name="xmark.circle" catalog="system" width="64" height="60"/>
     </resources>
 </document>

@@ -15,6 +15,7 @@ class EditUserViewController: BaseViewController {
     @IBOutlet private var editProfileImageButton: UIButton?
     @IBOutlet private var profileImage: UIImageView?
     @IBOutlet private var profileImageFrameView: UIView?
+    @IBOutlet private var closeButton: UIButton?
     
     @IBOutlet private var usernameTextField: CustomTextField?
     @IBOutlet private var emailTextField: CustomTextField?
@@ -30,7 +31,6 @@ class EditUserViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.isNavigationBarHidden = false
         setUpKeyboard()
         setupView()
         refresh()
@@ -61,6 +61,8 @@ class EditUserViewController: BaseViewController {
         studentButton?.layer.cornerRadius = 10
         teacherButton?.layer.cornerRadius = 10
         
+        closeButton?.tintColor = Color.darkGrey
+        
     }
     
     private func setUpKeyboard() {
@@ -71,6 +73,10 @@ class EditUserViewController: BaseViewController {
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+    @IBAction private func closeView(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
     private var studentRoleSelected: Bool = false {
         didSet {
             studentButton?.backgroundColor = studentRoleSelected ? Color.orange : Color.darkGrey
@@ -135,7 +141,7 @@ class EditUserViewController: BaseViewController {
                         ErrorMessage.displayErrorMessage(controller: self, message: "Unknown error occurred")
                     }
                 } else {
-                    self.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }

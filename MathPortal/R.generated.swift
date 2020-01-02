@@ -492,6 +492,7 @@ struct _R: Rswift.Validatable {
       }
       
       static func validate() throws {
+        if UIKit.UIImage(named: "plus", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'plus' is used in storyboard 'CreatedTasksViewController', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.createdTasksViewController().createdTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'createdTasksViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'CreatedTasksViewController'.") }
@@ -626,6 +627,7 @@ struct _R: Rswift.Validatable {
       }
       
       static func validate() throws {
+        if UIKit.UIImage(named: "plus", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'plus' is used in storyboard 'SolvedTasksViewController', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.solvedTasksViewController().solveTaskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solveTaskViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolveTaskViewController'.") }
@@ -676,6 +678,7 @@ struct _R: Rswift.Validatable {
         if UIKit.UIImage(named: "edit", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'edit' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "editProfile", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'editProfile' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "einsteinBlack", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'einsteinBlack' is used in storyboard 'UserViewController', but couldn't be loaded.") }
+        if UIKit.UIImage(named: "xmark.circle", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'xmark.circle' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if #available(iOS 11.0, *) {
         }
         if _R.storyboard.userViewController().editUserViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'editUserViewController' could not be loaded from storyboard 'UserViewController' as 'EditUserViewController'.") }

@@ -34,7 +34,7 @@ class TabBarViewController: BaseViewController {
             button?.backgroundColor = Color.darkBlue
         }
         superViewOffset?.backgroundColor = Color.darkBlue
-        separatorLine?.backgroundColor = Color.orange
+        separatorLine?.backgroundColor = Color.darkGrey
     }
     
     private var allButtons: [TabBarButtonView?] { return [createdTasksButtonView, userButtonView, solvedTasksButtonView, browseButtonView] }
@@ -63,7 +63,7 @@ class TabBarViewController: BaseViewController {
     }()
     
     lazy private var solvedTasksViewController: (controller: SolvedTasksViewController, navigationController: UINavigationController) = {
-        let controller = SolvedTasksViewController.createFromStoryboard()
+        let controller = SolvedTasksViewController.createFromStoryboard(delegate: self)
         let navigationController = UINavigationController(rootViewController: controller)
         return (controller, navigationController)
     }()
@@ -127,5 +127,13 @@ extension TabBarViewController {
         case createdTaskTab
         case solvedTaskTab
         case browseTab
+    }
+}
+
+// MARK: - SolvedTasksViewControllerDelegate
+
+extension TabBarViewController: SolvedTasksViewControllerDelegate {
+    func solvedTasksViewController(_ sender: SolvedTasksViewController) {
+        browseButtonPressed()
     }
 }

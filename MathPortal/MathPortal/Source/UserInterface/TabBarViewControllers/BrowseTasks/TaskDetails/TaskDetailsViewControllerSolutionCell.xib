@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,16 +17,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfh-Qc-ogv" customClass="SolutionView" customModule="MathPortal" customModuleProvider="target">
-                        <rect key="frame" x="5" y="5" width="538" height="175"/>
+                        <rect key="frame" x="10" y="5" width="528" height="170"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.0039215686269999999" green="0.054901960780000002" blue="0.16862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="wfh-Qc-ogv" secondAttribute="trailing" constant="5" id="ECw-8W-KxC"/>
-                    <constraint firstItem="wfh-Qc-ogv" firstAttribute="leading" secondItem="6Ek-vc-7ch" secondAttribute="leading" constant="5" id="NDU-0o-R6I"/>
+                    <constraint firstAttribute="trailing" secondItem="wfh-Qc-ogv" secondAttribute="trailing" constant="10" id="ECw-8W-KxC"/>
+                    <constraint firstItem="wfh-Qc-ogv" firstAttribute="leading" secondItem="6Ek-vc-7ch" secondAttribute="leading" constant="10" id="NDU-0o-R6I"/>
                     <constraint firstItem="wfh-Qc-ogv" firstAttribute="top" secondItem="6Ek-vc-7ch" secondAttribute="top" constant="5" id="XpD-oj-uWa"/>
-                    <constraint firstAttribute="bottom" secondItem="wfh-Qc-ogv" secondAttribute="bottom" constant="5" id="c2j-Jz-ibf"/>
+                    <constraint firstAttribute="bottom" secondItem="wfh-Qc-ogv" secondAttribute="bottom" constant="10" id="c2j-Jz-ibf"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

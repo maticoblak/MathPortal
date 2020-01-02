@@ -10,15 +10,15 @@ import UIKit
 
 class Appearence {
     
-    static func shadows(view: UIView, color: CGColor) {
-        view.layer.masksToBounds = false
-        view.layer.shadowColor = color
-        view.layer.shadowOpacity = 1
-        view.layer.shadowOffset = .zero
-        view.layer.shadowRadius = 7
+    static func shadows(view: UIView?, color: CGColor) {
+        view?.layer.masksToBounds = false
+        view?.layer.shadowColor = color
+        view?.layer.shadowOpacity = 1
+        view?.layer.shadowOffset = .zero
+        view?.layer.shadowRadius = 7
         
-        view.layer.shouldRasterize = true
-        view.layer.rasterizationScale = 1
+        view?.layer.shouldRasterize = true
+        view?.layer.rasterizationScale = 1
     }
     
     static func setUpnavigationBar(controller: UIViewController, leftBarButtonTitle: String?, leftBarButtonAction: Selector?, rightBarButtonTitle: String?, rightBarButtonAction: Selector?, font: String? = nil , fontSize: Int? = nil ) {

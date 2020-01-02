@@ -13,6 +13,7 @@ class BrowseSelectedTaskViewController: UIViewController {
     var task: Task!
     private var solutions: [TaskSolution]?
     
+    @IBOutlet private var taskBackgroundView: UIView?
     @IBOutlet private var taskContentControllerView: ContentControllerView?
     @IBOutlet private var solutionsTableView: UITableView?
     override func viewDidLoad() {
@@ -23,6 +24,10 @@ class BrowseSelectedTaskViewController: UIViewController {
             controller?.task = task
             return controller
         }(), animationStyle: .fade)
+        taskContentControllerView?.layer.borderWidth = 2
+        taskContentControllerView?.layer.borderColor = Color.darkBlue.cgColor
+        taskContentControllerView?.layer.cornerRadius = 5
+        taskBackgroundView?.backgroundColor = Color.pink
         
         Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Solve", rightBarButtonAction: #selector(goToSolveScreen))
         

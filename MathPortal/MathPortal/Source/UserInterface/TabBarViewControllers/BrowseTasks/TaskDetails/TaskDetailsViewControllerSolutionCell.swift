@@ -15,5 +15,8 @@ class TaskDetailsViewControllerSolutionCell: UITableViewCell {
     func setupCell(solution: TaskSolution?) {
         guard let solution = solution else { return }
         solutionView?.setupView(solution: solution)
+        solutionView?.layer.borderWidth = 2
+        solutionView?.layer.borderColor = Color.darkBlue.cgColor
+        contentView.backgroundColor = Color.pink
     }
 }

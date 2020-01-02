@@ -12,40 +12,36 @@ import Parse
 class TaskViewController: UIViewController {
 
     @IBOutlet private var titleTextField: UITextField?
-    @IBOutlet private var saveButton: UIButton?
+    @IBOutlet private var addEquationButton: UIButton?
     
-    @IBOutlet var equationsTableView: CustomTableView?
+    @IBOutlet private var equationsTableView: CustomTableView?
+    @IBOutlet private var backgroundContentView: UIView?
     
     private var equationsAndTexts: [Equation] = [Equation]()
     
     private var currentSelectedEquationIndex: Int?
     
     var task: Task!
-    
-    var saveButtonHidden: Bool = false {
-        didSet {
-            saveButton?.isHidden = saveButtonHidden
-        }
-    }
-    var mathKeyboardOpened: Bool = false {
-        didSet {
-            saveButtonHidden = !saveButtonHidden
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "+", rightBarButtonAction: #selector(goToEquationViewController))
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(saveTask))
     
         equationsAndTexts = task.equations ?? [Equation]()
         titleTextField?.text = task.name
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
         setUpDefaultKeyboard()
-        
+        addEquationButton?.tintColor = Color.darkBlue
+        addEquationButton?.layer.borderWidth = 2
+        addEquationButton?.layer.borderColor = Color.darkBlue.cgColor
+        addEquationButton?.layer.cornerRadius = (addEquationButton?.bounds.height ?? 5)/2
+        addEquationButton?.backgroundColor = Color.lightGrey
+        backgroundContentView?.layer.cornerRadius = 10
+        backgroundContentView?.layer.borderWidth = 2
+        backgroundContentView?.layer.borderColor = Color.darkBlue.cgColor
+        view.backgroundColor = Color.lightGrey
+        equationsTableView?.layer.cornerRadius = 10
         equationsTableView?.customDelegate = self
     }
     private func setUpDefaultKeyboard() {
@@ -56,22 +52,18 @@ class TaskViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func goToEquationViewController() {
+    @IBAction func goToEquationViewController() {
         let controller = R.storyboard.createdTasksViewController.mathEquationViewController()!
         controller.delegate = self
         navigationController?.pushViewController(controller, animated: true)
         
     }
     
-    @IBAction func saveTask(_ sender: Any) {
-        saveTask()
-    }
-    
     @objc func goToCreatedTasksViewController() {
         navigationController?.popViewController(animated: true)
     }
     
-    func saveTask() {
+    @objc func saveTask() {
         let loadingSpinner = LoadingViewController.showInNewWindow(text: "Saving")
         
         task.name = titleTextField?.text

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -85,17 +85,53 @@
                                     <outlet property="delegate" destination="fkS-Sr-qPU" id="JPi-KM-alU"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EMG-JV-8bn">
+                                <rect key="frame" x="40" y="368.5" width="334" height="169"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8XN-9P-mrD">
+                                        <rect key="frame" x="0.0" y="0.0" width="334" height="91"/>
+                                        <string key="text">You haven’t solved any tasks yet. Browse through already created tasks. Solve your first task and share your solution with others.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fv9-Hw-Kd9" customClass="CustomButton" customModule="MathPortal" customModuleProvider="target">
+                                        <rect key="frame" x="67" y="119" width="200" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="8hN-8C-nts"/>
+                                            <constraint firstAttribute="width" constant="200" id="q4W-WI-AYM"/>
+                                        </constraints>
+                                        <state key="normal" title="FINDEA TASK TO SOLVE"/>
+                                        <connections>
+                                            <action selector="solveMyFirstTask:" destination="fkS-Sr-qPU" eventType="touchUpInside" id="VCa-cX-wyw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="fv9-Hw-Kd9" secondAttribute="bottom" id="9xr-LG-qwE"/>
+                                    <constraint firstItem="8XN-9P-mrD" firstAttribute="leading" secondItem="EMG-JV-8bn" secondAttribute="leading" id="O2i-cN-x08"/>
+                                    <constraint firstAttribute="trailing" secondItem="8XN-9P-mrD" secondAttribute="trailing" id="Ovi-ho-h0U"/>
+                                    <constraint firstItem="8XN-9P-mrD" firstAttribute="top" secondItem="EMG-JV-8bn" secondAttribute="top" id="aQh-B6-vKb"/>
+                                    <constraint firstItem="fv9-Hw-Kd9" firstAttribute="centerX" secondItem="EMG-JV-8bn" secondAttribute="centerX" id="gQT-vj-h7n"/>
+                                    <constraint firstItem="fv9-Hw-Kd9" firstAttribute="top" secondItem="8XN-9P-mrD" secondAttribute="bottom" constant="28" id="h5v-OY-mVD"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="BRb-7J-gtm" firstAttribute="top" secondItem="3Pp-sb-T7Z" secondAttribute="top" id="6jK-3x-JgW"/>
+                            <constraint firstItem="EMG-JV-8bn" firstAttribute="centerY" secondItem="3Pp-sb-T7Z" secondAttribute="centerY" id="ZJ4-6d-4Tq"/>
                             <constraint firstItem="3Pp-sb-T7Z" firstAttribute="bottom" secondItem="BRb-7J-gtm" secondAttribute="bottom" id="jer-zb-ys3"/>
+                            <constraint firstItem="3Pp-sb-T7Z" firstAttribute="trailing" secondItem="EMG-JV-8bn" secondAttribute="trailing" constant="40" id="kYO-rV-zGr"/>
                             <constraint firstItem="3Pp-sb-T7Z" firstAttribute="trailing" secondItem="BRb-7J-gtm" secondAttribute="trailing" id="m6o-zy-9ob"/>
+                            <constraint firstItem="EMG-JV-8bn" firstAttribute="leading" secondItem="3Pp-sb-T7Z" secondAttribute="leading" constant="40" id="s8X-dC-YOQ"/>
                             <constraint firstItem="BRb-7J-gtm" firstAttribute="leading" secondItem="3Pp-sb-T7Z" secondAttribute="leading" id="vY0-pt-E88"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3Pp-sb-T7Z"/>
                     </view>
                     <connections>
+                        <outlet property="noTasksView" destination="EMG-JV-8bn" id="gKT-TL-9hT"/>
                         <outlet property="tasksTableView" destination="BRb-7J-gtm" id="bOS-8D-4Dq"/>
                     </connections>
                 </viewController>
@@ -118,7 +154,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="409"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ddn-TH-cjl" customClass="ContentControllerView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="10" width="394" height="389"/>
+                                                <rect key="frame" x="10" y="10" width="394" height="394"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <outlet property="parentViewController" destination="MQq-dz-l8j" id="HLy-5k-qr4"/>
@@ -127,7 +163,7 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.15101402997970581" green="0.1798069179058075" blue="0.24625536799430847" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="Ddn-TH-cjl" secondAttribute="bottom" constant="10" id="6JG-vM-DVU"/>
+                                            <constraint firstAttribute="bottom" secondItem="Ddn-TH-cjl" secondAttribute="bottom" constant="5" id="6JG-vM-DVU"/>
                                             <constraint firstItem="Ddn-TH-cjl" firstAttribute="top" secondItem="low-g1-vfx" secondAttribute="top" constant="10" id="8KW-ks-km7"/>
                                             <constraint firstItem="Ddn-TH-cjl" firstAttribute="leading" secondItem="low-g1-vfx" secondAttribute="leading" constant="10" id="Hyn-fW-h3i"/>
                                             <constraint firstAttribute="trailing" secondItem="Ddn-TH-cjl" secondAttribute="trailing" constant="10" id="tFT-lk-qUz"/>
@@ -137,17 +173,20 @@
                                         <rect key="frame" x="0.0" y="409" width="414" height="409"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ySL-ZF-lm8" customClass="CustomTableView" customModule="MathPortal" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="10" width="394" height="389"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <rect key="frame" x="10" y="5" width="394" height="394"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <outlet property="dataSource" destination="MQq-dz-l8j" id="JJG-YS-Bmo"/>
                                                     <outlet property="delegate" destination="MQq-dz-l8j" id="Rav-FE-LFf"/>
                                                 </connections>
                                             </tableView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5P-bL-Kjr">
-                                                <rect key="frame" x="364" y="20" width="30" height="41"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                <state key="normal" title="+"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5P-bL-Kjr">
+                                                <rect key="frame" x="369" y="15" width="25" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="S5P-bL-Kjr" secondAttribute="height" multiplier="1:1" id="bbD-f9-zTV"/>
+                                                    <constraint firstAttribute="height" constant="25" id="u1x-2t-qZP"/>
+                                                </constraints>
+                                                <state key="normal" image="plus" catalog="system"/>
                                                 <connections>
                                                     <action selector="addEquation:" destination="MQq-dz-l8j" eventType="touchUpInside" id="ehN-n4-MkL"/>
                                                 </connections>
@@ -156,14 +195,15 @@
                                         <color key="backgroundColor" red="1" green="0.44305509328842163" blue="0.34973174333572388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="ySL-ZF-lm8" secondAttribute="trailing" constant="10" id="45z-m8-SKa"/>
-                                            <constraint firstAttribute="trailing" secondItem="S5P-bL-Kjr" secondAttribute="trailing" constant="20" id="HC1-hk-V1B"/>
-                                            <constraint firstItem="S5P-bL-Kjr" firstAttribute="top" secondItem="3oe-Zk-c4n" secondAttribute="top" constant="20" id="e2n-Gb-OP0"/>
                                             <constraint firstAttribute="bottom" secondItem="ySL-ZF-lm8" secondAttribute="bottom" constant="10" id="jS2-AH-Fqi"/>
                                             <constraint firstItem="ySL-ZF-lm8" firstAttribute="leading" secondItem="3oe-Zk-c4n" secondAttribute="leading" constant="10" id="lWA-VP-wMm"/>
-                                            <constraint firstItem="ySL-ZF-lm8" firstAttribute="top" secondItem="3oe-Zk-c4n" secondAttribute="top" constant="10" id="mSJ-kR-hqt"/>
+                                            <constraint firstItem="ySL-ZF-lm8" firstAttribute="top" secondItem="3oe-Zk-c4n" secondAttribute="top" constant="5" id="mSJ-kR-hqt"/>
+                                            <constraint firstItem="S5P-bL-Kjr" firstAttribute="top" secondItem="ySL-ZF-lm8" secondAttribute="top" constant="10" id="uFB-jk-dWr"/>
+                                            <constraint firstItem="ySL-ZF-lm8" firstAttribute="trailing" secondItem="S5P-bL-Kjr" secondAttribute="trailing" constant="10" id="waC-Ku-Eim"/>
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -176,7 +216,10 @@
                         <viewLayoutGuide key="safeArea" id="ySc-Cz-LOT"/>
                     </view>
                     <connections>
+                        <outlet property="addEquationButton" destination="S5P-bL-Kjr" id="gfE-9B-GR0"/>
                         <outlet property="equationsTableView" destination="ySL-ZF-lm8" id="F7z-07-xMP"/>
+                        <outlet property="solutionBackgroundView" destination="3oe-Zk-c4n" id="4LH-cl-fqF"/>
+                        <outlet property="taskBackgroundView" destination="low-g1-vfx" id="7ro-wl-WrS"/>
                         <outlet property="taskContentController" destination="Ddn-TH-cjl" id="JGX-l4-VBT"/>
                     </connections>
                 </viewController>
@@ -185,4 +228,7 @@
             <point key="canvasLocation" x="754" y="86"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="plus" catalog="system" width="64" height="56"/>
+    </resources>
 </document>

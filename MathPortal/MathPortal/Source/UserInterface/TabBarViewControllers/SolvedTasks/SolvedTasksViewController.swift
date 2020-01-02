@@ -8,13 +8,21 @@
 
 import UIKit
 
+protocol SolvedTasksViewControllerDelegate: class {
+    func solvedTasksViewController(_ sender: SolvedTasksViewController)
+}
+
 class SolvedTasksViewController: UIViewController {
     
     private var tasks: [Task] = [Task]()
+    @IBOutlet private var noTasksView: UIView!
     @IBOutlet private var tasksTableView: UITableView?
     
+    weak var delegate: SolvedTasksViewControllerDelegate?
+     
     override func viewDidLoad() {
         super.viewDidLoad()
+        noTasksView.isHidden = true
         Appearence.setUpNavigationController(controller: self)
         tasksTableView?.backgroundColor = Color.darkGrey
         reloadTasks()
@@ -25,10 +33,14 @@ class SolvedTasksViewController: UIViewController {
         reloadTasks()
     }
     
+    @IBAction private func solveMyFirstTask(_ sender: Any) {
+        delegate?.solvedTasksViewController(self)
+    }
     private func reloadTasks() {
         User.current?.fetchSavedTasks() { (tasks, error) in
             if let tasks = tasks {
                 self.tasks = tasks
+                self.noTasksView.isHidden = !tasks.isEmpty
                 self.tasksTableView?.reloadData()
             } else if let error = error {
                 print(error)
@@ -36,8 +48,10 @@ class SolvedTasksViewController: UIViewController {
         }
     }
     
-    static func createFromStoryboard() -> SolvedTasksViewController {
-        return UIStoryboard(name: "SolvedTasksViewController", bundle: nil).instantiateViewController(withIdentifier: "SolvedTasksViewController") as! SolvedTasksViewController
+    static func createFromStoryboard(delegate: SolvedTasksViewControllerDelegate) -> SolvedTasksViewController {
+        let controller = (UIStoryboard(name: "SolvedTasksViewController", bundle: nil).instantiateViewController(withIdentifier: "SolvedTasksViewController") as! SolvedTasksViewController)
+        controller.delegate = delegate
+        return controller
     }
 
 }
