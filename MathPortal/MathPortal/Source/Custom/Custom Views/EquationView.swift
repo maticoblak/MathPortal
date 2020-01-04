@@ -305,12 +305,10 @@ extension EquationView {
     static func generateSeries(_ inputViews: [EquationView], type: Equation.Series.SeriesType, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Equation.Component.BracketsType = .none) -> EquationView {
         guard inputViews.count == 3 else { return .Nil }
         
-        
-        let seriesView: UIView = SeriesView(type: type, scale: scale, baseView: inputViews[2], minView: inputViews[0], maxView: inputViews[1], color: color)
+        let seriesView: SeriesView = SeriesView(type: type, scale: scale, baseView: inputViews[2], minView: inputViews[0], maxView: inputViews[1], color: color)
         seriesView.backgroundColor = selectedColor
-        let offset = (seriesView.bounds.height - (inputViews[2].view?.bounds.height ?? 0))/2 + inputViews[2].verticalOffset
+        let offset = inputViews[2].verticalOffset + (inputViews[1].view?.bounds.height ?? 0) + 3*seriesView.indent.vertical
         return EquationView(view: seriesView, verticalOffset: offset, type: type.equationType)
-  
     }
 }
 

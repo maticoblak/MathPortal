@@ -18,7 +18,7 @@ class SeriesView: UIView {
     
     private var strokeColor: UIColor = .black
     private var path: UIBezierPath = UIBezierPath(rect: .zero)
-    private var indent: (vertical: CGFloat, horizontal: CGFloat) = (1.0, 4)
+    private(set) var indent: (vertical: CGFloat, horizontal: CGFloat) = (1.0, 4)
     private lazy var symbolSize: CGSize = CGSize(width: 3*(baseView?.view?.bounds.height ?? 30)/4, height: (baseView?.view?.bounds.height ?? 30) + 2*indent.vertical)
     
 
