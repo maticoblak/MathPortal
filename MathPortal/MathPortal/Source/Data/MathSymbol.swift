@@ -57,11 +57,14 @@ extension MathSymbol {
         case greaterThan
         case greaterOrEqualThen
         case lessOrEqualThen
+        case notEqual
         case faculty
         case integral
         case limit
         case infinity
         case absoluteValue
+        case sumSeries
+        case productSeries
         
         case degree
         
@@ -138,6 +141,9 @@ extension MathSymbol {
             case .equal:
                 guard let equal: UIView = EquationView.generateText(value: "=", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return equal
+            case .notEqual:
+                guard let equal: UIView = EquationView.generateText(value: "≠", color: Color.darkBlue).view else { return EquationView.Nil.view }
+                return equal
             case .space:
                 guard let space: UIView = EquationView.generateText(value: "space", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return space
@@ -188,6 +194,12 @@ extension MathSymbol {
             case .absoluteValue:
                 guard let absoluteValue: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: .absolute, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
                 return absoluteValue
+            case .sumSeries:
+                guard let sumSeries: UIView = EquationView.generateSeries([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.4), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.4), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7)], type: .sum, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
+                return sumSeries
+            case .productSeries:
+                guard let sumSeries: UIView = EquationView.generateSeries([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.4), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.4), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7)], type: .product, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
+                return sumSeries
             }
             return nil
         }

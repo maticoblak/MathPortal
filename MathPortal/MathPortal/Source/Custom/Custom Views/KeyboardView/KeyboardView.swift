@@ -288,7 +288,7 @@ extension KeyboardView {
     
     
     private func setupFunctionsKeyboard() {    
-        let buttons: [[MathSymbol.SymbolType]] = [[.sin, .cos, .tan, .cot], [.logarithm, .limit, .integral], [.index, .exponent, .indexAndExponent, .absoluteValue], [.lessThan, .greaterThan, .lessOrEqualThen, .greaterOrEqualThen, .faculty, .degree, .infinity]]
+        let buttons: [[MathSymbol.SymbolType]] = [[.sin, .cos, .tan, .cot], [.logarithm, .limit, .sumSeries, .productSeries], [.index, .indexAndExponent, .absoluteValue, .integral], [.lessThan, .greaterThan, .lessOrEqualThen, .greaterOrEqualThen, .faculty, .notEqual, .infinity]]
         
         let rows: [UIStackView?] = [functionsFirstRow, functionsSecondRow, functionsThirdRow, functionsFourthRow]
         rows.forEach { $0?.distribution = UIStackView.Distribution.fillEqually}

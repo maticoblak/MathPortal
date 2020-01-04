@@ -32,6 +32,8 @@ class Equation {
         case integral
         case limit
         case horizontalSpace
+        case sumSeries
+        case productSeries
         
         case other // For views that make one of the above
         
@@ -59,6 +61,8 @@ class Equation {
             case .limit: return "limit"
             case .absoluteValue: return "absoluteValue"
             case .horizontalSpace: return "horizontalSpace"
+            case .sumSeries: return "sumSeries"
+            case .productSeries: return "productSeries"
             }
         }
         
@@ -70,6 +74,8 @@ class Equation {
             case .cos: return "cos"
             case .tan: return "tan"
             case .cot: return "cot"
+            case .sumSeries: return "Σ"
+            case .productSeries: return "Π"
             default: return nil
             }
         }
@@ -163,6 +169,10 @@ class Equation {
             currentIndicator.addComponent(Limit())
         case .integral:
             currentIndicator.addComponent(Integral())
+        case .sumSeries:
+            currentIndicator.addComponent(Series(.sum))
+        case .productSeries:
+            currentIndicator.addComponent(Series(.product))
         case .lessThan:
             currentIndicator.addString("<")
         case .greaterThan:
@@ -171,6 +181,8 @@ class Equation {
             currentIndicator.addString("≤")
         case .greaterOrEqualThen:
             currentIndicator.addString("≥")
+        case .notEqual:
+            currentIndicator.addString("≠")
         case .faculty:
             currentIndicator.addString("!")
         case .infinity:
@@ -948,6 +960,143 @@ extension Equation {
             return EquationView.generateIntegral(items.map { $0.generateView() }, selectedColor: color, scale: scale, brackets: brackets)
         }
     }
+    
+    //MARK: - Series
+    
+    class Series: Component {
+        
+        enum SeriesType {
+            case product
+            case sum
+            
+            var equationType: Equation.ExpressionType {
+                switch self {
+                case .product: return .productSeries
+                case .sum: return .sumSeries
+                }
+            }
+        }
+        
+        var type: SeriesType = .sum
+        
+        override func refreshScalesInComponent() {
+             base.scale = self.scale
+             minBound.scale = self.scale * 0.7
+             maxBound.scale = self.scale * 0.7
+         }
+         
+         private var base: Expression {
+             get { return items[2]}
+             set {
+                 if items.count < 3 {
+                     guard newValue is Empty else { return }
+                     newValue.parent = self
+                     items.append(newValue)
+                 } else if items[2] is Empty {
+                     if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                         newValue.parent = self
+                         items[2] = newValue
+                     } else {
+                         let newComponent = Component(items: [newValue])
+                         newComponent.parent = self
+                         newValue.parent = newComponent
+                         if let newValue = newValue as? Component, newValue.hasBrackets() == false {
+                             newComponent.brackets = .normal
+                         }
+                         items[2] = newComponent
+                     }
+                 } else {
+                     let newComponent = Component(items: [items[2], newValue])
+                     newComponent.parent = self
+                     newValue.parent = newComponent
+                     items[2] = newComponent
+                 }}
+         }
+         
+         private var maxBound: Expression {
+             get { return items[1]}
+             set {
+                 if items.count < 2 {
+                     guard newValue is Empty else { return }
+                     newValue.parent = self
+                     newValue.scale = self.scale * 0.7
+                     items.append(newValue)
+                 } else if items[1] is Empty {
+                     let newComponent = Component(items: [newValue])
+                     newComponent.parent = self
+                     newComponent.scale = self.scale * 0.7
+                     newValue.parent = newComponent
+                     items[1] = newComponent
+                 } else {
+                     let newComponent = Component(items: [items[1], newValue])
+                     newComponent.parent = self
+                     newComponent.scale = self.scale * 0.7
+                     newValue.parent = newComponent
+                     items[1] = newComponent
+                 }
+             }
+         }
+         
+        private  var minBound: Expression {
+             get { return items[0]}
+             set {
+                 if items.isEmpty {
+                     guard newValue is Empty else { return }
+                     newValue.parent = self
+                     newValue.scale = self.scale * 0.7
+                     items.append(newValue)
+                 } else if items[0] is Empty {
+                     let newComponent = Component(items: [newValue])
+                     newComponent.parent = self
+                     newComponent.scale = self.scale * 0.7
+                     newValue.parent = newComponent
+                     items[0] = newComponent
+                 } else {
+                     let newComponent = Component(items: [items[0], newValue])
+                     newComponent.parent = self
+                     newComponent.scale = self.scale * 0.7
+                     newValue.parent = newComponent
+                     items[0] = newComponent
+                 }
+             }
+         }
+         
+        init(_ type: SeriesType, base: Expression, minBound: Expression, maxBound: Expression ) {
+            super.init()
+            self.type = type
+            self.minBound = minBound
+            self.maxBound = maxBound
+            self.base = base
+        }
+        
+        convenience init(_ type: SeriesType) {
+             self.init(type, base: Empty(), minBound: Empty(), maxBound: Empty())
+        }
+        
+        convenience init(_ type: SeriesType, items: [Expression], brackets: BracketsType = .none) {
+            self.init(type)
+            guard items.count == 3 else { return }
+            items.forEach { $0.parent = self; $0.scale = self.scale }
+            self.items = items
+            self.brackets = brackets
+        }
+        
+        override func addValue(expression: Equation.Expression?, offset: Int?) {
+            guard let offset = offset, offset <= 2 else { return }
+            guard let expression = expression else { return }
+            if offset == 0 {
+                minBound = expression
+            } else if offset == 1 {
+                maxBound = expression
+            } else if offset == 2 {
+                base = expression
+            }
+        }
+        override func generateView() -> EquationView {
+            return EquationView.generateSeries(items.map { $0.generateView()}, type: type, selectedColor: color, scale: scale, brackets: brackets)
+        }
+    }
+    
     // MARK: - Empty
     class Empty: Expression {
         
@@ -1108,6 +1257,13 @@ extension Equation {
                 key = Equation.ExpressionType.cot.string
             }
             return [key : trigonometricFunc.items.map { equationToJson(equation: $0) }]
+        } else if let series = equation as? Equation.Series {
+            switch series.type {
+            case .product:
+                return [Equation.ExpressionType.productSeries.string : series.items.map { equationToJson(equation: $0) }]
+            case .sum:
+                return [Equation.ExpressionType.sumSeries.string : series.items.map { equationToJson(equation: $0) }]
+            }
         } else if let limit = equation as? Equation.Limit {
             return [Equation.ExpressionType.limit.string : limit.items.map { equationToJson(equation: $0) }]
         } else if let integral = equation as? Equation.Integral {
@@ -1170,6 +1326,10 @@ extension Equation {
             return Equation.TrigonometricFunc(type: .tan, items: tan.map { JSONToEquation(json: $0)})
         } else if let cot = json[Equation.ExpressionType.cot.string] as? [[String : Any]] {
             return Equation.TrigonometricFunc(type: .cot, items: cot.map { JSONToEquation(json: $0)})
+        } else if let sum = json[Equation.ExpressionType.sumSeries.string] as? [[String : Any]] {
+            return Equation.Series(.sum, items: sum.map { JSONToEquation(json: $0)})
+        } else if let product = json[Equation.ExpressionType.productSeries.string] as? [[String : Any]] {
+            return Equation.Series(.product, items: product.map { JSONToEquation(json: $0)})
         } else if let limit = json[Equation.ExpressionType.limit.string] as? [[String : Any]] {
             return Equation.Limit(items: limit.map { JSONToEquation(json: $0) })
         } else if let integral = json[Equation.ExpressionType.integral.string] as? [[String : Any]] {

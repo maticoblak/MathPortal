@@ -19,7 +19,7 @@ extension Equation {
         }
         
         private func isFunction(_ component: Component?) -> Bool {
-            if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit) {
+            if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit || component is Series) {
                 return true
             } else {
                 return false
