@@ -91,6 +91,6 @@ class SolutionView: UIView {
     }
     
     private func setupFrame() {
-        self.layer.cornerRadius = 5
+        self.layer.cornerRadius = 10
     }
 }

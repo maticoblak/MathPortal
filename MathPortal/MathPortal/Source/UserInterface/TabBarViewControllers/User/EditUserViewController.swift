@@ -36,6 +36,11 @@ class EditUserViewController: BaseViewController {
         refresh()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     private func refresh() {
         
         usernameTextField?.placeholder = User.current?.username
@@ -95,6 +100,7 @@ class EditUserViewController: BaseViewController {
     @IBAction private func editProfileImage(_ sender: Any) {
         let controller = R.storyboard.userViewController.profileImagesViewController()!
         controller.delegate = self
+        navigationController?.isNavigationBarHidden = false
         self.navigationController?.pushViewController(controller, animated: true)
     }
     @IBAction private func selectTeacher(_ sender: Any) {

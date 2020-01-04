@@ -36,7 +36,8 @@ class UserViewController: BaseViewController {
     
     @IBAction private func goToEditProfile(_ sender: Any) {
         let controller = R.storyboard.userViewController.editUserViewController()!
-        self.present(controller, animated: true)
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present(navigationController, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

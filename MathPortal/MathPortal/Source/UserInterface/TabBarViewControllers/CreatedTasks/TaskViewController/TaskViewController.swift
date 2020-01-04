@@ -26,26 +26,34 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(saveTask))
-    
         equationsAndTexts = task.equations ?? [Equation]()
         titleTextField?.text = task.name
         equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
+        
+        equationsTableView?.customDelegate = self
+        
+        setupViews()
         setUpDefaultKeyboard()
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToCreatedTasksViewController), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(saveTask))
+    
+    }
+    private func setUpDefaultKeyboard() {
+        titleTextField?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
+    }
+    
+    private func setupViews() {
         addEquationButton?.tintColor = Color.darkBlue
         addEquationButton?.layer.borderWidth = 2
         addEquationButton?.layer.borderColor = Color.darkBlue.cgColor
         addEquationButton?.layer.cornerRadius = (addEquationButton?.bounds.height ?? 5)/2
         addEquationButton?.backgroundColor = Color.lightGrey
+        
         backgroundContentView?.layer.cornerRadius = 10
         backgroundContentView?.layer.borderWidth = 2
         backgroundContentView?.layer.borderColor = Color.darkBlue.cgColor
+        
         view.backgroundColor = Color.lightGrey
         equationsTableView?.layer.cornerRadius = 10
-        equationsTableView?.customDelegate = self
-    }
-    private func setUpDefaultKeyboard() {
-        titleTextField?.extras.addToolbar(doneButton: (selector: #selector(self.dismissDefaultKeyboard), target: self))
     }
     
     @objc func dismissDefaultKeyboard() {

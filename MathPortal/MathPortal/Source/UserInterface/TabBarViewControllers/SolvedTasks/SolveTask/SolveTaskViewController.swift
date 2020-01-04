@@ -31,6 +31,16 @@ class SolveTaskViewController: UIViewController {
             return controller
         }(), animationStyle: .fade)
         
+        setupViews()
+        
+        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(save))
+        
+        equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
+        equationsTableView?.customDelegate = self
+        reloadSolution()
+    }
+    
+    private func setupViews() {
         [taskBackgroundView, solutionBackgroundView].forEach { $0?.backgroundColor = Color.orange}
         [taskContentController, equationsTableView].forEach { view in
             view?.layer.borderColor = Color.darkBlue.cgColor
@@ -43,12 +53,6 @@ class SolveTaskViewController: UIViewController {
         addEquationButton?.layer.borderWidth = 1
         addEquationButton?.layer.borderColor = Color.darkBlue.cgColor
         addEquationButton?.layer.cornerRadius = (addEquationButton?.bounds.height ?? 5)/2
-        
-        Appearence.setUpnavigationBar(controller: self, leftBarButtonTitle: "< Back", leftBarButtonAction: #selector(goBack), rightBarButtonTitle: "Save", rightBarButtonAction: #selector(save))
-        
-        equationsTableView?.register(R.nib.taskViewControllerTableViewCell)
-        equationsTableView?.customDelegate = self
-        reloadSolution()
     }
     
     override func viewWillAppear(_ animated: Bool) {
