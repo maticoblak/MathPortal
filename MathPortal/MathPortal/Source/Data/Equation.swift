@@ -1172,6 +1172,7 @@ extension Equation {
             items.forEach { $0.scale = self.scale }
         }
         
+        /// Replaces the value/expression at the offset
         func addValue(expression: Expression?, offset: Int?) {
             guard let offset = offset, offset < items.count else { return }
             guard let expression = expression else { return }
