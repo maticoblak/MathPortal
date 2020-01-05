@@ -34,12 +34,13 @@ class MathEquationViewController: UIViewController {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
         equationView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard)))
-        refreshEquation()
         keyboardContentView?.delegate = self
     }
-    
+        
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        /// NOTE: refreshEquation is called here instead on didLoad because the frames are wrong at the beginning and in didLayoutSubviews it does not look that nice
+        refreshEquation()
         keyboardOpened = true
     }
     

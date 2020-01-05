@@ -74,8 +74,6 @@ class Equation {
             case .cos: return "cos"
             case .tan: return "tan"
             case .cot: return "cot"
-            case .sumSeries: return "Σ"
-            case .productSeries: return "Π"
             default: return nil
             }
         }
@@ -135,10 +133,7 @@ class Equation {
             currentIndicator.levelIn()
         case .levelOut:
             currentIndicator.levelOut()
-        case .done:
-            // TODO: add actions for those
-            break
-        case .indicator, .enter, .degree:
+        case .indicator, .enter, .degree, .done:
             // TODO: add actions for those
             break
         case .space:
@@ -148,11 +143,11 @@ class Equation {
         case .root:
             currentIndicator.addComponent(Root())
         case .indexAndExponent:
-            currentIndicator.addComponent(IndexAndExponent())
+            currentIndicator.insertComponent(IndexAndExponent())
         case .exponent:
-            currentIndicator.addComponent(Exponent())
+            currentIndicator.insertComponent(Exponent())
         case .index:
-            currentIndicator.addComponent(Index())
+            currentIndicator.insertComponent(Index())
         case .logarithm:
             currentIndicator.addComponent(Logarithm())
         case .percent:
@@ -1177,7 +1172,11 @@ extension Equation {
             items.forEach { $0.scale = self.scale }
         }
         
-        func addValue(expression: Expression?, offset: Int?) { }
+        func addValue(expression: Expression?, offset: Int?) {
+            guard let offset = offset, offset < items.count else { return }
+            guard let expression = expression else { return }
+            items[offset] = expression
+        }
         func delete(offset: Int) {
             guard offset < items.count else { return }
             guard self.items[offset] is Empty == false else { return }

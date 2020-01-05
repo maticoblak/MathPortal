@@ -381,9 +381,32 @@ extension Equation {
             }
         }
 
+        /// For adding component to the component that the indicator is on
+        func insertComponent(_ newComponent: Component) {
+            // Just possible if we are currently in a componnent
+            guard let component = expression as? Component else { return }
+            newComponent.parent = component
+            // The indicator is at the beginning of the expression
+            if offset < 0 {
+                component.items.insert(newComponent, at: 0)
+            // The indicator is at the end of expression
+            } else if offset == component.items.count {
+                component.items.append(newComponent)
+            // If the indicator is on Empty expression
+            } else if component.items[offset] is Empty {
+                component.addValue(expression: newComponent, offset: offset)
+            // If the indicator is on any other expression, take that expression, stuck it in the newComponent and make newComponent take its place
+            } else {
+                component.items[offset].parent = newComponent
+                component.items[offset].color = .clear
+                newComponent.addValue(expression: component.items[offset], offset: 0)
+                component.items[offset] = newComponent
+            }
+            levelIn()
+        }
+        
         func delete() {
             if let component = expression as? Component {
-                // TODO: fix so that the whole component is not deleted when only one elemrnt is in the component (exe fraction has 5 in denominator ande we delete it)
                 if isFunction(component) {
                     component.delete(offset: offset)
                     component.items[offset].color = selectedColor
