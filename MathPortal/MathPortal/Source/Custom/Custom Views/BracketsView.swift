@@ -17,7 +17,6 @@ class BracketsView: UIView {
     private(set) var type: Equation.Component.BracketsType = .normal
     
     // computed
-    private var path: UIBezierPath?
     private var viewWidth: CGFloat = 0
     private(set) var bracketWidth: CGFloat = 0
     
@@ -45,15 +44,21 @@ class BracketsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     private func refresh() {
-        refreshPath()
+        
+        bracketWidth = type == .absolute ? 5 : viewInBrackets.frame.height / 4
+        viewWidth =  viewInBrackets.frame.width + 2*bracketWidth
+        
         addView()
         setUpFrame()
+        setNeedsDisplay()
     }
-    private func refreshPath() {
+    
+    private func drawBrackets() {
+        
+        var path = UIBezierPath()
+        
         switch type {
         case .absolute:
-            bracketWidth = 5
-            viewWidth = viewInBrackets.frame.width + 2*bracketWidth
             path = {
                 let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: bracketWidth, y: 0), size: CGSize(width: 0, height: 0)))
                 path.addLine(to: CGPoint(x: bracketWidth, y: viewHeight))
@@ -62,8 +67,6 @@ class BracketsView: UIView {
                 return path
             }()
         case .normal:
-            bracketWidth = viewInBrackets.frame.height / 4
-            viewWidth = viewInBrackets.frame.width + 2*bracketWidth
             path = {
                 let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: bracketWidth, y: 0), size: CGSize(width: 0, height: 0)))
                 path.addQuadCurve(to: CGPoint(x: bracketWidth, y: viewHeight), controlPoint: CGPoint(x: 0, y: viewHeight/2))
@@ -74,6 +77,10 @@ class BracketsView: UIView {
         case .none:
             return
         }
+        
+        strokeColor.setStroke()
+        path.lineWidth = CGFloat(scale)
+        path.stroke()
     }
     private func addView() {
         viewInBrackets.frame = CGRect(origin: CGPoint(x: bracketWidth, y: 0), size: viewInBrackets.frame.size)
@@ -88,9 +95,7 @@ class BracketsView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        strokeColor.setStroke()
-        path?.lineWidth = CGFloat(scale)
-        path?.stroke()
+        drawBrackets()
     }
 }
 

@@ -13,8 +13,6 @@ class ArrowView: UIView {
     private var fromView: EquationView = .Nil
     private var toView: EquationView = .Nil
     
-    private var arrowPath: UIBezierPath = UIBezierPath(ovalIn: .zero)
-
     private lazy var arrowLength: CGFloat = { return  20 * scale }()
     private lazy var arrowTipFrame: CGRect = { return CGRect(x: 0, y: 0, width: 5*scale, height: 5*scale) }()
     
@@ -40,17 +38,21 @@ class ArrowView: UIView {
     
     private func refresh() {
         addViews()
-        drawArrow()
+        setNeedsDisplay()
     }
     
     private func drawArrow() {
         guard let fromViewBounds = fromView.view?.bounds else { return }
-    
+        let arrowPath = UIBezierPath()
         arrowPath.move(to: CGPoint(x: fromViewBounds.width + spacing , y: offset))
         arrowPath.addLine(to: CGPoint(x: fromViewBounds.width + arrowLength, y: offset))
         arrowPath.addLine(to: CGPoint(x: fromViewBounds.width + arrowLength - arrowTipFrame.width, y: offset - arrowTipFrame.height))
         arrowPath.move(to: CGPoint(x: fromViewBounds.width + arrowLength, y: offset))
         arrowPath.addLine(to: CGPoint(x: fromViewBounds.width + arrowLength - arrowTipFrame.width, y: offset + arrowTipFrame.height))
+        
+        strokeColor.setStroke()
+        arrowPath.lineWidth = CGFloat(scale)
+        arrowPath.stroke()
     }
     
     private func addViews() {
@@ -65,8 +67,6 @@ class ArrowView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        strokeColor.setStroke()
-        arrowPath.lineWidth = CGFloat(scale)
-        arrowPath.stroke()
+        drawArrow()
     }
 }

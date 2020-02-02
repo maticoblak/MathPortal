@@ -76,13 +76,13 @@ class KeyboardView: UIView {
     
     private var letterKeyboard: LetterKeyboard = .normal {
         didSet {
-            switchLetterKeyboard()
+            toggleLetterKeyboard()
         }
     }
     
     private var letterKeyboardType: LetterKeyboardType = .lowercase {
         didSet {
-            switchLetterKeyboard()
+            toggleLetterKeyboard()
         }
     }
     
@@ -123,7 +123,7 @@ class KeyboardView: UIView {
     }
     
     // MARK: Content insets setup for letters keyboard
-    var previousFrame: CGRect = .zero
+    private var previousFrame: CGRect = .zero
     override func layoutSubviews() {
         super.layoutSubviews()
         if previousFrame != self.frame {
@@ -151,11 +151,11 @@ class KeyboardView: UIView {
     
     
     
-    @IBAction func switchUppercase(_ sender: Any) {
+    @IBAction private func toggleUppercase(_ sender: Any) {
         letterKeyboardType = letterKeyboardType == .lowercase ? .uppercase : .lowercase
     }
     
-    @IBAction func switchLettersKeyboard(_ sender: Any) {
+    @IBAction private func toggleLettersKeyboard(_ sender: Any) {
         letterKeyboard = letterKeyboard == .normal ? .greek : .normal
     }
     
@@ -211,19 +211,20 @@ extension KeyboardView {
     
     private func setupLettersKeyboard() {
         
-        [greekLettersButton, upperLettersButton].forEach { button in
-            button?.backgroundColor = Color.lightGrey
-            button?.tintColor = Color.darkBlue
-            button?.layer.cornerRadius = 5
+        [greekLettersButton, upperLettersButton].compactMap {$0}.forEach { button in
+            button.backgroundColor = Color.lightGrey
+            button.tintColor = Color.darkBlue
+            button.layer.cornerRadius = 5
         }
-        switchLetterKeyboard()
+        toggleLetterKeyboard()
         addKeyboard(lettersKeyboard)
     }
     
-    func switchLetterKeyboard() {
+    private func toggleLetterKeyboard() {
         let rows: [UIStackView?] = [firstRow, secondRow, thirdRow]
         rows.forEach { row in
-            row?.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            guard let row = row else { return }
+            row.arrangedSubviews.forEach { $0.removeFromSuperview() }
         }
         
         let buttons: [[MathSymbol.SymbolType]] = {

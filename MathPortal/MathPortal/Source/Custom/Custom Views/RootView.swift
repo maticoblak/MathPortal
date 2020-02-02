@@ -72,6 +72,8 @@ class RootView: UIView {
         let P4: CGPoint = CGPoint(x: P3.x + (2.5*frameHeight / (frameHeight - offset)), y: frameHeight - radicandView.frame.height - 4)
         let P5: CGPoint = CGPoint(x: P4.x + radicandView.frame.width + 2, y: P4.y)
         
+        radicandViewXValue = P4.x
+        
         path = {
             let path = UIBezierPath()
             path.move(to: P1)
@@ -82,7 +84,7 @@ class RootView: UIView {
             return path 
 
         }()
-                radicandViewXValue = P4.x
+        
     }
     
     private func addViews() {

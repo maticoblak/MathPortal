@@ -17,7 +17,6 @@ class SeriesView: UIView {
     private var scale: CGFloat?
     
     private var strokeColor: UIColor = .black
-    private var path: UIBezierPath = UIBezierPath(rect: .zero)
     private(set) var indent: (vertical: CGFloat, horizontal: CGFloat) = (1.0, 4)
     private lazy var symbolSize: CGSize = CGSize(width: 3*(baseView?.view?.bounds.height ?? 30)/4, height: (baseView?.view?.bounds.height ?? 30) + 2*indent.vertical)
     
@@ -39,17 +38,20 @@ class SeriesView: UIView {
     }
     
     private func refresh() {
-        setupPath()
-        setupViews()
-    }
-    
-    private func setupPath() {
-        guard let maxBound = maxView?.view, let minBound = minView?.view else { return }
-        let horisontalOffset = symbolSize.width - max(maxBound.bounds.width, minBound.bounds.width)
-        if horisontalOffset < 0 {
-            indent.horizontal = -1 * horisontalOffset/2
+        
+        let horizontalOffset = symbolSize.width - max(maxView?.view?.bounds.width ?? 0, minView?.view?.bounds.width ?? 0)
+        if horizontalOffset < 0 {
+            indent.horizontal = -1 * horizontalOffset/2
         }
         
+        setupViews()
+        setNeedsDisplay()
+    }
+    
+    private func drawSeries() {
+        guard let maxBound = maxView?.view else { return }
+        
+        let path = UIBezierPath()
         switch type {
         case .sum:
             path.move(to: CGPoint(x: indent.horizontal + symbolSize.width, y: maxBound.bounds.height + indent.vertical))
@@ -67,6 +69,9 @@ class SeriesView: UIView {
         case .none:
             return
         }
+        strokeColor.setStroke()
+        path.lineWidth = 2*(scale ?? 1)
+        path.stroke()
     }
     
     private func setupViews() {
@@ -85,10 +90,7 @@ class SeriesView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        strokeColor.setStroke()
-        path.lineWidth = 2*(scale ?? 1)
-        path.stroke()
-        
+        drawSeries()
     }
     
 }

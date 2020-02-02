@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -355,7 +355,7 @@
                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" image="capsLockOn"/>
                                     <connections>
-                                        <action selector="switchUppercase:" destination="-1" eventType="touchUpInside" id="vav-gn-Rzx"/>
+                                        <action selector="toggleUppercase:" destination="-1" eventType="touchUpInside" id="OQF-ms-X3h"/>
                                     </connections>
                                 </button>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qRz-Vw-TA8">
@@ -370,7 +370,7 @@
                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" title="Ααβ"/>
                                     <connections>
-                                        <action selector="switchLettersKeyboard:" destination="-1" eventType="touchUpInside" id="4up-Q2-QWl"/>
+                                        <action selector="toggleLettersKeyboard:" destination="-1" eventType="touchUpInside" id="CHM-I4-Q4T"/>
                                     </connections>
                                 </button>
                             </subviews>

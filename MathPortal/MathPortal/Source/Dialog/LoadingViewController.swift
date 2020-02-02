@@ -95,7 +95,6 @@ extension LoadingViewController {
             self.overlayWindow = nil
             completion?()
         }
-        
     }
     
 }

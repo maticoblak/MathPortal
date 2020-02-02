@@ -16,9 +16,7 @@ class IntegralView: UIView {
     private(set) var viewWidth: CGFloat = 0
     var verticalOffset: CGFloat = 0
 
-   // computed
-    private var path: UIBezierPath?
-    
+   // compute
     private var integralWidth: CGFloat = 10
     private var capHeight: CGFloat = 10
     
@@ -47,19 +45,21 @@ class IntegralView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
      private func refresh() {
-        refreshPath()
         addView()
         setUpFrame()
+        setNeedsDisplay()
     }
-    private func refreshPath() {
+    private func drawIntegral() {
 
-        path = {
-            let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: integralWidth, y: capHeight), size: CGSize(width: 0, height: 0)))
-            path.addQuadCurve(to: CGPoint(x: integralWidth/2, y: capHeight), controlPoint: CGPoint(x: integralWidth - integralWidth/4 - 2, y: 0))
-            path.addLine(to: CGPoint(x: integralWidth/2, y: viewHeight - capHeight))
-            path.addQuadCurve(to: CGPoint(x: 0, y: viewHeight - capHeight), controlPoint: CGPoint(x: integralWidth/4 + 2, y: viewHeight))
-            return path
-        }()
+        let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: integralWidth, y: capHeight), size: CGSize(width: 0, height: 0)))
+        path.addQuadCurve(to: CGPoint(x: integralWidth/2, y: capHeight), controlPoint: CGPoint(x: integralWidth - integralWidth/4 - 2, y: 0))
+        path.addLine(to: CGPoint(x: integralWidth/2, y: viewHeight - capHeight))
+        path.addQuadCurve(to: CGPoint(x: 0, y: viewHeight - capHeight), controlPoint: CGPoint(x: integralWidth/4 + 2, y: viewHeight))
+        
+        strokeColor.setStroke()
+        path.lineWidth = CGFloat(scale)
+        path.stroke()
+        
     }
     private func addView() {
         baseView.frame = CGRect(origin: CGPoint(x: integralWidth, y: viewHeight/2 - baseView.bounds.height/2), size: baseView.frame.size)
@@ -75,8 +75,7 @@ class IntegralView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        strokeColor.setStroke()
-        path?.lineWidth = CGFloat(scale)
-        path?.stroke()
+        drawIntegral()
+        
     }
 }
