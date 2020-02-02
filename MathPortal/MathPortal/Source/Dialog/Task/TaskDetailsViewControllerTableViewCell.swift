@@ -33,10 +33,11 @@ class TaskDetailsViewControllerTableViewCell: UITableViewCell {
         equationView.addSubview(expressionView)
         expressionView.translatesAutoresizingMaskIntoConstraints = false
         equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .leading, relatedBy: .equal, toItem: equationView, attribute: .leading, multiplier: 1.0, constant: 10))
-        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .trailing, relatedBy: .equal, toItem: equationView, attribute: .trailing, multiplier: 1.0, constant: 10))
+        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .trailing, relatedBy: .equal, toItem: equationView, attribute: .trailing, multiplier: 1.0, constant: -10))
         equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .top, relatedBy: .equal, toItem: equationView, attribute: .top, multiplier: 1.0, constant: 5))
-        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .bottom, relatedBy: .equal, toItem: equationView, attribute: .bottom, multiplier: 1.0, constant: 5))
+        equationView.addConstraint(NSLayoutConstraint(item: expressionView, attribute: .bottom, relatedBy: .equal, toItem: equationView, attribute: .bottom, multiplier: 1.0, constant: -5))
         
-         currentExpressionView = expressionView
+        currentExpressionView = expressionView
+        
     }
 }

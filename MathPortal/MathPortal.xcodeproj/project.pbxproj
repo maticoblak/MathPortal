@@ -578,9 +578,9 @@
 				C0BD61E52267061100E48081 /* Dialog */,
 				C0BD61E22265F64600E48081 /* Data */,
 				C0BD61D822645A0800E48081 /* API */,
-				C0BD61D72263C55E00E48081 /* UserInterface */,
-				C0BD61CB22637FB600E48081 /* Tools */,
 				C0BD61C6225FD8B600E48081 /* Main */,
+				C0BD61CB22637FB600E48081 /* Tools */,
+				C0BD61D72263C55E00E48081 /* UserInterface */,
 			);
 			path = Source;
 			sourceTree = "<group>";
