@@ -42,7 +42,6 @@ class KeyboardButton: UIButton {
         contentView.isUserInteractionEnabled = false
         contentView.backgroundColor = Color.lightGrey
         
-        print(contentView)
         self.addSubview(contentView)
         addConstraints(parenView: self, childView: contentView)
         

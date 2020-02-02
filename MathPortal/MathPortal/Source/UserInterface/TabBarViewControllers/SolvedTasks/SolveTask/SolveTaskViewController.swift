@@ -142,8 +142,12 @@ extension SolveTaskViewController: TaskViewControllerTableViewCellDelegate {
 extension SolveTaskViewController: MathEquationViewControllerDelegate {
     func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
         if let currentSelectedEquationIndex = currentSelectedEquationIndex {
-            equations[currentSelectedEquationIndex] = equation
-        } else {
+            if equation.expression.items.isEmpty {
+                equations.remove(at: currentSelectedEquationIndex)
+            } else {
+                equations[currentSelectedEquationIndex] = equation
+            }
+        } else if equation.expression.items.isEmpty == false {
             equations.append(equation)
         }
         currentSelectedEquationIndex = nil

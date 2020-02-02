@@ -57,7 +57,6 @@ extension TaskDetailsViewController: UITableViewDataSource, UITableViewDelegate 
         case .title(_):
             return 44 + 10
         case .equation(let expressionView):
-            print((expressionView?.frame.height ?? 44) + 10)
             return (expressionView?.frame.height ?? 44) + 10
         }
     }

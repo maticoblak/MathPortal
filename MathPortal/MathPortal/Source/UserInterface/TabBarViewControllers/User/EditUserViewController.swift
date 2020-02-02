@@ -162,7 +162,6 @@ class EditUserViewController: BaseViewController {
         if ageDayTextField?.text?.isEmpty == false { fields.append(.age)}
         
         FieldValidator.init(validate: fields, username: usernameTextField?.text, email: emailTextField?.text).validate { result in
-            print(result)
             switch result {
             case .OK:
                 self.updateUser()

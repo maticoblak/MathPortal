@@ -95,8 +95,12 @@ class TaskViewController: UIViewController {
 extension TaskViewController: MathEquationViewControllerDelegate {
     func mathEquationViewController(sender: MathEquationViewController, didWriteEquation equation: Equation) {
         if let currentSelectedEquationIndex = currentSelectedEquationIndex {
-            equationsAndTexts[currentSelectedEquationIndex] = equation
-        } else {
+            if equation.expression.items.isEmpty {
+                equationsAndTexts.remove(at: currentSelectedEquationIndex)
+            } else {
+                equationsAndTexts[currentSelectedEquationIndex] = equation
+            }
+        } else if equation.expression.items.isEmpty == false {
             equationsAndTexts.append(equation)
         }
         currentSelectedEquationIndex = nil 
