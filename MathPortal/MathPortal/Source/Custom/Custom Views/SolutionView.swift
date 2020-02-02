@@ -23,13 +23,16 @@ class SolutionView: UIView {
     
     lazy private var profileImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.layer.masksToBounds = true
+        imageView.frame.size = CGSize(width: ownerInfoViewHeight, height: ownerInfoViewHeight)
+        imageView.layer.cornerRadius = ownerInfoViewHeight/2
         self.addSubview(imageView)
         return imageView
     }()
     
     override var intrinsicContentSize: CGSize {
         // NOTE: 2 is just a placeholder since cell already has width
-        return CGSize(width: 2, height: equationViewsHeight + ownerInfoViewHeight)
+        return CGSize(width: 2, height: equationViewsHeight + ownerInfoViewHeight + 5)
     }
     
     func setupView(solution: TaskSolution) {
@@ -81,7 +84,7 @@ class SolutionView: UIView {
     
     private func addProfileInfo(_ owner: User) {
 
-        profileImageView.frame = CGRect(x: 0, y: equationViewsHeight, width: ownerInfoViewHeight, height: ownerInfoViewHeight)
+        profileImageView.frame.origin = CGPoint(x: 5, y: equationViewsHeight)
         profileImageView.image = owner.profileImage
         
         usernameLabel.text = owner.username
