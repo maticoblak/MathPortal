@@ -170,8 +170,8 @@ extension Equation {
             }
         }
 
-        func addSpace() {
-            let space = Space(direction: .horizontal)
+        func addSpace(direction: Equation.Space.Direction) {
+            let space = Space(direction: direction)
             if let component = expression as? Component {
                 space.parent = component
                 //The indocat is at the beginning of equation

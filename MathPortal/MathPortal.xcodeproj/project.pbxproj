@@ -268,15 +268,10 @@
 		C006E62D22A78F140017EC6F /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				C01120352427C3C2004D2945 /* EquationView */,
 				C06D302B2365EEC90061CAE7 /* KeyboardView */,
-				C03EA93C22940BE4005853BE /* EquationView.swift */,
-				C006E62922A5014F0017EC6F /* RootView.swift */,
-				C01C2CEB23A65E620030F7F1 /* IntegralView.swift */,
-				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
 				C08174762346214C00768A6E /* SolutionView.swift */,
 				C0E606FB23544C320050EA80 /* GradientView.swift */,
-				C072FD3623B4C6240009750B /* ArrowView.swift */,
-				C072FD3A23C0CD350009750B /* SeriesView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -324,6 +319,19 @@
 				C0668F682312BE24008B69FC /* SolveTask */,
 			);
 			path = SolvedTasks;
+			sourceTree = "<group>";
+		};
+		C01120352427C3C2004D2945 /* EquationView */ = {
+			isa = PBXGroup;
+			children = (
+				C03EA93C22940BE4005853BE /* EquationView.swift */,
+				C072FD3623B4C6240009750B /* ArrowView.swift */,
+				C072FD3A23C0CD350009750B /* SeriesView.swift */,
+				C006E62922A5014F0017EC6F /* RootView.swift */,
+				C01C2CEB23A65E620030F7F1 /* IntegralView.swift */,
+				C006E62B22A6C66A0017EC6F /* BracketsView.swift */,
+			);
+			path = EquationView;
 			sourceTree = "<group>";
 		};
 		C02FEA1B231C2EEC007E190D /* Design */ = {
