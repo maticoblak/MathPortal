@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -258,31 +258,18 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j6P-FQ-Gcf" customClass="KeyboardView" customModule="MathPortal" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="862" width="414" height="250"/>
-                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="250" id="ImY-wy-Bjy"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="j6P-FQ-Gcf" secondAttribute="trailing" id="NiN-mY-wFS"/>
-                            <constraint firstItem="j6P-FQ-Gcf" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" id="VCq-n3-qKx"/>
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="leading" secondItem="KXu-Gy-Qxj" secondAttribute="leading" id="X0u-mu-doS"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="trailing" secondItem="eeS-JY-Ftq" secondAttribute="trailing" id="cwP-GW-KBz"/>
                             <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="eeS-JY-Ftq" secondAttribute="bottom" id="jUJ-Au-qud"/>
-                            <constraint firstItem="KXu-Gy-Qxj" firstAttribute="bottom" secondItem="j6P-FQ-Gcf" secondAttribute="bottom" constant="-250" id="n1c-Dx-0jO"/>
                             <constraint firstItem="eeS-JY-Ftq" firstAttribute="top" secondItem="KXu-Gy-Qxj" secondAttribute="top" id="qTx-Y6-Y2o"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KXu-Gy-Qxj"/>
                     </view>
                     <connections>
                         <outlet property="equationView" destination="eeS-JY-Ftq" id="JcN-Sv-WzY"/>
-                        <outlet property="keyboardBottomConstraint" destination="n1c-Dx-0jO" id="f9x-L5-wxo"/>
-                        <outlet property="keyboardContentView" destination="j6P-FQ-Gcf" id="xK0-MY-Sbv"/>
-                        <outlet property="keyboardHightConstraint" destination="ImY-wy-Bjy" id="QvO-le-5ZO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnQ-hv-App" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -95,6 +95,7 @@ class KeyboardView: UIView {
     
     
     weak var delegate: KeyboardViewDelegate?
+    private var keyboardHeight: CGFloat = 300
     
     private var type: LayoutType = .numbers {
         didSet {
@@ -110,16 +111,26 @@ class KeyboardView: UIView {
         }
     }
     
+    convenience init() {
+        self.init(frame: .zero)
+        setupKeyboardView()
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupKeyboardView()
+    }
+    
+    private func setupKeyboardView() {
         fromNib()
         contentView?.backgroundColor = Color.darkBlue
-        type = .numbers
         setupKeyboardNavigationButtons()
         setupDifferentKeyboardButtons()
         setupLettersKeyboard()
         setupNumbersKeyboard()
         setupFunctionsKeyboard()
+        changeKeyboard()
+        addKeyboardToWindow()
     }
     
     // MARK: Content insets setup for letters keyboard
@@ -149,8 +160,6 @@ class KeyboardView: UIView {
         }
     }
     
-    
-    
     @IBAction private func toggleUppercase(_ sender: Any) {
         letterKeyboardType = letterKeyboardType == .lowercase ? .uppercase : .lowercase
     }
@@ -159,6 +168,11 @@ class KeyboardView: UIView {
         letterKeyboard = letterKeyboard == .normal ? .greek : .normal
     }
     
+    private func addKeyboardToWindow() {
+        let window = UIApplication.shared.keyWindow!
+        self.frame = CGRect(x: 0, y: window.bounds.height, width: window.bounds.width, height: keyboardHeight)
+        window.addSubview(self)
+    }
     
     private func changeKeyboard() {
         [functionsKeyboard, numberKeyboard, lettersKeyboard].forEach { $0?.isHidden = true }
@@ -210,7 +224,6 @@ class KeyboardView: UIView {
 extension KeyboardView {
     
     private func setupLettersKeyboard() {
-        
         [greekLettersButton, upperLettersButton].compactMap {$0}.forEach { button in
             button.backgroundColor = Color.lightGrey
             button.tintColor = Color.darkBlue
@@ -332,3 +345,26 @@ extension KeyboardView {
     }
 }
 
+
+extension KeyboardView {
+    
+    func open() {
+        UIView.animate(withDuration: 0.3) {
+            self.frame.origin.y = self.frame.origin.y - self.keyboardHeight
+        }
+    }
+    
+    func close() {
+        UIView.animate(withDuration: 0.3) {
+            self.frame.origin.y = self.frame.origin.y + self.keyboardHeight
+        }
+    }
+    
+    func remove() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.frame.origin.y = self.frame.origin.y + self.keyboardHeight
+        }) { _ in
+            self.removeFromSuperview()
+        }
+    }
+}

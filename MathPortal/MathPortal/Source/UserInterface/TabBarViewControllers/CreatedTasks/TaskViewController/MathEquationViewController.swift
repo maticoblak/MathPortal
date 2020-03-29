@@ -15,36 +15,29 @@ protocol MathEquationViewControllerDelegate: class {
 class MathEquationViewController: UIViewController {
     
     var equation: Equation = Equation()
-    @IBOutlet private var keyboardContentView: KeyboardView?
-    @IBOutlet private var keyboardHightConstraint: NSLayoutConstraint?
-    @IBOutlet private var keyboardBottomConstraint: NSLayoutConstraint?
+    
     @IBOutlet private var equationView: UIView?
     
     weak var delegate: MathEquationViewControllerDelegate?
+    private let keyboardView = KeyboardView()
     
     private var keyboardOpened: Bool = false {
         didSet {
-            keyboardBottomConstraint?.constant = keyboardOpened ? 0 : -250
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
+            keyboardOpened ? keyboardView.open() : keyboardView.close()
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
         equationView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard)))
-        keyboardContentView?.delegate = self
-    }
+        keyboardView.delegate = self
         
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        /// NOTE: refreshEquation is called here instead on didLoad because the frames are wrong at the beginning and in didLayoutSubviews it does not look that nice
         refreshEquation()
         keyboardOpened = true
     }
-    
+            
     @objc private func goToTaskViewController() {
+        keyboardView.remove()
         delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)
         navigationController?.popViewController(animated: true)
     }
