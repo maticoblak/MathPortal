@@ -95,7 +95,7 @@ class KeyboardView: UIView {
     
     
     weak var delegate: KeyboardViewDelegate?
-    private var keyboardHeight: CGFloat = 300
+    private var keyboardHeight: CGFloat = 350
     
     private var type: LayoutType = .numbers {
         didSet {
@@ -213,9 +213,14 @@ class KeyboardView: UIView {
         parentView.addConstraint(NSLayoutConstraint(item: childView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1.0, constant: 0))
     }
     
-    @objc private func buttonClicked(sender: KeyboardButton) {
+    @objc private func buttonClicked(sender: KeyboardButton, event: UIEvent) {
         guard let buttonType = sender.contentType else { return }
-        delegate?.keyboardView(self, didChoose: buttonType)
+        if event.allTouches?.first?.tapCount == 2, case .enter = sender.contentType {
+            // TODO: differentiate between enter in new line and enter in when you want to write symbols in vertical way (matrix, binary symbol,...) - also probably should use gestureRecogniser since bubble tap also triggers normal tap now
+            delegate?.keyboardView(self, didChoose: .enter)
+        } else {
+            delegate?.keyboardView(self, didChoose: buttonType)
+        }
     }
 }
 

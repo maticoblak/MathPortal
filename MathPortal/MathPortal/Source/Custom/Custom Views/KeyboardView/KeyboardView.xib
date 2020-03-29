@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -131,85 +131,91 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mwd-Pu-T6t">
-                    <rect key="frame" x="0.0" y="74" width="519" height="124"/>
+                    <rect key="frame" x="0.0" y="74" width="519" height="84"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w3A-gc-377">
-                    <rect key="frame" x="0.0" y="198" width="519" height="60"/>
+                    <rect key="frame" x="0.0" y="158" width="519" height="100"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-8t-siM">
-                            <rect key="frame" x="5" y="5" width="509" height="50"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="N3S-Uu-sUV">
+                            <rect key="frame" x="5" y="5" width="509" height="90"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="WY3-A0-pfE">
-                                    <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="xOK-8t-siM">
+                                    <rect key="frame" x="0.0" y="0.0" width="509" height="42.5"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dGI-5J-7CD" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="22.5"/>
-                                        </button>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Uhq-vG-Ylv">
-                                            <rect key="frame" x="0.0" y="27.5" width="100" height="22.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="42.5"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="doh-Ta-glC" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="22.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="42.5"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NUq-3A-HDF" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                                    <rect key="frame" x="52.5" y="0.0" width="47.5" height="22.5"/>
+                                                    <rect key="frame" x="52.5" y="0.0" width="47.5" height="42.5"/>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="PUl-5M-AHh"/>
+                                            </constraints>
                                         </stackView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="100" id="naa-We-mZQ"/>
-                                    </constraints>
-                                </stackView>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cLU-q0-nab">
-                                    <rect key="frame" x="105" y="0.0" width="299" height="50"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8W-NX-yxg" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="299" height="50"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cLU-q0-nab">
+                                            <rect key="frame" x="105" y="0.0" width="299" height="42.5"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a8W-NX-yxg" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="299" height="42.5"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </button>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="a8W-NX-yxg" secondAttribute="trailing" id="gJF-xP-IwV"/>
-                                        <constraint firstItem="a8W-NX-yxg" firstAttribute="leading" secondItem="cLU-q0-nab" secondAttribute="leading" id="jBx-W0-eEB"/>
-                                        <constraint firstAttribute="bottom" secondItem="a8W-NX-yxg" secondAttribute="bottom" id="qYi-60-Hxs"/>
-                                        <constraint firstItem="a8W-NX-yxg" firstAttribute="top" secondItem="cLU-q0-nab" secondAttribute="top" id="t4D-bS-f0Y"/>
-                                    </constraints>
-                                </view>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="3Hx-WD-033">
-                                    <rect key="frame" x="409" y="0.0" width="100" height="50"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3b-Mi-Buq" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="22.5"/>
-                                        </button>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="a8W-NX-yxg" secondAttribute="trailing" id="gJF-xP-IwV"/>
+                                                <constraint firstItem="a8W-NX-yxg" firstAttribute="leading" secondItem="cLU-q0-nab" secondAttribute="leading" id="jBx-W0-eEB"/>
+                                                <constraint firstAttribute="bottom" secondItem="a8W-NX-yxg" secondAttribute="bottom" id="qYi-60-Hxs"/>
+                                                <constraint firstItem="a8W-NX-yxg" firstAttribute="top" secondItem="cLU-q0-nab" secondAttribute="top" id="t4D-bS-f0Y"/>
+                                            </constraints>
+                                        </view>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="P7s-yq-8dA">
-                                            <rect key="frame" x="0.0" y="27.5" width="100" height="22.5"/>
+                                            <rect key="frame" x="409" y="0.0" width="100" height="42.5"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="30g-4Q-vRS" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="22.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="47.5" height="42.5"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="glv-IA-iTE" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
-                                                    <rect key="frame" x="52.5" y="0.0" width="47.5" height="22.5"/>
+                                                    <rect key="frame" x="52.5" y="0.0" width="47.5" height="42.5"/>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="xEc-hI-BXE"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="100" id="0g5-mF-1qv"/>
-                                    </constraints>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="3fK-Es-32A">
+                                    <rect key="frame" x="0.0" y="47.5" width="509" height="42.5"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dGI-5J-7CD" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="42.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="kRD-tr-Zfq"/>
+                                            </constraints>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3b-Mi-Buq" customClass="KeyboardButton" customModule="MathPortal" customModuleProvider="target">
+                                            <rect key="frame" x="409" y="0.0" width="100" height="42.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="100" id="2wC-iF-j1I"/>
+                                            </constraints>
+                                        </button>
+                                    </subviews>
                                 </stackView>
                             </subviews>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="xOK-8t-siM" firstAttribute="top" secondItem="w3A-gc-377" secondAttribute="top" constant="5" id="0f3-q0-v8s"/>
-                        <constraint firstAttribute="trailing" secondItem="xOK-8t-siM" secondAttribute="trailing" constant="5" id="LoV-SJ-dLY"/>
-                        <constraint firstAttribute="bottom" secondItem="xOK-8t-siM" secondAttribute="bottom" constant="5" id="fDU-W9-YWq"/>
-                        <constraint firstAttribute="height" constant="60" id="fka-Oq-4FB"/>
-                        <constraint firstItem="xOK-8t-siM" firstAttribute="leading" secondItem="w3A-gc-377" secondAttribute="leading" constant="5" id="vnd-24-MMO"/>
+                        <constraint firstItem="N3S-Uu-sUV" firstAttribute="leading" secondItem="w3A-gc-377" secondAttribute="leading" constant="5" id="7g9-32-zcd"/>
+                        <constraint firstAttribute="trailing" secondItem="N3S-Uu-sUV" secondAttribute="trailing" constant="5" id="Ckx-Xp-ho3"/>
+                        <constraint firstAttribute="bottom" secondItem="N3S-Uu-sUV" secondAttribute="bottom" constant="5" id="No6-f2-151"/>
+                        <constraint firstAttribute="height" constant="100" id="fka-Oq-4FB"/>
+                        <constraint firstItem="N3S-Uu-sUV" firstAttribute="top" secondItem="w3A-gc-377" secondAttribute="top" constant="5" id="yzz-l9-wcf"/>
                     </constraints>
                 </view>
             </subviews>

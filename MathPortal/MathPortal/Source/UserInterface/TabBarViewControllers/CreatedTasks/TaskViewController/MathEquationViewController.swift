@@ -35,7 +35,7 @@ class MathEquationViewController: UIViewController {
         refreshEquation()
         keyboardOpened = true
     }
-            
+    
     @objc private func goToTaskViewController() {
         keyboardView.remove()
         delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)
