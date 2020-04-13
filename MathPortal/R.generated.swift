@@ -11,11 +11,172 @@ import UIKit
 struct R: Rswift.Validatable {
   fileprivate static let applicationLocale = hostingBundle.preferredLocalizations.first.flatMap(Locale.init) ?? Locale.current
   fileprivate static let hostingBundle = Bundle(for: R.Class.self)
-  
+
+  /// Find first language and bundle for which the table exists
+  fileprivate static func localeBundle(tableName: String, preferredLanguages: [String]) -> (Foundation.Locale, Foundation.Bundle)? {
+    // Filter preferredLanguages to localizations, use first locale
+    var languages = preferredLanguages
+      .map(Locale.init)
+      .prefix(1)
+      .flatMap { locale -> [String] in
+        if hostingBundle.localizations.contains(locale.identifier) {
+          if let language = locale.languageCode, hostingBundle.localizations.contains(language) {
+            return [locale.identifier, language]
+          } else {
+            return [locale.identifier]
+          }
+        } else if let language = locale.languageCode, hostingBundle.localizations.contains(language) {
+          return [language]
+        } else {
+          return []
+        }
+      }
+
+    // If there's no languages, use development language as backstop
+    if languages.isEmpty {
+      if let developmentLocalization = hostingBundle.developmentLocalization {
+        languages = [developmentLocalization]
+      }
+    } else {
+      // Insert Base as second item (between locale identifier and languageCode)
+      languages.insert("Base", at: 1)
+
+      // Add development language as backstop
+      if let developmentLocalization = hostingBundle.developmentLocalization {
+        languages.append(developmentLocalization)
+      }
+    }
+
+    // Find first language for which table exists
+    // Note: key might not exist in chosen language (in that case, key will be shown)
+    for language in languages {
+      if let lproj = hostingBundle.url(forResource: language, withExtension: "lproj"),
+         let lbundle = Bundle(url: lproj)
+      {
+        let strings = lbundle.url(forResource: tableName, withExtension: "strings")
+        let stringsdict = lbundle.url(forResource: tableName, withExtension: "stringsdict")
+
+        if strings != nil || stringsdict != nil {
+          return (Locale(identifier: language), lbundle)
+        }
+      }
+    }
+
+    // If table is available in main bundle, don't look for localized resources
+    let strings = hostingBundle.url(forResource: tableName, withExtension: "strings", subdirectory: nil, localization: nil)
+    let stringsdict = hostingBundle.url(forResource: tableName, withExtension: "stringsdict", subdirectory: nil, localization: nil)
+
+    if strings != nil || stringsdict != nil {
+      return (applicationLocale, hostingBundle)
+    }
+
+    // If table is not found for requested languages, key will be shown
+    return nil
+  }
+
+  /// Load string from Info.plist file
+  fileprivate static func infoPlistString(path: [String], key: String) -> String? {
+    var dict = hostingBundle.infoDictionary
+    for step in path {
+      guard let obj = dict?[step] as? [String: Any] else { return nil }
+      dict = obj
+    }
+    return dict?[key] as? String
+  }
+
   static func validate() throws {
     try intern.validate()
   }
-  
+
+  #if os(iOS) || os(tvOS)
+  /// This `R.storyboard` struct is generated, and contains static references to 9 storyboards.
+  struct storyboard {
+    /// Storyboard `BrowseTasksViewController`.
+    static let browseTasksViewController = _R.storyboard.browseTasksViewController()
+    /// Storyboard `CreatedTasksViewController`.
+    static let createdTasksViewController = _R.storyboard.createdTasksViewController()
+    /// Storyboard `LaunchScreen`.
+    static let launchScreen = _R.storyboard.launchScreen()
+    /// Storyboard `Loading`.
+    static let loading = _R.storyboard.loading()
+    /// Storyboard `Main`.
+    static let main = _R.storyboard.main()
+    /// Storyboard `Onboarding`.
+    static let onboarding = _R.storyboard.onboarding()
+    /// Storyboard `SolvedTasksViewController`.
+    static let solvedTasksViewController = _R.storyboard.solvedTasksViewController()
+    /// Storyboard `TaskDetailsViewController`.
+    static let taskDetailsViewController = _R.storyboard.taskDetailsViewController()
+    /// Storyboard `UserViewController`.
+    static let userViewController = _R.storyboard.userViewController()
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "BrowseTasksViewController", bundle: ...)`
+    static func browseTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.browseTasksViewController)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "CreatedTasksViewController", bundle: ...)`
+    static func createdTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.createdTasksViewController)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "LaunchScreen", bundle: ...)`
+    static func launchScreen(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.launchScreen)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "Loading", bundle: ...)`
+    static func loading(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.loading)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "Main", bundle: ...)`
+    static func main(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.main)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "Onboarding", bundle: ...)`
+    static func onboarding(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.onboarding)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "SolvedTasksViewController", bundle: ...)`
+    static func solvedTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.solvedTasksViewController)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "TaskDetailsViewController", bundle: ...)`
+    static func taskDetailsViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.taskDetailsViewController)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIStoryboard(name: "UserViewController", bundle: ...)`
+    static func userViewController(_: Void = ()) -> UIKit.UIStoryboard {
+      return UIKit.UIStoryboard(resource: R.storyboard.userViewController)
+    }
+    #endif
+
+    fileprivate init() {}
+  }
+  #endif
+
   /// This `R.image` struct is generated, and contains static references to 25 images.
   struct image {
     /// Image `BackIcon`.
@@ -68,135 +229,185 @@ struct R: Rswift.Validatable {
     static let student = Rswift.ImageResource(bundle: R.hostingBundle, name: "student")
     /// Image `teacher`.
     static let teacher = Rswift.ImageResource(bundle: R.hostingBundle, name: "teacher")
-    
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "BackIcon", bundle: ..., traitCollection: ...)`
     static func backIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.backIcon, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "NextArrow", bundle: ..., traitCollection: ...)`
     static func nextArrow(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.nextArrow, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "birthday", bundle: ..., traitCollection: ...)`
     static func birthday(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.birthday, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "boyBlack", bundle: ..., traitCollection: ...)`
     static func boyBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.boyBlack, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "boyColor", bundle: ..., traitCollection: ...)`
     static func boyColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.boyColor, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "boyWhite", bundle: ..., traitCollection: ...)`
     static func boyWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.boyWhite, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "capsLockOff", bundle: ..., traitCollection: ...)`
     static func capsLockOff(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.capsLockOff, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "capsLockOn", bundle: ..., traitCollection: ...)`
     static func capsLockOn(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.capsLockOn, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "edit", bundle: ..., traitCollection: ...)`
     static func edit(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.edit, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "editProfile", bundle: ..., traitCollection: ...)`
     static func editProfile(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.editProfile, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "einsteinBlack", bundle: ..., traitCollection: ...)`
     static func einsteinBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.einsteinBlack, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "einsteinColor", bundle: ..., traitCollection: ...)`
     static func einsteinColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.einsteinColor, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "einsteinWhite", bundle: ..., traitCollection: ...)`
     static func einsteinWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.einsteinWhite, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "girlBlack", bundle: ..., traitCollection: ...)`
     static func girlBlack(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.girlBlack, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "girlColor", bundle: ..., traitCollection: ...)`
     static func girlColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.girlColor, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "girlWhite", bundle: ..., traitCollection: ...)`
     static func girlWhite(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.girlWhite, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "profile", bundle: ..., traitCollection: ...)`
     static func profile(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.profile, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "profile2", bundle: ..., traitCollection: ...)`
     static func profile2(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.profile2, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "profileIcon", bundle: ..., traitCollection: ...)`
     static func profileIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.profileIcon, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "search", bundle: ..., traitCollection: ...)`
     static func search(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.search, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "settingsFilledIcon", bundle: ..., traitCollection: ...)`
     static func settingsFilledIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.settingsFilledIcon, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "settingsIcon", bundle: ..., traitCollection: ...)`
     static func settingsIcon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.settingsIcon, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "solve", bundle: ..., traitCollection: ...)`
     static func solve(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.solve, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "student", bundle: ..., traitCollection: ...)`
     static func student(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.student, compatibleWith: traitCollection)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UIImage(named: "teacher", bundle: ..., traitCollection: ...)`
     static func teacher(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.teacher, compatibleWith: traitCollection)
     }
-    
+    #endif
+
     fileprivate init() {}
   }
-  
+
   /// This `R.nib` struct is generated, and contains static references to 4 nibs.
   struct nib {
     /// Nib `KeyboardView`.
@@ -207,50 +418,58 @@ struct R: Rswift.Validatable {
     static let taskDetailsViewControllerSolutionCell = _R.nib._TaskDetailsViewControllerSolutionCell()
     /// Nib `TaskViewControllerTableViewCell`.
     static let taskViewControllerTableViewCell = _R.nib._TaskViewControllerTableViewCell()
-    
+
+    #if os(iOS) || os(tvOS)
     /// `UINib(name: "KeyboardView", in: bundle)`
     @available(*, deprecated, message: "Use UINib(resource: R.nib.keyboardView) instead")
     static func keyboardView(_: Void = ()) -> UIKit.UINib {
       return UIKit.UINib(resource: R.nib.keyboardView)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UINib(name: "TabBarButtonView", in: bundle)`
     @available(*, deprecated, message: "Use UINib(resource: R.nib.tabBarButtonView) instead")
     static func tabBarButtonView(_: Void = ()) -> UIKit.UINib {
       return UIKit.UINib(resource: R.nib.tabBarButtonView)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UINib(name: "TaskDetailsViewControllerSolutionCell", in: bundle)`
     @available(*, deprecated, message: "Use UINib(resource: R.nib.taskDetailsViewControllerSolutionCell) instead")
     static func taskDetailsViewControllerSolutionCell(_: Void = ()) -> UIKit.UINib {
       return UIKit.UINib(resource: R.nib.taskDetailsViewControllerSolutionCell)
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     /// `UINib(name: "TaskViewControllerTableViewCell", in: bundle)`
     @available(*, deprecated, message: "Use UINib(resource: R.nib.taskViewControllerTableViewCell) instead")
     static func taskViewControllerTableViewCell(_: Void = ()) -> UIKit.UINib {
       return UIKit.UINib(resource: R.nib.taskViewControllerTableViewCell)
     }
-    
+    #endif
+
     static func keyboardView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
       return R.nib.keyboardView.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
     }
-    
+
     static func tabBarButtonView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
       return R.nib.tabBarButtonView.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
     }
-    
+
     static func taskDetailsViewControllerSolutionCell(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskDetailsViewControllerSolutionCell? {
       return R.nib.taskDetailsViewControllerSolutionCell.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskDetailsViewControllerSolutionCell
     }
-    
+
     static func taskViewControllerTableViewCell(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskViewControllerTableViewCell? {
       return R.nib.taskViewControllerTableViewCell.instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskViewControllerTableViewCell
     }
-    
+
     fileprivate init() {}
   }
-  
+
   /// This `R.reuseIdentifier` struct is generated, and contains static references to 7 reuse identifiers.
   struct reuseIdentifier {
     /// Reuse identifier `BrowseViewControllerTableViewCell`.
@@ -267,277 +486,242 @@ struct R: Rswift.Validatable {
     static let taskViewControllerTableViewCell: Rswift.ReuseIdentifier<TaskViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "TaskViewControllerTableViewCell")
     /// Reuse identifier `UserCell`.
     static let userCell: Rswift.ReuseIdentifier<CreatedTasksViewControllerTableViewCell> = Rswift.ReuseIdentifier(identifier: "UserCell")
-    
+
     fileprivate init() {}
   }
-  
-  /// This `R.storyboard` struct is generated, and contains static references to 9 storyboards.
-  struct storyboard {
-    /// Storyboard `BrowseTasksViewController`.
-    static let browseTasksViewController = _R.storyboard.browseTasksViewController()
-    /// Storyboard `CreatedTasksViewController`.
-    static let createdTasksViewController = _R.storyboard.createdTasksViewController()
-    /// Storyboard `LaunchScreen`.
-    static let launchScreen = _R.storyboard.launchScreen()
-    /// Storyboard `Loading`.
-    static let loading = _R.storyboard.loading()
-    /// Storyboard `Main`.
-    static let main = _R.storyboard.main()
-    /// Storyboard `Onboarding`.
-    static let onboarding = _R.storyboard.onboarding()
-    /// Storyboard `SolvedTasksViewController`.
-    static let solvedTasksViewController = _R.storyboard.solvedTasksViewController()
-    /// Storyboard `TaskDetailsViewController`.
-    static let taskDetailsViewController = _R.storyboard.taskDetailsViewController()
-    /// Storyboard `UserViewController`.
-    static let userViewController = _R.storyboard.userViewController()
-    
-    /// `UIStoryboard(name: "BrowseTasksViewController", bundle: ...)`
-    static func browseTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.browseTasksViewController)
-    }
-    
-    /// `UIStoryboard(name: "CreatedTasksViewController", bundle: ...)`
-    static func createdTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.createdTasksViewController)
-    }
-    
-    /// `UIStoryboard(name: "LaunchScreen", bundle: ...)`
-    static func launchScreen(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.launchScreen)
-    }
-    
-    /// `UIStoryboard(name: "Loading", bundle: ...)`
-    static func loading(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.loading)
-    }
-    
-    /// `UIStoryboard(name: "Main", bundle: ...)`
-    static func main(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.main)
-    }
-    
-    /// `UIStoryboard(name: "Onboarding", bundle: ...)`
-    static func onboarding(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.onboarding)
-    }
-    
-    /// `UIStoryboard(name: "SolvedTasksViewController", bundle: ...)`
-    static func solvedTasksViewController(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.solvedTasksViewController)
-    }
-    
-    /// `UIStoryboard(name: "TaskDetailsViewController", bundle: ...)`
-    static func taskDetailsViewController(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.taskDetailsViewController)
-    }
-    
-    /// `UIStoryboard(name: "UserViewController", bundle: ...)`
-    static func userViewController(_: Void = ()) -> UIKit.UIStoryboard {
-      return UIKit.UIStoryboard(resource: R.storyboard.userViewController)
-    }
-    
-    fileprivate init() {}
-  }
-  
+
   fileprivate struct intern: Rswift.Validatable {
     fileprivate static func validate() throws {
       try _R.validate()
     }
-    
+
     fileprivate init() {}
   }
-  
+
   fileprivate class Class {}
-  
+
   fileprivate init() {}
 }
 
 struct _R: Rswift.Validatable {
   static func validate() throws {
-    try storyboard.validate()
+    #if os(iOS) || os(tvOS)
     try nib.validate()
+    #endif
+    #if os(iOS) || os(tvOS)
+    try storyboard.validate()
+    #endif
   }
-  
+
+  #if os(iOS) || os(tvOS)
   struct nib: Rswift.Validatable {
     static func validate() throws {
       try _KeyboardView.validate()
     }
-    
+
     struct _KeyboardView: Rswift.NibResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let name = "KeyboardView"
-      
+
       func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
       }
-      
+
       func fourthView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[3] as? UIKit.UIView
       }
-      
+
       func secondView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[1] as? UIKit.UIView
       }
-      
+
       func thirdView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[2] as? UIKit.UIView
       }
-      
+
       static func validate() throws {
         if UIKit.UIImage(named: "capsLockOn", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'capsLockOn' is used in nib 'KeyboardView', but couldn't be loaded.") }
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
       }
-      
+
       fileprivate init() {}
     }
-    
+
     struct _TabBarButtonView: Rswift.NibResourceType {
       let bundle = R.hostingBundle
       let name = "TabBarButtonView"
-      
+
       func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> UIKit.UIView? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? UIKit.UIView
       }
-      
+
       fileprivate init() {}
     }
-    
+
     struct _TaskDetailsViewControllerSolutionCell: Rswift.NibResourceType, Rswift.ReuseIdentifierType {
       typealias ReusableType = TaskDetailsViewControllerSolutionCell
-      
+
       let bundle = R.hostingBundle
       let identifier = "TaskDetailsViewControllerSolutionCell"
       let name = "TaskDetailsViewControllerSolutionCell"
-      
+
       func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskDetailsViewControllerSolutionCell? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskDetailsViewControllerSolutionCell
       }
-      
+
       fileprivate init() {}
     }
-    
+
     struct _TaskViewControllerTableViewCell: Rswift.NibResourceType, Rswift.ReuseIdentifierType {
       typealias ReusableType = TaskViewControllerTableViewCell
-      
+
       let bundle = R.hostingBundle
       let identifier = "TaskViewControllerTableViewCell"
       let name = "TaskViewControllerTableViewCell"
-      
+
       func firstView(owner ownerOrNil: AnyObject?, options optionsOrNil: [UINib.OptionsKey : Any]? = nil) -> TaskViewControllerTableViewCell? {
         return instantiate(withOwner: ownerOrNil, options: optionsOrNil)[0] as? TaskViewControllerTableViewCell
       }
-      
+
       fileprivate init() {}
     }
-    
+
     fileprivate init() {}
   }
-  
+  #endif
+
+  #if os(iOS) || os(tvOS)
   struct storyboard: Rswift.Validatable {
     static func validate() throws {
+      #if os(iOS) || os(tvOS)
       try browseTasksViewController.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try createdTasksViewController.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try launchScreen.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try loading.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try main.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try onboarding.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try solvedTasksViewController.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try taskDetailsViewController.validate()
+      #endif
+      #if os(iOS) || os(tvOS)
       try userViewController.validate()
+      #endif
     }
-    
+
+    #if os(iOS) || os(tvOS)
     struct browseTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let browseSelectedTaskViewController = StoryboardViewControllerResource<BrowseSelectedTaskViewController>(identifier: "BrowseSelectedTaskViewController")
       let browseTasksViewController = StoryboardViewControllerResource<BrowseTasksViewController>(identifier: "BrowseTasksViewController")
       let bundle = R.hostingBundle
       let name = "BrowseTasksViewController"
-      
+
       func browseSelectedTaskViewController(_: Void = ()) -> BrowseSelectedTaskViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: browseSelectedTaskViewController)
       }
-      
+
       func browseTasksViewController(_: Void = ()) -> BrowseTasksViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: browseTasksViewController)
       }
-      
+
       static func validate() throws {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.browseTasksViewController().browseSelectedTaskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseSelectedTaskViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseSelectedTaskViewController'.") }
         if _R.storyboard.browseTasksViewController().browseTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'browseTasksViewController' could not be loaded from storyboard 'BrowseTasksViewController' as 'BrowseTasksViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct createdTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let createdTasksViewController = StoryboardViewControllerResource<CreatedTasksViewController>(identifier: "CreatedTasksViewController")
       let mathEquationViewController = StoryboardViewControllerResource<MathEquationViewController>(identifier: "MathEquationViewController")
       let name = "CreatedTasksViewController"
       let taskViewController = StoryboardViewControllerResource<MathPortal.TaskViewController>(identifier: "TaskViewController")
-      
+
       func createdTasksViewController(_: Void = ()) -> CreatedTasksViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: createdTasksViewController)
       }
-      
+
       func mathEquationViewController(_: Void = ()) -> MathEquationViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: mathEquationViewController)
       }
-      
+
       func taskViewController(_: Void = ()) -> MathPortal.TaskViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskViewController)
       }
-      
+
       static func validate() throws {
         if UIKit.UIImage(named: "plus", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'plus' is used in storyboard 'CreatedTasksViewController', but couldn't be loaded.") }
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.createdTasksViewController().createdTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'createdTasksViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'CreatedTasksViewController'.") }
         if _R.storyboard.createdTasksViewController().mathEquationViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'mathEquationViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'MathEquationViewController'.") }
         if _R.storyboard.createdTasksViewController().taskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskViewController' could not be loaded from storyboard 'CreatedTasksViewController' as 'MathPortal.TaskViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct launchScreen: Rswift.StoryboardResourceWithInitialControllerType, Rswift.Validatable {
       typealias InitialController = UIKit.UIViewController
-      
+
       let bundle = R.hostingBundle
       let name = "LaunchScreen"
-      
+
       static func validate() throws {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct loading: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let loadingViewController = StoryboardViewControllerResource<LoadingViewController>(identifier: "LoadingViewController")
       let name = "Loading"
-      
+
       func loadingViewController(_: Void = ()) -> LoadingViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: loadingViewController)
       }
-      
+
       static func validate() throws {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.loading().loadingViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'loadingViewController' could not be loaded from storyboard 'Loading' as 'LoadingViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct main: Rswift.StoryboardResourceWithInitialControllerType, Rswift.Validatable {
       typealias InitialController = LaunchLogoViewController
-      
+
       let bundle = R.hostingBundle
       let launchLogoViewController = StoryboardViewControllerResource<LaunchLogoViewController>(identifier: "LaunchLogoViewController")
       let logInViewController = StoryboardViewControllerResource<LogInViewController>(identifier: "LogInViewController")
@@ -545,34 +729,34 @@ struct _R: Rswift.Validatable {
       let name = "Main"
       let registerViewController = StoryboardViewControllerResource<RegisterViewController>(identifier: "RegisterViewController")
       let tabBarViewController = StoryboardViewControllerResource<TabBarViewController>(identifier: "TabBarViewController")
-      
+
       func launchLogoViewController(_: Void = ()) -> LaunchLogoViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: launchLogoViewController)
       }
-      
+
       func logInViewController(_: Void = ()) -> LogInViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: logInViewController)
       }
-      
+
       func loginOrRegisterViewController(_: Void = ()) -> LoginOrRegisterViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: loginOrRegisterViewController)
       }
-      
+
       func registerViewController(_: Void = ()) -> RegisterViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: registerViewController)
       }
-      
+
       func tabBarViewController(_: Void = ()) -> TabBarViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: tabBarViewController)
       }
-      
+
       static func validate() throws {
         if UIKit.UIImage(named: "BackIcon", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'BackIcon' is used in storyboard 'Main', but couldn't be loaded.") }
         if UIKit.UIImage(named: "edit", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'edit' is used in storyboard 'Main', but couldn't be loaded.") }
         if UIKit.UIImage(named: "profileIcon", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'profileIcon' is used in storyboard 'Main', but couldn't be loaded.") }
         if UIKit.UIImage(named: "search", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'search' is used in storyboard 'Main', but couldn't be loaded.") }
         if UIKit.UIImage(named: "solve", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'solve' is used in storyboard 'Main', but couldn't be loaded.") }
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.main().launchLogoViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'launchLogoViewController' could not be loaded from storyboard 'Main' as 'LaunchLogoViewController'.") }
         if _R.storyboard.main().logInViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'logInViewController' could not be loaded from storyboard 'Main' as 'LogInViewController'.") }
@@ -580,117 +764,127 @@ struct _R: Rswift.Validatable {
         if _R.storyboard.main().registerViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'registerViewController' could not be loaded from storyboard 'Main' as 'RegisterViewController'.") }
         if _R.storyboard.main().tabBarViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'tabBarViewController' could not be loaded from storyboard 'Main' as 'TabBarViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct onboarding: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let name = "Onboarding"
       let onboardingBasicInfoViewController = StoryboardViewControllerResource<OnboardingBasicInfoViewController>(identifier: "OnboardingBasicInfoViewController")
       let onboardingRoleViewController = StoryboardViewControllerResource<OnboardingRoleViewController>(identifier: "OnboardingRoleViewController")
-      
+
       func onboardingBasicInfoViewController(_: Void = ()) -> OnboardingBasicInfoViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: onboardingBasicInfoViewController)
       }
-      
+
       func onboardingRoleViewController(_: Void = ()) -> OnboardingRoleViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: onboardingRoleViewController)
       }
-      
+
       static func validate() throws {
         if UIKit.UIImage(named: "birthday", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'birthday' is used in storyboard 'Onboarding', but couldn't be loaded.") }
         if UIKit.UIImage(named: "einsteinColor", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'einsteinColor' is used in storyboard 'Onboarding', but couldn't be loaded.") }
         if UIKit.UIImage(named: "student", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'student' is used in storyboard 'Onboarding', but couldn't be loaded.") }
         if UIKit.UIImage(named: "teacher", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'teacher' is used in storyboard 'Onboarding', but couldn't be loaded.") }
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.onboarding().onboardingBasicInfoViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'onboardingBasicInfoViewController' could not be loaded from storyboard 'Onboarding' as 'OnboardingBasicInfoViewController'.") }
         if _R.storyboard.onboarding().onboardingRoleViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'onboardingRoleViewController' could not be loaded from storyboard 'Onboarding' as 'OnboardingRoleViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct solvedTasksViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let name = "SolvedTasksViewController"
       let solveTaskViewController = StoryboardViewControllerResource<SolveTaskViewController>(identifier: "SolveTaskViewController")
       let solvedTasksViewController = StoryboardViewControllerResource<SolvedTasksViewController>(identifier: "SolvedTasksViewController")
-      
+
       func solveTaskViewController(_: Void = ()) -> SolveTaskViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: solveTaskViewController)
       }
-      
+
       func solvedTasksViewController(_: Void = ()) -> SolvedTasksViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: solvedTasksViewController)
       }
-      
+
       static func validate() throws {
         if UIKit.UIImage(named: "plus", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'plus' is used in storyboard 'SolvedTasksViewController', but couldn't be loaded.") }
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.solvedTasksViewController().solveTaskViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solveTaskViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolveTaskViewController'.") }
         if _R.storyboard.solvedTasksViewController().solvedTasksViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'solvedTasksViewController' could not be loaded from storyboard 'SolvedTasksViewController' as 'SolvedTasksViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct taskDetailsViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let name = "TaskDetailsViewController"
       let taskDetailsViewController = StoryboardViewControllerResource<TaskDetailsViewController>(identifier: "TaskDetailsViewController")
-      
+
       func taskDetailsViewController(_: Void = ()) -> TaskDetailsViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: taskDetailsViewController)
       }
-      
+
       static func validate() throws {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.taskDetailsViewController().taskDetailsViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'taskDetailsViewController' could not be loaded from storyboard 'TaskDetailsViewController' as 'TaskDetailsViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
+    #if os(iOS) || os(tvOS)
     struct userViewController: Rswift.StoryboardResourceType, Rswift.Validatable {
       let bundle = R.hostingBundle
       let editUserViewController = StoryboardViewControllerResource<EditUserViewController>(identifier: "EditUserViewController")
       let name = "UserViewController"
       let profileImagesViewController = StoryboardViewControllerResource<ProfileImagesViewController>(identifier: "ProfileImagesViewController")
       let userViewController = StoryboardViewControllerResource<UserViewController>(identifier: "UserViewController")
-      
+
       func editUserViewController(_: Void = ()) -> EditUserViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: editUserViewController)
       }
-      
+
       func profileImagesViewController(_: Void = ()) -> ProfileImagesViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: profileImagesViewController)
       }
-      
+
       func userViewController(_: Void = ()) -> UserViewController? {
         return UIKit.UIStoryboard(resource: self).instantiateViewController(withResource: userViewController)
       }
-      
+
       static func validate() throws {
         if UIKit.UIImage(named: "edit", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'edit' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "editProfile", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'editProfile' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "einsteinBlack", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'einsteinBlack' is used in storyboard 'UserViewController', but couldn't be loaded.") }
         if UIKit.UIImage(named: "xmark.circle", in: R.hostingBundle, compatibleWith: nil) == nil { throw Rswift.ValidationError(description: "[R.swift] Image named 'xmark.circle' is used in storyboard 'UserViewController', but couldn't be loaded.") }
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
         }
         if _R.storyboard.userViewController().editUserViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'editUserViewController' could not be loaded from storyboard 'UserViewController' as 'EditUserViewController'.") }
         if _R.storyboard.userViewController().profileImagesViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'profileImagesViewController' could not be loaded from storyboard 'UserViewController' as 'ProfileImagesViewController'.") }
         if _R.storyboard.userViewController().userViewController() == nil { throw Rswift.ValidationError(description:"[R.swift] ViewController with identifier 'userViewController' could not be loaded from storyboard 'UserViewController' as 'UserViewController'.") }
       }
-      
+
       fileprivate init() {}
     }
-    
+    #endif
+
     fileprivate init() {}
   }
-  
+  #endif
+
   fileprivate init() {}
 }

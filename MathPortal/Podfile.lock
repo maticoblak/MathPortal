@@ -1,19 +1,19 @@
 PODS:
   - Bolts/Tasks (1.9.0)
-  - Parse (1.17.2):
-    - Parse/Core (= 1.17.2)
-  - Parse/Core (1.17.2):
+  - Parse (1.17.3):
+    - Parse/Core (= 1.17.3)
+  - Parse/Core (1.17.3):
     - Bolts/Tasks (~> 1.9)
-  - R.swift (5.0.3):
-    - R.swift.Library (~> 5.0.0)
-  - R.swift.Library (5.0.1)
+  - R.swift (5.1.0):
+    - R.swift.Library (~> 5.1.0)
+  - R.swift.Library (5.1.0)
 
 DEPENDENCIES:
   - Parse
   - R.swift (~> 5.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Bolts
     - Parse
     - R.swift
@@ -21,10 +21,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  Parse: 3b31a3dd1777b07ee7f0caee32fafbff544483a5
-  R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
-  R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
+  Parse: c1ad2a04d2cab2b54b6fb7da05f741abf2cf57d1
+  R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
+  R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
 
 PODFILE CHECKSUM: b1d94269ae4d6ac81a3a40b699c740e3adc6099b
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4
