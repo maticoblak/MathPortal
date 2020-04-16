@@ -169,12 +169,18 @@ extension Equation {
                 }
             }
         }
-
+        
+        func addNewLine() {
+            
+        }
+        
         func addSpace(direction: Equation.Space.Direction) {
             let space = Space(direction: direction)
+            guard (direction == .newLine && expression.parent != nil) == false  else { return }
             if let component = expression as? Component {
+                guard (component.hasBrackets() == false && direction == .vertical) == false else { return }
                 space.parent = component
-                //The indocat is at the beginning of equation
+                //The indocator is at the beginning of equation
                 if offset < 0 {
                     component.items.insert(space, at: 0)
                 // The indicator is at the end of equation

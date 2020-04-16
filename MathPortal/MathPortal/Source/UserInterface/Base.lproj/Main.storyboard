@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hyG-aj-Jka">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hyG-aj-Jka">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -327,7 +327,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S8d-DB-0u7">
-                                <rect key="frame" x="20" y="54" width="57" height="57"/>
+                                <rect key="frame" x="20" y="54" width="28.5" height="28.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" red="0.54117647059999996" green="0.59215686270000001" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="BackIcon">
@@ -497,7 +497,7 @@
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCc-bf-8fo">
-                                <rect key="frame" x="20" y="54" width="57" height="57"/>
+                                <rect key="frame" x="20" y="54" width="28.5" height="28.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" red="1" green="0.23925963040000001" blue="0.36410725119999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="BackIcon">
@@ -534,7 +534,7 @@
             </objects>
             <point key="canvasLocation" x="1044.9275362318842" y="482.8125"/>
         </scene>
-        <!--Parent View Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="KBx-1t-lfM">
             <objects>
                 <viewController storyboardIdentifier="TabBarViewController" id="mE6-tD-n8O" customClass="TabBarViewController" customModule="MathPortal" customModuleProvider="target" sceneMemberID="viewController">

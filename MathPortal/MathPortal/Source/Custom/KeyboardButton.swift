@@ -17,7 +17,6 @@ class KeyboardButton: UIButton {
     }
     private var buttonView: UIView?
     private var contentView: UIView = UIView()
-
     
     init(type: MathSymbol.SymbolType) {
         super.init(frame: .zero)

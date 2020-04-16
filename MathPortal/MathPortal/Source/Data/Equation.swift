@@ -35,6 +35,7 @@ class Equation {
         case sumSeries
         case productSeries
         case verticalSpace
+        case newLine
         
         case other // For views that make one of the above
         
@@ -65,6 +66,7 @@ class Equation {
             case .sumSeries: return "sumSeries"
             case .productSeries: return "productSeries"
             case .verticalSpace: return "verticalSpace"
+            case .newLine: return "newLine"
             }
         }
         
@@ -138,8 +140,8 @@ class Equation {
         case .indicator, .degree, .done:
             // TODO: add actions for those
             break
-        case .enter:
-            currentIndicator.addSpace(direction: .vertical)
+        case .enter(let type):
+            currentIndicator.addSpace(direction: type)
         case .space:
             currentIndicator.addSpace(direction: .horizontal)
         case .fraction:
@@ -1119,6 +1121,7 @@ extension Equation {
         enum Direction {
             case vertical
             case horizontal
+            case newLine
         }
         
         var direction: Direction = .vertical
@@ -1239,7 +1242,7 @@ extension Equation {
                 var previousIndex = 0
                 for index in 0..<items.count {
                     let item = items[index]
-                    if let space = item as? Space, space.direction == .vertical {
+                    if let space = item as? Space, space.direction != .horizontal {
                         itemsInLines.append(Array(items[previousIndex..<index]))
                         previousIndex = index
                     }
@@ -1311,6 +1314,8 @@ extension Equation {
                 return [Equation.ExpressionType.horizontalSpace.string: "hSpace"]
             case .vertical:
                 return [Equation.ExpressionType.verticalSpace.string: "vSpace"]
+            case .newLine:
+                return [Equation.ExpressionType.newLine.string: "newLine"]
             }
         } else if equation is Equation.Empty {
             return [Equation.ExpressionType.empty.string : "empty"]

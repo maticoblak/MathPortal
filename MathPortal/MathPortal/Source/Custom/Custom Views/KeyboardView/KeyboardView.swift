@@ -97,6 +97,18 @@ class KeyboardView: UIView {
     weak var delegate: KeyboardViewDelegate?
     private var keyboardHeight: CGFloat = 350
     
+    private var gestureRecognisers: (singleTap: UITapGestureRecognizer, doubleTap: UIGestureRecognizer) {
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(onSingleTap))
+        singleTap.numberOfTapsRequired = 1
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap))
+        doubleTap.numberOfTapsRequired = 2
+        
+        singleTap.require(toFail: doubleTap)
+        
+        return (singleTap, doubleTap)
+    }
+    
     private var type: LayoutType = .numbers {
         didSet {
             changeKeyboard()
@@ -212,15 +224,15 @@ class KeyboardView: UIView {
         parentView.addConstraint(NSLayoutConstraint(item: childView, attribute: .top, relatedBy: .equal, toItem: parentView, attribute: .top, multiplier: 1.0, constant: 0))
         parentView.addConstraint(NSLayoutConstraint(item: childView, attribute: .bottom, relatedBy: .equal, toItem: parentView, attribute: .bottom, multiplier: 1.0, constant: 0))
     }
+        
+    @objc private func onSingleTap(_ sender: UITapGestureRecognizer) {
+        guard let buttonType = (sender.view as? KeyboardButton)?.contentType else { return }
+        delegate?.keyboardView(self, didChoose: buttonType)
+    }
     
-    @objc private func buttonClicked(sender: KeyboardButton, event: UIEvent) {
-        guard let buttonType = sender.contentType else { return }
-        if event.allTouches?.first?.tapCount == 2, case .enter = sender.contentType {
-            // TODO: differentiate between enter in new line and enter in when you want to write symbols in vertical way (matrix, binary symbol,...) - also probably should use gestureRecogniser since bubble tap also triggers normal tap now
-            delegate?.keyboardView(self, didChoose: .enter)
-        } else {
-            delegate?.keyboardView(self, didChoose: buttonType)
-        }
+    @objc private func onDoubleTap(_ sender: UITapGestureRecognizer) {
+        guard let buttonType = (sender.view as? KeyboardButton)?.contentType?.doubleTap else { return }
+        delegate?.keyboardView(self, didChoose: buttonType)
     }
 }
 
@@ -260,13 +272,14 @@ extension KeyboardView {
         rows.forEach { row in
             row?.distribution = .fillEqually
             row?.isLayoutMarginsRelativeArrangement = true
+            row?.isUserInteractionEnabled = true
         }
         
         for index in 0..<buttons.count {
             let row = buttons[index]
             row.forEach { buttonItem in
                 let button = KeyboardButton(type: buttonItem)
-                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                button.addGestureRecognizer(gestureRecognisers.singleTap)
                 rows[index]?.addArrangedSubview(button)
             }
         }
@@ -288,7 +301,7 @@ extension KeyboardView {
             let row = leftButtons[index]
             row.forEach { buttonItem in
                 let button = KeyboardButton(type: buttonItem)
-                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                button.addGestureRecognizer(gestureRecognisers.singleTap)
                 leftRows[index]?.addArrangedSubview(button)
             }
         }
@@ -297,7 +310,7 @@ extension KeyboardView {
             let row = rightButtons[index]
             row.forEach { buttonItem in
                 let button = KeyboardButton(type: buttonItem)
-                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                button.addGestureRecognizer(gestureRecognisers.singleTap)
                 rightRows[index]?.addArrangedSubview(button)
             }
         }
@@ -316,7 +329,7 @@ extension KeyboardView {
             let row = buttons[index]
             row.forEach { buttonItem in
                 let button = KeyboardButton(type: buttonItem)
-                button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+                button.addGestureRecognizer(gestureRecognisers.singleTap)
                 rows[index]?.addArrangedSubview(button)
             }
         }
@@ -326,16 +339,20 @@ extension KeyboardView {
     
     private func setupKeyboardNavigationButtons() {
         spaceButton?.contentType = .space
-        enterButton?.contentType = .enter
+        enterButton?.contentType = .enter()
         deleteButton?.contentType = .delete
         inButton?.contentType = .levelIn
         outButton?.contentType = .levelOut
         leftButton?.contentType = .back
         rightButton?.contentType = .forward
         
-        [spaceButton ,enterButton, deleteButton, inButton, outButton, leftButton, rightButton].forEach { button in
-            button?.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+        [spaceButton, deleteButton, inButton, outButton, leftButton, rightButton].forEach { button in
+            button?.addGestureRecognizer(gestureRecognisers.singleTap)
         }
+        
+        let recognisers = gestureRecognisers
+        enterButton?.addGestureRecognizer(recognisers.singleTap)
+        enterButton?.addGestureRecognizer(recognisers.doubleTap)
     }
     
     private func setupDifferentKeyboardButtons() {

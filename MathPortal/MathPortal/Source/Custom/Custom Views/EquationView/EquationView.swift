@@ -144,6 +144,7 @@ extension EquationView {
         return EquationView(view: label, type: .text)
     }
     
+    // MARK: Space
     static func generateSpace(in parent: Equation.Component?, direction: Equation.Space.Direction, scale: CGFloat, selectedColor: UIColor = Equation.defaultColor) -> EquationView {
         switch direction {
         case .horizontal:
@@ -151,13 +152,12 @@ extension EquationView {
             view.layer.cornerRadius = 5
             view.backgroundColor = selectedColor
             return EquationView(view: view, type: .horizontalSpace)
-        case .vertical:
+        case .vertical, .newLine:
             let view = UIView(frame: CGRect(x: 0, y: 0, width: 2, height:  20*scale))
             view.layer.cornerRadius = 1
             view.backgroundColor = selectedColor
-            return EquationView(view: view, type: .horizontalSpace)
+            return EquationView(view: view, type: .verticalSpace)
         }
-        
     }
     
     // MARK: Empty view
