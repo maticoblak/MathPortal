@@ -31,10 +31,9 @@ class Equation {
         case cot
         case integral
         case limit
-        case horizontalSpace
+        case space
         case sumSeries
         case productSeries
-        case verticalSpace
         case newLine
         
         case other // For views that make one of the above
@@ -62,10 +61,9 @@ class Equation {
             case .integral: return "integral"
             case .limit: return "limit"
             case .absoluteValue: return "absoluteValue"
-            case .horizontalSpace: return "horizontalSpace"
+            case .space: return "space"
             case .sumSeries: return "sumSeries"
             case .productSeries: return "productSeries"
-            case .verticalSpace: return "verticalSpace"
             case .newLine: return "newLine"
             }
         }
@@ -140,11 +138,10 @@ class Equation {
         case .indicator, .degree, .done:
             // TODO: add actions for those
             break
-        case .enter(let type):
+        case .enter:
             currentIndicator.addNewLine()
-            //currentIndicator.addSpace(direction: type)
         case .space:
-            currentIndicator.addSpace(direction: .horizontal)
+            currentIndicator.addSpace()
         case .fraction:
             currentIndicator.addComponent(Fraction())
         case .root:
@@ -1133,22 +1130,9 @@ extension Equation {
     // MARK: - Space
     
     class Space: Expression {
-        
-        enum Direction {
-            case vertical
-            case horizontal
-            case newLine
-        }
-        
-        var direction: Direction = .vertical
-        
-        convenience init(direction: Direction) {
-            self.init()
-            self.direction = direction
-        }
-        
+                
         override func generateView() -> EquationView {
-            return EquationView.generateSpace(in: parent, direction: direction, scale: scale, selectedColor: color)
+            return EquationView.generateSpace(in: parent, scale: scale, selectedColor: color)
         }
     }
 
@@ -1245,42 +1229,11 @@ extension Equation {
             if items.isEmpty {
                 return .Nil
             } else {
-                
-//                // TODO: still needs some work - right now just an idea
-//
-//                // Items grouped by line they are in
-//                var itemsInLines: [[Expression]] = []
-//
-//                // If the first item in component is vertical space ad it to the itemsInLines
-//                if let space = items.first as? Space, space.direction == .vertical {
-//                    itemsInLines.append([space])
-//                }
-//                // Iterate trough current items and separate them based on lines they are in
-//                var previousIndex = 0
-//                for index in 0..<items.count {
-//                    let item = items[index]
-//                    if let space = item as? Space, space.direction != .horizontal {
-//                        itemsInLines.append(Array(items[previousIndex..<index]))
-//                        previousIndex = index
-//                    }
-//                }
-//                // Add the elements of last line to itemsInLines
-//                itemsInLines.append(Array(items[previousIndex..<items.count]))
-//
-//                // Generate views for each line
-//                let lineViews: [EquationView] = itemsInLines.map { line in
-//                    return EquationView.linearlyLayoutViews(line.map { $0.generateView() }, type: .component, selectedColor: color, brackets: .none, scale: scale)
-//                }
-//
-//                // return view composed of all lines stacked on top of each other
-//                return EquationView.verticalLayoutViews(lineViews, cantered: false, selectedColor: color, scale: scale, brackets: brackets )
-                
                 if items.allSatisfy({ $0 is Line }) {
-                    return EquationView.verticalLayoutViews(items.map { $0.generateView() }, cantered: false, selectedColor: color, scale: scale, brackets: brackets )
+                    return EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: hasBrackets(), selectedColor: color, scale: scale, brackets: brackets )
                 } else {
                     return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: brackets, scale: scale)
                 }
-                
             }
         }
     }
@@ -1332,15 +1285,10 @@ extension Equation {
             return [Equation.ExpressionType.mathOperator.string: mathOperator.type.string ]
         } else if let text = equation as? Equation.Text {
             return [Equation.ExpressionType.text.string: text.value]
-        } else if let space = equation as? Space {
-            switch space.direction {
-            case .horizontal:
-                return [Equation.ExpressionType.horizontalSpace.string: "hSpace"]
-            case .vertical:
-                return [Equation.ExpressionType.verticalSpace.string: "vSpace"]
-            case .newLine:
-                return [Equation.ExpressionType.newLine.string: "newLine"]
-            }
+        } else if equation is Space {
+            return [Equation.ExpressionType.space.string : "space"]
+        } else if let newLine = equation as? Equation.Line {
+            return [Equation.ExpressionType.newLine.string : newLine.items.map { equationToJson(equation: $0) }]
         } else if equation is Equation.Empty {
             return [Equation.ExpressionType.empty.string : "empty"]
         } else if let component =  equation as? Equation.Component {
@@ -1365,10 +1313,10 @@ extension Equation {
             return Equation.Operator(Equation.Operator.OperatorType.fromParseString(mathOperator), parent: nil)
         } else if let _ = json[Equation.ExpressionType.empty.string] as? String {
             return Equation.Empty()
-        } else if let _ = json[Equation.ExpressionType.horizontalSpace.string] as? String {
-            return Equation.Space(direction: .horizontal)
-        } else if let _ = json[Equation.ExpressionType.verticalSpace.string] as? String {
-            return Equation.Space(direction: .vertical)
+        } else if let _ = json[Equation.ExpressionType.space.string] as? String {
+            return Equation.Space()
+        } else if let line = json[Equation.ExpressionType.newLine.string] as? [[String:Any]] {
+            return Equation.Line(items: line.map { JSONToEquation(json: $0) })
         } else if let fraction = json[Equation.ExpressionType.fraction.string] as? [[String:Any]] {
             guard fraction.count == 2 else { return Equation.Fraction() }
             return Equation.Fraction(items: fraction.map { JSONToEquation(json: $0)})

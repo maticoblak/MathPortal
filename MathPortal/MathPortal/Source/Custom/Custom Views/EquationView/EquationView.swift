@@ -81,7 +81,7 @@ extension EquationView {
     }
     
     // MARK - Vertical layout
-    static func verticalLayoutViews(_ inputViews: [EquationView], cantered: Bool, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Equation.Component.BracketsType = .none) -> EquationView {
+    static func verticalLayoutViews(_ inputViews: [EquationView], centered: Bool, selectedColor: UIColor = Equation.defaultColor, color: UIColor = UIColor.black, scale: CGFloat = 1, brackets: Equation.Component.BracketsType = .none) -> EquationView {
         
         guard let itemsWidth = inputViews.compactMap({ $0.view?.bounds.width }).max() else { return .Nil }
         let wholeWidth = itemsWidth + 4 // Add 2 pixels offset on each side to self
@@ -95,7 +95,7 @@ extension EquationView {
             // Layout positions
             var y: CGFloat = 0.0
             allViews.forEach { view in
-                view.frame.origin.x = cantered ? (wholeWidth / 2 - view.bounds.width / 2) : 2
+                view.frame.origin.x = centered ? (wholeWidth / 2 - view.bounds.width / 2) : 2
                 view.frame.origin.y = y
                 y += view.bounds.height
                 
@@ -109,7 +109,7 @@ extension EquationView {
         view.backgroundColor = selectedColor
         view.layer.cornerRadius = 5
         
-        return EquationView(view: view, verticalOffset: view.center.y, type: .verticalSpace)
+        return EquationView(view: view, verticalOffset: view.center.y, type: .newLine)
     }
     
 }
@@ -151,19 +151,11 @@ extension EquationView {
     }
     
     // MARK: Space
-    static func generateSpace(in parent: Equation.Component?, direction: Equation.Space.Direction, scale: CGFloat, selectedColor: UIColor = Equation.defaultColor) -> EquationView {
-        switch direction {
-        case .horizontal:
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: 10*scale, height:  20*scale))
-            view.layer.cornerRadius = 5
-            view.backgroundColor = selectedColor
-            return EquationView(view: view, type: .horizontalSpace)
-        case .vertical, .newLine:
-            let view = UIView(frame: CGRect(x: 0, y: 0, width: 2, height:  20*scale))
-            view.layer.cornerRadius = 1
-            view.backgroundColor = selectedColor
-            return EquationView(view: view, type: .verticalSpace)
-        }
+    static func generateSpace(in parent: Equation.Component?, scale: CGFloat, selectedColor: UIColor = Equation.defaultColor) -> EquationView {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 10*scale, height:  20*scale))
+        view.layer.cornerRadius = 5
+        view.backgroundColor = selectedColor
+        return EquationView(view: view, type: .space)
     }
     
     // MARK: Empty view

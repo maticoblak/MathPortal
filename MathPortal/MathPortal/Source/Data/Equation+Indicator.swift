@@ -99,7 +99,6 @@ extension Equation {
         }
         func forward() {
             if let component = expression as? Component {
-                
                 // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
                 if isFunction(component), offset == component.items.count - 1 {
                     levelOut()
@@ -221,7 +220,7 @@ extension Equation {
                     forward()
                     addNewLine()
                     back()
-                    levelIn()
+                    //levelIn()
                     if let line = expression as? Line {
                         line.items = newLine
                         line.items.forEach { $0.parent = line }
@@ -242,11 +241,12 @@ extension Equation {
                 } else if offset == component.items.count {
                     if alreadyHasLineComponents {
                         component.items.insert(Line(parent: component), at: offset)
+                        levelIn()
                     } else {
                         component.items = [Line(items: component.items, parent: component), Line(parent: component)]
                         goToTheEndOfEquation()
+                        back()
                     }
-                    levelIn()
                 } else {
                     if alreadyHasLineComponents {
                         component.items.insert(Line(parent: component), at: offset)
@@ -265,9 +265,8 @@ extension Equation {
 
         }
         
-        func addSpace(direction: Equation.Space.Direction) {
-            let space = Space(direction: direction)
-            guard (direction == .newLine && expression.parent != nil) == false  else { return }
+        func addSpace() {
+            let space = Space()
             if let component = expression as? Component {
                 guard componentIncludesLines(component) == false else { return }
                 space.parent = component

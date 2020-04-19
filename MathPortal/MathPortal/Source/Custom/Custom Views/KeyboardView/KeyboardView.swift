@@ -339,7 +339,7 @@ extension KeyboardView {
     
     private func setupKeyboardNavigationButtons() {
         spaceButton?.contentType = .space
-        enterButton?.contentType = .enter()
+        enterButton?.contentType = .enter
         deleteButton?.contentType = .delete
         inButton?.contentType = .levelIn
         outButton?.contentType = .levelOut

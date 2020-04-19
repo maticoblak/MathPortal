@@ -30,7 +30,7 @@ extension MathSymbol {
         case levelOut
         case levelIn
         case space
-        case enter(type: Equation.Space.Direction = .newLine)
+        case enter
         
         case plus
         case minus
@@ -73,11 +73,9 @@ extension MathSymbol {
         static var greekLetters: [SymbolType] = Array("αβγδεζηθικλμνξοπρστυφχψω").map { .letter(value: String($0)) }
         static var greekLettersUppercase: [SymbolType] = Array("ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ").map { .letter(value: String($0)) }
         
+        // TODO: figure out if needed also for long pres if needed in the future
         var doubleTap: SymbolType {
-            switch self {
-            case .enter: return .enter(type: .vertical)
-            default: return self
-            }
+            return self
         }
         
         var componentView: UIView? {
