@@ -86,7 +86,7 @@ class Equation {
     static let selectedColor = Color.orange
     static let defaultColor = UIColor.clear
 
-    var expression: Component = Component()
+    var expression: Component = Component(items: [Line()])
     
     func computeResult() -> Double? {
         return expression.computeResult()
@@ -141,7 +141,8 @@ class Equation {
             // TODO: add actions for those
             break
         case .enter(let type):
-            currentIndicator.addSpace(direction: type)
+            currentIndicator.addNewLine()
+            //currentIndicator.addSpace(direction: type)
         case .space:
             currentIndicator.addSpace(direction: .horizontal)
         case .fraction:
@@ -1114,6 +1115,21 @@ extension Equation {
         }
     }
     
+    // MARK: - Line
+    
+    class Line: Component {
+
+        convenience init(parent: Component) {
+            self.init()
+            self.parent = parent
+        }
+        
+        override func generateView() -> EquationView {
+            return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .newLine, selectedColor: color, brackets: .none, scale: scale)
+        }
+        
+    }
+    
     // MARK: - Space
     
     class Space: Expression {
@@ -1168,8 +1184,9 @@ extension Equation {
             }
         }
         
-        convenience init(items: [Expression], brackets: BracketsType = .none) {
+        convenience init(items: [Expression], brackets: BracketsType = .none, parent: Component? = nil) {
             self.init()
+            self.parent = parent
             items.forEach { $0.parent = self; $0.scale = self.scale }
             self.items = items
             self.brackets = brackets
@@ -1229,34 +1246,41 @@ extension Equation {
                 return .Nil
             } else {
                 
-                // TODO: still needs some work - right now just an idea
+//                // TODO: still needs some work - right now just an idea
+//
+//                // Items grouped by line they are in
+//                var itemsInLines: [[Expression]] = []
+//
+//                // If the first item in component is vertical space ad it to the itemsInLines
+//                if let space = items.first as? Space, space.direction == .vertical {
+//                    itemsInLines.append([space])
+//                }
+//                // Iterate trough current items and separate them based on lines they are in
+//                var previousIndex = 0
+//                for index in 0..<items.count {
+//                    let item = items[index]
+//                    if let space = item as? Space, space.direction != .horizontal {
+//                        itemsInLines.append(Array(items[previousIndex..<index]))
+//                        previousIndex = index
+//                    }
+//                }
+//                // Add the elements of last line to itemsInLines
+//                itemsInLines.append(Array(items[previousIndex..<items.count]))
+//
+//                // Generate views for each line
+//                let lineViews: [EquationView] = itemsInLines.map { line in
+//                    return EquationView.linearlyLayoutViews(line.map { $0.generateView() }, type: .component, selectedColor: color, brackets: .none, scale: scale)
+//                }
+//
+//                // return view composed of all lines stacked on top of each other
+//                return EquationView.verticalLayoutViews(lineViews, cantered: false, selectedColor: color, scale: scale, brackets: brackets )
                 
-                // Items grouped by line they are in
-                var itemsInLines: [[Expression]] = []
-                
-                // If the first item in component is vertical space ad it to the itemsInLines
-                if let space = items.first as? Space, space.direction == .vertical {
-                    itemsInLines.append([space])
-                }
-                // Iterate trough current items and separate them based on lines they are in
-                var previousIndex = 0
-                for index in 0..<items.count {
-                    let item = items[index]
-                    if let space = item as? Space, space.direction != .horizontal {
-                        itemsInLines.append(Array(items[previousIndex..<index]))
-                        previousIndex = index
-                    }
-                }
-                // Add the elements of last line to itemsInLines
-                itemsInLines.append(Array(items[previousIndex..<items.count]))
-        
-                // Generate views for each line
-                let lineViews: [EquationView] = itemsInLines.map { line in
-                    return EquationView.linearlyLayoutViews(line.map { $0.generateView() }, type: .component, selectedColor: color, brackets: .none, scale: scale)
+                if items.allSatisfy({ $0 is Line }) {
+                    return EquationView.verticalLayoutViews(items.map { $0.generateView() }, cantered: false, selectedColor: color, scale: scale, brackets: brackets )
+                } else {
+                    return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: brackets, scale: scale)
                 }
                 
-                // return view composed of all lines stacked on top of each other
-                return EquationView.verticalLayoutViews(lineViews, cantered: false, selectedColor: color, scale: scale, brackets: brackets )
             }
         }
     }

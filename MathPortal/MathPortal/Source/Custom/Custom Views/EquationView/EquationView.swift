@@ -37,6 +37,12 @@ extension EquationView {
     
     // MARK: - Linear layout
     static func linearlyLayoutViews(_ inputViews: [EquationView], type: Equation.ExpressionType, selectedColor: UIColor = Equation.defaultColor, brackets: Equation.Component.BracketsType, color: UIColor = UIColor.black, scale: CGFloat) -> EquationView {
+        guard inputViews.isEmpty == false else {
+            let view = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 5, height: 20*scale)))
+            view.backgroundColor = selectedColor
+            view.layer.cornerRadius = 5
+            return EquationView(view: view, type: nil)
+        }
         let equationViews: [EquationView] = inputViews
         
         let views: [UIView] = inputViews.compactMap { $0.view }
