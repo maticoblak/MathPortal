@@ -199,18 +199,23 @@ extension Equation {
         }
         
         func addNewLine() {
+            // New line can only be added in the comonent
             guard let component = expression as? Component else { return }
+            // The new line can be added on top level or in the brackets to make matrix or binomial symbol and of corse the line can be added while the offset is in the line.
             guard expression.parent == nil || component.hasBrackets() || component is Line else { return }
             
+            // The indicator is in the line
             if component is Line {
-
+                // The indicator is at the beginning of the line
                 if offset <= 0 {
                     levelOut()
                     addNewLine()
+                // The indicator is at the end of the line
                 } else if offset == component.items.count {
                     levelOut()
                     forward()
                     addNewLine()
+                // The indicator is somewhere in the middle of line. In that case come items have to be remuved from current line and new lane has to be added with the deleted items.
                 } else {
                     let currentLine = Array(component.items[0...offset-1])
                     let newLine = Array(component.items[offset..<component.items.count])
@@ -220,7 +225,6 @@ extension Equation {
                     forward()
                     addNewLine()
                     back()
-                    //levelIn()
                     if let line = expression as? Line {
                         line.items = newLine
                         line.items.forEach { $0.parent = line }
@@ -228,9 +232,12 @@ extension Equation {
                         back()
                     }
                 }
+            // The indicator is on top level or in brackets component
             } else {
+                // Checks if the current component consists of only Line components or not. If it does not that means the indicator is component with brackets and we have to create 2 new lines.
                 let alreadyHasLineComponents: Bool = component.items.allSatisfy { $0 is Line }
 
+                // The indicator is at the beginning of component
                 if offset <= 0 {
                     if alreadyHasLineComponents {
                         component.items.insert(Line(parent: component), at: 0)
@@ -238,6 +245,7 @@ extension Equation {
                         component.items = [Line(parent: component), Line(items: component.items.filter({ $0 is Empty == false }), parent: component)]
                     }
                     forward()
+                // The indicator is at the end of component
                 } else if offset == component.items.count {
                     if alreadyHasLineComponents {
                         component.items.insert(Line(parent: component), at: offset)
@@ -247,6 +255,7 @@ extension Equation {
                         goToTheEndOfEquation()
                         back()
                     }
+                // The indicator is somwheare in the middle of component
                 } else {
                     if alreadyHasLineComponents {
                         component.items.insert(Line(parent: component), at: offset)
@@ -534,7 +543,10 @@ extension Equation {
                     } else {
                         component.items.remove(at: offset)
                         checkIfTwoExpresionsAreTheSameType(offset: offset)
-                        back()
+                        // The back acts differently in the line when it is empty
+                        if (component is Line) == false || component.items.count != 0 {
+                            back()
+                        }
                     }
                 // if the indicator is at the beginning of the equation
                 } else if offset < 0 {
