@@ -60,7 +60,7 @@ class TaskViewControllerTableViewCell: UITableViewCell {
     private func refreshEquation() {
         guard let equation = equation else { return }
         currentView?.removeFromSuperview()
-        if let view = equation.expression.generateView().view {
+        if let view = equation.expression.generateView(withMaxWidth: (equationView?.bounds.width ?? contentView.bounds.width) - 20).view {
             equationView?.addSubview(view)
             addConstraints(view)
             currentView = view

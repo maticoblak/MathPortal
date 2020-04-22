@@ -117,7 +117,7 @@ extension SolveTaskViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = equations[indexPath.row].viewBounds().height ?? 44
+        let height = equations[indexPath.row].viewBounds(withMaxWidth: equationsTableView?.bounds.width ?? self.view.bounds.width - 20).height ?? 44
         return height + 10
     }
 }

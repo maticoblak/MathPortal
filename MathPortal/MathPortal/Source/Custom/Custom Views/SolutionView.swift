@@ -73,7 +73,7 @@ class SolutionView: UIView {
         var yPosition: CGFloat = 10
         let xPosition: CGFloat = 10
         solution?.equations?.forEach { equation in
-            guard let equationView = equation.expression.generateView().view else { return }
+            guard let equationView = equation.expression.generateView(withMaxWidth: self.bounds.width - 20).view else { return }
             equationView.frame.origin = CGPoint(x: xPosition, y: yPosition)
             yPosition += equationView.bounds.height + 10
             addExpressionSubview(equationView)

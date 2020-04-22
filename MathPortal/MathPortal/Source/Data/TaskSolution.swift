@@ -117,10 +117,6 @@ class TaskSolution: ParseObject {
             completion?(user, error)
         }
     }
-    
-    func getSolutionViewHeight() -> CGFloat {
-        return equations?.reduce(0, { $0 + ($1.expression.generateView().view?.frame.height ?? 0) + 5 }) ?? 0
-    }
 }
 
 extension TaskSolution {

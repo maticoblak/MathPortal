@@ -28,7 +28,7 @@ class TaskDetailsViewController: UIViewController {
     private func reloadData() {
         var cells: [CellType] = [CellType]()
         if let taskTitle = task.name { cells.append(.title(taskTitle: taskTitle)) }
-        task.equations?.forEach { cells.append(.equation(expressionView: $0.expression.generateView().view) ) }
+        task.equations?.forEach { cells.append(.equation(expressionView: $0.expression.generateView(withMaxWidth: (equationsTableView?.bounds.width ?? self.view.bounds.width) - 20).view) ) }
         self.cells = cells
         equationsTableView?.reloadData()
     }

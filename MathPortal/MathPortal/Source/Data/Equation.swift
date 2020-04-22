@@ -90,8 +90,8 @@ class Equation {
         return expression.computeResult()
     }
     
-    func viewBounds() -> (width: CGFloat?, height: CGFloat?) {
-        let view = self.expression.generateView().view?.frame
+    func viewBounds(withMaxWidth width: CGFloat) -> (width: CGFloat?, height: CGFloat?) {
+        let view = self.expression.generateView(withMaxWidth: width).view?.frame
         return (view?.width, view?.height)
     }
     
@@ -206,13 +206,19 @@ extension Equation {
         /// Should not be overridden but n the case it is add the minimum scale 0.5
         var scale: CGFloat = 1.0 {
             didSet {
-                guard scale < 0.5 else { return }
-                scale = 0.5
+//                guard scale < 0.5 else { return }
+//                scale = 0.5
             }
         }
         func computeResult() -> Double? { return nil }
         
         func generateView() -> EquationView { return .Nil }
+        
+        /// Called from the top level expression in VC that needs equation view. The scale adjusts to the equation content and screen size.
+        /// - Parameters:
+        ///   - maxWidth: most of the time width of the screen with edge offsets
+        /// - Returns: Returns scaled equation that feats the screen.
+        func generateView(withMaxWidth maxWidth: CGFloat) -> EquationView { return .Nil }
         
         /// When parent is set or changed the scale should be updated
         func adjustScale() {
@@ -461,14 +467,14 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else if items[0] is Empty {
-                    if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                    if let newValue = newValue as? Component, newValue.hasBrackets == true {
                         newValue.parent = self
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
                         newValue.parent = newComponent
-                        if let newValue = newValue as? Component, newValue.hasBrackets() == false {
+                        if let newValue = newValue as? Component, newValue.hasBrackets == false {
                             newComponent.brackets = .normal
                         }
                         items[0] = newComponent
@@ -545,14 +551,14 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else if items[0] is Empty {
-                    if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                    if let newValue = newValue as? Component, newValue.hasBrackets == true {
                         newValue.parent = self
                         items[0] = newValue
                     } else {
                         let newComponent = Component(items: [newValue])
                         newComponent.parent = self
                         newValue.parent = newComponent
-                        if let newValue = newValue as? Component, newValue.hasBrackets() == false {
+                        if let newValue = newValue as? Component, newValue.hasBrackets == false {
                             newComponent.brackets = .normal
                         }
                         items[0] = newComponent
@@ -656,7 +662,7 @@ extension Equation {
                 } else if items[1] is Empty {
                     if let newValue = newValue as? Component {
                         newValue.parent = self
-                        if newValue.hasBrackets() == false {
+                        if newValue.hasBrackets == false {
                             newValue.brackets = .normal
                         }
                         items[1] = newValue
@@ -790,7 +796,7 @@ extension Equation {
                 } else if items[2] is Empty {
                     if let newValue = newValue as? Component {
                         newValue.parent = self
-                        if newValue.hasBrackets() == false {
+                        if newValue.hasBrackets == false {
                             newValue.brackets = .normal
                         }
                         items[2] = newValue
@@ -867,7 +873,7 @@ extension Equation {
                 } else if items[0] is Empty {
                     if let newValue = newValue as? Component {
                         newValue.parent = self
-                        if newValue.hasBrackets() == false {
+                        if newValue.hasBrackets == false {
                             newValue.brackets = .normal
                         }
                         items[0] = newValue
@@ -992,14 +998,14 @@ extension Equation {
                      newValue.parent = self
                      items.append(newValue)
                  } else if items[2] is Empty {
-                     if let newValue = newValue as? Component, newValue.hasBrackets() == true {
+                     if let newValue = newValue as? Component, newValue.hasBrackets == true {
                          newValue.parent = self
                          items[2] = newValue
                      } else {
                          let newComponent = Component(items: [newValue])
                          newComponent.parent = self
                          newValue.parent = newComponent
-                         if let newValue = newValue as? Component, newValue.hasBrackets() == false {
+                         if let newValue = newValue as? Component, newValue.hasBrackets == false {
                              newComponent.brackets = .normal
                          }
                          items[2] = newComponent
@@ -1146,7 +1152,7 @@ extension Equation {
             case absolute
         }
 
-        func hasBrackets() -> Bool {
+        var hasBrackets: Bool {
             switch brackets {
             case .none: return false
             case .absolute, .normal: return true
@@ -1160,10 +1166,10 @@ extension Equation {
         override var scale: CGFloat {
             didSet {
                 // NOTE: Just for safety - Should never happen since all other exponents have guard set for 0.5 and Component is never the las one in equation
-                guard scale >= 0.5 else {
-                    scale = 0.5
-                    return
-                }
+//                guard scale >= 0.5 else {
+//                    scale = 0.5
+//                    return
+//                }
                 refreshScalesInComponent()
             }
         }
@@ -1230,10 +1236,28 @@ extension Equation {
                 return .Nil
             } else {
                 if items.allSatisfy({ $0 is Line }) {
-                    return EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: hasBrackets(), selectedColor: color, scale: scale, brackets: brackets )
+                    return EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: hasBrackets, selectedColor: color, scale: scale, brackets: brackets )
                 } else {
                     return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: brackets, scale: scale)
                 }
+            }
+        }
+        /// Used for generating view that adjusts its scale to screen size. The default value has to always be set to 1 at the end of generating view so the the view is scaled from beginning every time (the equation could shrink or get bigger)
+        private var defaultScale: CGFloat = 1
+        override func generateView(withMaxWidth maxWidth: CGFloat) -> EquationView {
+            // Resets the scale to 1 or sets it to the one changed in the recursion
+            scale = defaultScale
+            // generates the view with that scale
+            let equationView = generateView()
+            // if the generated view is larger that the max bounds reduce scale for factor 0.9 and try to generate view with the same max width again
+            guard let equationWidth = equationView.view?.bounds.width else { return equationView }
+            if equationWidth > maxWidth {
+                defaultScale = scale * 0.9
+                return generateView(withMaxWidth: maxWidth)
+            // if the view fits the screen reset the scale and return the correct view
+            } else {
+                defaultScale = 1
+                return equationView
             }
         }
     }

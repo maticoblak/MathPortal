@@ -120,7 +120,7 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let height = equationsAndTexts[indexPath.row].viewBounds().height ?? 44
+        let height = equationsAndTexts[indexPath.row].viewBounds(withMaxWidth: equationsTableView?.bounds.width ?? self.view.bounds.width - 20).height ?? 44
         return height + 10
     }
 }
