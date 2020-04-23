@@ -115,8 +115,11 @@ extension Equation {
                     // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
                     if offset < component.items.count {
                         component.items[offset].color = selectedColor
-                        // if the expression is a component and not a function without brackets and it has one or 0 elements go in another level
-                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, isFunction(selectedComponent) == false , selectedComponent.hasBrackets == false {
+                        
+                        if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
+                            levelIn()
+                            // if the expression is a component and not a function without brackets and it has one or 0 elements go in another level
+                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, isFunction(selectedComponent) == false, selectedComponent.hasBrackets == false, selectedComponent is Line == false  {
                             levelIn()
                         }
                     }
@@ -171,8 +174,10 @@ extension Equation {
                     // check if the indicator landed on expression (offset >= 0) and set it a colour
                     if offset >= 0 {
                         component.items[offset].color = selectedColor
+                        if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
+                            levelIn()
                         // if the expression is a component without brackets and not a function and it has only one or 0 elements go in another level
-                        if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, selectedComponent.hasBrackets == false, isFunction(selectedComponent) == false {
+                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, selectedComponent.hasBrackets == false, isFunction(selectedComponent) == false, selectedComponent is Line == false {
                             levelIn()
                         }
                     }
@@ -199,7 +204,7 @@ extension Equation {
         }
         
         func addNewLine() {
-            // New line can only be added in the comonent
+            // New line can only be added in the component
             guard let component = expression as? Component else { return }
             // The new line can be added on top level or in the brackets to make matrix or binomial symbol and of corse the line can be added while the offset is in the line.
             guard expression.parent == nil || component.hasBrackets || component is Line else { return }
@@ -214,8 +219,11 @@ extension Equation {
                 } else if offset == component.items.count {
                     levelOut()
                     forward()
-                    addNewLine()
-                // The indicator is somewhere in the middle of line. In that case come items have to be removed from current line and new lane has to be added with the deleted items.
+                    guard let component = expression as? Component else { return }
+                    component.items.insert(Line(parent: component), at: offset)
+                    forward()
+                    back()
+                // The indicator is somewhere in the middle of line. In that case some items have to be removed from current line and new lane has to be added with the deleted items.
                 } else {
                     let currentLine = Array(component.items[0...offset-1])
                     let newLine = Array(component.items[offset..<component.items.count])
@@ -223,14 +231,13 @@ extension Equation {
                     component.items.forEach { $0.parent = component }
                     levelOut()
                     forward()
-                    addNewLine()
+                    guard let component = expression as? Component else { return }
+                    let line = Line(items: newLine, parent: component)
+                    component.items.insert(line, at: offset)
+                    forward()
                     back()
-                    if let line = expression as? Line {
-                        line.items = newLine
-                        line.items.forEach { $0.parent = line }
-                        forward()
-                        back()
-                    }
+                    levelIn()
+
                 }
             // The indicator is on top level or in brackets component
             } else {
@@ -535,9 +542,9 @@ extension Equation {
                     } else if component.items.last is Component {
                         back()
                     }
-                // the indicator is somwhere in the middle
+                // the indicator is somwheare in the middle
                 } else if offset >= 0 {
-                    // if we have an component with one elementt that is Empty expression go level out
+                    // if we have an component with one element that is Empty expression go level out
                     if component.items.count == 1, component.items[0] is Empty {
                         levelOut()
                     } else {
