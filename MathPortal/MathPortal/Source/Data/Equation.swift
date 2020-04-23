@@ -203,13 +203,7 @@ extension Equation {
             }
         }
         var color: UIColor = defaultColor
-        /// Should not be overridden but n the case it is add the minimum scale 0.5
-        var scale: CGFloat = 1.0 {
-            didSet {
-//                guard scale < 0.5 else { return }
-//                scale = 0.5
-            }
-        }
+        var scale: CGFloat = 1.0
         func computeResult() -> Double? { return nil }
         
         func generateView() -> EquationView { return .Nil }
@@ -1165,11 +1159,6 @@ extension Equation {
         
         override var scale: CGFloat {
             didSet {
-                // NOTE: Just for safety - Should never happen since all other exponents have guard set for 0.5 and Component is never the las one in equation
-//                guard scale >= 0.5 else {
-//                    scale = 0.5
-//                    return
-//                }
                 refreshScalesInComponent()
             }
         }
