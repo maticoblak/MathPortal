@@ -35,6 +35,7 @@ class Equation {
         case sumSeries
         case productSeries
         case newLine
+        case indicator
         
         case other // For views that make one of the above
         
@@ -65,6 +66,7 @@ class Equation {
             case .sumSeries: return "sumSeries"
             case .productSeries: return "productSeries"
             case .newLine: return "newLine"
+            case .indicator: return "indicator"
             }
         }
         

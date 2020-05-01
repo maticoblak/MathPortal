@@ -86,12 +86,29 @@ extension EquationView {
         guard let itemsWidth = inputViews.compactMap({ $0.view?.bounds.width }).max() else { return .Nil }
         let wholeWidth = itemsWidth + 4 // Add 2 pixels offset on each side to self
 
-        let allViews = inputViews.compactMap { $0.view }
+        
+        
+        let allViews: [UIView] = {
+            var views: [EquationView?] = []
+            inputViews.forEach {
+                if $0.type == .indicator, let last = views.last as? EquationView {
+                    views.removeLast()
+                    views.append(linearlyLayoutViews([last, $0], type: .newLine, brackets: .none, scale: scale))
+                } else {
+                    views.append($0)
+                }
+            }
+            if views.count >= 2, let first = views.first as? EquationView, first.type == .indicator, let second = views[1]  {
+                views.removeFirst()
+                views[0] = linearlyLayoutViews([first, second], type: .newLine, brackets: .none, scale: scale)
+            }
+            
+            return views.compactMap { $0?.view }
+        }()
         
         let view: UIView = {
             
             let verticalView = UIView()
-            
             // Layout positions
             var y: CGFloat = 0.0
             allViews.forEach { view in
@@ -386,7 +403,7 @@ extension EquationView {
     static func generateIndicator(scale: CGFloat) -> EquationView {
         let indicatorView = UIView(frame: CGRect(x: 0, y: 0, width: 3, height: 20*scale))
         indicatorView.backgroundColor = .green
-        return EquationView(view: indicatorView, type: .other)
+        return EquationView(view: indicatorView, type: .indicator)
     }
 }
 

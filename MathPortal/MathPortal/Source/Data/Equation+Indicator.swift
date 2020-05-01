@@ -46,10 +46,12 @@ extension Equation {
         
         private func addIndicator() {
             guard let component = expression as? Component else { return }
+            guard component.items.contains(where: ({ $0 is Cursor })) == false else { return }
             print(component, component.items, offset)
             let cursor = Cursor(parent: component)
             if offset >= component.items.count {
                 component.items.append(cursor)
+                offset += 1
             } else {
                 component.items.insert(cursor, at: offset + 1)
             }
@@ -61,7 +63,7 @@ extension Equation {
             print(component, component.items, offset)
             let index = component.items.firstIndex(where: ({ $0 is Cursor }))
             if let index = index {
-                if index <= offset {
+                if index <= offset, index != component.items.count {
                     offset -= 1
                 }
                 component.items.remove(at: index)
@@ -185,6 +187,7 @@ extension Equation {
         
         func back() {
 
+            removeIndicator()
             if let component = expression as? Component {
                 //guard component.items.isEmpty == false else { return }
                 // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
@@ -236,7 +239,6 @@ extension Equation {
                     back()
                 }
             }
-            removeIndicator()
             addIndicator()
         }
         
@@ -370,12 +372,16 @@ extension Equation {
         
         func addString(_ value: String?) {
             guard let value = value else { return }
+            removeIndicator()
             let textValue: Text = {
                 let newExpression = Text(value)
                 return newExpression
             }()
             if let component = expression as? Component {
-                guard componentIncludesLines(component) == false else { return }
+                guard componentIncludesLines(component) == false else {
+                    addIndicator()
+                    return
+                }
                 textValue.parent = component
                 
                 // the indicator is at the end of component
@@ -385,7 +391,7 @@ extension Equation {
                     // you can't add integeer to fraction since it has exactly 2 components in items
                     } else if component is Fraction == false {
                         component.items.append(textValue)
-                        offset += 1
+                        forward()
                     }
                 // the indicator is at the beginning of component
                 } else if offset < 0 {
@@ -413,15 +419,15 @@ extension Equation {
                         text.value += value
                     } else {
                         guard isFunction(component) == false else { return }
-                        component.items.insert(textValue, at: offset)
-                        checkIfTwoExpresionsAreTheSameType(offset: offset)
-                        forward()
+                        component.items.insert(textValue, at: offset + 1)
+                        checkIfTwoExpresionsAreTheSameType(offset: offset + 2)
                     }
                 }
             } else if let text = expression as? Text {
                 text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset))
                 forward()
             }
+            addIndicator()
         }
         
         func addOperator(_ operatorType: Operator.OperatorType) {
