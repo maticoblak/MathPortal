@@ -44,10 +44,36 @@ extension Equation {
             }
         }
         
+        private func addIndicator() {
+            guard let component = expression as? Component else { return }
+            print(component, component.items, offset)
+            let cursor = Cursor(parent: component)
+            if offset >= component.items.count {
+                component.items.append(cursor)
+            } else {
+                component.items.insert(cursor, at: offset + 1)
+            }
+            print(component, component.items, offset)
+        }
+        
+        private func removeIndicator() {
+            guard let component = expression as? Component else { return }
+            print(component, component.items, offset)
+            let index = component.items.firstIndex(where: ({ $0 is Cursor }))
+            if let index = index {
+                if index <= offset {
+                    offset -= 1
+                }
+                component.items.remove(at: index)
+            }
+            print(component, component.items, offset)
+        }
+        
         func levelIn() {
             if let component = expression as? Component {
                 guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
-                guard (component.items[offset] as? Operator == nil), component.items[offset] as? Empty == nil else { return }
+                guard (component.items[offset] as? Operator == nil), component.items[offset] as? Empty == nil, component.items[offset] as? Cursor == nil  else { return }
+                removeIndicator()
                 self.expression = component.items[offset]
                 self.expression.color = defaultColor
                 offset = 0
@@ -68,10 +94,13 @@ extension Equation {
                         component.items[0].color = selectedColor
                     }
                 }
+                addIndicator()
             }
         }
         
         func levelOut() {
+
+            removeIndicator()
             guard let parent = expression.parent else { return }
             guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
             
@@ -96,8 +125,12 @@ extension Equation {
                     }
                 }
             }
+            addIndicator()
         }
+        
         func forward() {
+
+            removeIndicator()
             if let component = expression as? Component {
                 // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
                 if isFunction(component), offset == component.items.count - 1 {
@@ -147,9 +180,11 @@ extension Equation {
                     forward()
                 }
             }
+            addIndicator()
         }
         
         func back() {
+
             if let component = expression as? Component {
                 //guard component.items.isEmpty == false else { return }
                 // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
@@ -201,6 +236,8 @@ extension Equation {
                     back()
                 }
             }
+            removeIndicator()
+            addIndicator()
         }
         
         func addNewLine() {
@@ -356,7 +393,8 @@ extension Equation {
                         text.value.insert(Character(value), at: text.value.startIndex)
                     // you can't add integeer to fraction since it has exactly 2 components in items
                     } else if component is Fraction == false {
-                        component.items.insert(textValue, at: 0)
+                        component.items.insert(textValue, at: 1)
+                        checkIfTwoExpresionsAreTheSameType(offset: 2)
                     }
                 // the indicator is on empty field
                 } else if component.items[offset] is Empty {
@@ -369,9 +407,16 @@ extension Equation {
                         component.items[offset] = textValue
                         forward()
                     }
+                // the indicator is in the middle of equation
                 } else {
-                    guard isFunction(component) == false else { return }
-                    // TODO: What happens if you want to add text in the middle
+                    if let text = component.items[offset] as? Text {
+                        text.value += value
+                    } else {
+                        guard isFunction(component) == false else { return }
+                        component.items.insert(textValue, at: offset)
+                        checkIfTwoExpresionsAreTheSameType(offset: offset)
+                        forward()
+                    }
                 }
             } else if let text = expression as? Text {
                 text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset))

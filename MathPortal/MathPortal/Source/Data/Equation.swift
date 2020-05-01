@@ -1135,7 +1135,20 @@ extension Equation {
             return EquationView.generateSpace(in: parent, scale: scale, selectedColor: color)
         }
     }
-
+    
+    // MARK: - Cursor
+    
+    class Cursor: Expression {
+              
+        convenience init(parent: Component) {
+            self.init()
+            self.parent = parent
+        }
+        
+        override func generateView() -> EquationView {
+            return EquationView.generateIndicator(scale: scale)
+        }
+    }
     
     // MARK: - Component
     class Component: Expression {
@@ -1224,7 +1237,7 @@ extension Equation {
             if items.isEmpty {
                 return .Nil
             } else {
-                if items.allSatisfy({ $0 is Line }) {
+                if items.contains(where: ({ $0 is Line })) {
                     return EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: hasBrackets, selectedColor: color, scale: scale, brackets: brackets )
                 } else {
                     return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, selectedColor: color, brackets: brackets, scale: scale)

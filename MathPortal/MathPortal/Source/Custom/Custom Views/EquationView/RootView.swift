@@ -43,6 +43,12 @@ class RootView: UIView {
         refresh()
     }
     
+    convenience init(rootIndex: UIView, theOtherView: UIView, radicandHorizontalOffset: CGFloat, scale: CGFloat, strokeColor: UIColor) {
+        self.init(rootIndex: rootIndex, theOtherView: theOtherView, radicandHorizontalOffset: radicandHorizontalOffset)
+        self.scale = scale
+        self.strokeColor = strokeColor
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

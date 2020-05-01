@@ -147,7 +147,7 @@ extension EquationView {
         label.sizeToFit()
         label.layer.masksToBounds = true
         label.layer.cornerRadius = 5
-        return EquationView(view: label, type: .text)
+        return  EquationView(view: label, type: .text)
     }
     
     // MARK: Space
@@ -382,15 +382,12 @@ extension EquationView {
             return viewWithBrackets
         }
     }
+    
+    static func generateIndicator(scale: CGFloat) -> EquationView {
+        let indicatorView = UIView(frame: CGRect(x: 0, y: 0, width: 3, height: 20*scale))
+        indicatorView.backgroundColor = .green
+        return EquationView(view: indicatorView, type: .other)
+    }
 }
 
-// MARK: extension RootView
-private extension RootView {
-    
-    convenience init(rootIndex: UIView, theOtherView: UIView, radicandHorizontalOffset: CGFloat, scale: CGFloat, strokeColor: UIColor) {
-        self.init(rootIndex: rootIndex, theOtherView: theOtherView, radicandHorizontalOffset: radicandHorizontalOffset)
-        self.scale = scale
-        self.strokeColor = strokeColor
-    }
-    
-}
+
