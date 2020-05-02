@@ -370,6 +370,7 @@ extension Equation {
             }
         }
         
+        // TODO: add indicator in text and make the background color of character reound
         func addString(_ value: String?) {
             guard let value = value else { return }
             removeIndicator()
@@ -399,8 +400,8 @@ extension Equation {
                         text.value.insert(Character(value), at: text.value.startIndex)
                     // you can't add integeer to fraction since it has exactly 2 components in items
                     } else if component is Fraction == false {
-                        component.items.insert(textValue, at: 1)
-                        checkIfTwoExpresionsAreTheSameType(offset: 2)
+                        component.items.insert(textValue, at: 0)
+                        checkIfTwoExpresionsAreTheSameType(offset: 1)
                     }
                 // the indicator is on empty field
                 } else if component.items[offset] is Empty {
@@ -417,10 +418,10 @@ extension Equation {
                 } else {
                     if let text = component.items[offset] as? Text {
                         text.value += value
-                    } else {
-                        guard isFunction(component) == false else { return }
+                    } else if isFunction(component) == false {
                         component.items.insert(textValue, at: offset + 1)
                         checkIfTwoExpresionsAreTheSameType(offset: offset + 2)
+                        forward()
                     }
                 }
             } else if let text = expression as? Text {
@@ -431,8 +432,12 @@ extension Equation {
         }
         
         func addOperator(_ operatorType: Operator.OperatorType) {
+            removeIndicator()
             if let component = expression as? Component {
-                guard componentIncludesLines(component) == false else { return }
+                guard componentIncludesLines(component) == false else {
+                    addIndicator()
+                    return
+                }
                 let newOperator = Operator(operatorType, parent: component)
                 
                 // if we are at the end of component
@@ -463,30 +468,34 @@ extension Equation {
                         component.items[offset] = newOperator
                         forward()
                     }
-                // TODO: figure out what happens if the indicator is on expression
-                //right now if the expression before the indicator is not an operator the operator is added
-                } else if  offset > 0, (component.items[offset - 1] is Operator) == false {
-                    // We dont want to add an item in the special component, because they have a specific number of components (fraction: enumerator, denominator)
-                    guard isFunction(component) == false else { return }
-                    component.items.insert(newOperator, at: offset)
+                //right now if the expression after the indicator is not an operator the operator is added
+                // We dont want to add an item in the special component, because they have a specific number of components (fraction: enumerator, denominator)
+                } else if  offset < component.items.count, (component.items[offset + 1] is Operator) == false , isFunction(component) == false {
+                    component.items.insert(newOperator, at: offset + 1)
                     forward()
                 }
-                
             } else if let text = expression as? Text {
                 // the operator will be added before the character that indicator is on so we gave to gard that we are not on first character
-                guard offset > 0,  let component = expression as? Component else { return }
-                let newOperator = Operator(operatorType, parent: text.parent)
-                // separate the current text
-                let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent)
-                let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent)
-            
-                levelOut()
-                // replace the current text with separated txt and operator in between
-                component.items[offset] = secondValue
-                component.items.insert(newOperator, at: offset)
-                component.items.insert(firstValue, at: offset)
-                forward()
+                if offset < text.value.count,  let component = expression.parent {
+                    let newOperator = Operator(operatorType, parent: text.parent)
+                    // separate the current text
+                    let firstValue = Text(String(text.value.prefix(offset + 1)), parent: text.parent)
+                    let secondValue = Text(String(text.value.suffix(text.value.count - offset - 1)), parent: text.parent)
+                
+                    levelOut()
+                    // replace the current text with separated txt and operator in between
+                    // if the indicator is at the end of text component the empty text componend does not have to be added
+                    if secondValue.value.isEmpty {
+                        component.items[offset] = newOperator
+                    } else {
+                        component.items[offset] = secondValue
+                        component.items.insert(newOperator, at: offset)
+                    }
+                    component.items.insert(firstValue, at: offset)
+                    forward()
+                }
             }
+            addIndicator()
         }
 
         func checkIfTwoExpresionsAreTheSameType(offset: Int) {
