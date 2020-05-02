@@ -111,11 +111,9 @@ extension Equation {
         
         // MARK: Level out
         func levelOut() {
-
-            removeIndicator()
             guard let parent = expression.parent else { return }
             guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
-            
+            removeIndicator()
             //remember the current offset
             let currentOffset = self.offset
             
@@ -439,6 +437,7 @@ extension Equation {
                         component.items.insert(textValue, at: offset + 1)
                         checkIfTwoExpresionsAreTheSameType(offset: offset + 2)
                         forward()
+                        levelIn()
                     }
                 }
             } else if let text = expression as? Text {
@@ -607,6 +606,7 @@ extension Equation {
         
         // MARK: Delete
         func delete() {
+            removeIndicator()
             if let component = expression as? Component {
                 if isFunction(component) {
                     component.delete(offset: offset)
@@ -622,15 +622,15 @@ extension Equation {
                             offset -= 1
                             component.items.removeLast()
                         }
-                    } else if component.items.last is Operator {
-                        component.items.removeLast()
-                        offset -= 1
                     } else if component.items.last is Component {
                         back()
+                    } else if component.items.isEmpty == false {
+                        component.items.removeLast()
+                        offset -= 1
                     }
-                // the indicator is somwheare in the middle
+                // the indicator is somewhere in the middle
                 } else if offset >= 0 {
-                    // if we have an component with one element that is Empty expression go level out
+                    // if we have a component with one element that is Empty expression go level out
                     if component.items.count == 1, component.items[0] is Empty {
                         levelOut()
                     } else {
@@ -646,6 +646,7 @@ extension Equation {
                     // If you are deleting a new line space you have to be at the start of the line component (index = -1)
                     if component is Line {
                         levelOut()
+                        // TODO: figure out those gards and addIndicator
                         guard offset > 0 else { return }
                         guard let component = expression as? Component, let firstLine = component.items[offset-1] as? Line, let secondLine =  component.items[offset] as? Line else { return }
                         let mergedLine = Line(items: firstLine.items + secondLine.items)
@@ -656,6 +657,8 @@ extension Equation {
                         levelOut()
                     }
                 }
+                // Have to remove it again in case it was added in the previous if statement (the indicator is added in levelOut, back ,... functions)
+                removeIndicator()
                 // after the deletion check if component is empty
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
@@ -666,7 +669,7 @@ extension Equation {
                     } else if component.parent != nil {
                         levelOut()
                         delete()
-                    // the only component that does not have a parent is top level component and it always have et leat on line component - after the deletion of all items the offset should be set at 0
+                    // the only component that does not have a parent is top level component and it always have at least one line component - after the deletion of all items the offset should be set at 0
                     } else {
                         let line = Line(parent: component)
                         component.items = [line]
@@ -685,6 +688,7 @@ extension Equation {
                 }
                 back()
             }
+            addIndicator()
         }
     }
 }
