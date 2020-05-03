@@ -83,7 +83,7 @@ class Equation {
         }
     }
     
-    static let selectedColor = Color.orange
+    static let selectedColor = Color.lightGrey.withAlphaComponent(0.5)
     static let defaultColor = UIColor.clear
 
     var expression: Component = Component(items: [Line()])

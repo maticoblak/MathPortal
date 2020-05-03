@@ -402,7 +402,8 @@ extension EquationView {
     
     static func generateIndicator(scale: CGFloat) -> EquationView {
         let indicatorView = UIView(frame: CGRect(x: 0, y: 0, width: 3, height: 20*scale))
-        indicatorView.backgroundColor = .green
+        indicatorView.backgroundColor = Color.orange
+        indicatorView.layer.cornerRadius = indicatorView.bounds.width/2
         return EquationView(view: indicatorView, type: .indicator)
     }
 }

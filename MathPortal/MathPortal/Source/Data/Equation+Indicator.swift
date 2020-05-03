@@ -119,16 +119,10 @@ extension Equation {
         
         // MARK: Level out
         func levelOut() {
+    
+            guard let parent = expression.parent else { return }
+            guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
             removeIndicator()
-            guard let parent = expression.parent else {
-                addIndicator()
-                return
-            }
-            guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else {
-                addIndicator()
-                return
-            }
-            
             //remember the current offset
             let currentOffset = self.offset
             
@@ -355,14 +349,14 @@ extension Equation {
         
         // MARK: Space
         func addSpace() {
-            // TODO: addindicator
+            removeIndicator()
             let space = Space()
-            if let component = expression as? Component {
-                guard componentIncludesLines(component) == false else { return }
+            if let component = expression as? Component, componentIncludesLines(component) == false {
                 space.parent = component
                 //The indicator is at the beginning of equation
                 if offset < 0 {
                     component.items.insert(space, at: 0)
+                    forward()
                 // The indicator is at the end of equation
                 } else if offset == component.items.count {
                     component.items.insert(space, at: offset)
@@ -380,33 +374,37 @@ extension Equation {
                     }
                 // If the indicator is in the middle of equation (not on empty)
                 } else {
-                    component.items.insert(space, at: offset)
+                    component.items.insert(space, at: offset + 1)
                     forward()
                 }
                 
             } else if let text = expression as? Text {
-                // the space will be added before the character that indicator is on so we have to guard that we are not on first character
-                guard offset > 0, let component = expression as? Component else { return }
-                space.parent = text.parent
-        
-                // separate the current text - has to be set before level out is called because of offset
-                let firstValue = Text(String(text.value.prefix(offset)), parent: text.parent)
-                let secondValue = Text(String(text.value.suffix(text.value.count - offset)), parent: text.parent)
-                
-                levelOut()
-
-                // replace the current text with separated text and space in between
-                component.items[offset] = secondValue
-                component.items.insert(space, at: offset)
-                component.items.insert(firstValue, at: offset)
-                forward()
-                forward()
-                
+                // the operator will be added after the character that indicator is on so we have to guard that we are not on last character
+                if offset < text.value.count,  let component = expression.parent {
+                    space.parent = text.parent
+                    
+                    // separate the current text - has to be set before level out is called because of offset
+                    let firstValue = Text(String(text.value.prefix(offset + 1)), parent: text.parent)
+                    let secondValue = Text(String(text.value.suffix(text.value.count - offset - 1)), parent: text.parent)
+                            
+                    levelOut()
+                    // replace the current text with separated text and space in between
+                    // if the indicator is at the end of text component the empty text component does not have to be added
+                    if secondValue.value.isEmpty {
+                        component.items[offset] = space
+                    } else {
+                        component.items[offset] = secondValue
+                        component.items.insert(space, at: offset)
+                    }
+                    component.items.insert(firstValue, at: offset)
+                    forward()
+                }
             }
+            addIndicator()
         }
         
         // MARK: String
-        // TODO: add indicator in text and make the background color of character reound
+        // TODO: add indicator in text and make the background color of character round
         func addString(_ value: String?) {
             guard let value = value else { return }
             removeIndicator()
@@ -535,6 +533,7 @@ extension Equation {
                     }
                     component.items.insert(firstValue, at: offset)
                     forward()
+                    
                 }
             }
             addIndicator()
