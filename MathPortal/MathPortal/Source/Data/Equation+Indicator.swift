@@ -30,6 +30,14 @@ extension Equation {
             return component.items.contains(where: ({ $0 is Line }))
         }
         
+        private var isEquationEmpty: Bool {
+            guard let line = expression as? Line else { return false }
+            guard line.items.isEmpty || (line.items.count == 1 && line.items.first is Cursor) else { return false }
+            guard line.parent?.parent == nil else { return false }
+            guard line.parent?.items.count == 1 else { return false }
+            return true
+        }
+        
         private func goToTheEndOfEquation() {
             guard let component = expression as? Component else { return }
             offset = 0
@@ -111,9 +119,16 @@ extension Equation {
         
         // MARK: Level out
         func levelOut() {
-            guard let parent = expression.parent else { return }
-            guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
             removeIndicator()
+            guard let parent = expression.parent else {
+                addIndicator()
+                return
+            }
+            guard let index = parent.items.firstIndex(where: {$0 === self.expression}) else {
+                addIndicator()
+                return
+            }
+            
             //remember the current offset
             let currentOffset = self.offset
             
@@ -140,6 +155,9 @@ extension Equation {
         
         // MARK: Forward
         func forward() {
+            guard isEquationEmpty == false else {
+                return
+            }
             removeIndicator()
             if let component = expression as? Component {
                 // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
@@ -195,10 +213,16 @@ extension Equation {
         
         // MARK: Back
         func back() {
-
+            guard isEquationEmpty == false else {
+                return
+            }
             removeIndicator()
             if let component = expression as? Component {
-                //guard component.items.isEmpty == false else { return }
+                guard (component is Line && component.items.isEmpty && component.parent?.parent == nil && component.parent?.items.count == 1) == false else {
+                    offset = 0
+                    addIndicator()
+                    return
+                }
                 // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
                 if isFunction(component), offset == 0 {
                     levelOut()
@@ -258,6 +282,8 @@ extension Equation {
             // The new line can be added on top level or in the brackets to make matrix or binomial symbol and of corse the line can be added while the offset is in the line.
             guard expression.parent == nil || component.hasBrackets || component is Line else { return }
             
+            removeIndicator()
+            
             // The indicator is in the line
             if component is Line {
                 // The indicator is at the beginning of the line
@@ -268,25 +294,22 @@ extension Equation {
                 } else if offset == component.items.count {
                     levelOut()
                     forward()
-                    guard let component = expression as? Component else { return }
-                    component.items.insert(Line(parent: component), at: offset)
-                    forward()
-                    back()
+                    if let component = expression as? Component {
+                        component.items.insert(Line(parent: component), at: offset)
+                        forward()
+                        back()
+                    }
                 // The indicator is somewhere in the middle of line. In that case some items have to be removed from current line and new lane has to be added with the deleted items.
-                } else {
-                    let currentLine = Array(component.items[0...offset-1])
-                    let newLine = Array(component.items[offset..<component.items.count])
+                } else if let parent = component.parent, let index = parent.items.firstIndex(where: { $0 === component }) {
+                    let currentLine = Array(component.items[0...offset])
+                    let newLine = Array(component.items[offset + 1..<component.items.count])
                     component.items = currentLine
                     component.items.forEach { $0.parent = component }
+                    let line = Line(items: newLine, parent: parent)
+                    parent.items.insert(line, at: index + 1)
                     levelOut()
                     forward()
-                    guard let component = expression as? Component else { return }
-                    let line = Line(items: newLine, parent: component)
-                    component.items.insert(line, at: offset)
-                    forward()
-                    back()
                     levelIn()
-
                 }
             // The indicator is on top level or in brackets component
             } else {
@@ -311,7 +334,7 @@ extension Equation {
                         goToTheEndOfEquation()
                         back()
                     }
-                // The indicator is somwheare in the middle of component
+                // The indicator is somewhere in the middle of component
                 } else {
                     if alreadyHasLineComponents {
                         component.items.insert(Line(parent: component), at: offset)
@@ -327,16 +350,17 @@ extension Equation {
                 }
 
             }
-
+            addIndicator()
         }
         
         // MARK: Space
         func addSpace() {
+            // TODO: addindicator
             let space = Space()
             if let component = expression as? Component {
                 guard componentIncludesLines(component) == false else { return }
                 space.parent = component
-                //The indocator is at the beginning of equation
+                //The indicator is at the beginning of equation
                 if offset < 0 {
                     component.items.insert(space, at: 0)
                 // The indicator is at the end of equation
@@ -408,7 +432,7 @@ extension Equation {
                     }
                 // the indicator is at the beginning of component
                 } else if offset < 0 {
-                    if let text = component.items[0] as? Text {
+                    if component.items.count > 0, let text = component.items[0] as? Text {
                         text.value.insert(Character(value), at: text.value.startIndex)
                         forward()
                         levelIn()
@@ -493,7 +517,7 @@ extension Equation {
                     forward()
                 }
             } else if let text = expression as? Text {
-                // the operator will be added before the character that indicator is on so we gave to gard that we are not on first character
+                // the operator will be added after the character that indicator is on so we have to guard that we are not on last character
                 if offset < text.value.count,  let component = expression.parent {
                     let newOperator = Operator(operatorType, parent: text.parent)
                     // separate the current text
@@ -502,7 +526,7 @@ extension Equation {
                 
                     levelOut()
                     // replace the current text with separated txt and operator in between
-                    // if the indicator is at the end of text component the empty text componend does not have to be added
+                    // if the indicator is at the end of text component the empty text component does not have to be added
                     if secondValue.value.isEmpty {
                         component.items[offset] = newOperator
                     } else {
@@ -643,16 +667,17 @@ extension Equation {
                     }
                 // if the indicator is at the beginning of the equation
                 } else if offset < 0 {
-                    // If you are deleting a new line space you have to be at the start of the line component (index = -1)
+                    // If you are deleting a new line you have to be at the start of the line component (index = -1)
                     if component is Line {
                         levelOut()
-                        // TODO: figure out those gards and addIndicator
-                        guard offset > 0 else { return }
-                        guard let component = expression as? Component, let firstLine = component.items[offset-1] as? Line, let secondLine =  component.items[offset] as? Line else { return }
-                        let mergedLine = Line(items: firstLine.items + secondLine.items)
-                        mergedLine.parent = component
-                        component.addValue(expression: mergedLine, offset: offset-1)
-                        delete()
+                        if offset > 0, let component = expression as? Component, let firstLine = component.items[offset-1] as? Line, let secondLine =  component.items[offset] as? Line {
+                            let mergedLine = Line(items: firstLine.items + secondLine.items)
+                            mergedLine.parent = component
+                            component.addValue(expression: mergedLine, offset: offset-1)
+                            delete()
+                        } else {
+                            levelIn()
+                        }
                     } else {
                         levelOut()
                     }
@@ -681,12 +706,10 @@ extension Equation {
                 text.value.remove(at: text.value.index(text.value.startIndex, offsetBy: offset))
                 if text.value.isEmpty {
                     levelOut()
-                    if let component = expression as? Component {
-                        component.items.remove(at: offset)
-                        checkIfTwoExpresionsAreTheSameType(offset: offset)
-                    }
+                    delete()
+                } else {
+                    back()
                 }
-                back()
             }
             addIndicator()
         }
