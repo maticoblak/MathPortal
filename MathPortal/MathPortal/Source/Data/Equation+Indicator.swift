@@ -60,7 +60,6 @@ extension Equation {
             guard let component = expression as? Component else { return }
             guard isFunction(component) == false else { return }
             guard component.items.contains(where: ({ $0 is Cursor })) == false else { return }
-            print(component, component.items, offset)
             let cursor = Cursor(parent: component)
             if offset >= component.items.count {
                 component.items.append(cursor)
@@ -70,13 +69,11 @@ extension Equation {
             } else if component.items[offset] is Empty == false {
                 component.items.insert(cursor, at: offset + 1)
             }
-            print(component, component.items, offset)
         }
         
         // MARK: Remove indicator
         private func removeIndicator() {
             guard let component = expression as? Component else { return }
-            print(component, component.items, offset)
             let index = component.items.firstIndex(where: ({ $0 is Cursor }))
             if let index = index {
                 if index <= offset, index != component.items.count {
@@ -84,7 +81,6 @@ extension Equation {
                 }
                 component.items.remove(at: index)
             }
-            print(component, component.items, offset)
         }
         
         // MARK: level in
