@@ -20,12 +20,16 @@ class MathEquationViewController: UIViewController {
     
     weak var delegate: MathEquationViewControllerDelegate?
     private let keyboardView = KeyboardView()
-    
-    private var currentViewScale: CGFloat = 1
-    private var equationMaxWidth: CGFloat { view.bounds.width - 20 }
-    
+
     private var panGestureRecogniser: UIPanGestureRecognizer?
     private var tapGestureRecogniser: UITapGestureRecognizer?
+    private var pinchGestureRecogniser: UIPinchGestureRecognizer?
+    
+    private var currentViewLocation: CGPoint = CGPoint(x: 10, y: 20) {
+        didSet {
+            currentView?.frame.origin = currentViewLocation
+        }
+    }
     
     private var keyboardOpened: Bool = false {
         didSet {
@@ -43,11 +47,13 @@ class MathEquationViewController: UIViewController {
             return tapRecognizer
         }()
         
-        
-        let pinchRecogniser = UIPinchGestureRecognizer(target: self, action: #selector(scale))
-        pinchRecogniser.delegate = self
-        equationView?.addGestureRecognizer(pinchRecogniser)
-            
+        pinchGestureRecogniser = {
+            let pinchRecogniser = UIPinchGestureRecognizer(target: self, action: #selector(scale))
+            pinchRecogniser.delegate = self
+            equationView?.addGestureRecognizer(pinchRecogniser)
+            return pinchRecogniser
+        }()
+                    
         panGestureRecogniser = {
             let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveScreen))
             gestureRecognizer.maximumNumberOfTouches = 1
@@ -74,29 +80,59 @@ class MathEquationViewController: UIViewController {
         keyboardOpened = !keyboardOpened
     }
     
-    private var priviousPinchScale: CGFloat = 1
+    private var currentViewScale: CGFloat = 1 {
+        didSet {
+            equation.expression.defaultScale = currentViewScale
+            
+            refreshEquation()
+        }
+    }
+    private lazy var equationMaxWidth: CGFloat = view.bounds.width - 20
+    private var previousPinchScale: CGFloat = 1
     @objc private func scale(_ sender: UIPinchGestureRecognizer) {
-        
-        let scale = sender.scale
-        print(scale)
-        guard let currentSize = equationView?.bounds else { return }
-        
+        panGestureRecogniser?.isEnabled = false
+        tapGestureRecogniser?.isEnabled = false
+        let newScale = sender.scale
+        let location = sender.location(in: equationView)
         switch sender.state {
-        case .began: break
-        case .possible: break
-        case .changed: break
-        case .ended: break
-        case .cancelled: break
-        case .failed: break
-        @unknown default: break
+        case .began:
+            previousPinchScale = newScale
+        case .changed:
+            let scale = currentViewScale/previousPinchScale * newScale
+            changeScale(to: scale, around: location)
+            previousPinchScale = newScale
+        case .failed, .cancelled, .ended:
+            panGestureRecogniser?.isEnabled = true
+            tapGestureRecogniser?.isEnabled = true
+            snapScreenToPosition()
+        @unknown default:
+            break
         }
         
     }
-    private var currentViewLocation: CGPoint = CGPoint(x: 10, y: 20)
+    
+    private func changeScale(to newScale: CGFloat, around point: CGPoint) {
+        let newScale: CGFloat = {
+            if newScale < 1 {
+                return 1
+            } else if newScale > 5 {
+                return 5
+            } else {
+                return newScale
+            }
+        }()
+        let translation = CGPoint(x: newScale/currentViewScale * (currentViewLocation.x - point.x) + point.x, y: newScale/currentViewScale * (currentViewLocation.y - point.y) + point.y)
+        currentViewScale = newScale
+        equationMaxWidth *= newScale
+        currentViewLocation = translation
+    }
+    
+
     private var previousPanLocation: CGPoint = .zero
     @objc func moveScreen(sender: UIPanGestureRecognizer) {
         let newLocation = sender.location(in: equationView)
         tapGestureRecogniser?.isEnabled = false
+        pinchGestureRecogniser?.isEnabled = false
         switch sender.state {
         case .began:
             previousPanLocation = newLocation
@@ -104,9 +140,9 @@ class MathEquationViewController: UIViewController {
             let translation = CGPoint(x: newLocation.x - previousPanLocation.x, y: newLocation.y - previousPanLocation.y)
             translateScreen(by: translation)
             previousPanLocation = newLocation
-            refreshEquation()
         case .ended, .cancelled, .failed:
             tapGestureRecogniser?.isEnabled = true
+            pinchGestureRecogniser?.isEnabled = true
             snapScreenToPosition()
         @unknown default:
             return
@@ -121,7 +157,6 @@ class MathEquationViewController: UIViewController {
         } else {
             currentViewLocation = currentViewLocation.extras.adding(point)
         }
-        
     }
     
     private func snapScreenToPosition() {
@@ -141,9 +176,8 @@ class MathEquationViewController: UIViewController {
             newLocation.x = min(10, equationViewSize.width - currentViewSize.width)
         }
         
-        currentViewLocation = newLocation
         UIView.animate(withDuration: 0.3) {
-            self.currentView?.frame.origin = self.currentViewLocation
+            self.currentViewLocation = newLocation
         }
     }
 
@@ -153,7 +187,7 @@ class MathEquationViewController: UIViewController {
         if let view = equation.expression.generateView(withMaxWidth: equationMaxWidth).view {
             view.frame.origin = currentViewLocation
             currentView = view
-            self.view.addSubview(view)
+            self.equationView?.addSubview(view)
         }
     }
 }
@@ -170,5 +204,4 @@ extension MathEquationViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
 }

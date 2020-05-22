@@ -1247,7 +1247,7 @@ extension Equation {
             }
         }
         /// Used for generating view that adjusts its scale to screen size. The default value has to always be set to 1 at the end of generating view so the the view is scaled from beginning every time (the equation could shrink or get bigger)
-        private var defaultScale: CGFloat = 1
+        var defaultScale: CGFloat = 1
         override func generateView(withMaxWidth maxWidth: CGFloat) -> EquationView {
             // Resets the scale to 1 or sets it to the one changed in the recursion
             scale = defaultScale

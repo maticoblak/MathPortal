@@ -18,6 +18,7 @@ class EquationView {
     
     init(view: UIView?, verticalOffset: CGFloat, type: Equation.ExpressionType) {
         self.view = view
+        self.view?.isUserInteractionEnabled = true
         self.verticalOffset = verticalOffset
         self.type = type
     }
