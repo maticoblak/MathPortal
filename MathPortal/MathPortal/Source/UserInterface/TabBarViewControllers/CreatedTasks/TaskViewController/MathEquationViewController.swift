@@ -24,6 +24,9 @@ class MathEquationViewController: UIViewController {
     private var currentViewScale: CGFloat = 1
     private var equationMaxWidth: CGFloat { view.bounds.width - 20 }
     
+    private var panGestureRecogniser: UIPanGestureRecognizer?
+    private var tapGestureRecogniser: UITapGestureRecognizer?
+    
     private var keyboardOpened: Bool = false {
         didSet {
             keyboardOpened ? keyboardView.open() : keyboardView.close()
@@ -33,18 +36,26 @@ class MathEquationViewController: UIViewController {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard))
-        tapRecognizer.delegate = self
-        equationView?.addGestureRecognizer(tapRecognizer)
+        tapGestureRecogniser = {
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(openCloseKeyboard))
+            tapRecognizer.delegate = self
+            equationView?.addGestureRecognizer(tapRecognizer)
+            return tapRecognizer
+        }()
+        
         
         let pinchRecogniser = UIPinchGestureRecognizer(target: self, action: #selector(scale))
         pinchRecogniser.delegate = self
         equationView?.addGestureRecognizer(pinchRecogniser)
             
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveScreen))
-        gestureRecognizer.minimumNumberOfTouches = 2
-        gestureRecognizer.delegate = self
-        equationView?.addGestureRecognizer(gestureRecognizer)
+        panGestureRecogniser = {
+            let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveScreen))
+            gestureRecognizer.maximumNumberOfTouches = 1
+            gestureRecognizer.delegate = self
+            equationView?.addGestureRecognizer(gestureRecognizer)
+            return gestureRecognizer
+        }()
+        
         
         keyboardView.delegate = self
         
@@ -65,6 +76,7 @@ class MathEquationViewController: UIViewController {
     
     private var priviousPinchScale: CGFloat = 1
     @objc private func scale(_ sender: UIPinchGestureRecognizer) {
+        
         let scale = sender.scale
         print(scale)
         guard let currentSize = equationView?.bounds else { return }
@@ -80,25 +92,61 @@ class MathEquationViewController: UIViewController {
         }
         
     }
-    private var currentViewLocation: CGPoint = .zero
+    private var currentViewLocation: CGPoint = CGPoint(x: 10, y: 20)
     private var previousPanLocation: CGPoint = .zero
     @objc func moveScreen(sender: UIPanGestureRecognizer) {
         let newLocation = sender.location(in: equationView)
+        tapGestureRecogniser?.isEnabled = false
         switch sender.state {
         case .began:
             previousPanLocation = newLocation
         case .changed:
             let translation = CGPoint(x: newLocation.x - previousPanLocation.x, y: newLocation.y - previousPanLocation.y)
-            currentViewLocation = currentViewLocation.extras.adding(translation)
+            translateScreen(by: translation)
             previousPanLocation = newLocation
             refreshEquation()
         case .ended, .cancelled, .failed:
-            return
+            tapGestureRecogniser?.isEnabled = true
+            snapScreenToPosition()
         @unknown default:
             return
         }
     }
     
+    private func translateScreen(by point: CGPoint ) {
+        guard let currentViewSize = currentView?.bounds.size else { return }
+        guard let equationViewSize = equationView?.bounds.size else { return }
+        if currentViewSize.width <= equationViewSize.width {
+            currentViewLocation.y += point.y
+        } else {
+            currentViewLocation = currentViewLocation.extras.adding(point)
+        }
+        
+    }
+    
+    private func snapScreenToPosition() {
+        guard let currentViewSize = currentView?.bounds.size else { return }
+        guard let equationViewSize = equationView?.bounds.size else { return }
+        var newLocation = currentViewLocation
+        
+        if currentViewLocation.y > 20 {
+            newLocation.y = 20
+        } else if currentViewSize.height + currentViewLocation.y <= equationViewSize.height - 20 {
+            newLocation.y = min(20, equationViewSize.height - currentViewSize.height - 20)
+        }
+        
+        if currentViewLocation.x > 0 {
+            newLocation.x = 10
+        } else if currentViewSize.width + currentViewLocation.x <= equationViewSize.width - 10 {
+            newLocation.x = min(10, equationViewSize.width - currentViewSize.width)
+        }
+        
+        currentViewLocation = newLocation
+        UIView.animate(withDuration: 0.3) {
+            self.currentView?.frame.origin = self.currentViewLocation
+        }
+    }
+
     private var currentView: UIView?
     private func refreshEquation() {
         currentView?.removeFromSuperview()
@@ -106,7 +154,6 @@ class MathEquationViewController: UIViewController {
             view.frame.origin = currentViewLocation
             currentView = view
             self.view.addSubview(view)
-            //view.frame.origin = CGPoint(x: 10.0, y: (equationView?.frame.minY ?? 0) + 20.0)
         }
     }
 }
