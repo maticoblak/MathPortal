@@ -59,11 +59,14 @@ extension Equation {
             guard isFunction(component) == false else { return }
             guard component.items.contains(where: ({ $0 is Cursor })) == false else { return }
             let cursor = Cursor(parent: component)
+            cursor.isSelected = false
             if offset >= component.items.count {
                 component.items.append(cursor)
+                cursor.isSelected = true
                 offset += 1
             } else if offset < 0 {
                 component.items.insert(cursor, at: offset + 1)
+                cursor.isSelected = true
             } else if component.items[offset] is Empty == false {
                 component.items.insert(cursor, at: offset + 1)
             }

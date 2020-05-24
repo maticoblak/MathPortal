@@ -40,9 +40,10 @@ class MathEquationViewController: UIViewController {
     
     private func toggleKeyboard() {
         guard let equationViewHeight = equationView?.bounds.height else { return }
-        let keyboardHeight = keyboardView.bounds.height - 94  // 94 is height of tab bar, 30 is offset
+        let keyboardHeight = keyboardView.bounds.height - 94 + 10 // 94 is height of tab bar, 10 is offset
         
-        if keyboardOpened, let cursorLocation = Equation.currentCursorLocation(InView: equationView), cursorLocation.y >= equationViewHeight - keyboardHeight {
+        // TODO: have a function that scrolls to indicator (should also be used when typing on keyboard)
+        if keyboardOpened, let cursorLocation = equation.currentCursorLocation(InView: equationView), cursorLocation.y >= equationViewHeight - keyboardHeight {
             let translation: CGPoint = CGPoint(x: 0, y: equationViewHeight - keyboardHeight - cursorLocation.y)
             self.translateScreen(by: translation, animationDuration: 0.3)
         }
@@ -53,7 +54,7 @@ class MathEquationViewController: UIViewController {
         snapScreenToPosition()
         keyboardOpened ? keyboardView.open() : keyboardView.close()
     }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))

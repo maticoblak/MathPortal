@@ -84,12 +84,11 @@ class Equation {
     }
 
     var expression: Component = Component(items: [Line()])
-    // TODO: Figure out the implementation so that currentIndicatorView is not static
-    private static var currentIndicatorView: EquationView?
-    static func currentCursorLocation(InView view: UIView?) -> CGPoint? {
-        guard let cursor = currentIndicatorView, let cursorView = cursor.view else { return nil }
-        var location = cursorView.convert(cursorView.center, to: view)
-        location.y += cursor.verticalOffset
+    
+    func currentCursorLocation(InView view: UIView?) -> CGPoint? {
+        guard let expression = expression.selectedExpressionView, let expressionView = expression.view else { return nil }
+        var location = expressionView.convert(expressionView.frame.origin, to: view)
+        location.y += expressionView.bounds.height
         return location
     }
     
@@ -103,7 +102,6 @@ class Equation {
     }
     
     func removeCursor() {
-        Equation.currentIndicatorView = nil
         currentIndicator.removeIndicator()
     }
     
@@ -219,10 +217,29 @@ extension Equation {
             }
         }
         var scale: CGFloat = 1.0
-        var isSelected: Bool = false
+        var isSelected: Bool = false 
+        
+        var selectedExpression: Expression? {
+            didSet {
+                parent?.selectedExpression = selectedExpression
+            }
+        }
+        var selectedExpressionView: EquationView? {
+            didSet {
+                parent?.selectedExpressionView = selectedExpressionView
+            }
+        }
+        
         func computeResult() -> Double? { return nil }
         
         func generateView() -> EquationView { return .Nil }
+        
+        func saveSelectedExpression(withView view: EquationView) {
+            if isSelected {
+                selectedExpression = self
+                selectedExpressionView = view
+            } 
+        }
         
         /// Called from the top level expression in VC that needs equation view. The scale adjusts to the equation content and screen size.
         /// - Parameters:
@@ -267,7 +284,9 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateOperator(type, isSelected: isSelected, scale: scale)
+            let view = EquationView.generateOperator(type, isSelected: isSelected, scale: scale)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     // MARK: - Text
@@ -288,7 +307,9 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateText(value: value, textRange: textRange, isSelected: isSelected, scale: scale)
+            let view = EquationView.generateText(value: value, textRange: textRange, isSelected: isSelected, scale: scale)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     // MARK: - Fraction
@@ -369,7 +390,10 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateFraction(items.map { $0.generateView() }, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateFraction(items.map { $0.generateView() }, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
+            
         }
     }
     
@@ -450,14 +474,18 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateRoot(items.map { $0.generateView() }, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateRoot(items.map { $0.generateView() }, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
     // MARK: - Exponent
     class Exponent: Index {
         override func generateView() -> EquationView {
-            return EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .exponent, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .exponent, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -539,7 +567,9 @@ extension Equation {
             }
         }
         override func generateView() -> EquationView {
-            return EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .index, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .index, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -650,7 +680,9 @@ extension Equation {
             }
         }
         override func generateView() -> EquationView {
-            return EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .indexAndExponent, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateExponentAndIndex(items.map { $0.generateView()}, type: .indexAndExponent, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     // MARK: - Logarithm
@@ -733,7 +765,9 @@ extension Equation {
             }
         }
         override func generateView() -> EquationView {
-            return EquationView.generateFunction(items.map { $0.generateView()}, isSelected: isSelected, scale: scale, type: .logarithm, brackets: brackets)
+            let view = EquationView.generateFunction(items.map { $0.generateView()}, isSelected: isSelected, scale: scale, type: .logarithm, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -850,7 +884,9 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateLimit(items.map { $0.generateView()}, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateLimit(items.map { $0.generateView()}, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -925,7 +961,9 @@ extension Equation {
             }
         }
         override func generateView() -> EquationView {
-            return EquationView.generateFunction(items.map { $0.generateView()}, isSelected: isSelected, scale: scale, type: functionType.expressionType, brackets: brackets)
+            let view = EquationView.generateFunction(items.map { $0.generateView()}, isSelected: isSelected, scale: scale, type: functionType.expressionType, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -972,7 +1010,9 @@ extension Equation {
             self.init(base: Empty())
         }
         override func generateView() -> EquationView {
-            return EquationView.generateIntegral(items.map { $0.generateView() }, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateIntegral(items.map { $0.generateView() }, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -1108,7 +1148,9 @@ extension Equation {
             }
         }
         override func generateView() -> EquationView {
-            return EquationView.generateSeries(items.map { $0.generateView()}, type: type, isSelected: isSelected, scale: scale, brackets: brackets)
+            let view = EquationView.generateSeries(items.map { $0.generateView()}, type: type, isSelected: isSelected, scale: scale, brackets: brackets)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -1124,7 +1166,9 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.generateEmpty(isSelected: isSelected, scale: scale)
+            let view = EquationView.generateEmpty(isSelected: isSelected, scale: scale)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -1138,7 +1182,9 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .newLine, isSelected: isSelected, brackets: .none, scale: scale)
+            let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .newLine, isSelected: isSelected, brackets: .none, scale: scale)
+            saveSelectedExpression(withView: view)
+            return view
         }
         
     }
@@ -1148,7 +1194,9 @@ extension Equation {
     class Space: Expression {
                 
         override func generateView() -> EquationView {
-            return EquationView.generateSpace(in: parent, scale: scale, isSelected: isSelected)
+            let view = EquationView.generateSpace(in: parent, scale: scale, isSelected: isSelected)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -1162,9 +1210,9 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            let cursorView = EquationView.generateIndicator(scale: scale)
-            Equation.currentIndicatorView = cursorView
-            return cursorView
+            let view = EquationView.generateIndicator(scale: scale)
+            saveSelectedExpression(withView: view)
+            return view
         }
     }
     
@@ -1256,9 +1304,13 @@ extension Equation {
                 return .Nil
             } else {
                 if items.contains(where: ({ $0 is Line })) {
-                    return EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: hasBrackets, isSelected: isSelected, scale: scale, brackets: brackets )
+                    let view = EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: hasBrackets, isSelected: isSelected, scale: scale, brackets: brackets )
+                    saveSelectedExpression(withView: view)
+                    return view
                 } else {
-                    return EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, isSelected: isSelected, brackets: brackets, scale: scale)
+                    let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, isSelected: isSelected, brackets: brackets, scale: scale)
+                    saveSelectedExpression(withView: view)
+                    return view
                 }
             }
         }
