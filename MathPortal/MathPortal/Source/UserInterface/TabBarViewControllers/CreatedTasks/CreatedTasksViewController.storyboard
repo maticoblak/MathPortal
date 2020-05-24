@@ -270,6 +270,7 @@
                     </view>
                     <connections>
                         <outlet property="equationView" destination="eeS-JY-Ftq" id="JcN-Sv-WzY"/>
+                        <outlet property="equationViewBottomConstraint" destination="jUJ-Au-qud" id="450-th-5WB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnQ-hv-App" userLabel="First Responder" sceneMemberID="firstResponder"/>

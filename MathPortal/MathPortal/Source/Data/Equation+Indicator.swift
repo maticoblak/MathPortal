@@ -16,12 +16,10 @@ extension Equation {
         var offset: Int = 0
         init(expression: Expression) {
             self.expression = expression
-                
             goToTheEndOfEquation()
             back()
             levelIn()
             goToTheEndOfEquation()
-        
         }
         
         // MARK: - Private functions
@@ -56,7 +54,7 @@ extension Equation {
         
         // MARK: Add indicator
         
-        private func addIndicator() {
+        func addIndicator() {
             guard let component = expression as? Component else { return }
             guard isFunction(component) == false else { return }
             guard component.items.contains(where: ({ $0 is Cursor })) == false else { return }
@@ -72,7 +70,7 @@ extension Equation {
         }
         
         // MARK: Remove indicator
-        private func removeIndicator() {
+        func removeIndicator() {
             guard let component = expression as? Component else { return }
             let index = component.items.firstIndex(where: ({ $0 is Cursor }))
             if let index = index {
@@ -80,6 +78,9 @@ extension Equation {
                     offset -= 1
                 }
                 component.items.remove(at: index)
+                if component.items.isEmpty == false, offset >= 0, offset < component.items.count {
+                    component.items[offset].isSelected = false
+                }
             }
         }
         
@@ -90,7 +91,7 @@ extension Equation {
                 guard (component.items[offset] as? Operator == nil), component.items[offset] as? Empty == nil, component.items[offset] as? Cursor == nil  else { return }
                 removeIndicator()
                 self.expression = component.items[offset]
-                self.expression.color = defaultColor
+                self.expression.isSelected = false
                 offset = 0
                 
                 if let text = self.expression as? Text {
@@ -106,7 +107,7 @@ extension Equation {
                     } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, secondLevel.hasBrackets == false {
                         levelIn()
                     } else if component.items.count > 0 {
-                        component.items[0].color = selectedColor
+                        component.items[0].isSelected = true
                     }
                 }
                 addIndicator()
@@ -124,7 +125,7 @@ extension Equation {
             
             // change the expression to parent - it does't matter if the offset is greater or les than items count
             self.expression = parent
-            parent.items[index].color = selectedColor
+            parent.items[index].isSelected = true
             self.offset = index
             
             if let text = parent.items[index] as? Text {
@@ -132,7 +133,7 @@ extension Equation {
             } else if let component = parent.items[index] as? Component {
                 // if the indicator is in the middle of expression its colour has to be set to default
                 if currentOffset < component.items.count, currentOffset >= 0 {
-                    component.items[currentOffset].color = defaultColor
+                    component.items[currentOffset].isSelected = false
                     
                     // if component has only one element and there are no brackets go out another level
                     if component.items.count == 1, component.hasBrackets == false, (component is Integral) == false, (component is TrigonometricFunc) == false, (component is Line) == false  {
@@ -161,12 +162,11 @@ extension Equation {
                     offset += 1
                     // check if there is a previous expression and set its colour to default (you could be at the beginning of component offset < 0)
                     if offset - 1 >= 0 {
-                        component.items[offset-1].color = defaultColor
+                        component.items[offset-1].isSelected = false
                     }
                     // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
                     if offset < component.items.count {
-                        component.items[offset].color = selectedColor
-                        
+                        component.items[offset].isSelected = true
                         if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
                             levelIn()
                             // if the expression is a component and not a function without brackets and it has one or 0 elements go in another level
@@ -229,12 +229,12 @@ extension Equation {
                     
                     // check if there exist a prvious expression (the indicator could have been at the end of component) and set its colour to default)
                     if offset + 1 < component.items.count {
-                        component.items[offset + 1].color = defaultColor
+                        component.items[offset + 1].isSelected = false
                     }
                     
                     // check if the indicator landed on expression (offset >= 0) and set it a colour
                     if offset >= 0 {
-                        component.items[offset].color = selectedColor
+                        component.items[offset].isSelected = true
                         if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
                             levelIn()
                         // if the expression is a component without brackets and not a function and it has only one or 0 elements go in another level
@@ -567,7 +567,7 @@ extension Equation {
                     component.addValue(expression: newComponent, offset: offset)
                 // if indicator is in the middle of equation and not inside function since they have specific number of components already there
                 } else if isFunction(component) == false {
-                    component.items[offset].color = defaultColor
+                    component.items[offset].isSelected = false
                     component.items.insert(newComponent, at: offset + 1)
                     forward()
                 }
@@ -615,7 +615,7 @@ extension Equation {
             // If the indicator is on any other expression, take that expression, stuck it in the newComponent and make newComponent take its place
             } else {
                 component.items[offset].parent = newComponent
-                component.items[offset].color = .clear
+                component.items[offset].isSelected = false
                 newComponent.addValue(expression: component.items[offset], offset: 0)
                 component.items[offset] = newComponent
             }
@@ -629,7 +629,7 @@ extension Equation {
             if let component = expression as? Component {
                 if isFunction(component) {
                     component.delete(offset: offset)
-                    component.items[offset].color = selectedColor
+                    component.items[offset].isSelected = true
 
                 // if the indicator is at the end of the component
                 } else if offset == component.items.count {
@@ -683,7 +683,7 @@ extension Equation {
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
                     if  component.hasBrackets == true {
-                        component.items.append(Empty(parent: component, selectedColor: selectedColor))
+                        component.items.append(Empty(parent: component, isSelected: true))
                         offset = 0
                     // if the component does not have brackets (components in fraction)
                     } else if component.parent != nil {

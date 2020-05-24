@@ -17,6 +17,7 @@ class MathEquationViewController: UIViewController {
     var equation: Equation = Equation()
     
     @IBOutlet private var equationView: UIView?
+    @IBOutlet private var equationViewBottomConstraint: NSLayoutConstraint?
     
     weak var delegate: MathEquationViewControllerDelegate?
     private let keyboardView = KeyboardView()
@@ -33,9 +34,26 @@ class MathEquationViewController: UIViewController {
     
     private var keyboardOpened: Bool = false {
         didSet {
-            keyboardOpened ? keyboardView.open() : keyboardView.close()
+            toggleKeyboard()
         }
     }
+    
+    private func toggleKeyboard() {
+        guard let equationViewHeight = equationView?.bounds.height else { return }
+        let keyboardHeight = keyboardView.bounds.height - 94  // 94 is height of tab bar, 30 is offset
+        
+        if keyboardOpened, let cursorLocation = Equation.currentCursorLocation(InView: equationView), cursorLocation.y >= equationViewHeight - keyboardHeight {
+            let translation: CGPoint = CGPoint(x: 0, y: equationViewHeight - keyboardHeight - cursorLocation.y)
+            self.translateScreen(by: translation, animationDuration: 0.3)
+        }
+        equationViewBottomConstraint?.constant = keyboardOpened ? keyboardHeight : 0.0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        snapScreenToPosition()
+        keyboardOpened ? keyboardView.open() : keyboardView.close()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         Appearence.addLeftBarButton(controller: self, leftBarButtonTitle: "< Back ", leftBarButtonAction: #selector(goToTaskViewController))
@@ -64,14 +82,14 @@ class MathEquationViewController: UIViewController {
         
         
         keyboardView.delegate = self
-        
+        equation.addCursor()
         refreshEquation()
         keyboardOpened = true
     }
     
     @objc private func goToTaskViewController() {
         keyboardView.remove()
-        // TODO: Remove indicator
+        equation.removeCursor()
         delegate?.mathEquationViewController(sender: self, didWriteEquation: equation)
         navigationController?.popViewController(animated: true)
     }
@@ -149,13 +167,16 @@ class MathEquationViewController: UIViewController {
         }
     }
     
-    private func translateScreen(by point: CGPoint ) {
+    private func translateScreen(by point: CGPoint, animationDuration: Double = 0 ) {
         guard let currentViewSize = currentView?.bounds.size else { return }
         guard let equationViewSize = equationView?.bounds.size else { return }
-        if currentViewSize.width <= equationViewSize.width {
-            currentViewLocation.y += point.y
-        } else {
-            currentViewLocation = currentViewLocation.extras.adding(point)
+        
+        UIView.animate(withDuration: animationDuration) {
+            if currentViewSize.width <= equationViewSize.width {
+                self.currentViewLocation.y += point.y
+            } else {
+                self.currentViewLocation = self.currentViewLocation.extras.adding(point)
+            }
         }
     }
     
@@ -180,7 +201,7 @@ class MathEquationViewController: UIViewController {
             self.currentViewLocation = newLocation
         }
     }
-
+    
     private var currentView: UIView?
     private func refreshEquation() {
         currentView?.removeFromSuperview()
