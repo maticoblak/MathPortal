@@ -21,6 +21,7 @@ class MathEquationViewController: UIViewController {
     
     weak var delegate: MathEquationViewControllerDelegate?
     private let keyboardView = KeyboardView()
+    private lazy var keyboardHeight: CGFloat = keyboardView.bounds.height - 94 + 10
 
     private var panGestureRecogniser: UIPanGestureRecognizer?
     private var tapGestureRecogniser: UITapGestureRecognizer?
@@ -32,27 +33,17 @@ class MathEquationViewController: UIViewController {
         }
     }
     
+    private var currentViewScale: CGFloat = 1 {
+        didSet {
+            equation.expression.defaultScale = currentViewScale
+            refreshEquation()
+        }
+    }
+    
     private var keyboardOpened: Bool = false {
         didSet {
             toggleKeyboard()
         }
-    }
-    
-    private func toggleKeyboard() {
-        guard let equationViewHeight = equationView?.bounds.height else { return }
-        let keyboardHeight = keyboardView.bounds.height - 94 + 10 // 94 is height of tab bar, 10 is offset
-        
-        // TODO: have a function that scrolls to indicator (should also be used when typing on keyboard)
-        if keyboardOpened, let cursorLocation = equation.currentCursorLocation(InView: equationView), cursorLocation.y >= equationViewHeight - keyboardHeight {
-            let translation: CGPoint = CGPoint(x: 0, y: equationViewHeight - keyboardHeight - cursorLocation.y)
-            self.translateScreen(by: translation, animationDuration: 0.3)
-        }
-        equationViewBottomConstraint?.constant = keyboardOpened ? keyboardHeight : 0.0
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
-        snapScreenToPosition()
-        keyboardOpened ? keyboardView.open() : keyboardView.close()
     }
         
     override func viewDidLoad() {
@@ -85,6 +76,11 @@ class MathEquationViewController: UIViewController {
         keyboardView.delegate = self
         equation.addCursor()
         refreshEquation()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         keyboardOpened = true
     }
     
@@ -99,13 +95,7 @@ class MathEquationViewController: UIViewController {
         keyboardOpened = !keyboardOpened
     }
     
-    private var currentViewScale: CGFloat = 1 {
-        didSet {
-            equation.expression.defaultScale = currentViewScale
-            
-            refreshEquation()
-        }
-    }
+    
     private lazy var equationMaxWidth: CGFloat = view.bounds.width - 20
     private var previousPinchScale: CGFloat = 1
     @objc private func scale(_ sender: UIPinchGestureRecognizer) {
@@ -203,9 +193,48 @@ class MathEquationViewController: UIViewController {
         }
     }
     
+    private func toggleKeyboard() {
+        
+        equationViewBottomConstraint?.constant = keyboardOpened ? keyboardHeight : 0.0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+        if keyboardOpened {
+            scrollToIndicator()
+        }
+        
+        snapScreenToPosition()
+        keyboardOpened ? keyboardView.open() : keyboardView.close()
+    }
+    
+    private func scrollToIndicator() {
+        guard let equationViewBounds = equationView?.bounds else { return }
+        if let cursorLocation = equation.currentViewLocation(InView: equationView) {
+            if cursorLocation.maxY >= equationViewBounds.height {
+                let translation: CGPoint = CGPoint(x: 0, y: equationViewBounds.height - cursorLocation.maxY)
+                self.translateScreen(by: translation, animationDuration: 0.3)
+            } else if cursorLocation.minY <= 20 {
+                let translation: CGPoint = CGPoint(x: 0, y: -cursorLocation.minY + 20)
+                self.translateScreen(by: translation, animationDuration: 0.3)
+            }
+            
+            let expressionWidth = abs(cursorLocation.maxX - cursorLocation.minY)
+            
+            if cursorLocation.maxX >= equationViewBounds.width - 5 {
+                let translation = CGPoint(x: equationViewBounds.width - 5 - cursorLocation.maxX, y: 0)
+                translateScreen(by: translation)
+            } else if cursorLocation.minX <= 0 {
+                let translation = CGPoint(x:  -cursorLocation.minX, y: 0)
+                translateScreen(by: translation)
+            }
+
+        }
+    }
+    
     private var currentView: UIView?
     private func refreshEquation() {
         currentView?.removeFromSuperview()
+        equation.expression.defaultScale = currentViewScale
         if let view = equation.expression.generateView(withMaxWidth: equationMaxWidth).view {
             view.frame.origin = currentViewLocation
             currentView = view
@@ -218,6 +247,7 @@ extension MathEquationViewController: KeyboardViewDelegate {
     func keyboardView(_ sender: KeyboardView, didChoose key: MathSymbol.SymbolType) {
         equation.handleMathKeyboardButtonsPressed(button: key)
         refreshEquation()
+        scrollToIndicator()
     }
 }
 

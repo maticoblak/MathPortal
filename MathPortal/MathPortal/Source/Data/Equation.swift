@@ -85,11 +85,10 @@ class Equation {
 
     var expression: Component = Component(items: [Line()])
     
-    func currentCursorLocation(InView view: UIView?) -> CGPoint? {
+    func currentViewLocation(InView view: UIView?) -> (minX: CGFloat, minY: CGFloat, maxX: CGFloat, maxY: CGFloat)? {
         guard let expression = expression.selectedExpressionView, let expressionView = expression.view else { return nil }
-        var location = expressionView.convert(expressionView.frame.origin, to: view)
-        location.y += expressionView.bounds.height
-        return location
+        let location = expressionView.convert(CGPoint.zero, to: view)
+        return (minX: location.x, minY: location.y, maxX: location.x + expressionView.bounds.width, maxY: location.y + expressionView.bounds.height)
     }
     
     func computeResult() -> Double? {
@@ -1317,7 +1316,7 @@ extension Equation {
         /// Used for generating view that adjusts its scale to screen size. The default value has to always be set to 1 at the end of generating view so the the view is scaled from beginning every time (the equation could shrink or get bigger)
         var defaultScale: CGFloat = 1
         override func generateView(withMaxWidth maxWidth: CGFloat) -> EquationView {
-            // Resets the scale to 1 or sets it to the one changed in the recursion
+            // Resets the scale to defaultScale or sets it to the one changed in the recursion
             scale = defaultScale
             // generates the view with that scale
             let equationView = generateView()
