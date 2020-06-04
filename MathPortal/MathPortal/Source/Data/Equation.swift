@@ -289,11 +289,13 @@ extension Equation {
         }
     }
     // MARK: - Text
+    // TODO: - Have Numbers and Symbols instead of just Text
     class Text: Expression {
         var value: String
-        var textRange: NSRange?
+
         init(_ value: String) {
             self.value = value
+            super.init()
         }
         
         convenience init(_ value: String, parent: Component?) {
@@ -306,7 +308,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            let view = EquationView.generateText(value: value, textRange: textRange, isSelected: isSelected, scale: scale)
+            let view = EquationView.generateText(value: value, isSelected: isSelected, scale: scale)
             saveSelectedExpression(withView: view)
             return view
         }

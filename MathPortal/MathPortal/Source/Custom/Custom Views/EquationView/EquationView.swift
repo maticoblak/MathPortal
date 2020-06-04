@@ -142,26 +142,15 @@ extension EquationView {
     
     // MARK: Operator view
     static func generateOperator(_ operatorType: Equation.Operator.OperatorType, isSelected: Bool = false, scale: CGFloat = 1, color: UIColor = UIColor.black) -> EquationView {
-        let backgroundColor = isSelected ? selectedColor : defaultColor
-        let label = UILabel(frame: .zero)
-        label.text = operatorType.string
-        label.backgroundColor = backgroundColor
-        label.font = label.font.withSize(17*CGFloat(scale))
-        label.textColor = color
-        label.sizeToFit()
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 5
-        return EquationView(view: label, type: .mathOperator, isSelected: isSelected)
+        let mathOperator = generateText(value: operatorType.string, isSelected: isSelected, color: color, scale: scale)
+        mathOperator.type = .mathOperator
+        return mathOperator
     }
 
     // MARK: Text view
-    static func generateText(value: String, textRange: NSRange? = nil, isSelected: Bool = false, color: UIColor = UIColor.black, scale: CGFloat = 1) -> EquationView {
+    static func generateText(value: String, /*textRange: NSRange? = nil,*/ isSelected: Bool = false, color: UIColor = UIColor.black, scale: CGFloat = 1) -> EquationView {
         let label = UILabel(frame: .zero)
-        let attributed = NSMutableAttributedString(string: value)
-        if let range = textRange  {
-            attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: selectedColor, range: range)
-        }
-        label.attributedText = attributed
+        label.text = value
         label.backgroundColor = isSelected ? selectedColor : defaultColor
         label.textColor = color
         label.font = label.font.withSize(17*scale)

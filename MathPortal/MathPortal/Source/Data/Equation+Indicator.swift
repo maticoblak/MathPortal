@@ -23,7 +23,7 @@ extension Equation {
         }
         
         // MARK: - Private functions
-        
+        // TODO: have special Container component that just allows one type of expression in it (exp. Lines, Text)
         private func componentIncludesLines(_ component: Component) -> Bool {
             return component.items.contains(where: ({ $0 is Line }))
         }
@@ -53,7 +53,7 @@ extension Equation {
         }
         
         // MARK: Add indicator
-        
+        // TODO - remove all is selected except from add and remove indicator
         func addIndicator() {
             guard let component = expression as? Component else { return }
             guard isFunction(component) == false else { return }
@@ -68,6 +68,7 @@ extension Equation {
                 component.items.insert(cursor, at: offset + 1)
                 cursor.isSelected = true
             } else if component.items[offset] is Empty == false {
+                component.items[offset].isSelected = true
                 component.items.insert(cursor, at: offset + 1)
             }
         }
@@ -91,15 +92,13 @@ extension Equation {
         func levelIn() {
             if let component = expression as? Component {
                 guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
-                guard (component.items[offset] as? Operator == nil), component.items[offset] as? Empty == nil, component.items[offset] as? Cursor == nil  else { return }
+                guard component.items[offset] is Component else { return }
                 removeIndicator()
                 self.expression = component.items[offset]
                 self.expression.isSelected = false
                 offset = 0
-                
-                if let text = self.expression as? Text {
-                    text.textRange = NSRange(location: 0, length: 1)
-                } else if let component = expression as? Component {
+            
+                if let component = expression as? Component {
                     if component.items.isEmpty {
                         return
                     
@@ -131,9 +130,7 @@ extension Equation {
             parent.items[index].isSelected = true
             self.offset = index
             
-            if let text = parent.items[index] as? Text {
-                text.textRange = nil
-            } else if let component = parent.items[index] as? Component {
+            if let component = parent.items[index] as? Component {
                 // if the indicator is in the middle of expression its colour has to be set to default
                 if currentOffset < component.items.count, currentOffset >= 0 {
                     component.items[currentOffset].isSelected = false
@@ -170,6 +167,7 @@ extension Equation {
                     // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
                     if offset < component.items.count {
                         component.items[offset].isSelected = true
+                        // TODO: check if == 0 or <= 1
                         if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
                             levelIn()
                             // if the expression is a component and not a function without brackets and it has one or 0 elements go in another level
@@ -192,14 +190,6 @@ extension Equation {
                     levelOut()
                 }
                 
-            } else if let text = expression as? Text {
-                if offset < text.value.count - 1 {
-                    offset += 1
-                    text.textRange = NSRange(location: offset, length: 1)
-                } else {
-                    levelOut()
-                    forward()
-                }
             }
             addIndicator()
         }
@@ -256,14 +246,6 @@ extension Equation {
                 } else {
                     levelOut()
                 }
-            } else if let text = expression as? Text {
-                if offset > 0 {
-                    offset -= 1
-                    text.textRange = NSRange(location: offset, length: 1)
-                } else {
-                    levelOut()
-                    back()
-                }
             }
             addIndicator()
         }
@@ -307,7 +289,7 @@ extension Equation {
             // The indicator is on top level or in brackets component
             } else {
                 // Checks if the current component consists of only Line components or not. If it does not that means the indicator is component with brackets and we have to create 2 new lines.
-                let alreadyHasLineComponents: Bool = component.items.allSatisfy { $0 is Line }
+                let alreadyHasLineComponents: Bool = componentIncludesLines(component)
 
                 // The indicator is at the beginning of component
                 if offset <= 0 {
@@ -402,70 +384,77 @@ extension Equation {
             addIndicator()
         }
         
+        
         // MARK: String
-        // TODO: add indicator in text and make the background color of character round
         func addString(_ value: String?) {
             guard let value = value else { return }
             removeIndicator()
-            let textValue: Text = {
-                let newExpression = Text(value)
-                return newExpression
-            }()
+            
             if let component = expression as? Component {
                 guard componentIncludesLines(component) == false else {
                     addIndicator()
                     return
                 }
-                textValue.parent = component
-                
+                let textValue: Text = Text(value, parent: component)
                 // the indicator is at the end of component
                 if offset == component.items.count {
-                    if let text = component.items.last as? Text {
-                        text.value += value
-                    // you can't add integeer to fraction since it has exactly 2 components in items
-                    } else if component is Fraction == false {
+                    if component.items.last is Text {
                         component.items.append(textValue)
+                        forward()
+                    } else {
+                        let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
+                        component.items.append(componentWithText)
+                        mergeTextComponentsAt(offset1: component.items.count - 1, offset2: component.items.count - 2)
                         forward()
                     }
                 // the indicator is at the beginning of component
                 } else if offset < 0 {
-                    if component.items.count > 0, let text = component.items[0] as? Text {
-                        text.value.insert(Character(value), at: text.value.startIndex)
+                    if component.items.count > 0, component.items[0] is Text {
+                        component.items.insert(textValue, at: 0)
+                        forward()
+                    } else {
+                        let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
+                        component.items.insert(componentWithText, at: 0)
+                        mergeTextComponentsAt(offset1: 0, offset2: 1)
                         forward()
                         levelIn()
-                    // you can't add integeer to fraction since it has exactly 2 components in items
-                    } else if component is Fraction == false {
-                        component.items.insert(textValue, at: 0)
-                        checkIfTwoExpresionsAreTheSameType(offset: 1)
-                        forward()
                     }
                 // the indicator is on empty field
                 } else if component.items[offset] is Empty {
-                    // if the componet is special component
-                    if isFunction(component) {
-                        component.addValue(expression: textValue, offset: offset)
-                        levelIn()
-                        forward()
-                    } else {
-                        component.items[offset] = textValue
-                        forward()
-                    }
+                    let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
+                    component.addValue(expression: componentWithText, offset: offset)
+                    levelIn()
                 // the indicator is in the middle of equation
                 } else {
-                    if let text = component.items[offset] as? Text {
-                        text.value += value
-                    } else if isFunction(component) == false {
+                    if component.items[offset] is Text {
                         component.items.insert(textValue, at: offset + 1)
-                        checkIfTwoExpresionsAreTheSameType(offset: offset + 2)
+                        forward()
+                    } else if let textComponent = component.items[offset] as? Component, textComponent.items.first(where: { $0 is Text }) != nil {
+                        textValue.parent = textComponent
+                        textComponent.items.append(textValue)
+                    } else {
+                        let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
+                        component.items.insert(componentWithText, at: offset + 1)
+                        mergeTextComponentsAt(offset1: offset + 1, offset2: offset + 2)
                         forward()
                         levelIn()
                     }
                 }
-            } else if let text = expression as? Text {
-                text.value.insert(Character(value), at: text.value.index(text.value.startIndex, offsetBy: offset + 1))
-                forward()
             }
             addIndicator()
+        }
+        
+        private func mergeTextComponentsAt(offset1: Int, offset2: Int) {
+            guard let component = expression as? Component else { return }
+            guard offset2 != offset1 else { return }
+            let greaterOffset = max(offset1, offset2)
+            let smallerOffset = min(offset1, offset2)
+            guard smallerOffset >= 0 && greaterOffset < component.items.count else { return }
+            guard let firstComponent = component.items[smallerOffset] as? Component else { return }
+            guard firstComponent.items.first(where: { $0 is Text }) != nil else { return }
+            guard let secondComponent = component.items[greaterOffset] as? Component else { return }
+            guard secondComponent.items.first(where: { $0 is Text }) != nil else { return }
+            firstComponent.items += secondComponent.items
         }
         
         // MARK: Operator
@@ -510,7 +499,7 @@ extension Equation {
                 // We dont want to add an item in the special component, because they have a specific number of components (fraction: enumerator, denominator)
                 } else if  isFunction(component) == false {
                     component.items.insert(newOperator, at: offset + 1)
-                    checkIfTwoExpresionsAreTheSameType(offset: offset + 2)
+                    mergeOperatorsAt(offset: offset + 2)
                     forward()
                 }
             } else if let text = expression as? Text {
@@ -538,15 +527,11 @@ extension Equation {
             addIndicator()
         }
 
-        private func checkIfTwoExpresionsAreTheSameType(offset: Int) {
+        private func mergeOperatorsAt(offset: Int) {
             guard let component = expression as? Component else { return }
             guard offset > 0 && offset < component.items.count else { return }
             
             if  component.items[offset - 1] is Operator, component.items[offset] is Operator {
-                component.items.remove(at: offset)
-            } else if let firstExpression = component.items[offset - 1]  as? Text, let secondExpression = component.items[offset] as? Text {
-                let newValue = firstExpression.value + secondExpression.value
-                firstExpression.value = newValue
                 component.items.remove(at: offset)
             }
         }
@@ -657,7 +642,8 @@ extension Equation {
                         levelOut()
                     } else {
                         component.items.remove(at: offset)
-                        checkIfTwoExpresionsAreTheSameType(offset: offset)
+                        // TODO: Check for text components
+                        mergeOperatorsAt(offset: offset)
                         // The back acts differently in the line when it is empty
                         if (component is Line) == false || component.items.count != 0 {
                             back()
