@@ -101,7 +101,7 @@ extension Equation {
                 if let component = expression as? Component {
                     if component.items.isEmpty {
                         return
-                    
+                    // TODO:
                     // if component has only one element and that element is not empty go level in (don't konw if needed)
                     } else if component.items.count == 1, let secondLevel = component.items[offset] as? Component, secondLevel.hasBrackets == false {
                         levelIn()
@@ -330,200 +330,48 @@ extension Equation {
         
         // MARK: Space
         func addSpace() {
+            guard let component = expression as? Component else { return }
             removeIndicator()
-            let space = Space()
-            if let component = expression as? Component, componentIncludesLines(component) == false {
-                space.parent = component
-                //The indicator is at the beginning of equation
-                if offset < 0 {
-                    component.items.insert(space, at: 0)
-                    forward()
-                // The indicator is at the end of equation
-                } else if offset == component.items.count {
-                    component.items.insert(space, at: offset)
-                    forward()
-                // the indicator is on empty field
-                } else if component.items[offset] is Empty {
-                    // if the component is special component
-                    if isFunction(component) {
-                        component.addValue(expression: space, offset: offset)
-                        levelIn()
-                        forward()
-                    } else {
-                        component.items[offset] = space
-                        forward()
-                    }
-                // If the indicator is in the middle of equation (not on empty)
-                } else {
-                    component.items.insert(space, at: offset + 1)
-                    forward()
-                }
-                
-            } else if let text = expression as? Text {
-                // the operator will be added after the character that indicator is on so we have to guard that we are not on last character
-                if offset < text.value.count,  let component = expression.parent {
-                    space.parent = text.parent
-                    
-                    // separate the current text - has to be set before level out is called because of offset
-                    let firstValue = Text(String(text.value.prefix(offset + 1)), parent: text.parent)
-                    let secondValue = Text(String(text.value.suffix(text.value.count - offset - 1)), parent: text.parent)
-                            
-                    levelOut()
-                    // replace the current text with separated text and space in between
-                    // if the indicator is at the end of text component the empty text component does not have to be added
-                    if secondValue.value.isEmpty {
-                        component.items[offset] = space
-                    } else {
-                        component.items[offset] = secondValue
-                        component.items.insert(space, at: offset)
-                    }
-                    component.items.insert(firstValue, at: offset)
-                    forward()
-                }
-            }
+            component.addExpression(Space(), at: offset)
+            forward()
             addIndicator()
         }
-        
         
         // MARK: String
-        func addString(_ value: String?) {
-            guard let value = value else { return }
+        func addString(_ value: String) {
+            guard let component = expression as? Component else { return }
             removeIndicator()
-            
-            if let component = expression as? Component {
-                guard componentIncludesLines(component) == false else {
-                    addIndicator()
-                    return
-                }
-                let textValue: Text = Text(value, parent: component)
-                // the indicator is at the end of component
-                if offset == component.items.count {
-                    if component.items.last is Text {
-                        component.items.append(textValue)
-                        forward()
-                    } else {
-                        let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
-                        component.items.append(componentWithText)
-                        mergeTextComponentsAt(offset1: component.items.count - 1, offset2: component.items.count - 2)
-                        forward()
-                    }
-                // the indicator is at the beginning of component
-                } else if offset < 0 {
-                    if component.items.count > 0, component.items[0] is Text {
-                        component.items.insert(textValue, at: 0)
-                        forward()
-                    } else {
-                        let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
-                        component.items.insert(componentWithText, at: 0)
-                        mergeTextComponentsAt(offset1: 0, offset2: 1)
-                        forward()
-                        levelIn()
-                    }
-                // the indicator is on empty field
-                } else if component.items[offset] is Empty {
-                    let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
-                    component.addValue(expression: componentWithText, offset: offset)
-                    levelIn()
-                // the indicator is in the middle of equation
-                } else {
-                    if component.items[offset] is Text {
-                        component.items.insert(textValue, at: offset + 1)
-                        forward()
-                    } else if let textComponent = component.items[offset] as? Component, textComponent.items.first(where: { $0 is Text }) != nil {
-                        textValue.parent = textComponent
-                        textComponent.items.append(textValue)
-                    } else {
-                        let componentWithText: Component = Component(items: [textValue], brackets: .none, parent: component)
-                        component.items.insert(componentWithText, at: offset + 1)
-                        mergeTextComponentsAt(offset1: offset + 1, offset2: offset + 2)
-                        forward()
-                        levelIn()
-                    }
-                }
-            }
+            let text = Text(value)
+            let contentComponent = ContainerComponent(representingExpression: text)
+            component.addExpression(contentComponent, at: offset)
+            mergeTextContentContainers()
+            forward()
             addIndicator()
         }
         
-        private func mergeTextComponentsAt(offset1: Int, offset2: Int) {
+        
+        private func mergeTextContentContainers() {
             guard let component = expression as? Component else { return }
-            guard offset2 != offset1 else { return }
-            let greaterOffset = max(offset1, offset2)
-            let smallerOffset = min(offset1, offset2)
-            guard smallerOffset >= 0 && greaterOffset < component.items.count else { return }
-            guard let firstComponent = component.items[smallerOffset] as? Component else { return }
-            guard firstComponent.items.first(where: { $0 is Text }) != nil else { return }
-            guard let secondComponent = component.items[greaterOffset] as? Component else { return }
-            guard secondComponent.items.first(where: { $0 is Text }) != nil else { return }
-            firstComponent.items += secondComponent.items
+            var newItems: [Equation.Expression] = []
+            for index in 0..<component.items.count {
+                if index != 0, let current = component.items[index] as? ContainerComponent, let previous = component.items[index - 1] as? ContainerComponent {
+                    previous.addExpression(current, at: previous.items.count)
+                    newItems.removeLast()
+                    newItems.append(previous)
+                } else {
+                    newItems.append(component.items[index])
+                }
+            }
+            component.items = newItems
         }
         
         // MARK: Operator
         func addOperator(_ operatorType: Operator.OperatorType) {
+            guard let component = expression as? Component else { return }
             removeIndicator()
-            if let component = expression as? Component {
-                guard componentIncludesLines(component) == false else {
-                    addIndicator()
-                    return
-                }
-                let newOperator = Operator(operatorType, parent: component)
-                
-                // if we are at the end of component
-                if offset == component.items.count {
-                    if let last = component.items.last as? Operator {
-                        last.type = operatorType
-                    } else {
-                        component.items.append(newOperator)
-                        forward()
-                    }
-                // if the indicator is at the beginning of the component
-                } else if offset < 0 {
-                    if let first = component.items.first as? Operator {
-                        first.type = operatorType
-                    } else {
-                        component.items.insert(newOperator, at: 0)
-                    }
-                    forward()
-                // if indicator is in the middle of component and on operator
-                } else if let operatorAtIndex = component.items[offset] as? Operator {
-                    operatorAtIndex.type = operatorType
-                // if the indicator is on empty field
-                } else if component.items[offset] is Empty {
-                    if isFunction(component) {
-                        component.addValue(expression: newOperator, offset: offset)
-                        levelIn()
-                        forward()
-                    } else {
-                        component.items[offset] = newOperator
-                        forward()
-                    }
-                // We dont want to add an item in the special component, because they have a specific number of components (fraction: enumerator, denominator)
-                } else if  isFunction(component) == false {
-                    component.items.insert(newOperator, at: offset + 1)
-                    mergeOperatorsAt(offset: offset + 2)
-                    forward()
-                }
-            } else if let text = expression as? Text {
-                // the operator will be added after the character that indicator is on so we have to guard that we are not on last character
-                if offset < text.value.count,  let component = expression.parent {
-                    let newOperator = Operator(operatorType, parent: text.parent)
-                    // separate the current text
-                    let firstValue = Text(String(text.value.prefix(offset + 1)), parent: text.parent)
-                    let secondValue = Text(String(text.value.suffix(text.value.count - offset - 1)), parent: text.parent)
-                
-                    levelOut()
-                    // replace the current text with separated txt and operator in between
-                    // if the indicator is at the end of text component the empty text component does not have to be added
-                    if secondValue.value.isEmpty {
-                        component.items[offset] = newOperator
-                    } else {
-                        component.items[offset] = secondValue
-                        component.items.insert(newOperator, at: offset)
-                    }
-                    component.items.insert(firstValue, at: offset)
-                    forward()
-                    
-                }
-            }
+            let mathOperator = Operator(operatorType, parent: component)
+            component.addExpression(mathOperator, at: offset)
+            forward()
             addIndicator()
         }
 
@@ -537,52 +385,27 @@ extension Equation {
         }
         
         // MARK: Component
-        // component can be regular component or special cases like fraction
-        func addComponent(_ newComponent: Component = Component(items: [Empty()]), brackets: Component.BracketsType = .none) {
+
+
+        func addComponent(_ newComponent: Component) {
+            guard let component = expression as? Component else { return }
             removeIndicator()
-            newComponent.brackets = brackets
-            if let component = expression as? Component, componentIncludesLines(component) == false {
-                newComponent.parent = component
-                // if the indicator is at the end of component
-                if offset == component.items.count {
-                    component.items.append(newComponent)
-                // if the indicator is at the beginning of component
-                } else if offset < 0 {
-                    component.items.insert(newComponent, at: 0)
-                    forward()
-                // if indicator is on empty
-                } else if component.items[offset] is Empty  {
-                    component.addValue(expression: newComponent, offset: offset)
-                // if indicator is in the middle of equation and not inside function since they have specific number of components already there
-                } else if isFunction(component) == false {
-                    component.items[offset].isSelected = false
-                    component.items.insert(newComponent, at: offset + 1)
-                    forward()
-                }
-                levelIn()
-            } else if let text = expression as? Text, offset < text.value.count {
-                newComponent.parent = text.parent
-                let firstValue = Text(String(text.value.prefix(offset + 1)))
-                firstValue.parent = text.parent
-                let secondValue = Text(String(text.value.suffix(text.value.count - offset - 1)))
-                secondValue.parent = text.parent
-                
-                levelOut()
-                if let component = expression as? Component {
-                    if secondValue.value.isEmpty {
-                        component.items[offset] = newComponent
-                    } else {
-                        component.items[offset] = secondValue
-                        component.items.insert(newComponent, at: offset)
-                    }
-                    component.items.insert(firstValue, at: offset)
-                    forward()
-                    levelIn()
-                }
-            }
+            component.addExpression(newComponent, at: offset)
+            selectComponent(newComponent)
             addIndicator()
         }
-
+        
+        private func selectComponent(_ component: Component) {
+            if let oldComponent = expression as? Component, offset < oldComponent.items.count, offset >= 0 {
+                oldComponent.items[offset].isSelected = false
+            }
+            self.expression = component
+            offset = 0
+            if component.items.count >= 0 {
+                component.items[0].isSelected = true
+            }
+        }
+        
         /// For adding component to the component that the indicator is on (exponent, index)
         func insertComponent(_ newComponent: Component) {
             // Just possible if we are currently in a componnent
@@ -599,12 +422,12 @@ extension Equation {
                 component.items.append(newComponent)
             // If the indicator is on Empty expression
             } else if component.items[offset] is Empty {
-                component.addValue(expression: newComponent, offset: offset)
+                component.addExpression(newComponent, at: offset)
             // If the indicator is on any other expression, take that expression, stuck it in the newComponent and make newComponent take its place
             } else {
                 component.items[offset].parent = newComponent
                 component.items[offset].isSelected = false
-                newComponent.addValue(expression: component.items[offset], offset: 0)
+                newComponent.addExpression(component.items[offset], at: 0)
                 component.items[offset] = newComponent
             }
             levelIn()
