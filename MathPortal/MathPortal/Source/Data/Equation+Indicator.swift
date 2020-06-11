@@ -103,10 +103,10 @@ extension Equation {
                         return
                     // TODO:
                     // if component has only one element and that element is not empty go level in (don't konw if needed)
-                    } else if component.items.count == 1, let secondLevel = component.items[offset] as? Component, secondLevel.hasBrackets == false {
+                    } else if component.items.count == 1, let secondLevel = component.items[offset] as? Component, (secondLevel is Brackets) == false {
                         levelIn()
                     // if element that indicator is on is a component and it only has one element go in
-                    } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, secondLevel.hasBrackets == false {
+                    } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, (secondLevel is Brackets) == false {
                         levelIn()
                     } else if component.items.count > 0 {
                         component.items[0].isSelected = true
@@ -136,7 +136,7 @@ extension Equation {
                     component.items[currentOffset].isSelected = false
                     
                     // if component has only one element and there are no brackets go out another level
-                    if component.items.count == 1, component.hasBrackets == false, (component is Integral) == false, (component is TrigonometricFunc) == false, (component is Line) == false  {
+                    if component.items.count == 1, (component is Brackets) == false, (component is Integral) == false, (component is TrigonometricFunc) == false, (component is Line) == false  {
                         levelOut()
                     }
                 }
@@ -171,12 +171,12 @@ extension Equation {
                         if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
                             levelIn()
                             // if the expression is a component and not a function without brackets and it has one or 0 elements go in another level
-                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, isFunction(selectedComponent) == false, selectedComponent.hasBrackets == false, selectedComponent is Line == false  {
+                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, isFunction(selectedComponent) == false, (selectedComponent is Brackets) == false, selectedComponent is Line == false  {
                             levelIn()
                         }
                     }
                 // if the indicator is at the end and component has only one element
-                } else if component.items.count == 1, component.hasBrackets == false {
+                } else if component.items.count == 1, (component is Brackets) == false {
                     levelOut()
                     if let component = expression as? Component, component.items.count > offset {
                         forward()
@@ -231,13 +231,13 @@ extension Equation {
                         if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
                             levelIn()
                         // if the expression is a component without brackets and not a function and it has only one or 0 elements go in another level
-                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, selectedComponent.hasBrackets == false, isFunction(selectedComponent) == false, selectedComponent is Line == false {
+                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, (selectedComponent is Brackets) == false, isFunction(selectedComponent) == false, selectedComponent is Line == false {
                             levelIn()
                         }
                     }
                 
                 // if the indicator is at the beginning of component ant it has only one element
-                } else if component.items.count == 1, component.hasBrackets == false {
+                } else if component.items.count == 1, (component is Brackets) == false {
                     levelOut()
                     if offset >= 0 {
                         back()
@@ -255,7 +255,7 @@ extension Equation {
             // New line can only be added in the component
             guard let component = expression as? Component else { return }
             // The new line can be added on top level or in the brackets to make matrix or binomial symbol and of corse the line can be added while the offset is in the line.
-            guard expression.parent == nil || component.hasBrackets || component is Line else { return }
+            guard expression.parent == nil || (component is Brackets) || component is Line else { return }
             
             removeIndicator()
             
@@ -477,7 +477,7 @@ extension Equation {
                 // after the deletion check if component is empty
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
-                    if  component.hasBrackets == true {
+                    if (component is Brackets) {
                         component.items.append(Empty(parent: component, isSelected: true))
                         offset = 0
                     // if the component does not have brackets (components in fraction)
