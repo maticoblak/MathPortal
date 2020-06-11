@@ -348,6 +348,7 @@ extension Equation {
             let text = Text(value)
             component.addExpression(text, at: offset)
             forward()
+            levelIn()
             addIndicator()
         }
         
@@ -360,15 +361,6 @@ extension Equation {
             component.addExpression(mathOperator, at: offset)
             forward()
             addIndicator()
-        }
-
-        private func mergeOperatorsAt(offset: Int) {
-            guard let component = expression as? Component else { return }
-            guard offset > 0 && offset < component.items.count else { return }
-            
-            if  component.items[offset - 1] is Operator, component.items[offset] is Operator {
-                component.items.remove(at: offset)
-            }
         }
         
         // MARK: Component
@@ -393,31 +385,20 @@ extension Equation {
             }
         }
         
-        /// For adding component to the component that the indicator is on (exponent, index)
+        /// For adding component to the component that the indicator is on (exponent, index, brackets)
         func insertComponent(_ newComponent: Component) {
-            // Just possible if we are currently in a componnent
             guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
-            newComponent.parent = component
-            // The indicator is at the beginning of the expression
-            if offset < 0 {
-                component.items.insert(newComponent, at: 0)
-                forward()
-            // The indicator is at the end of expression
-            } else if offset == component.items.count {
-                component.items.append(newComponent)
-            // If the indicator is on Empty expression
-            } else if component.items[offset] is Empty {
+            if offset < 0 || offset >= component.items.count || component.items[offset] is Empty {
                 component.addExpression(newComponent, at: offset)
-            // If the indicator is on any other expression, take that expression, stuck it in the newComponent and make newComponent take its place
+                selectComponent(newComponent)
             } else {
-                component.items[offset].parent = newComponent
-                component.items[offset].isSelected = false
                 newComponent.addExpression(component.items[offset], at: 0)
-                component.items[offset] = newComponent
+                component.replaceExpression(at: offset, with: newComponent)
+                levelIn()
+                forward()
             }
-            levelIn()
             addIndicator()
         }
         
@@ -452,8 +433,6 @@ extension Equation {
                         levelOut()
                     } else {
                         component.items.remove(at: offset)
-                        // TODO: Check for text components
-                        mergeOperatorsAt(offset: offset)
                         // The back acts differently in the line when it is empty
                         if (component is Line) == false || component.items.count != 0 {
                             back()
@@ -467,7 +446,7 @@ extension Equation {
                         if offset > 0, let component = expression as? Component, let firstLine = component.items[offset-1] as? Line, let secondLine =  component.items[offset] as? Line {
                             let mergedLine = Line(items: firstLine.items + secondLine.items)
                             mergedLine.parent = component
-                            component.addValue(expression: mergedLine, offset: offset-1)
+                            component.replaceExpression(at: offset - 1, with: mergedLine)
                             delete()
                         } else {
                             levelIn()

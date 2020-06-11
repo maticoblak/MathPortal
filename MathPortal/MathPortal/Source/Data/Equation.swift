@@ -1024,6 +1024,11 @@ extension Equation {
         
     }
     
+    // MARK: Clear component
+    
+    class ClearComponent: Component {
+        
+    }
    
     // MARK: - Component
     class Component: Expression {
@@ -1050,11 +1055,10 @@ extension Equation {
         }
         
         /// Replaces the value/expression at the offset
-        func addValue(expression: Expression?, offset: Int?) {
-            guard let offset = offset, offset < items.count else { return }
-            guard let expression = expression else { return }
-            expression.parent = self
+        func replaceExpression(at offset: Int, with expression: Expression) {
+            guard offset < items.count, offset >= 0 else { return }
             items[offset] = expression
+            expression.parent = self
         }
         
         func addExpression(_ expression: Expression, at offset: Int) {
@@ -1073,8 +1077,7 @@ extension Equation {
         func delete(offset: Int) {
             guard offset < items.count else { return }
             guard self.items[offset] is Empty == false else { return }
-            let empty = Empty()
-            addValue(expression: empty, offset: offset)
+            replaceExpression(at: offset, with: Empty())
         }
         
         override func computeResult() -> Double? {
