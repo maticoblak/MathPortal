@@ -53,7 +53,7 @@ extension Equation {
         }
         
         // MARK: Add indicator
-        // TODO - remove all is selected except from add and remove indicator
+        // TODO - 
         func addIndicator() {
             guard let component = expression as? Component else { return }
             guard isFunction(component) == false else { return }
@@ -270,7 +270,7 @@ extension Equation {
                     levelOut()
                     forward()
                     if let component = expression as? Component {
-                        component.items.insert(Line(parent: component), at: offset)
+                        component.addExpression(Line(), at: offset)
                         forward()
                         back()
                     }
@@ -294,30 +294,39 @@ extension Equation {
                 // The indicator is at the beginning of component
                 if offset <= 0 {
                     if alreadyHasLineComponents {
-                        component.items.insert(Line(parent: component), at: 0)
+                        component.addExpression(Line(), at: -1)
                     } else {
-                        component.items = [Line(parent: component), Line(items: component.items.filter({ $0 is Empty == false }), parent: component)]
+                        let newItems = [Line(), Line(items: component.items.filter({ $0 is Empty == false }))]
+                        component.items = []
+                        for index in 0..<newItems.count {
+                            component.addExpression(newItems[index], at: index)
+                        }
+                        
                     }
                     forward()
                 // The indicator is at the end of component
                 } else if offset == component.items.count {
                     if alreadyHasLineComponents {
-                        component.items.insert(Line(parent: component), at: offset)
+                        component.addExpression(Line(), at: offset)
                         levelIn()
                     } else {
-                        component.items = [Line(items: component.items, parent: component), Line(parent: component)]
+                        component.items = []
+                        component.addExpression(Line(items: component.items), at: 0)
+                        component.addExpression(Line(), at: 1)
                         goToTheEndOfEquation()
                         back()
                     }
                 // The indicator is somewhere in the middle of component
                 } else {
                     if alreadyHasLineComponents {
-                        component.items.insert(Line(parent: component), at: offset)
+                        component.addExpression(Line(), at: offset)
                         forward()
                     } else {
                         let currentLine = Line(items: Array(component.items[0...offset-1]), parent: component)
                         let newLine = Line(items: Array(component.items[offset..<component.items.count]), parent: component)
-                        component.items = [currentLine, newLine]
+                        component.items = []
+                        component.addExpression(currentLine, at: 0)
+                        component.addExpression(newLine, at: 1)
                         goToTheEndOfEquation()
                         back()
                         levelIn()
@@ -352,7 +361,7 @@ extension Equation {
         func addOperator(_ operatorType: Operator.OperatorType) {
             guard let component = expression as? Component else { return }
             removeIndicator()
-            let mathOperator = Operator(operatorType, parent: component)
+            let mathOperator = Operator(operatorType)
             component.addExpression(mathOperator, at: offset)
             forward()
             addIndicator()
@@ -478,7 +487,8 @@ extension Equation {
                 if component.items.isEmpty {
                     // if we have deleted all items in component and the component has brackets it should append empty expression
                     if (component is Brackets) {
-                        component.items.append(Empty(parent: component, isSelected: true))
+                        // TODO: scale???
+                        component.addExpression(Empty(), at: 0)
                         offset = 0
                     // if the component does not have brackets (components in fraction)
                     } else if component.parent != nil {
@@ -486,8 +496,8 @@ extension Equation {
                         delete()
                     // the only component that does not have a parent is top level component and it always have at least one line component - after the deletion of all items the offset should be set at 0
                     } else {
-                        let line = Line(parent: component)
-                        component.items = [line]
+                        component.items = []
+                        component.addExpression(Line(), at: 0)
                         offset = 0
                         levelIn()
                     }
