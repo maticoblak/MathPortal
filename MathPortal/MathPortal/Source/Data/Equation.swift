@@ -83,7 +83,7 @@ class Equation {
         }
     }
 
-    var expression: Component = ContainerComponent(representingExpression: Line())
+    var expression: Component = Component(items: [Line()])
     
     func currentViewLocation(InView view: UIView?) -> (minX: CGFloat, minY: CGFloat, maxX: CGFloat, maxY: CGFloat)? {
         guard let expression = expression.selectedExpressionView, let expressionView = expression.view else { return nil }
@@ -138,7 +138,7 @@ class Equation {
         case .equal:
             currentIndicator.addOperator(.equal)
         case .brackets:
-            currentIndicator.addComponent(Component(items: [], brackets: .normal))
+            currentIndicator.insertComponent(Component(items: [], brackets: .normal))
         case .back:
             currentIndicator.back()
         case .delete:
@@ -249,7 +249,7 @@ extension Equation {
         func generateView(withMaxWidth maxWidth: CGFloat) -> EquationView { return .Nil }
         
         /// When parent is set or changed the scale should be updated
-        func adjustScale() {
+        private func adjustScale() {
             scale = parent?.scale ?? 1
         }
     }
@@ -313,7 +313,7 @@ extension Equation {
     }
     // MARK: - Fraction
     class Fraction: Component {
-        // TODO: Maybe it is better to have empty in the component as all the other Expressions - reduces the if statements in the forward, back, delete,... since now we have to check if the component is empty and if it is, is it also a fraction or a normal component. If Empty expression would be in component that case would never happen
+
         override func refreshScalesInComponent() {
             enumerator.scale = self.scale * 0.9
             denominator.scale = self.scale * 0.9
@@ -323,23 +323,11 @@ extension Equation {
             get { return items[0] }
             set {
                 if items.isEmpty {
-                    //new value has to be empty if we are creating new fraction
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.9
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.9
-                    newValue.parent = newComponent
-                    items[0] = newComponent
-                // Probably will need in the future or just a safety case
                 } else {
-                    let newComponent = Component(items: [items[0], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.9
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -350,25 +338,14 @@ extension Equation {
                 if items.count < 2 {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.9
                     items.append(newValue)
-                } else if items[1] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.9
-                    newValue.parent = newComponent
-                    items[1] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[1], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.9
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
         }
         override func addExpression(_ expression: Equation.Expression, at offset: Int) {
-            expression.parent = self
             if offset == 0  {
                 self.enumerator = expression
             } else if offset == 1 {
@@ -377,10 +354,10 @@ extension Equation {
         }
         
         // NOTE: When adding the enumerator and the denominator the order of setting them has to be correct since we are adding components in array at the specific index
-        init(enumerator: Expression?, denominator: Expression?) {
+        init(enumerator: Expression, denominator: Expression) {
             super.init()
-            self.enumerator = enumerator ?? Empty()
-            self.denominator = denominator ?? Empty()
+            self.enumerator = enumerator
+            self.denominator = denominator
         }
         /// Init with empty fields
         override convenience init() {
@@ -405,24 +382,14 @@ extension Equation {
         }
         
         private var rootIndex: Expression {
-            get { return items[0]}
+            get { return items[0] }
             set {
                 if items.isEmpty {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale / 2
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale / 2
-                    newValue.parent = newComponent
-                    items[0] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[0], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale / 2
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent:  self)
                     items[0] = newComponent
                 }
             }
@@ -431,29 +398,21 @@ extension Equation {
         private var radicand: Expression {
             get { return items[1] }
             set {
-                
                 if items.count < 2 {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[1] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[1] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[1], newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
         }
         
-        init(index: Expression?, radicand: Expression?) {
+        init(index: Expression, radicand: Expression) {
             super.init()
-            self.rootIndex = index ?? Empty()
-            self.radicand = radicand ?? Empty()
+            self.rootIndex = index
+            self.radicand = radicand
         }
         
         /// Init with empty fields
@@ -501,24 +460,9 @@ extension Equation {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    if let newValue = newValue as? Component, newValue.hasBrackets == true {
-                        newValue.parent = self
-                        items[0] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        if let newValue = newValue as? Component, newValue.hasBrackets == false {
-                            newComponent.brackets = .normal
-                        }
-                        items[0] = newComponent
-                    }
                 } else {
-                    let newComponent = Component(items: [items[0], newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[0] = newComponent
+                    newValue.parent = self
+                    items[0] = newValue
                 }
             }
         }
@@ -529,21 +473,12 @@ extension Equation {
                 if items.count < 2 {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[1] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[1] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[2], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[1] = newComponent
-                }}
+                }
+            }
         }
         
         init(base: Expression, exponent: Expression ) {
@@ -557,7 +492,6 @@ extension Equation {
         }
         
         override func addExpression(_ expression: Expression, at offset: Int) {
-            expression.parent = self
             if offset == 0 {
                 base = expression
             } else if offset == 1 {
@@ -589,25 +523,11 @@ extension Equation {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    if let newValue = newValue as? Component, newValue.hasBrackets == true {
-                        newValue.parent = self
-                        items[0] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        if let newValue = newValue as? Component, newValue.hasBrackets == false {
-                            newComponent.brackets = .normal
-                        }
-                        items[0] = newComponent
-                    }
-                } else {
-                    let newComponent = Component(items: [items[0], newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[0] = newComponent
-                }}
+                }  else {
+                    newValue.parent = self
+                    items[0] = newValue
+                }
+            }
         }
         
         private var index: Expression {
@@ -616,19 +536,9 @@ extension Equation {
                 if items.count < 2 {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[1] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[1] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[1], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -640,19 +550,9 @@ extension Equation {
                 if items.count < 3 {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[2] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[2] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[2], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[2] = newComponent
                 }
             }
@@ -702,24 +602,9 @@ extension Equation {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[1] is Empty {
-                    if let newValue = newValue as? Component {
-                        newValue.parent = self
-                        if newValue.hasBrackets == false {
-                            newValue.brackets = .normal
-                        }
-                        items[1] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        items[1] = newComponent
-                    }
                 } else {
-                    let newComponent = Component(items: [items[1], newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[1] = newComponent
+                    newValue.parent = self
+                    items[1] = newValue
                 }
             }
         }
@@ -730,19 +615,9 @@ extension Equation {
                 if items.isEmpty {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[0] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[0], newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -786,19 +661,9 @@ extension Equation {
                 if items.isEmpty {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[0] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[0], newValue], brackets: .normal)
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -810,19 +675,9 @@ extension Equation {
                 if items.count < 2 {
                     guard newValue is Empty else { return }
                     newValue.parent = self
-                    newValue.scale = self.scale * 0.7
                     items.append(newValue)
-                } else if items[1] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
-                    items[1] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[1], newValue], brackets: .normal)
-                    newComponent.parent = self
-                    newComponent.scale = self.scale * 0.7
-                    newValue.parent = newComponent
+                    let newComponent = Component(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -836,24 +691,9 @@ extension Equation {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[2] is Empty {
-                    if let newValue = newValue as? Component {
-                        newValue.parent = self
-                        if newValue.hasBrackets == false {
-                            newValue.brackets = .normal
-                        }
-                        items[2] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        items[2] = newComponent
-                    }
                 } else {
-                    let newComponent = Component(items: [items[2], newValue], brackets: .normal)
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[2] = newComponent
+                    newValue.parent = self
+                    items[2] = newValue
                 }
             }
         }
@@ -914,40 +754,28 @@ extension Equation {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    if let newValue = newValue as? Component {
-                        newValue.parent = self
-                        if newValue.hasBrackets == false {
-                            newValue.brackets = .normal
-                        }
-                        items[0] = newValue
-                    } else {
-                        let newComponent = Component(items: [newValue])
-                        newComponent.parent = self
-                        newValue.parent = newComponent
-                        items[0] = newComponent
-                    }
                 } else {
-                    let newComponent = Component(items: [items[0], newValue], brackets: .normal)
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[1] = newComponent
+                    newValue.parent = self
+                    items[0] = newValue
                 }
-                
             }
         }
         
-        init(type: FunctionType, angle: Expression, index: Expression? ) {
+        init(type: FunctionType, angle: Expression ) {
             super.init()
             self.angle = angle
             functionType = type
         }
         
+        convenience init(type: FunctionType) {
+            self.init(type: type, angle: Empty())
+        }
+        
         convenience init(type: FunctionType, items: [Expression]? = nil) {
-            self.init(type: type, angle: Empty(), index: nil)
+            self.init(type: type, angle: Empty())
             if let items = items {
-                items.forEach { $0.parent = self; $0.scale = self.scale }
                 self.items = items
+                items.forEach { $0.parent = self }
             }
         }
         
@@ -968,32 +796,24 @@ extension Equation {
     // MARK: - Integral
     
     class Integral: Component {
-        
+        // TODO: add dx placement and bounds
         var base: Expression {
             get { return items[0]}
             set {
-                
                 if items.isEmpty {
                     guard newValue is Empty else { return }
                     newValue.parent = self
                     items.append(newValue)
-                } else if items[0] is Empty {
-                    let newComponent = Component(items: [newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[0] = newComponent
                 } else {
-                    let newComponent = Component(items: [items[0], newValue])
-                    newComponent.parent = self
-                    newValue.parent = newComponent
-                    items[0] = newComponent
+                    newValue.parent = self
+                    items[0] = newValue
                 }
             }
         }
         
-        init(base: Expression?) {
+        init(base: Expression) {
             super.init()
-            self.base = base ?? Empty()
+            self.base = base
         }
        
         override func addExpression(_ expression: Expression, at offset: Int) {
@@ -1045,25 +865,11 @@ extension Equation {
                      guard newValue is Empty else { return }
                      newValue.parent = self
                      items.append(newValue)
-                 } else if items[2] is Empty {
-                     if let newValue = newValue as? Component, newValue.hasBrackets == true {
-                         newValue.parent = self
-                         items[2] = newValue
-                     } else {
-                         let newComponent = Component(items: [newValue])
-                         newComponent.parent = self
-                         newValue.parent = newComponent
-                         if let newValue = newValue as? Component, newValue.hasBrackets == false {
-                             newComponent.brackets = .normal
-                         }
-                         items[2] = newComponent
-                     }
                  } else {
-                     let newComponent = Component(items: [items[2], newValue])
-                     newComponent.parent = self
-                     newValue.parent = newComponent
-                     items[2] = newComponent
-                 }}
+                    newValue.parent = self
+                    items[2] = newValue
+                 }
+            }
          }
          
          private var maxBound: Expression {
@@ -1072,19 +878,9 @@ extension Equation {
                  if items.count < 2 {
                      guard newValue is Empty else { return }
                      newValue.parent = self
-                     newValue.scale = self.scale * 0.7
                      items.append(newValue)
-                 } else if items[1] is Empty {
-                     let newComponent = Component(items: [newValue])
-                     newComponent.parent = self
-                     newComponent.scale = self.scale * 0.7
-                     newValue.parent = newComponent
-                     items[1] = newComponent
                  } else {
-                     let newComponent = Component(items: [items[1], newValue])
-                     newComponent.parent = self
-                     newComponent.scale = self.scale * 0.7
-                     newValue.parent = newComponent
+                     let newComponent = Component(items: [newValue], parent: self)
                      items[1] = newComponent
                  }
              }
@@ -1096,19 +892,9 @@ extension Equation {
                  if items.isEmpty {
                      guard newValue is Empty else { return }
                      newValue.parent = self
-                     newValue.scale = self.scale * 0.7
                      items.append(newValue)
-                 } else if items[0] is Empty {
-                     let newComponent = Component(items: [newValue])
-                     newComponent.parent = self
-                     newComponent.scale = self.scale * 0.7
-                     newValue.parent = newComponent
-                     items[0] = newComponent
-                 } else {
-                     let newComponent = Component(items: [items[0], newValue])
-                     newComponent.parent = self
-                     newComponent.scale = self.scale * 0.7
-                     newValue.parent = newComponent
+                 } else  {
+                     let newComponent = Component(items: [newValue], parent: self)
                      items[0] = newComponent
                  }
              }
@@ -1215,54 +1001,7 @@ extension Equation {
         }
     }
     
-    // MARK: - Container Component
-    
-    class ContainerComponent: Component {
-        
-        enum ContainerType {
-            case text
-            case line
-        }
-        
-        /// All components in container component are the same type as the represented Expression the Container is initialised with
-        init(representingExpression: Expression) {
-            if representingExpression is Text {
-                contentType = .text
-            } else if representingExpression is Line {
-                contentType = .line
-            } else {
-                contentType = .text
-            }
-            
-            super.init()
-            representingExpression.parent = self
-            self.items.append(representingExpression)
-        }
-        
-        private let contentType: ContainerType
-        
-        override func addExpression(_ expression: Equation.Expression, at offset: Int) {
-            guard let containerComponent = expression as? ContainerComponent else { return }
-            let newItems = containerComponent.items
-            newItems.forEach { $0.parent = self }
-            if items.isEmpty {
-                items.append(expression)
-            } else if containerComponent.contentType == contentType {
-                if offset < 0 {
-                    items.insert(contentsOf: newItems, at: 0)
-                } else if offset >= items.count {
-                    items.append(contentsOf: newItems)
-                } else if let empty = items[offset] as? Empty {
-                    items.insert(contentsOf: newItems, at: offset)
-                    items.removeAll(where: { $0 === empty })
-                } else {
-                    items.insert(contentsOf: newItems, at: offset + 1)
-                }
-            }
-        }
-    }
-
-    
+   
     // MARK: - Component
     class Component: Expression {
         
@@ -1291,12 +1030,10 @@ extension Equation {
         
         convenience init(items: [Expression], brackets: BracketsType = .none, parent: Component? = nil) {
             self.init()
-            self.parent = parent
             self.items = items
-            if items.isEmpty {
-                self.items.append(Empty())
-            }
-            self.items.forEach { $0.parent = self; $0.scale = self.scale }
+            if items.isEmpty { self.items.append(Empty()) }
+            self.parent = parent
+            self.items.forEach { $0.parent = self }
             self.brackets = brackets
         }
         

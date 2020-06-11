@@ -342,28 +342,11 @@ extension Equation {
             guard let component = expression as? Component else { return }
             removeIndicator()
             let text = Text(value)
-            let contentComponent = ContainerComponent(representingExpression: text)
-            component.addExpression(contentComponent, at: offset)
-            mergeTextContentContainers()
+            component.addExpression(text, at: offset)
             forward()
             addIndicator()
         }
         
-        
-        private func mergeTextContentContainers() {
-            guard let component = expression as? Component else { return }
-            var newItems: [Equation.Expression] = []
-            for index in 0..<component.items.count {
-                if index != 0, let current = component.items[index] as? ContainerComponent, let previous = component.items[index - 1] as? ContainerComponent {
-                    previous.addExpression(current, at: previous.items.count)
-                    newItems.removeLast()
-                    newItems.append(previous)
-                } else {
-                    newItems.append(component.items[index])
-                }
-            }
-            component.items = newItems
-        }
         
         // MARK: Operator
         func addOperator(_ operatorType: Operator.OperatorType) {
