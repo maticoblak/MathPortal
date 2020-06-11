@@ -45,7 +45,7 @@ extension Equation {
         }
         
         private func isFunction(_ component: Component?) -> Bool {
-            if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit || component is Series) {
+            if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit || component is Series || component is Brackets) {
                 return true
             } else {
                 return false
@@ -53,31 +53,26 @@ extension Equation {
         }
         
         // MARK: Add indicator
-        // TODO - 
         func addIndicator() {
             guard let component = expression as? Component else { return }
             guard isFunction(component) == false else { return }
             guard component.items.contains(where: ({ $0 is Cursor })) == false else { return }
-            let cursor = Cursor(parent: component)
-            cursor.isSelected = false
+            let cursor = Cursor()
             if offset >= component.items.count {
-                component.items.append(cursor)
                 cursor.isSelected = true
                 offset += 1
             } else if offset < 0 {
-                component.items.insert(cursor, at: offset + 1)
                 cursor.isSelected = true
-            } else if component.items[offset] is Empty == false {
+            } else {
                 component.items[offset].isSelected = true
-                component.items.insert(cursor, at: offset + 1)
             }
+            component.addExpression(cursor, at: offset)
         }
         
         // MARK: Remove indicator
         func removeIndicator() {
             guard let component = expression as? Component else { return }
-            let index = component.items.firstIndex(where: ({ $0 is Cursor }))
-            if let index = index {
+            if let index = component.items.firstIndex(where: ({ $0 is Cursor })) {
                 if index <= offset, index != component.items.count {
                     offset -= 1
                 }

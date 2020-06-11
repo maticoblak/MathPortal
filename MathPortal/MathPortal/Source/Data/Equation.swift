@@ -904,9 +904,8 @@ extension Equation {
         convenience init(_ type: SeriesType, items: [Expression]) {
             self.init(type)
             guard items.count == 3 else { return }
-            items.forEach { $0.parent = self; $0.scale = self.scale }
             self.items = items
-
+            items.forEach { $0.parent = self }
         }
         
         override func addExpression(_ expression: Expression, at offset: Int) {
@@ -928,13 +927,6 @@ extension Equation {
     
     // MARK: - Empty
     class Empty: Expression {
-        
-//        /// Needs scale because of deletion, also scale has to be set after parent is set because of did set
-//        convenience init(scale: CGFloat? = nil, isSelected: Bool = false) {
-//            self.init()
-//            self.isSelected = isSelected
-//            if let scale = scale { self.scale = scale }
-//        }
         
         override func generateView() -> EquationView {
             let view = EquationView.generateEmpty(isSelected: isSelected, scale: scale)
@@ -970,12 +962,6 @@ extension Equation {
     // MARK: - Cursor
     
     class Cursor: Expression {
-              
-        convenience init(parent: Component) {
-            self.init()
-            self.parent = parent
-        }
-        
         override func generateView() -> EquationView {
             let view = EquationView.generateIndicator(scale: scale)
             saveSelectedExpression(withView: view)
@@ -993,14 +979,40 @@ extension Equation {
 
         var type: BracketsType = .normal
         
-        init(items: [Expression], type: BracketsType) {
+        private var base: Expression {
+            get { return items[0] }
+            set {
+                if items.isEmpty {
+                    guard newValue is Empty else { return }
+                    newValue.parent = self
+                    items.append(newValue)
+                } else {
+                    let newComponent = Component(items: [newValue], parent: self)
+                    items[0] = newComponent
+                }
+            }
+        }
+        
+        init(base: Expression, type: BracketsType) {
             super.init()
+            self.base = base
+        }
+        
+        override func addExpression(_ expression: Expression, at offset: Int) {
+            if offset == 0  {
+                self.base = expression
+            }
+        }
+        
+        convenience init(items: [Expression], type: BracketsType) {
+            self.init(type: type)
+            guard items.count == 1 else { return }
             self.items = items
-            self.type = type
+            items.forEach { $0.parent = self }
         }
         
         convenience init(type: BracketsType) {
-            self.init(items: [Empty()], type: type)
+            self.init(base: Empty(), type: type)
         }
         
         override func generateView() -> EquationView {
@@ -1008,6 +1020,7 @@ extension Equation {
             saveSelectedExpression(withView: view)
             return view
         }
+        
         
     }
     
