@@ -254,7 +254,7 @@ extension Equation {
             // The indicator is in the line
             if component is Line {
                 // The indicator is at the beginning of the line
-                if offset <= 0 {
+                if offset < 0 {
                     levelOut()
                     back()
                     addNewLine()
@@ -264,7 +264,7 @@ extension Equation {
                     addNewLine()
                 // The indicator is somewhere in the middle of line. In that case some items have to be removed from current line and new lane has to be added with the deleted items.
                 } else if let parent = component.parent, let index = parent.items.firstIndex(where: { $0 === component }) {
-                    let currentLine = Array(component.items[0...offset])
+                    let currentLine = Array(component.items.prefix(offset + 1))
                     let newLine = Array(component.items[offset + 1..<component.items.count])
                     component.replaceAllItems(with: currentLine)
                     parent.addExpression(Line(items: newLine), at: index)
@@ -285,8 +285,8 @@ extension Equation {
                     goToTheEndOfEquation()
                     back()
                 } else {
-                    let currentLine = Line(items: Array(component.items.prefix(max(offset-1, 0))))
-                    let newLine = Line(items: Array(component.items[offset..<component.items.count]))
+                    let currentLine = Line(items: Array(component.items.prefix(offset + 1)))
+                    let newLine = Line(items: Array(component.items[offset + 1..<component.items.count]))
                     component.replaceAllItems(with: [currentLine, newLine])
                     goToTheEndOfEquation()
                     back()
@@ -313,9 +313,9 @@ extension Equation {
             removeIndicator()
             let text = Text(value)
             component.addExpression(text, at: offset)
-            forward()
             levelIn()
-            addIndicator()
+            forward()
+            addIndicator( )
         }
         
         
@@ -342,13 +342,16 @@ extension Equation {
             addIndicator()
         }
         
-        private func setCurrentComponent(to component: Component, with offset: Int = 0) {
+        private func setCurrentComponent(to component: Component, with newOffset: Int = 0) {
             // TODO: check that statementr
             if let oldComponent = expression as? Component, offset < oldComponent.items.count, offset >= 0 {
                 oldComponent.items[offset].isSelected = false
             }
             self.expression = component
-            self.offset = offset
+            self.offset = newOffset
+            
+            
+            
         }
         
         /// For adding component to the component that the indicator is on (exponent, index, brackets)

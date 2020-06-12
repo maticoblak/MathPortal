@@ -1070,7 +1070,6 @@ extension Equation {
         convenience init(items: [Expression]) {
             self.init()
             self.items = items
-            if items.isEmpty { self.items.append(Empty()) }
             self.items.forEach { $0.parent = self }
         }
         
