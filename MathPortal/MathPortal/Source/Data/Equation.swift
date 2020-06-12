@@ -36,6 +36,7 @@ class Equation {
         case productSeries
         case newLine
         case indicator
+        case clearComponent
         
         case other // For views that make one of the above
         
@@ -67,6 +68,7 @@ class Equation {
             case .productSeries: return "productSeries"
             case .newLine: return "newLine"
             case .indicator: return "indicator"
+            case .clearComponent: return "clearComponent"
             }
         }
         
@@ -83,7 +85,7 @@ class Equation {
         }
     }
 
-    var expression: Component = Component(items: [Line()])
+    var expression: Component = ClearComponent(items: [Line()])
     
     func currentViewLocation(InView view: UIView?) -> (minX: CGFloat, minY: CGFloat, maxX: CGFloat, maxY: CGFloat)? {
         guard let expression = expression.selectedExpressionView, let expressionView = expression.view else { return nil }
@@ -321,7 +323,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -334,7 +336,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -383,7 +385,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent:  self)
+                    let newComponent = ClearComponent(items: [newValue], parent:  self)
                     items[0] = newComponent
                 }
             }
@@ -397,7 +399,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -468,7 +470,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -531,7 +533,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -545,7 +547,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[2] = newComponent
                 }
             }
@@ -609,7 +611,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -655,7 +657,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -669,7 +671,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[1] = newComponent
                 }
             }
@@ -762,12 +764,10 @@ extension Equation {
             self.init(type: type, angle: Empty())
         }
         
-        convenience init(type: FunctionType, items: [Expression]? = nil) {
+        convenience init(type: FunctionType, items: [Expression]) {
             self.init(type: type, angle: Empty())
-            if let items = items {
-                self.items = items
-                items.forEach { $0.parent = self }
-            }
+            self.items = items
+            items.forEach { $0.parent = self }
         }
         
         override func addExpression(_ expression: Expression, at offset: Int) {
@@ -869,7 +869,7 @@ extension Equation {
                      newValue.parent = self
                      items.append(newValue)
                  } else {
-                     let newComponent = Component(items: [newValue], parent: self)
+                     let newComponent = ClearComponent(items: [newValue], parent: self)
                      items[1] = newComponent
                  }
              }
@@ -883,7 +883,7 @@ extension Equation {
                      newValue.parent = self
                      items.append(newValue)
                  } else  {
-                     let newComponent = Component(items: [newValue], parent: self)
+                     let newComponent = ClearComponent(items: [newValue], parent: self)
                      items[0] = newComponent
                  }
              }
@@ -987,7 +987,7 @@ extension Equation {
                     newValue.parent = self
                     items.append(newValue)
                 } else {
-                    let newComponent = Component(items: [newValue], parent: self)
+                    let newComponent = ClearComponent(items: [newValue], parent: self)
                     items[0] = newComponent
                 }
             }
@@ -1027,6 +1027,32 @@ extension Equation {
     // MARK: Clear component
     
     class ClearComponent: Component {
+        convenience init(items: [Expression], parent: Component) {
+            self.init(items: items)
+            self.parent = parent
+        }
+        
+        private var isCentered: Bool {
+            if parent is Brackets {
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        override func generateView() -> EquationView {
+            
+            // TODO: centered?
+            if items.contains(where: ({ $0 is Line })) {
+                let view = EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: isCentered, isSelected: isSelected, scale: scale)
+                saveSelectedExpression(withView: view)
+                return view
+            } else {
+                let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, isSelected: isSelected, scale: scale)
+                saveSelectedExpression(withView: view)
+                return view
+            }
+        }
         
     }
    
@@ -1041,11 +1067,10 @@ extension Equation {
             }
         }
         
-        convenience init(items: [Expression], parent: Component? = nil) {
+        convenience init(items: [Expression]) {
             self.init()
             self.items = items
             if items.isEmpty { self.items.append(Empty()) }
-            self.parent = parent
             self.items.forEach { $0.parent = self }
         }
         
@@ -1059,6 +1084,11 @@ extension Equation {
             guard offset < items.count, offset >= 0 else { return }
             items[offset] = expression
             expression.parent = self
+        }
+        
+        func replaceAllItems(with items: [Expression]) {
+            self.items = items
+            self.items.forEach { $0.parent = self }
         }
         
         func addExpression(_ expression: Expression, at offset: Int) {
@@ -1199,6 +1229,8 @@ extension Equation {
             case .absolute:
                 return [Equation.ExpressionType.absoluteValue.string : brackets.items.map { equationToJson(equation: $0) }]
             }
+        } else if let clearComponent = equation as? ClearComponent {
+            return [Equation.ExpressionType.clearComponent.string : clearComponent.items.map { equationToJson(equation: $0)}]
         } else if let mathOperator = equation as? Equation.Operator {
             return [Equation.ExpressionType.mathOperator.string: mathOperator.type.string ]
         } else if let text = equation as? Equation.Text {
@@ -1269,6 +1301,9 @@ extension Equation {
         } else if let absoluteValue = json[Equation.ExpressionType.absoluteValue.string] as? [[String : Any]] {
             let component = Equation.Brackets(items: absoluteValue.map { JSONToEquation(json: $0)}, type: .absolute)
             return component
+        } else if let clearComponent = json[Equation.ExpressionType.clearComponent.string] as? [[String : Any]] {
+            let clearComponent = Equation.ClearComponent(items: clearComponent.map { JSONToEquation(json: $0) })
+            return clearComponent
         } else if let component = json[Equation.ExpressionType.component.string] as? [[String : Any]] {
             return Equation.Component(items: component.map { JSONToEquation(json: $0) })
         } else {
