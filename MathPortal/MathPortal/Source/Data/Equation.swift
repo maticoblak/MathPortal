@@ -124,11 +124,11 @@ class Equation {
     func handleMathKeyboardButtonsPressed(button: MathSymbol.SymbolType) {
         switch button {
         case .integer(let value):
-            currentIndicator.addString(String(value))
+            currentIndicator.addNumber(String(value))
         case .letter(let letter):
             currentIndicator.addString(letter)
         case .comma:
-            currentIndicator.addString(",")
+            currentIndicator.addNumber(",")
         case .plus:
             currentIndicator.addOperator(.plus)
         case .minus:
@@ -307,6 +307,22 @@ extension Equation {
             return view
         }
     }
+    
+    class Number: Expression {
+        
+        var value: String
+        init(_ value: String) {
+            self.value = value
+            super.init()
+        }
+        
+        override func generateView() -> EquationView {
+            let view = EquationView.generateText(value: value, isSelected: isSelected, scale: scale)
+            saveSelectedExpression(withView: view)
+            return view
+        }
+    }
+    
     // MARK: - Fraction
     class Fraction: Component {
 
@@ -937,7 +953,7 @@ extension Equation {
     
     // MARK: - Line
     
-    class Line: Component {
+    class Line: ClearComponent {
         
         override func generateView() -> EquationView {
             let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .newLine, isSelected: isSelected, brackets: .none, scale: scale)

@@ -95,18 +95,9 @@ extension Equation {
                 removeIndicator()
                 setCurrentComponent(to: newComponent)
             
-                if let component = expression as? Component {
-                    if component.items.isEmpty {
-                        return
-                    // TODO:
-                    // if component has only one element and that element is not empty go level in (don't konw if needed)
-                    } else if component.items.count == 1, let secondLevel = component.items[offset] as? Component, (secondLevel is Brackets) == false {
+                if let component = expression as? Component, component.items.isEmpty == false  {
+                    if let secondLevel = component.items[offset] as? ClearComponent, secondLevel.items.count == 1 {
                         levelIn()
-                    // if element that indicator is on is a component and it only has one element go in
-                    } else if let secondLevel = component.items[offset] as? Component, secondLevel.items.count == 1, (secondLevel is Brackets) == false {
-                        levelIn()
-                    } else if component.items.count > 0 {
-                        component.items[0].isSelected = true
                     }
                 }
                 addIndicator()
@@ -118,66 +109,32 @@ extension Equation {
     
             guard let parent = expression.parent else { return }
             guard let expressionOffset = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
+            // TODO guard if it is empty line
             removeIndicator()
-            //remember the current offset
-            let currentOffset = self.offset
-            
-            // change the expression to parent - it does't matter if the offset is greater or les than items count
             setCurrentComponent(to: parent, with: expressionOffset)
-            
-            if let component = parent.items[expressionOffset] as? Component {
-                // if the indicator is in the middle of expression its colour has to be set to default
-                if currentOffset < component.items.count, currentOffset >= 0 {
-                    component.items[currentOffset].isSelected = false
-                    
-                    // if component has only one element and there are no brackets go out another level
-                    if component.items.count == 1, (component is Brackets) == false, (component is Integral) == false, (component is TrigonometricFunc) == false, (component is Line) == false  {
-                        levelOut()
-                    }
-                }
-            }
             addIndicator()
         }
         
         // MARK: Forward
         func forward() {
-            guard isEquationEmpty == false else {
-                return
-            }
             removeIndicator()
             if let component = expression as? Component {
                 // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
                 if isFunction(component), offset == component.items.count - 1 {
                     levelOut()
-                // if component only has Empty expression in items - don't want to be in front or behinde it
-                } else if component.items.count == 1, component.items.first is Empty {
-                    levelOut()
                 // if the indicator is somwhere in the middle of component
                 } else if offset < component.items.count {
                     offset += 1
-                    // check if there is a previous expression and set its colour to default (you could be at the beginning of component offset < 0)
-                    if offset - 1 >= 0 {
-                        component.items[offset-1].isSelected = false
-                    }
                     // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
                     if offset < component.items.count {
-                        component.items[offset].isSelected = true
                         // TODO: check if == 0 or <= 1
-                        if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
-                            levelIn()
-                            // if the expression is a component and not a function without brackets and it has one or 0 elements go in another level
-                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, isFunction(selectedComponent) == false, (selectedComponent is Brackets) == false, selectedComponent is Line == false  {
+                        if let selectedComponent = component.items[offset] as? ClearComponent, selectedComponent.items.count <= 1 {
                             levelIn()
                         }
                     }
-                // if the indicator is at the end and component has only one element
-                } else if component.items.count == 1, (component is Brackets) == false {
-                    levelOut()
-                    if let component = expression as? Component, component.items.count > offset {
-                        forward()
-                    }
-                //if the component is line an it is empty
-                } else if component is Line, component.items.isEmpty {
+                // if the indicator is at the end and component has only one element //if the component is line an it is empty
+                    // parent != nil is important, without it it loops
+                } else if component.items.count <= 1, component.parent != nil {
                     levelOut()
                     forward()
                 //if the indicator is at the end of component
@@ -185,27 +142,25 @@ extension Equation {
                     levelOut()
                 }
                 
+                if let clearComponent = expression as? ClearComponent, offset >= clearComponent.items.count, let lastItem = clearComponent.items.last as? Line, lastItem.items.isEmpty {
+                    if clearComponent.parent == nil {
+                        back()
+                    } else {
+                        forward()
+                    }
+                    
+                }
+       
             }
             addIndicator()
         }
         
         // MARK: Back
         func back() {
-            guard isEquationEmpty == false else {
-                return
-            }
             removeIndicator()
             if let component = expression as? Component {
-                guard (component is Line && component.items.isEmpty && component.parent?.parent == nil && component.parent?.items.count == 1) == false else {
-                    offset = 0
-                    addIndicator()
-                    return
-                }
                 // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
                 if isFunction(component), offset == 0 {
-                    levelOut()
-                // if component only has Empty expression in items - don't want to be in front or behinde it
-                } else if component.items.count == 1, component.items.first is Empty {
                     levelOut()
                 //if the component is line an it is empty
                 } else if component is Line, component.items.isEmpty {
@@ -214,32 +169,27 @@ extension Equation {
                 // if indicator is somwheare in the middle of component
                 } else if offset >= 0 {
                     offset -= 1
-                    
-                    // check if there exist a prvious expression (the indicator could have been at the end of component) and set its colour to default)
-                    if offset + 1 < component.items.count {
-                        component.items[offset + 1].isSelected = false
-                    }
-                    
                     // check if the indicator landed on expression (offset >= 0) and set it a colour
                     if offset >= 0 {
-                        component.items[offset].isSelected = true
-                        if let selectedComponent = component.items[offset] as? Line, selectedComponent.items.count == 0 {
-                            levelIn()
-                        // if the expression is a component without brackets and not a function and it has only one or 0 elements go in another level
-                        } else if let selectedComponent = component.items[offset] as? Component, selectedComponent.items.count <= 1, (selectedComponent is Brackets) == false, isFunction(selectedComponent) == false, selectedComponent is Line == false {
+                        if let selectedComponent = component.items[offset] as? ClearComponent, selectedComponent.items.count <= 1 {
                             levelIn()
                         }
                     }
-                
                 // if the indicator is at the beginning of component ant it has only one element
-                } else if component.items.count == 1, (component is Brackets) == false {
+                } else if component.items.count <= 1, component.parent != nil {
                     levelOut()
-                    if offset >= 0 {
-                        back()
-                    }
+                    back()
                 // if the indcator is at the beginning of the component
                 } else {
                     levelOut()
+                }
+                
+                if let clearComponent = expression as? ClearComponent, offset < 0, let firstItem = clearComponent.items.first as? Line, firstItem.items.isEmpty {
+                    if clearComponent.parent == nil {
+                        forward()
+                    } else {
+                        back()
+                    }
                 }
             }
             addIndicator()
@@ -315,6 +265,17 @@ extension Equation {
             component.addExpression(text, at: offset)
             levelIn()
             forward()
+            addIndicator()
+        }
+        
+        // MARK: Number
+        func addNumber(_ value: String) {
+            guard let component = expression as? Component else { return }
+            guard componentIncludesLines(component) == false else { return }
+            removeIndicator()
+            component.addExpression(Number(value), at: offset)
+            levelIn()
+            forward()
             addIndicator( )
         }
         
@@ -343,15 +304,11 @@ extension Equation {
         }
         
         private func setCurrentComponent(to component: Component, with newOffset: Int = 0) {
-            // TODO: check that statementr
             if let oldComponent = expression as? Component, offset < oldComponent.items.count, offset >= 0 {
                 oldComponent.items[offset].isSelected = false
             }
             self.expression = component
             self.offset = newOffset
-            
-            
-            
         }
         
         /// For adding component to the component that the indicator is on (exponent, index, brackets)
