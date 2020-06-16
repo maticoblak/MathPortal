@@ -1120,7 +1120,7 @@ extension Equation {
         }
         
         func delete(offset: Int) {
-            guard offset < items.count else { return }
+            guard offset < items.count, offset >= 0 else { return }
             guard self.items[offset] is Empty == false else { return }
             replaceExpression(at: offset, with: Empty())
         }

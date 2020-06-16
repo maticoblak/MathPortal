@@ -292,8 +292,6 @@ extension Equation {
         }
         
         // MARK: Component
-
-
         func addComponent(_ newComponent: Component) {
             guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
@@ -330,88 +328,47 @@ extension Equation {
         
         // MARK: Delete
         func delete() {
-            removeIndicator()
+            
             if let component = expression as? Component {
-                if isFunction(component) {
-                    component.delete(offset: offset)
-                    component.items[offset].isSelected = true
-
-                // if the indicator is at the end of the component
-                } else if offset == component.items.count {
-                    // if the last item is text delete each character separately
-                    if let text = component.items.last as? Text {
-                        text.value.removeLast()
-                        // if the Text expression is empty delete it
-                        if text.value.isEmpty {
-                            offset -= 1
-                            component.items.removeLast()
-                        }
-                    } else if component.items.last is Component {
-                        back()
-                    } else if component.items.isEmpty == false {
-                        component.items.removeLast()
-                        offset -= 1
+                removeIndicator()
+                
+                if component is ClearComponent, component.items.isEmpty {
+                    if component.parent == nil {
+                        let newLine = Line()
+                        component.addExpression(newLine, at: 0)
+                        setCurrentComponent(to: newLine)
+                    } else {
+                        levelOut()
+                        delete()
                     }
-                // the indicator is somewhere in the middle
-                } else if offset >= 0 {
-                    // if we have a component with one element that is Empty expression go level out
-                    if component.items.count == 1, component.items[0] is Empty {
+                    
+                } else if isFunction(component) {
+                    component.replaceExpression(at: offset, with: Empty())
+                } else if component is Line, offset < 0 {
+                    levelOut()
+                    if offset > 0, let expression = expression as? Component, let baseLine = expression.items[offset - 1] as? Line {
+                        let mergedItems = baseLine.items + component.items
+                        baseLine.replaceAllItems(with: mergedItems)
+                        delete()
+                    }
+
+                } else {
+                    if offset >= component.items.count {
+                        back()
+                    } else if offset < 0 {
                         levelOut()
                     } else {
                         component.items.remove(at: offset)
-                        // The back acts differently in the line when it is empty
-                        if (component is Line) == false || component.items.count != 0 {
+                        if component is ClearComponent, component.items.isEmpty {
+                            levelOut()
+                            delete()
+                        } else {
                             back()
                         }
                     }
-                // if the indicator is at the beginning of the equation
-                } else if offset < 0 {
-                    // If you are deleting a new line you have to be at the start of the line component (index = -1)
-                    if component is Line {
-                        levelOut()
-                        if offset > 0, let component = expression as? Component, let firstLine = component.items[offset-1] as? Line, let secondLine =  component.items[offset] as? Line {
-                            let mergedLine = Line(items: firstLine.items + secondLine.items)
-                            mergedLine.parent = component
-                            component.replaceExpression(at: offset - 1, with: mergedLine)
-                            delete()
-                        } else {
-                            levelIn()
-                        }
-                    } else {
-                        levelOut()
-                    }
                 }
-                // Have to remove it again in case it was added in the previous if statement (the indicator is added in levelOut, back ,... functions)
-                removeIndicator()
-                // after the deletion check if component is empty
-                if component.items.isEmpty {
-                    // if we have deleted all items in component and the component has brackets it should append empty expression
-                    if (component is Brackets) {
-                        // TODO: scale???
-                        component.addExpression(Empty(), at: 0)
-                        offset = 0
-                    // if the component does not have brackets (components in fraction)
-                    } else if component.parent != nil {
-                        levelOut()
-                        delete()
-                    // the only component that does not have a parent is top level component and it always have at least one line component - after the deletion of all items the offset should be set at 0
-                    } else {
-                        component.items = []
-                        component.addExpression(Line(), at: 0)
-                        offset = 0
-                        levelIn()
-                    }
-                }
-            } else if let text = expression as? Text {
-                text.value.remove(at: text.value.index(text.value.startIndex, offsetBy: offset))
-                if text.value.isEmpty {
-                    levelOut()
-                    delete()
-                } else {
-                    back()
-                }
+                addIndicator()
             }
-            addIndicator()
         }
     }
 }
