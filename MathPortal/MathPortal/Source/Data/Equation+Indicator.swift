@@ -12,10 +12,10 @@ extension Equation {
     
     class Indicator {
         
-        var expression: Expression
-        var offset: Int = 0
-        init(expression: Expression) {
-            self.expression = expression
+        private var component: Component
+        private var offset: Int = 0
+        init(component: Component) {
+            self.component = component
             goToTheEndOfEquation()
             back()
             levelIn()
@@ -23,40 +23,22 @@ extension Equation {
         }
         
         // MARK: - Private functions
-        // TODO: have special Container component that just allows one type of expression in it (exp. Lines, Text)
+        // TODO: Have better solution for component with just lines in it
         private func componentIncludesLines(_ component: Component) -> Bool {
             return component.items.contains(where: ({ $0 is Line }))
         }
         
-        private var isEquationEmpty: Bool {
-            guard let line = expression as? Line else { return false }
-            guard line.items.isEmpty || (line.items.count == 1 && line.items.first is Cursor) else { return false }
-            guard line.parent?.parent == nil else { return false }
-            guard line.parent?.items.count == 1 else { return false }
-            return true
-        }
-        
         private func goToTheEndOfEquation() {
-            guard let component = expression as? Component else { return }
             offset = 0
             component.items.forEach { _ in
                 forward()
             }
         }
         
-        private func isFunction(_ component: Component?) -> Bool {
-            if (component is Fraction || component is Root || component is IndexAndExponent || component is Index || component is Logarithm || component is TrigonometricFunc || component is Integral || component is Limit || component is Series || component is Brackets) {
-                return true
-            } else {
-                return false
-            }
-        }
-        
         // MARK: Add indicator
         func addIndicator() {
-            guard let component = expression as? Component else { return }
             guard component.items.contains(where: ({ $0 is Cursor })) == false else { return }
-            if isFunction(component) {
+            if component.isFunction {
                 guard  component.items.isEmpty == false, component.items.count > offset, offset >= 0 else { return }
                 component.items[offset].isSelected = true
             } else {
@@ -75,7 +57,6 @@ extension Equation {
         
         // MARK: Remove indicator
         func removeIndicator() {
-            guard let component = expression as? Component else { return }
             if let index = component.items.firstIndex(where: ({ $0 is Cursor })) {
                 if index <= offset, index != component.items.count {
                     offset -= 1
@@ -84,32 +65,28 @@ extension Equation {
                 if component.items.isEmpty == false, offset >= 0, offset < component.items.count {
                     component.items[offset].isSelected = false
                 }
+            } else if component.isFunction {
+                component.items[offset].isSelected = false
             }
         }
         
         // MARK: level in
         func levelIn() {
-            if let component = expression as? Component {
-                guard component.items.count > offset, offset >= 0 else { return }  // if you are at the end of the equation the offset is greater then the index of last element since the last element hasn't ben added yet and similar if you are at the beginning the offset is less than 0
-                guard let newComponent = component.items[offset] as? Component else { return }
-                removeIndicator()
-                setCurrentComponent(to: newComponent)
-            
-                if let component = expression as? Component, component.items.isEmpty == false  {
-                    if let secondLevel = component.items[offset] as? ClearComponent, secondLevel.items.count == 1 {
-                        levelIn()
-                    }
-                }
-                addIndicator()
+            guard component.items.count > offset, offset >= 0 else { return }
+            guard let newComponent = component.items[offset] as? Component else { return }
+            removeIndicator()
+            setCurrentComponent(to: newComponent)
+        
+            if component.items.isEmpty == false, let secondLevel = component.items[offset] as? ClearComponent, secondLevel.items.count == 1  {
+                levelIn()
             }
+            addIndicator()
         }
         
         // MARK: Level out
         func levelOut() {
-    
-            guard let parent = expression.parent else { return }
-            guard let expressionOffset = parent.items.firstIndex(where: {$0 === self.expression}) else { return }
-            // TODO guard if it is empty line
+            guard let parent = component.parent else { return }
+            guard let expressionOffset = parent.items.firstIndex(where: {$0 === self.component}) else { return }
             removeIndicator()
             setCurrentComponent(to: parent, with: expressionOffset)
             addIndicator()
@@ -118,39 +95,31 @@ extension Equation {
         // MARK: Forward
         func forward() {
             removeIndicator()
-            if let component = expression as? Component {
-                // if the indicator is on denominator/radicant go to whole fraction/root - we don't wan't the indicator to be in the fraction/root after the denominator/radicant
-                if isFunction(component), offset == component.items.count - 1 {
-                    levelOut()
-                // if the indicator is somwhere in the middle of component
-                } else if offset < component.items.count {
-                    offset += 1
-                    // check if there is a expression and if there is set his background colour (you could be at the end offset >= items.count)
-                    if offset < component.items.count {
-                        // TODO: check if == 0 or <= 1
-                        if let selectedComponent = component.items[offset] as? ClearComponent, selectedComponent.items.count <= 1 {
-                            levelIn()
-                        }
-                    }
-                // if the indicator is at the end and component has only one element //if the component is line an it is empty
-                    // parent != nil is important, without it it loops
-                } else if component.items.count <= 1, component.parent != nil {
-                    levelOut()
-                    forward()
-                //if the indicator is at the end of component
+            // we don't wan't the indicator to be in the fraction/root after the denominator/radicand
+            if component.isFunction, offset == component.items.count - 1 {
+                levelOut()
+            // if the indicator is somewhere in the middle of component
+            } else if offset < component.items.count {
+                offset += 1
+                if offset < component.items.count, let selectedComponent = component.items[offset] as? ClearComponent, selectedComponent.items.count <= 1 {
+                    levelIn()
+                }
+            // if the indicator is at the end and component has only one element, if the component is line an it is empty
+            // parent != nil is important, without it it loops
+            } else if component.items.count <= 1, component.parent != nil {
+                levelOut()
+                forward()
+            //if the indicator is at the end of component
+            } else {
+                levelOut()
+            }
+            
+            if let clearComponent = component as? ClearComponent, offset >= clearComponent.items.count, let lastItem = clearComponent.items.last as? Line, lastItem.items.isEmpty {
+                if clearComponent.parent == nil {
+                    back()
                 } else {
-                    levelOut()
+                    forward()
                 }
-                
-                if let clearComponent = expression as? ClearComponent, offset >= clearComponent.items.count, let lastItem = clearComponent.items.last as? Line, lastItem.items.isEmpty {
-                    if clearComponent.parent == nil {
-                        back()
-                    } else {
-                        forward()
-                    }
-                    
-                }
-       
             }
             addIndicator()
         }
@@ -158,38 +127,33 @@ extension Equation {
         // MARK: Back
         func back() {
             removeIndicator()
-            if let component = expression as? Component {
-                // if the indicator is on enumerator/index go to whole fraction/root - don't wan't to be in fraction/root before the enumerator/index
-                if isFunction(component), offset == 0 {
-                    levelOut()
-                //if the component is line an it is empty
-                } else if component is Line, component.items.isEmpty {
-                    levelOut()
-                    back()
-                // if indicator is somwheare in the middle of component
-                } else if offset >= 0 {
-                    offset -= 1
-                    // check if the indicator landed on expression (offset >= 0) and set it a colour
-                    if offset >= 0 {
-                        if let selectedComponent = component.items[offset] as? ClearComponent, selectedComponent.items.count <= 1 {
-                            levelIn()
-                        }
-                    }
-                // if the indicator is at the beginning of component ant it has only one element
-                } else if component.items.count <= 1, component.parent != nil {
-                    levelOut()
-                    back()
-                // if the indcator is at the beginning of the component
-                } else {
-                    levelOut()
+            // don't wan't to be in fraction/root before the enumerator/index
+            if component.isFunction, offset == 0 {
+                levelOut()
+            //if the component is line an it is empty
+            } else if component is Line, component.items.isEmpty {
+                levelOut()
+                back()
+            // if indicator is somewhere in the middle of component
+            } else if offset >= 0 {
+                offset -= 1
+                if offset >= 0, let selectedComponent = component.items[offset] as? ClearComponent, selectedComponent.items.count <= 1 {
+                    levelIn()
                 }
-                
-                if let clearComponent = expression as? ClearComponent, offset < 0, let firstItem = clearComponent.items.first as? Line, firstItem.items.isEmpty {
-                    if clearComponent.parent == nil {
-                        forward()
-                    } else {
-                        back()
-                    }
+            // if the indicator is at the beginning of component ant it has only one element
+            } else if component.items.count <= 1, component.parent != nil {
+                levelOut()
+                back()
+            // if the indicator is at the beginning of the component
+            } else {
+                levelOut()
+            }
+            
+            if let clearComponent = component as? ClearComponent, offset < 0, let firstItem = clearComponent.items.first as? Line, firstItem.items.isEmpty {
+                if clearComponent.parent == nil {
+                    forward()
+                } else {
+                    back()
                 }
             }
             addIndicator()
@@ -197,22 +161,17 @@ extension Equation {
         
         // MARK: New line
         func addNewLine() {
-            // New line can only be added in the component
-            guard let component = expression as? Component else { return }
             // The new line can be added on top level or in the brackets to make matrix or binomial symbol and of corse the line can be added while the offset is in the line.
             removeIndicator()
             // The indicator is in the line
             if component is Line {
-                // The indicator is at the beginning of the line
                 if offset < 0 {
                     levelOut()
                     back()
                     addNewLine()
-                // The indicator is at the end of the line
                 } else if offset == component.items.count {
                     levelOut()
                     addNewLine()
-                // The indicator is somewhere in the middle of line. In that case some items have to be removed from current line and new lane has to be added with the deleted items.
                 } else if let parent = component.parent, let index = parent.items.firstIndex(where: { $0 === component }) {
                     let currentLine = Array(component.items.prefix(offset + 1))
                     let newLine = Array(component.items[offset + 1..<component.items.count])
@@ -222,10 +181,12 @@ extension Equation {
                     forward()
                     levelIn()
                 }
+            // Indicator is in the base component - (component that holds only lines)
             } else if componentIncludesLines(component) {
                 let newLine = Line()
                 component.addExpression(newLine, at: offset)
                 setCurrentComponent(to: newLine)
+            // Indicator is in bracets
             } else if component.parent is Brackets {
                 if offset < 0 {
                     component.replaceAllItems(with: [Line(), Line(items: component.items)])
@@ -248,7 +209,6 @@ extension Equation {
         
         // MARK: Space
         func addSpace() {
-            guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
             component.addExpression(Space(), at: offset)
@@ -258,31 +218,32 @@ extension Equation {
         
         // MARK: String
         func addString(_ value: String) {
-            guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
             let text = Text(value)
             component.addExpression(text, at: offset)
-            levelIn()
+            if component.items[offset] is ClearComponent {
+                levelIn()
+            }
             forward()
             addIndicator()
         }
         
         // MARK: Number
         func addNumber(_ value: String) {
-            guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
             component.addExpression(Number(value), at: offset)
-            levelIn()
+            if component.items[offset] is ClearComponent {
+                levelIn()
+            }
             forward()
-            addIndicator( )
+            addIndicator()
         }
         
         
         // MARK: Operator
         func addOperator(_ operatorType: Operator.OperatorType) {
-            guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
             let mathOperator = Operator(operatorType)
@@ -293,7 +254,6 @@ extension Equation {
         
         // MARK: Component
         func addComponent(_ newComponent: Component) {
-            guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
             component.addExpression(newComponent, at: offset)
@@ -301,17 +261,13 @@ extension Equation {
             addIndicator()
         }
         
-        private func setCurrentComponent(to component: Component, with newOffset: Int = 0) {
-            if let oldComponent = expression as? Component, offset < oldComponent.items.count, offset >= 0 {
-                oldComponent.items[offset].isSelected = false
-            }
-            self.expression = component
+        private func setCurrentComponent(to newComponent: Component, with newOffset: Int = 0) {
+            self.component = newComponent
             self.offset = newOffset
         }
         
         /// For adding component to the component that the indicator is on (exponent, index, brackets)
         func insertComponent(_ newComponent: Component) {
-            guard let component = expression as? Component else { return }
             guard componentIncludesLines(component) == false else { return }
             removeIndicator()
             if offset < 0 || offset >= component.items.count || component.items[offset] is Empty {
@@ -328,47 +284,38 @@ extension Equation {
         
         // MARK: Delete
         func delete() {
-            
-            if let component = expression as? Component {
-                removeIndicator()
-                
-                if component is ClearComponent, component.items.isEmpty {
-                    if component.parent == nil {
-                        let newLine = Line()
-                        component.addExpression(newLine, at: 0)
-                        setCurrentComponent(to: newLine)
-                    } else {
-                        levelOut()
-                        delete()
-                    }
-                    
-                } else if isFunction(component) {
-                    component.replaceExpression(at: offset, with: Empty())
-                } else if component is Line, offset < 0 {
-                    levelOut()
-                    if offset > 0, let expression = expression as? Component, let baseLine = expression.items[offset - 1] as? Line {
-                        let mergedItems = baseLine.items + component.items
-                        baseLine.replaceAllItems(with: mergedItems)
-                        delete()
-                    }
-
+            removeIndicator()
+            if component is ClearComponent, component.items.isEmpty {
+                if component.parent == nil {
+                    let newLine = Line()
+                    component.addExpression(newLine, at: 0)
+                    setCurrentComponent(to: newLine)
                 } else {
-                    if offset >= component.items.count {
-                        back()
-                    } else if offset < 0 {
-                        levelOut()
-                    } else {
-                        component.items.remove(at: offset)
-                        if component is ClearComponent, component.items.isEmpty {
-                            levelOut()
-                            delete()
-                        } else {
-                            back()
-                        }
-                    }
+                    levelOut()
+                    delete()
                 }
-                addIndicator()
+            } else if component.isFunction {
+                component.replaceExpression(at: offset, with: Empty())
+            } else if offset >= component.items.count {
+                back()
+            } else if offset < 0 {
+                let currentLine = component
+                levelOut()
+                if offset > 0, let baseLine = component.items[offset - 1] as? Line {
+                    let mergedItems = baseLine.items + currentLine.items
+                    baseLine.replaceAllItems(with: mergedItems)
+                    delete()
+                }
+            } else {
+                component.items.remove(at: offset)
+                if component is ClearComponent, component.items.isEmpty {
+                    levelOut()
+                    delete()
+                } else {
+                    back()
+                }
             }
+            addIndicator()
         }
     }
 }

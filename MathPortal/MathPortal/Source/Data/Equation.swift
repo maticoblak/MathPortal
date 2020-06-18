@@ -112,7 +112,7 @@ class Equation {
     }
     
     lazy private var currentIndicator: Indicator = {
-        return Indicator(expression: expression)
+        return Indicator(component: expression)
     }()
     
     convenience init(expression: Expression) {
@@ -1076,6 +1076,14 @@ extension Equation {
     class Component: Expression {
         
         var items: [Expression] = [Expression]()
+        
+        var isFunction: Bool {
+            if (self is Fraction || self is Root || self is IndexAndExponent || self is Index || self is Logarithm || self is TrigonometricFunc || self is Integral || self is Limit || self is Series || self is Brackets) {
+                return true
+            } else {
+                return false
+            }
+        }
         
         override var scale: CGFloat {
             didSet {
