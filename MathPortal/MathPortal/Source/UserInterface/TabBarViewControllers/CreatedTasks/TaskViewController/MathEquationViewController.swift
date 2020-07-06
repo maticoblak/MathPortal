@@ -71,8 +71,7 @@ class MathEquationViewController: UIViewController {
             equationView?.addGestureRecognizer(gestureRecognizer)
             return gestureRecognizer
         }()
-        
-        
+
         keyboardView.delegate = self
         equation.addCursor()
         refreshEquation()

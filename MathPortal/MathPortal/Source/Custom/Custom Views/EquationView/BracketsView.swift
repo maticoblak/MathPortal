@@ -14,7 +14,7 @@ class BracketsView: UIView {
     // init
     private(set) var viewInBrackets: UIView = UIView(frame: .zero)
     private(set) var viewHeight: CGFloat = 0
-    private(set) var type: Equation.Component.BracketsType = .normal
+    private(set) var type: Equation.Brackets.BracketsType = .normal
     
     // computed
     private var viewWidth: CGFloat = 0
@@ -32,7 +32,7 @@ class BracketsView: UIView {
         }
     }
 
-    init(viewInBrackets: UIView, type: Equation.Component.BracketsType = .normal) {
+    init(viewInBrackets: UIView, type: Equation.Brackets.BracketsType = .normal) {
         super.init(frame: .zero)
         self.viewInBrackets = viewInBrackets
         self.viewHeight = viewInBrackets.bounds.height
@@ -74,8 +74,6 @@ class BracketsView: UIView {
                 path.addQuadCurve(to: CGPoint(x: viewWidth - bracketWidth, y: viewHeight), controlPoint: CGPoint(x: viewWidth, y: viewHeight/2))
                 return path
             }()
-        case .none:
-            return
         }
         
         strokeColor.setStroke()
