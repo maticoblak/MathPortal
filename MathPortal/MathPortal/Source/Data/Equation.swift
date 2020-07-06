@@ -956,7 +956,7 @@ extension Equation {
     class Line: ClearComponent {
         
         override func generateView() -> EquationView {
-            let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .newLine, isSelected: isSelected, brackets: .none, scale: scale)
+            let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .newLine, isSelected: isSelected, scale: scale)
             saveSelectedExpression(withView: view)
             return view
         }
@@ -1032,7 +1032,7 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            let view = EquationView.linearlyLayoutViews(items.map { $0.generateView() }, type: .component, isSelected: isSelected, brackets: type, scale: scale)
+            let view = EquationView.generateBrackets(items.map { $0.generateView() }, type: type, isSelected: isSelected, scale: scale)
             saveSelectedExpression(withView: view)
             return view
         }
@@ -1057,8 +1057,6 @@ extension Equation {
         }
         
         override func generateView() -> EquationView {
-            
-            // TODO: centered?
             if items.contains(where: ({ $0 is Line })) {
                 let view = EquationView.verticalLayoutViews(items.map { $0.generateView() }, centered: isCentered, isSelected: isSelected, scale: scale)
                 saveSelectedExpression(withView: view)

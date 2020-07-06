@@ -84,7 +84,7 @@ extension MathSymbol {
                 guard let fraction: UIView = EquationView.generateFraction([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.9), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.9)], color: Color.darkBlue).view else { return EquationView.Nil.view}
                 return fraction
             case .brackets:
-                guard let brackets: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: .normal, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
+                guard let brackets: UIView = EquationView.generateBrackets([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .normal, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
                 return brackets
             case .root:
                 guard let root: UIView = EquationView.generateRoot([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.5), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], color: Color.darkBlue).view else { return EquationView.Nil.view}
@@ -196,7 +196,7 @@ extension MathSymbol {
                 guard let infinity: UIView = EquationView.generateText(value: "∞", color: Color.darkBlue).view else { return EquationView.Nil.view }
                 return infinity
             case .absoluteValue:
-                guard let absoluteValue: UIView = EquationView.linearlyLayoutViews([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .brackets, brackets: .absolute, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
+                guard let absoluteValue: UIView = EquationView.generateBrackets([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 1)], type: .absolute, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
                 return absoluteValue
             case .sumSeries:
                 guard let sumSeries: UIView = EquationView.generateSeries([EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.4), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.4), EquationView.generateEmpty(squareColor: Color.darkBlue, scale: 0.7)], type: .sum, color: Color.darkBlue, scale: 1).view else { return EquationView.Nil.view }
